@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="UHC">
+    <output-path>$USER_HOME$/server/plugins</output-path>
+    <root id="archive" name="UHC.jar">
+      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/changelog.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/config.yml" />
+      <element id="module-output" name="UHC2.5" />
+      <element id="file-copy" path="$PROJECT_DIR$/bans.yml" />
+    </root>
+  </artifact>
+</component>
