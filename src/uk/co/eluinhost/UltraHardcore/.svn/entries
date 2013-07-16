@@ -1,0 +1,96 @@
+10
+
+dir
+1
+http://grahamhowden.co.uk/svn/UltraHardcore/src/uk/co/eluinhost/UltraHardcore
+http://grahamhowden.co.uk/svn/UltraHardcore
+
+
+
+2013-07-16T14:12:27.951850Z
+1
+grahamhowden
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b8ea36a1-7c72-4f6b-a524-089d989b3079
+
+
+
+
+
+
+0
+
+UltraHardcore.java
+file
+
+
+
+
+2013-07-15T17:47:33.996000Z
+aa66e4f0bb2bc87fad1634b4e71c18eb
+2013-07-16T14:12:27.951850Z
+1
+grahamhowden
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6011
+
+borders
+dir
+
+commands
+dir
+
+config
+dir
+
+exceptions
+dir
+
+features
+dir
+
+game
+dir
+
+metrics
+dir
+
+scatter
+dir
+
+util
+dir
+

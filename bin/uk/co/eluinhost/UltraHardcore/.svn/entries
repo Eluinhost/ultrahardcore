@@ -1,0 +1,96 @@
+10
+
+dir
+1
+http://grahamhowden.co.uk/svn/UltraHardcore/bin/uk/co/eluinhost/UltraHardcore
+http://grahamhowden.co.uk/svn/UltraHardcore
+
+
+
+2013-07-16T14:12:27.951850Z
+1
+grahamhowden
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b8ea36a1-7c72-4f6b-a524-089d989b3079
+
+
+
+
+
+
+0
+
+UltraHardcore.class
+file
+
+
+
+
+2013-07-08T21:58:11.799000Z
+0643dd7cc60f4050a77882a4dc6d8ee3
+2013-07-16T14:12:27.951850Z
+1
+grahamhowden
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7225
+
+borders
+dir
+
+commands
+dir
+
+config
+dir
+
+exceptions
+dir
+
+features
+dir
+
+game
+dir
+
+metrics
+dir
+
+scatter
+dir
+
+util
+dir
+

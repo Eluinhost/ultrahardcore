@@ -1,0 +1,263 @@
+name: UltraHardcore
+main: uk.co.eluinhost.UltraHardcore.UltraHardcore
+version: 2.5
+description: Make minecraft harder, no health regen and extras!
+author: ghowden/Eluinhost
+website: eluinhost.co.uk
+database: false
+softdepend: [WorldEdit,ProtocolLib]
+commands:
+    heal:
+      description: Heal a player/yourself
+      usage: /<command> [player/*]
+      aliases: [uhcheal]
+    feed:
+      description: Feed a player/yourself
+      usage: /<command> [player/*]
+      aliases: [uhcfeed]
+    feature:
+      description: Allows turning on/off of features and seeing the feature list
+      usage: /<command> command params
+      aliases: [uhcfeature]
+    freeze:
+      description: Freezes all players without permissions using potion effects
+      usage: /<command>
+      aliases: [uhcfreeze]
+    scatter:
+      description: Scatters players within a world within set borders
+      usage: /<command> typeID true/false radius[:mindist] world[:0,0] */player1 player2 player3
+      aliases: [uhcscatter]
+    generateborder:
+      description: Generates a border in the world
+      usage: /<command> radius world[:x,z] [blockid:meta]
+      aliases: [uhcgenerateborder]
+    tpp:
+      description: Teleports all players to another player/location
+      usage: /<command> list_of_players/* playername OR /tpp list_of_players/* x,y,z[,worldname]
+      aliases: [uhctpp]
+    ci:
+      description: Clears a player/s inventory
+      usage: /<command> [list of space separated names/*]
+      aliases: [uhcci]
+    randomteams:
+      description: Put people in random teams
+      usage: /<command> numberofteams [world_name]
+      aliases: [uhcrandomteams]
+    clearteams:
+      description: Clears all the UHC teams or all teams if specifed
+      usage: /<command> [all]
+      aliases: [uhcclearteams]
+    emptyteams:
+      description: Empties all the UHC teams or all teams if specified
+      usage: /<command> [all]
+      aliases: [uhcemptyteams]
+    listteams:
+      description: List the teams on the server
+      usage: /<command> [all]
+      aliases: [uhclistteams]
+    jointeam:
+      description: Join a team
+      usage: /<command> teamid [playername]
+      aliases: [uhcjointeam]
+    leaveteam:
+      description: Leave team
+      usage: /<command> [playername]
+      aliases: [uhcleaveteam]
+    createteam:
+      description: Create a random named UHC team
+      usage: /<command>
+      aliases: [uhccreateteam]
+    removeteam:
+      description: Remove and clear a team
+      usage: /<command> id
+      aliases: [uhcremoveteam]
+    deathban:
+      description: Manage death bans
+      usage: /<command> ban playername time OR /<command> unban playername
+      aliases: [uhcdeathban]
+    givedrops:
+      description: Give players items defined for death drops
+      usage: /<command> groupname */player1 player2 player3
+      aliases: [uhcgivedrops]
+permissions:
+    UHC.heal.*:
+        description: Gives all heal permissions
+        default: op
+        children:
+          UHC.heal.self: true
+          UHC.heal.other: true
+          UHC.heal.all: true
+          UHC.heal.announce: true
+    UHC.feed.*:
+        description: Gives all feed permissions
+        default: op
+        children:
+          UHC.feed.self: true
+          UHC.feed.other: true
+          UHC.feed.all: true
+          UHC.feed.announce: true
+    UHC.ci.*:
+        description: Gives all clear inventory commands
+        default: op
+        children:
+          UHC.ci.self: true
+          UHC.ci.other: true
+    UHC.ci.self:
+        description: Clear your own inventory
+        default: op
+    UHC.ci.other:
+        description: Clear someone elses inventory
+        default: op
+    UHC.ci.immune:
+        description: Immune to inventory clears
+        default: false
+    UHC.heal.self:
+        description: Fully heal yourself
+        default: false
+    UHC.heal.other:
+        description: Fully heal another player
+        default: false
+    UHC.heal.all:
+        description: Heals all players on the server
+        default: false
+    UHC.heal.announce:
+        description: All heal commands will be announced to this player
+        default: false
+    UHC.feed.self:
+        description: Fully feeds yourself
+        default: false
+    UHC.feed.other:
+        description: Fully feed another player
+        default: false
+    UHC.feed.all:
+        description: Feeds all players on the server
+        default: false
+    UHC.feed.announce:
+        description: All feed commands will be announced to this player
+        default: false
+    UHC.feature.toggle:
+        description: Allows a player to globally change loaded features
+        default: op
+    UHC.feature.list:
+        description: Allows a player to see a list of loaded features and their state
+        default: true
+    UHC.freeze.command:
+        description: Allows a player to use the /freeze command to freeze everyone
+        default: op
+    UHC.freeze.antifreeze:
+        description: Players with this permission are not affected by /freeze
+        default: false
+    UHC.scatter:
+        description: Allows a player to use the scatter command/s
+        default: op
+    UHC.playerListHealth:
+        description: Player with this permission have health on their name in the player list
+        default: true
+    UHC.recipes.disableGApple:
+        description: Player with this permission cannot craft normal golden apple
+        default: true
+    UHC.recipes.disableGMelon:
+        description: Player with this permission cannot craft normal glistering melons
+        default: true
+    UHC.recipes.disableGCarrot:
+        description: Player with this permission cannot craft normal golden carrot
+        default: true
+    UHC.recipes.allowNewGCarrot:
+        description: Player with this permission can craft the new golden carrot recipe
+        default: true
+    UHC.recipes.allowNewGApple:
+        description: Player with this permission can craft the new golden apple recipe
+        default: true
+    UHC.recipes.allowNewGMelon:
+        description: Player with this permission can craft the new glistering melon recipe
+        default: true
+    UHC.recipes.allowNotchApple:
+        description: Player with this permission can craft the notch golden apple
+        default: false
+    UHC.disableRegen:
+        description: player with this permission will have regen disabled at full hunger
+        default: true
+    UHC.noEnderpearlDamage:
+        description: player with this permission take no damage when teleporting using enderpearls
+        default: true
+    UHC.deathLightning:
+        description: player with this permission will have fake lightning strike where they die
+        default: true
+    UHC.dropSkull:
+        description: player with this permission can have their head drop on death
+        default: true
+    UHC.generateborder:
+        description: Allows a player to generate the borders
+        default: op
+    UHC.tpall2:
+        description: Allows a player to tp all players to another player/location
+        default: op
+    UHC.AnonChat.chat:
+        description: Speak anon
+        default: true
+    UHC.AnonChat.seeName:
+        description: See the name of whoever is using anon chat
+        default: op
+    UHC.deathmessages.remove:
+        description: Removes the death message for this player
+        default: false
+    UHC.deathmessages.affixes:
+        description: Adds the death message prefix/suffix
+        default: true
+    UHC.teams.random:
+        description: Allows for creation of random teams
+        default: op
+    UHC.teams.clear:
+        description: Allows for the clearing of teams
+        default: op
+    UHC.teams.empty:
+        description: Allows for the emptying of teams
+        default: op
+    UHC.teams.list:
+        description: Allows for the viewing of teams
+        default: true
+    UHC.teams.create:
+        description: Allows a player to get a new random UHC team
+        default: op
+    UHC.teams.remove.UHC:
+        description: Allows a player to remove a UHC team
+        default: op
+    UHC.team.remove.all:
+        description: Allows the player to remove any team
+        default: op
+    UHC.teams.join.UHC:
+        description: Allows a player to join a UHC team
+        default: true
+    UHC.teams.join.all:
+        description: Allows a player to join any team
+        default: true
+    UHC.teams.join.other:
+        description: Allows a player to force another to join a team
+        default: op
+    UHC.teams.leave.self:
+        description: Allows a player to leave their team
+        default: true
+    UHC.teams.leave.other:
+        description: Allows a player to remove someone else from their team
+        default: op
+    UHC.footprints.leavePrints:
+        description: Player leaves footprints behind them
+        default: true
+    UHC.recipes.disableSplash:
+        description: Stops a player from brewing splash potions
+        default: true
+    UHC.deathban.immune:
+        description: Immune to death bans
+        default: op
+    UHC.deathban.ban:
+        description: Allows use of the ban command
+        default: op
+    UHC.deathban.unban:
+        description: Allows use of the unban command
+        default: op
+    UHC.deathban.group.default:
+        description: Bans for the group default
+        default: true
+    UHC.givedrops:
+        description: Allows use of the givedrops command
+        default: op

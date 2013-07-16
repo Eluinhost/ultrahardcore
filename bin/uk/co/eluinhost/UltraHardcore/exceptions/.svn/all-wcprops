@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions
+END
+FeatureException.class
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/FeatureException.class
+END
+BorderTypeNotFoundException.class
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/BorderTypeNotFoundException.class
+END
+WorldEditMaxChangedBlocksException.class
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/WorldEditMaxChangedBlocksException.class
+END
+WorldEditNotFoundException.class
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/WorldEditNotFoundException.class
+END
+ScatterTypeConflictException.class
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/ScatterTypeConflictException.class
+END
+MaxAttemptsReachedException.class
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/MaxAttemptsReachedException.class
+END
+FeatureIDConflictException.class
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/FeatureIDConflictException.class
+END
+WorldNotFoundException.class
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/WorldNotFoundException.class
+END
+FeatureIDNotFoundException.class
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/FeatureIDNotFoundException.class
+END
+GameIDConflictException.class
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/GameIDConflictException.class
+END
+GameNotRunningException.class
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/GameNotRunningException.class
+END
+FeatureStateNotChangedException.class
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/FeatureStateNotChangedException.class
+END
+GameIDNotFoundException.class
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/GameIDNotFoundException.class
+END
+GameManagerException.class
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/GameManagerException.class
+END
+InvalidFeatureIDException.class
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/UltraHardcore/!svn/ver/1/bin/uk/co/eluinhost/UltraHardcore/exceptions/InvalidFeatureIDException.class
+END

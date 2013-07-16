@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands
+END
+DeathBanCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/DeathBanCommand.java
+END
+TPCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/TPCommand.java
+END
+FeedCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/FeedCommand.java
+END
+ScatterCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/ScatterCommand.java
+END
+ClearInventoryCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/ClearInventoryCommand.java
+END
+GiveDropCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/GiveDropCommand.java
+END
+UHCCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/UHCCommand.java
+END
+FeatureCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/FeatureCommand.java
+END
+TeamCommands.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/TeamCommands.java
+END
+FreezeCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/FreezeCommand.java
+END
+HealCommand.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/UltraHardcore/!svn/ver/1/src/uk/co/eluinhost/UltraHardcore/commands/HealCommand.java
+END
