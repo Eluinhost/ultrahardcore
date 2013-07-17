@@ -4,13 +4,14 @@
     </target>
     <target name="compile">
         <mkdir dir="build/classes"/>
-        <classpath>
-            <pathelement path="${classpath}"/>
-            <fileset dir="lib">
-                <include name="**/*.jar"/>
-            </fileset>
-        </classpath>
-        <javac srcdir="src" destdir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes">
+            <classpath>
+                <pathelement path="${classpath}"/>
+                <fileset dir="lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
     </target>
     <target name="jar">
         <mkdir dir="build/jar"/>
