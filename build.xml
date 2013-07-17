@@ -10,4 +10,10 @@
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/UHC-dev.jar" basedir="build/classes" />
     </target>
+    <classpath>
+        <pathelement path="${classpath}"/>
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+    </classpath>
 </project>
