@@ -16,8 +16,8 @@
     <target name="jar">
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/UHC-dev.jar" basedir="build/classes">
-            <zipfileset includes="config.yml" />
-            <zipfileset includes="plugin.yml" />
+            <zipfileset dir="" includes="config.yml" />
+            <zipfileset dir="" includes="plugin.yml" />
         </jar>
     </target>
 </project>
