@@ -21,5 +21,4 @@
             <zipfileset dir="" includes="changelog.yml" />
         </jar>
     </target>
-
 </project>
