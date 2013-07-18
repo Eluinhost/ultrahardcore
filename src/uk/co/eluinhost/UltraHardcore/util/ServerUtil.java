@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public class ServerUtil {
@@ -42,4 +43,31 @@ public class ServerUtil {
 		}
 		return p;
 	}
+
+    private static BlockFace[] block_faces = new BlockFace[]{
+            BlockFace.NORTH,
+            BlockFace.NORTH_NORTH_EAST,
+            BlockFace.NORTH_EAST,
+            BlockFace.EAST_NORTH_EAST,
+            BlockFace.EAST,
+            BlockFace.EAST_SOUTH_EAST,
+            BlockFace.SOUTH_EAST,
+            BlockFace.SOUTH_SOUTH_EAST,
+            BlockFace.SOUTH,
+            BlockFace.SOUTH_SOUTH_WEST,
+            BlockFace.SOUTH_WEST,
+            BlockFace.WEST_SOUTH_WEST,
+            BlockFace.WEST,
+            BlockFace.WEST_NORTH_WEST,
+            BlockFace.NORTH_WEST,
+            BlockFace.NORTH_NORTH_WEST};
+
+    public static BlockFace getCardinalDirection(Player player) {
+        double rotation = (player.getLocation().getYaw() - 90) % 360;
+        if (rotation < 0) {
+            rotation += 360.0;
+        }
+        return block_faces[((int) Math.round(rotation / 11.25))];
+    }
+
 }
