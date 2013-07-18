@@ -32,7 +32,7 @@ features:
         chance: 0
       template2:
         group: group1
-        id: "35:7"
+        id: "35:6"
         amount: 1-64
         chance: 0
       template3:
