@@ -50,6 +50,11 @@ public enum BlockFace2DVector{
         double angle = Math.abs(best.getAngle());
         for(BlockFace2DVector bfv : BlockFace2DVector.values()){
             double a = look_angle-bfv.getAngle();
+            if(a > Math.PI*2){
+                a -= Math.PI*2;
+            }else if(a < 0){
+                a += Math.PI*2;
+            }
             Bukkit.getLogger().severe(bfv.getBlockFace().toString()+" - "+a);
             if(Math.abs(a) < angle){
                 best = bfv;
