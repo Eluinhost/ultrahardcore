@@ -1,6 +1,5 @@
 package uk.co.eluinhost.UltraHardcore.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 
 public enum BlockFace2DVector{
@@ -44,7 +43,6 @@ public enum BlockFace2DVector{
     }
 
     public static BlockFace getClosest(double look_angle){
-        Bukkit.getLogger().severe(""+look_angle);
         BlockFace2DVector[] vectors = BlockFace2DVector.values();
         BlockFace2DVector best = vectors[0];
         double angle = Math.abs(best.getAngle());
@@ -55,7 +53,6 @@ public enum BlockFace2DVector{
             }else if(a < 0){
                 a += Math.PI*2;
             }
-            Bukkit.getLogger().severe(bfv.getBlockFace().toString()+" - "+a);
             if(Math.abs(a) < angle){
                 best = bfv;
                 angle = Math.abs(a);
