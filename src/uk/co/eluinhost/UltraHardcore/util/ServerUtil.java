@@ -67,7 +67,7 @@ public class ServerUtil {
         if (rotation < 0) {
             rotation += 360.0;
         }
-        return block_faces[(int) (rotation / 11.25)];
+        return block_faces[(int) (rotation / 22.5)];
     }
 
 }
