@@ -17,7 +17,7 @@ commands:
       aliases: [uhcfeed]
     feature:
       description: Allows turning on/off of features and seeing the feature list
-      usage: /<command> command params
+      usage: /<command> toggle featureID OR /<command> list
       aliases: [uhcfeature]
     freeze:
       description: Freezes all players without permissions using potion effects
@@ -65,7 +65,7 @@ commands:
       aliases: [uhcleaveteam]
     createteam:
       description: Create a random named UHC team
-      usage: /<command>
+      usage: /<command> [teamID]
       aliases: [uhccreateteam]
     removeteam:
       description: Remove and clear a team
