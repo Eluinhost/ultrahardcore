@@ -42,6 +42,7 @@ public static final String PLAYER_LIST_UNDER_NAME = FEATURE_NODE+".playerListHea
  */
 public static final String RECIPE_CHANGES = FEATURE_NODE+".recipeChanges.enabled";
 public static final String RECIPE_CHANGES_SPLASH = FEATURE_NODE+".recipeChanges.disableSplash";
+public static final String DISABLE_ABSORB = FEATURE_NODE+".recipeChanges.disableAbsorb";
 
 /**
  * Whether or not the enderperl no damage feature is enabled by default
@@ -106,4 +107,5 @@ public static final String DEATH_BANS_NODE = FEATURE_NODE+".deathbans";
 public static final String DEATH_BANS_CLASSES = DEATH_BANS_NODE+".bans";
 public static final String DEATH_BANS_DELAY = DEATH_BANS_NODE+".delay";
 public static final String DEATH_BANS_ENABLED = DEATH_BANS_NODE+".enabled";
+
 }

@@ -200,19 +200,21 @@ public class RecipeFeature extends UHCFeature{
 	}
 	@EventHandler
 	public void onPlayerEatEvent(PlayerItemConsumeEvent pee){
-		ItemStack is = pee.getItem();
-		if(is.getType().equals(Material.GOLDEN_APPLE)){
-			final String playerName = pee.getPlayer().getName();
-			Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),
-					new Runnable(){
-						@Override
-						public void run() {
-							Player p = Bukkit.getPlayerExact(playerName);
-							PotionEffectType abs = PotionEffectType.getById(22);
-							p.removePotionEffect(abs);
-						}
-					}
-			);
-		}
+        if(isEnabled() && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.DISABLE_ABSORB)){
+            ItemStack is = pee.getItem();
+            if(is.getType().equals(Material.GOLDEN_APPLE)){
+                final String playerName = pee.getPlayer().getName();
+                Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),
+                        new Runnable(){
+                            @Override
+                            public void run() {
+                                Player p = Bukkit.getPlayerExact(playerName);
+                                PotionEffectType abs = PotionEffectType.getById(22);
+                                p.removePotionEffect(abs);
+                            }
+                        }
+                );
+            }
+        }
 	}
 }

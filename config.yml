@@ -12,6 +12,7 @@ features:
   recipeChanges:
     enabled: true
     disableSplash: true
+    disableAbsorb: true
   noEnderpearlDamage: true
   headDrop:
     enabled: true
