@@ -2,7 +2,6 @@ package uk.co.eluinhost.UltraHardcore.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
-import org.bukkit.util.Vector;
 
 public enum BlockFace2DVector{
     NORTH(BlockFace.NORTH),
