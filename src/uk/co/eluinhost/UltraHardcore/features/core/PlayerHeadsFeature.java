@@ -34,20 +34,6 @@ public class PlayerHeadsFeature extends UHCFeature{
 		if(isEnabled()){
 			if(pde.getEntity().hasPermission(PermissionNodes.DROP_SKULL)){
 				if(ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)){
-					/*if(!(pde.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent)){
-						return;
-					}
-					EntityDamageByEntityEvent edbee = (EntityDamageByEntityEvent) pde.getEntity().getLastDamageCause();
-					if(!(edbee.getDamager() instanceof Player)){
-						if(edbee.getDamager() instanceof Projectile){
-							LivingEntity p = ((Projectile)edbee.getDamager()).getShooter();
-							if(!(p instanceof Player)){
-								return;
-							}
-						}else{
-							return;
-						}
-					}*/
 					if(pde.getEntity().getKiller() == null){
 						return;
 					}
