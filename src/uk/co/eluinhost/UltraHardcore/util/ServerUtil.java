@@ -44,30 +44,12 @@ public class ServerUtil {
 		return p;
 	}
 
-    private static BlockFace[] block_faces = new BlockFace[]{
-            BlockFace.NORTH,
-            BlockFace.NORTH_NORTH_EAST,
-            BlockFace.NORTH_EAST,
-            BlockFace.EAST_NORTH_EAST,
-            BlockFace.EAST,
-            BlockFace.EAST_SOUTH_EAST,
-            BlockFace.SOUTH_EAST,
-            BlockFace.SOUTH_SOUTH_EAST,
-            BlockFace.SOUTH,
-            BlockFace.SOUTH_SOUTH_WEST,
-            BlockFace.SOUTH_WEST,
-            BlockFace.WEST_SOUTH_WEST,
-            BlockFace.WEST,
-            BlockFace.WEST_NORTH_WEST,
-            BlockFace.NORTH_WEST,
-            BlockFace.NORTH_NORTH_WEST};
+
 
     public static BlockFace getCardinalDirection(Player player) {
-        double rotation = (player.getLocation().getYaw() - 90) % 360;
-        if (rotation < 0) {
-            rotation += 360.0;
-        }
-        return block_faces[(int) (rotation / 22.5)];
+        double yaw = (player.getLocation().getYaw());
+        yaw = Math.toRadians(yaw);
+        return BlockFace2DVector.getClosest(yaw);
     }
 
 }
