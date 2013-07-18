@@ -1,6 +1,5 @@
 ===2.5===\\
 
-
 ==Features
 - Added config option/permission to remove death messages
 - Added hardcore hearts module, requires protocollib
