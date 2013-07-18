@@ -2,7 +2,13 @@ package uk.co.eluinhost.UltraHardcore.features.core;
 
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Skull;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +18,7 @@ import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
+import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
 
 /**
@@ -40,13 +47,53 @@ public class PlayerHeadsFeature extends UHCFeature{
 				}
 				Random r = new Random();
 				if(r.nextInt(100)>=(100-ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE))){
-					pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
+                    if(!makeHeadStakeForPlayer(pde.getEntity())){
+					    pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
+                    }
 				}
 			}
 		}
 	}	
 	
-	
+	public boolean makeHeadStakeForPlayer(Player p){
+        Location head = p.getEyeLocation();
+        Block head_block = head.getBlock();
+        Block ground = getClosestGround(head_block.getRelative(BlockFace.DOWN,2));
+        if(ground != null){
+            Block skull_block = ground.getRelative(BlockFace.UP,2);
+            if(skull_block == null || !skull_block.isEmpty()){
+                return false;
+            }
+            setBlockAsHead(p,skull_block);
+            Block fence_block = ground.getRelative(BlockFace.UP);
+            if(fence_block != null && fence_block.isEmpty()){
+                fence_block.setType(Material.NETHER_FENCE);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void setBlockAsHead(Player p, Block head_block){
+        head_block.setType(Material.SKULL);
+        head_block.setData((byte) 1);
+        Skull state = (Skull) head_block.getState();
+        state.setSkullType(SkullType.PLAYER);
+        state.setOwner(p.getName());
+        state.setRotation(ServerUtil.getCardinalDirection(p));
+        state.update();
+    }
+
+    private Block getClosestGround(Block b){
+        if(b == null){
+            return null;
+        }
+        if(!b.isEmpty()){
+            return b;
+        }
+        return getClosestGround(b.getRelative(BlockFace.DOWN));
+    }
+
 	private ItemStack playerSkullForName(String name){
 		ItemStack is = new ItemStack(Material.SKULL_ITEM,1);
 		is.setDurability((short) 3);
