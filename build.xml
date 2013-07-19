@@ -18,6 +18,7 @@
         <jar destfile="build/jar/UHC-dev.jar" basedir="build/classes">
             <zipfileset dir="" includes="config.yml" />
             <zipfileset dir="" includes="plugin.yml" />
+            <zipfileset dir="" includes="bans.yml" />
             <zipfileset dir="" includes="changelog.yml" />
         </jar>
     </target>
