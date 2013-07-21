@@ -209,8 +209,7 @@ public class RecipeFeature extends UHCFeature{
                             @Override
                             public void run() {
                                 Player p = Bukkit.getPlayerExact(playerName);
-                                PotionEffectType abs = PotionEffectType.getById(22);
-                                p.removePotionEffect(abs);
+                                p.removePotionEffect(PotionEffectType.ABSORPTION);
                             }
                         }
                 );
