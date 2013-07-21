@@ -13,6 +13,7 @@
             </classpath>
         </javac>
     </target>
+    <echo message="BUILD-LABELS:EXAMPLE1,EXAMPLE2" />
     <target name="jar">
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/UHC-dev.jar" basedir="build/classes">
@@ -22,5 +23,4 @@
             <zipfileset dir="" includes="changelog.yml" />
         </jar>
     </target>
-
 </project>
