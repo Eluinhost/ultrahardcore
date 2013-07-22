@@ -18,6 +18,7 @@ features:
     enabled: true
     pvponly: false
     percentChance: 100
+    onStake: true
   deathLightning: false
   deathMessages:
     enabled: false

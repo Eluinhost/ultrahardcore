@@ -52,6 +52,7 @@ public static final String NO_ENDERPEARL_DAMAGE = FEATURE_NODE+".noEnderpearlDam
 public static final String DROP_PLAYER_HEAD = FEATURE_NODE+".headDrop.enabled";
 public static final String PLAYER_HEAD_PVP_ONLY = FEATURE_NODE+".headDrop.pvponly";
 public static final String PLAYER_HEAD_DROP_CHANCE = FEATURE_NODE+".headDrop.percentChance";
+public static final String PLAYER_HEAD_DROP_STAKE = FEATURE_NODE+".headDrop.onStake";
 
 public static final String DEATH_LIGHTNING = FEATURE_NODE+".deathLightning";
 

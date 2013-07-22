@@ -47,7 +47,7 @@ public class PlayerHeadsFeature extends UHCFeature{
 				}
 				Random r = new Random();
 				if(r.nextInt(100)>=(100-ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE))){
-                    if(!makeHeadStakeForPlayer(pde.getEntity())){
+                    if(!ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE) || !makeHeadStakeForPlayer(pde.getEntity())){
 					    pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
                     }
 				}
@@ -56,6 +56,9 @@ public class PlayerHeadsFeature extends UHCFeature{
 	}	
 	
 	public boolean makeHeadStakeForPlayer(Player p){
+        if(!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)){
+            return false;
+        }
         Location head = p.getEyeLocation();
         Block head_block = head.getBlock();
         Block ground = getClosestGround(head_block.getRelative(BlockFace.DOWN,2));

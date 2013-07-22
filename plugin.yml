@@ -186,6 +186,9 @@ permissions:
     UHC.dropSkull:
         description: player with this permission can have their head drop on death
         default: true
+    UHC.headStake:
+        description: player's head will drop on a stake if possible
+        default: true
     UHC.generateborder:
         description: Allows a player to generate the borders
         default: op

@@ -91,9 +91,12 @@ public class PermissionNodes {
     public static final String DEATH_BAN_BAN = "UHC.deathban.unban";
     public static final String DEATH_BAN_UNBAN = "UHC.deathban.ban";
     public static final String GIVE_DROPS = "UHC.givedrops";
+    public static final String PLAYER_HEAD_STAKE = "UHC.headStake";
 
     public static Permission TP_ALL = new Permission(
             "UHC.tpall",
             "Allows player to teleport players to players/locations",
             PermissionDefault.OP);
+
+    //TODO move from plugin.yml to here
 }
