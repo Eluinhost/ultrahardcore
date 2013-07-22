@@ -49,10 +49,12 @@ public static final String DISABLE_ABSORB = FEATURE_NODE+".recipeChanges.disable
  */
 public static final String NO_ENDERPEARL_DAMAGE = FEATURE_NODE+".noEnderpearlDamage";
 
-public static final String DROP_PLAYER_HEAD = FEATURE_NODE+".headDrop.enabled";
-public static final String PLAYER_HEAD_PVP_ONLY = FEATURE_NODE+".headDrop.pvponly";
-public static final String PLAYER_HEAD_DROP_CHANCE = FEATURE_NODE+".headDrop.percentChance";
-public static final String PLAYER_HEAD_DROP_STAKE = FEATURE_NODE+".headDrop.onStake";
+public static final String PLAYER_HEAD_NODE = FEATURE_NODE+".headDrop";
+public static final String DROP_PLAYER_HEAD = PLAYER_HEAD_NODE+".enabled";
+public static final String PLAYER_HEAD_DROP_CHANCE = PLAYER_HEAD_NODE+".percentChance";
+public static final String PLAYER_HEAD_DROP_STAKE = PLAYER_HEAD_NODE+".onStake";
+public static final String PLAYER_HEAD_PVP_ONLY = PLAYER_HEAD_NODE+".pvp.pvponly";
+public static final String PLAYER_HEAD_PVP_NON_TEAM = PLAYER_HEAD_NODE+".pvp.nonteamonly";
 
 public static final String DEATH_LIGHTNING = FEATURE_NODE+".deathLightning";
 

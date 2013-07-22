@@ -2,6 +2,7 @@ package uk.co.eluinhost.UltraHardcore.features.core;
 
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -14,6 +15,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
@@ -41,9 +44,18 @@ public class PlayerHeadsFeature extends UHCFeature{
 		if(isEnabled()){
 			if(pde.getEntity().hasPermission(PermissionNodes.DROP_SKULL)){
 				if(ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)){
-					if(pde.getEntity().getKiller() == null){
+                    Player killer = pde.getEntity().getKiller();
+					if(killer == null){
 						return;
 					}
+                    if(ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_NON_TEAM)){
+                        Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
+                        Team team1 = sb.getPlayerTeam(pde.getEntity());
+                        Team team2 = sb.getPlayerTeam(killer);
+                        if(team1 != null && team2 != null && team1.getName().equals(team2.getName())){
+                            return;
+                        }
+                    }
 				}
 				Random r = new Random();
 				if(r.nextInt(100)>=(100-ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE))){

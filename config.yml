@@ -16,7 +16,9 @@ features:
   noEnderpearlDamage: true
   headDrop:
     enabled: true
-    pvponly: false
+    pvp:
+      pvponly: false
+      nonteamonly: true
     percentChance: 100
     onStake: true
   deathLightning: false
