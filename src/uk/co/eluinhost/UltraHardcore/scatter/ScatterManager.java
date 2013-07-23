@@ -69,6 +69,6 @@ public class ScatterManager {
 		p.teleport(loc);
 		sp.add(p.getName(),loc);
 	}
-	
+
 	
 }

@@ -14,18 +14,5 @@ public abstract class ScatterType {
 	public abstract String getDescription();
 	public abstract List<Location> getScatterLocations(ScatterParams params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException;
 	protected Random random = new Random();
-	
-	public static void setYHighest(Location loc){
-		if(!loc.getChunk().isLoaded()){
-			loc.getChunk().load(true);
-		}	
-		int y = loc.getWorld().getMaxHeight();
-		for (; y >= 0; y--) {
-			loc.setY(y);
-			if(loc.getWorld().getBlockTypeIdAt(loc) != 0) {
-				return;
-			}
-		}
-		loc.getChunk().unload(false, true);
-    }
+
 }

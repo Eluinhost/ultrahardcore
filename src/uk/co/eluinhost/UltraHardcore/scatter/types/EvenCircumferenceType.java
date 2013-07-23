@@ -11,6 +11,7 @@ import uk.co.eluinhost.UltraHardcore.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.UltraHardcore.exceptions.WorldNotFoundException;
 import uk.co.eluinhost.UltraHardcore.scatter.ScatterParams;
 import uk.co.eluinhost.UltraHardcore.util.MathsHelper;
+import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
 public class EvenCircumferenceType extends ScatterType{
 
@@ -47,7 +48,7 @@ public class EvenCircumferenceType extends ScatterType{
 			 finalTeleport.setX(x+params.getX()+0.5d);
 			 finalTeleport.setZ(z+params.getZ()+0.5d);
    		
-			 setYHighest(finalTeleport);
+			 ServerUtil.setYHighest(finalTeleport);
 
 			 //store it
 			 locations.add(finalTeleport);

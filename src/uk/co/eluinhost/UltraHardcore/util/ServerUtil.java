@@ -52,4 +52,48 @@ public class ServerUtil {
         return BlockFace2DVector.getClosest(yaw);
     }
 
+    /**
+     * Get the highest non air block at a location using it's Y or MAX_HEIGHT
+     * @param loc The location to use
+     * @param max whether to use the Y value in the location or max world height
+     * @return the Y value of the highest non air block
+     */
+    public static int getYHighest(Location loc,boolean max){
+        Location l = loc.clone();
+        if(max){
+            l.setY(l.getWorld().getMaxHeight());
+        }
+        return getYHighest(l);
+    }
+
+    /**
+     * Returns the highest non air block below the Y coordinate given in the location
+     * @param l The location to use
+     * @return int, the Y value of the highest non air block or 0
+     */
+    public static int getYHighest(Location l){
+        Location loc = l.clone();
+        if(!loc.getChunk().isLoaded()){
+            loc.getChunk().load(true);
+        }
+        int y = loc.getBlockY();
+        for (; y >= 0; y--) {
+            loc.setY(y);
+            if(loc.getWorld().getBlockTypeIdAt(loc) != 0) {
+                loc.getChunk().unload(false, true);
+                return y;
+            }
+        }
+        loc.getChunk().unload(false, true);
+        return 0;
+    }
+
+    /**
+     * Sets Y value for the location to the highest non air block
+     * @param loc the location to modify
+     */
+    public static void setYHighest(Location loc){
+        loc.setY(getYHighest(loc,true));
+    }
+
 }

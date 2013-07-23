@@ -12,6 +12,7 @@ import uk.co.eluinhost.UltraHardcore.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.UltraHardcore.exceptions.WorldNotFoundException;
 import uk.co.eluinhost.UltraHardcore.scatter.ScatterManager;
 import uk.co.eluinhost.UltraHardcore.scatter.ScatterParams;
+import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
 public class RandomSquareType extends ScatterType{
 
@@ -57,7 +58,7 @@ public class RandomSquareType extends ScatterType{
 				finalTeleport.setZ(zcoord);
 				
 				//get the highest block in the Y coordinate
-				setYHighest(finalTeleport);
+				ServerUtil.setYHighest(finalTeleport);
 				
 				//If the coordinate is too close to a player get a new coord
 				for(Player p : Bukkit.getOnlinePlayers()){
