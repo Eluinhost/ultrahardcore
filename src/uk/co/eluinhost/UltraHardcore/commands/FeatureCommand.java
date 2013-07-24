@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.UltraHardcore.exceptions.FeatureStateNotChangedException;
@@ -14,7 +15,7 @@ import uk.co.eluinhost.UltraHardcore.features.FeatureManager;
 import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 import uk.co.eluinhost.UltraHardcore.features.UHCFeatureList;
 
-public class FeatureCommand extends UHCCommand{
+public class FeatureCommand extends UHCCommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label,

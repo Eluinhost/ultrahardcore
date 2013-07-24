@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.util.MathsHelper;
 import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
@@ -20,7 +21,7 @@ import uk.co.eluinhost.UltraHardcore.util.TeamsUtil;
 import uk.co.eluinhost.UltraHardcore.util.WordsUtil;
 import uk.co.eluinhost.UltraHardcore.util.TeamsUtil.PrintFlags;
 
-public class TeamCommands extends UHCCommand{
+public class TeamCommands extends UHCCommand {
 
 	private Scoreboard sc = Bukkit.getScoreboardManager().getMainScoreboard();
 	private TeamsUtil tu = new TeamsUtil();

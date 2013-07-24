@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import uk.co.eluinhost.UltraHardcore.borders.BorderCreator;
 import uk.co.eluinhost.UltraHardcore.commands.*;
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
@@ -91,7 +92,7 @@ public class UltraHardcore extends JavaPlugin implements Listener{
 		setExecutor("leaveteam",tc);
 		setExecutor("emptyteams",tc);
 		
-		setExecutor("scatter",new ScatterCommand());
+		setExecutor("scatter",new ScatterCommandConversational());
 		setExecutor("freeze",new FreezeCommand());
 		setExecutor("feature",new FeatureCommand());
 		setExecutor("generateborder",new BorderCreator());

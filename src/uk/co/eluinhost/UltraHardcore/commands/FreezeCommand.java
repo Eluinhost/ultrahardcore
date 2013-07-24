@@ -13,11 +13,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import uk.co.eluinhost.UltraHardcore.UltraHardcore;
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 
-public class FreezeCommand extends UHCCommand{
+public class FreezeCommand extends UHCCommand {
 	
 	private static ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
 	private static boolean active = false;

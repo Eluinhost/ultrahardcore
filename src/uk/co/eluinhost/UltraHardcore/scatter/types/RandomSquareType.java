@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import uk.co.eluinhost.UltraHardcore.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.UltraHardcore.exceptions.WorldNotFoundException;
@@ -40,7 +39,7 @@ public class RandomSquareType extends ScatterType{
 		for(int k = 0;k<amount;k++){
 			Location finalTeleport = new Location(world,0,0,0);
 			boolean valid = false;
-	    	mainloop: for(int i = 0;i<ScatterManager.MAX_TRIES;i++){
+	    	for(int i = 0;i<ScatterManager.MAX_TRIES;i++){
 	    		//get a coords
 		    	double xcoord = random.nextDouble()*params.getRadius()*2;
 		    	double zcoord = random.nextDouble()*params.getRadius()*2;
@@ -59,20 +58,10 @@ public class RandomSquareType extends ScatterType{
 				
 				//get the highest block in the Y coordinate
 				ServerUtil.setYHighest(finalTeleport);
-				
-				//If the coordinate is too close to a player get a new coord
-				for(Player p : Bukkit.getOnlinePlayers()){
-					try{
-						if(p.getLocation().distanceSquared(finalTeleport)<params.getMinDistanceSquared()){
-							continue mainloop;
-						}
-					}catch(IllegalArgumentException ignored){}
-				}
-				for(Location loc : locations){
-					if(loc.distanceSquared(finalTeleport)<params.getMinDistanceSquared()){
-						continue mainloop;
-					}
-				}
+
+                if(isLocationToClose(finalTeleport,locations,params.getMinDistance())){
+                    continue;
+                }
 				
 				//if the block isnt allowed get a new coord
 				if(!params.blockIDAllowed(finalTeleport.getWorld().getBlockTypeIdAt(finalTeleport))){

@@ -14,6 +14,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import uk.co.eluinhost.UltraHardcore.UltraHardcore;
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
@@ -25,7 +26,8 @@ import uk.co.eluinhost.UltraHardcore.scatter.ScatterParams;
 import uk.co.eluinhost.UltraHardcore.scatter.types.ScatterType;
 import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
-public class ScatterCommand extends UHCCommand{
+@SuppressWarnings("unused")
+public class ScatterCommand extends UHCCommand {
 
 	private LinkedList<PlayerTeleportMapping> remaining = new LinkedList<PlayerTeleportMapping>();
 	private CommandSender commandIssuer = null;

@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.UltraHardcore.features.FeatureManager;
@@ -18,7 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class GiveDropCommand extends UHCCommand{
+public class GiveDropCommand extends UHCCommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,

@@ -11,10 +11,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
-public class TPCommand extends UHCCommand{
+public class TPCommand extends UHCCommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,

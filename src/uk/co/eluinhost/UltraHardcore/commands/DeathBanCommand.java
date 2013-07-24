@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.UltraHardcore.features.FeatureManager;
@@ -14,7 +15,7 @@ import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeathBanCommand extends UHCCommand{
+public class DeathBanCommand extends UHCCommand {
 
     private final String SYNTAX = ChatColor.RED+"Syntax: /deathban ban <playername> <time> OR /deathban unban <playername>";
     private final String BAN_SYNTAX = ChatColor.RED+"Syntax: /deathban ban <playername> [time]";

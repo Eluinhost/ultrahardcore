@@ -4,35 +4,36 @@ import java.util.List;
 
 public final class ScatterParams {
 
-	private int radius;
-	private int x;
-	private int z;
+	private double radius;
+	private double x;
+	private double z;
 	private String world;
 	private List<Integer> allowedBlocks = null;
-	private int minDistance = 0;
+	private double minDistance = 0;
 	
-	public ScatterParams(String world, int x,int z,int radius){
+	public ScatterParams(String world, double x,double z,double radius){
 		setWorld(world);
 		setRadius(radius);
 		setX(x);
 		setZ(z);
 	}
-	public int getRadius() {
+
+    public double getRadius() {
 		return radius;
 	}
-	public void setRadius(int radius) {
+	public void setRadius(double radius) {
 		this.radius = radius;
 	}
-	public int getX() {
+	public double getX() {
 		return x;
 	}
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
-	public int getZ() {
+	public double getZ() {
 		return z;
 	}
-	public void setZ(int z) {
+	public void setZ(double z) {
 		this.z = z;
 	}
 	public List<Integer> getAllowedBlocks() {
@@ -44,10 +45,10 @@ public final class ScatterParams {
 	public boolean blockIDAllowed(Integer i){
         return allowedBlocks == null || getAllowedBlocks().contains(i);
     }
-	public int getMinDistance() {
+	public double getMinDistance() {
 		return minDistance;
 	}
-	public void setMinDistance(int minDistance) {
+	public void setMinDistance(double minDistance) {
 		this.minDistance = minDistance;
 	}
 	public String getWorld() {
@@ -55,8 +56,5 @@ public final class ScatterParams {
 	}
 	public void setWorld(String world) {
 		this.world = world;
-	}
-	public int getMinDistanceSquared(){
-		return getMinDistance()*getMinDistance();
 	}
 }
