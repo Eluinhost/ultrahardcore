@@ -95,7 +95,7 @@ scatter:
     minradius: 50
     players: "*"
     type: RandomCircle
-    useteams: true
+    useteams: yes
 border:
   id: 7
   meta: 0

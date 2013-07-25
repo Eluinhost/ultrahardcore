@@ -7,7 +7,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.conversations.Conversable;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.UltraHardcore.UltraHardcore;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
@@ -31,7 +31,7 @@ public class ScatterManager {
     private static LinkedList<PlayerTeleportMapping> remainingTeleports = new LinkedList<PlayerTeleportMapping>();
 
     private static int jobID = -1;
-    private static Conversable commandIssuer = null;
+    private static CommandSender commandIssuer = null;
 
     static{
 		Bukkit.getServer().getPluginManager().registerEvents(sp, UltraHardcore.getInstance());
@@ -84,15 +84,15 @@ public class ScatterManager {
 		sp.add(p.getName(),loc);
 	}
 
-	public static void addTeleportMappings(ArrayList<PlayerTeleportMapping> ptm,Conversable sender){
+	public static void addTeleportMappings(ArrayList<PlayerTeleportMapping> ptm,CommandSender sender){
         if(jobID == -1){
             remainingTeleports.addAll(ptm);
             jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), new ScatterRunable(), 0, SCATTER_DELAY);
             if(jobID != -1){
                 commandIssuer = sender;
-                sender.sendRawMessage("Starting to scatter all players, teleports are "+ScatterManager.SCATTER_DELAY+" ticks apart");
+                sender.sendMessage("Starting to scatter all players, teleports are " + ScatterManager.SCATTER_DELAY + " ticks apart");
             }else{
-                sender.sendRawMessage(ChatColor.RED + "Error scheduling scatter");
+                sender.sendMessage(ChatColor.RED + "Error scheduling scatter");
                 remainingTeleports.clear();
             }
         }
@@ -122,7 +122,7 @@ public class ScatterManager {
             PlayerTeleportMapping ptm = remainingTeleports.pollFirst();
             if(ptm == null){
                 try{
-                    commandIssuer.sendRawMessage(ChatColor.GOLD + "All players now scattered!");
+                    commandIssuer.sendMessage(ChatColor.GOLD + "All players now scattered!");
                 }catch(Exception ignored){}
                 commandIssuer = null;
                 Bukkit.getScheduler().cancelTask(jobID);
@@ -133,7 +133,7 @@ public class ScatterManager {
                 ptm.incrementAmountTried();
                 if(ptm.getAmountTried()>MAX_ATTEMPTS){
                     if(commandIssuer != null){
-                        commandIssuer.sendRawMessage(ChatColor.RED + "Failed to scatter " + ptm.getPlayerName() + " after " + MAX_ATTEMPTS + ", giving up");
+                        commandIssuer.sendMessage(ChatColor.RED + "Failed to scatter " + ptm.getPlayerName() + " after " + MAX_ATTEMPTS + ", giving up");
                     }
                 }else{
                     remainingTeleports.add(ptm);
