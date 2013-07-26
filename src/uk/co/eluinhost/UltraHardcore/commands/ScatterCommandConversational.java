@@ -14,7 +14,9 @@ import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
+import uk.co.eluinhost.UltraHardcore.scatter.ScatterManager;
 import uk.co.eluinhost.UltraHardcore.scatter.types.ScatterType;
+import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 import uk.co.eluinhost.UltraHardcore.util.SimplePair;
 
 import java.util.*;
@@ -191,8 +193,32 @@ public class ScatterCommandConversational extends UHCCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        return null;
+    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
+        ArrayList<String> r = new ArrayList<String>();
+        if(args.length == 1){
+            r.add("types");
+            r.add("default");
+            r.addAll(ScatterManager.getScatterTypeNames());
+            return r;
+        }
+        if(args.length == 2){
+            if(args[0].equalsIgnoreCase("types")){
+                return r;
+            }
+            r.add("yes");
+            r.add("no");
+            return r;
+        }
+        if(args.length == 3){
+            r.add("radius:mindist");
+            return r;
+        }
+        if(args.length == 4){
+            return ServerUtil.getWorldNamesWithSpawn();
+        }
+        List<String> p = ServerUtil.getOnlinePlayers();
+        p.add("*");
+        return p;
     }
 
 }
