@@ -37,6 +37,9 @@ public static final String PLAYER_LIST_HEALTH = FEATURE_NODE+".playerListHealth.
 public static final String PLAYER_LIST_DELAY = FEATURE_NODE+".playerListHealth.delay";
 public static final String PLAYER_LIST_COLOURS = FEATURE_NODE+".playerListHealth.colours";
 public static final String PLAYER_LIST_UNDER_NAME = FEATURE_NODE+".playerListHealth.belowName";
+public static final String PLAYER_LIST_SCALING = FEATURE_NODE+".playerListHealth.scaling";
+public static final String PLAYER_LIST_ROUND_HEALTH = FEATURE_NODE+".playerListHealth.roundHealth";
+
 /**
  * Whether or not the recipe changes are enabled by default
  */
@@ -110,5 +113,6 @@ public static final String DEATH_BANS_NODE = FEATURE_NODE+".deathbans";
 public static final String DEATH_BANS_CLASSES = DEATH_BANS_NODE+".bans";
 public static final String DEATH_BANS_DELAY = DEATH_BANS_NODE+".delay";
 public static final String DEATH_BANS_ENABLED = DEATH_BANS_NODE+".enabled";
+
 
 }

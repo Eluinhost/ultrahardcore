@@ -9,6 +9,8 @@ features:
     enabled: true
     delay: 10
     belowName: true
+    scaling: 5
+    roundHealth: false
   recipeChanges:
     enabled: true
     disableSplash: true

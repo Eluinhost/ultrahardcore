@@ -36,6 +36,9 @@ public class PlayerListFeature extends UHCFeature {
 	
 	//the list of players and their health that we are handling
 	private static HashMap<String,Double> players = new HashMap<String,Double>();
+
+    private static int health_scaling = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_LIST_SCALING);
+    private static boolean round_health = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_ROUND_HEALTH);
 	
 	private static Scoreboard board = null;
 	static{
@@ -64,8 +67,11 @@ public class PlayerListFeature extends UHCFeature {
             new_name = new_name.substring(0,Math.min(new_name.length(),16));
         }
 		player.setPlayerListName(new_name);
-		obj_player_list.getScore(Bukkit.getOfflinePlayer(new_name)).setScore((int) (d*5));
-		obj_player_name.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(player.getDisplayName()))).setScore((int) (d*5));
+        if(round_health){
+            d = Math.ceil(d);
+        }
+		obj_player_list.getScore(Bukkit.getOfflinePlayer(new_name)).setScore((int) (d*health_scaling));
+		obj_player_name.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(player.getDisplayName()))).setScore((int) (d*health_scaling));
 	}
 	
 	public static void updatePlayers(Player[] onlinePlayers) {
@@ -120,7 +126,7 @@ public class PlayerListFeature extends UHCFeature {
 	    
 	    obj_player_list = board.getObjective("UHCHealth");
 	    obj_player_name = board.getObjective("UHCHealthName");
-	    obj_player_name.setDisplayName("% HP");
+	    obj_player_name.setDisplayName(" HP");
 	    obj_player_list.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 	    if(ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_UNDER_NAME)){
 	    	obj_player_name.setDisplaySlot(DisplaySlot.BELOW_NAME);
