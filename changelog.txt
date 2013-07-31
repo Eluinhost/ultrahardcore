@@ -38,3 +38,6 @@
 - Golden head now gives regeneration II to make up for the potion nerf
 - Changed /scatter command to be interactive, now less complicated
 - Heads now attempt to be placed in the world on a stake
+- Added flag to make pvponly head drops not drop if killed by someone on the same team
+- /scatter command now has an interactive mode as well as the normal command
+- Added config nodes for changing the health scaling and rounding
