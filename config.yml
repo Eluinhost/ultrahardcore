@@ -11,6 +11,7 @@ features:
     belowName: true
     scaling: 5
     roundHealth: false
+    belowNameUnit: "&4&h"
   recipeChanges:
     enabled: true
     disableSplash: true

@@ -39,6 +39,7 @@ public static final String PLAYER_LIST_COLOURS = FEATURE_NODE+".playerListHealth
 public static final String PLAYER_LIST_UNDER_NAME = FEATURE_NODE+".playerListHealth.belowName";
 public static final String PLAYER_LIST_SCALING = FEATURE_NODE+".playerListHealth.scaling";
 public static final String PLAYER_LIST_ROUND_HEALTH = FEATURE_NODE+".playerListHealth.roundHealth";
+public static final String PLAYER_LIST_HEALTH_NAME = FEATURE_NODE+".playerListHealth.belowNameUnit";
 
 /**
  * Whether or not the recipe changes are enabled by default

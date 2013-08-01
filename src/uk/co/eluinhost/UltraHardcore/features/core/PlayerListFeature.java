@@ -126,7 +126,7 @@ public class PlayerListFeature extends UHCFeature {
 	    
 	    obj_player_list = board.getObjective("UHCHealth");
 	    obj_player_name = board.getObjective("UHCHealthName");
-	    obj_player_name.setDisplayName(ChatColor.RED+"\u2665");
+	    obj_player_name.setDisplayName(ChatColor.translateAlternateColorCodes('&',ConfigHandler.getConfig(ConfigHandler.MAIN).getString(ConfigNodes.PLAYER_LIST_HEALTH_NAME)).replaceAll("&h","\u2665"));
 	    obj_player_list.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 	    if(ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_UNDER_NAME)){
 	    	obj_player_name.setDisplaySlot(DisplaySlot.BELOW_NAME);
