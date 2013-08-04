@@ -68,15 +68,16 @@ public class PlayerHeadsFeature extends UHCFeature{
 	}	
 	
 	public boolean makeHeadStakeForPlayer(Player p){
-        if(!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)){
-            return false;
-        }
         Location head = p.getEyeLocation();
         Block head_block = head.getBlock();
         Block ground = getClosestGround(head_block.getRelative(BlockFace.DOWN,2));
         if(ground != null){
             Block skull_block = ground.getRelative(BlockFace.UP,2);
             if(skull_block == null || !skull_block.isEmpty()){
+                return false;
+            }
+            p.teleport(skull_block.getLocation());
+            if(!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)){
                 return false;
             }
             setBlockAsHead(p,skull_block);
