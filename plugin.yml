@@ -249,6 +249,9 @@ permissions:
     UHC.recipes.disableSplash:
         description: Stops a player from brewing splash potions
         default: true
+    UHC.recipes.disableImproved:
+        description: Stops a player brewing using glowstone
+        default: true
     UHC.deathban.immune:
         description: Immune to death bans
         default: op

@@ -28,26 +28,40 @@ public class PotionNerfs extends UHCFeature {
 
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent ice){
-        if(isEnabled() && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)){
+        if(isEnabled()){
             if(ice.getInventory().getType().equals(InventoryType.BREWING)){
-                if(!ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)){
-                    return;
-                }
+                boolean cancelSulphur = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH);
+                boolean cancelGlowstone = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED);
+
                 InventoryView iv = ice.getView();
                 boolean cancel = false;
                 if(ice.isShiftClick()){
-                    if(ice.getCurrentItem().getType().equals(Material.SULPHUR)){
-                        cancel = true;
+                    if(cancelSulphur && ice.getCurrentItem().getType().equals(Material.SULPHUR)){
+                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)){
+                            cancel = true;
+                        }
+                    }
+                    if(cancelGlowstone && ice.getCurrentItem().getType().equals(Material.GLOWSTONE_DUST)){
+                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)){
+                            cancel = true;
+                        }
                     }
                 }else if(ice.getSlotType().equals(InventoryType.SlotType.FUEL)){
-                    if(iv.getCursor().getType().equals(Material.SULPHUR)){
-                        cancel = true;
+                    if(cancelSulphur && iv.getCursor().getType().equals(Material.SULPHUR)){
+                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)){
+                            cancel = true;
+                        }
+                    }
+                    if(cancelGlowstone && iv.getCursor().getType().equals(Material.GLOWSTONE_DUST)){
+                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)){
+                            cancel = true;
+                        }
                     }
                 }
                 if(cancel){
                     ice.setCancelled(true);
                     ice.getWhoClicked().closeInventory();
-                    ((Player)ice.getWhoClicked()).sendMessage(ChatColor.RED+"You don't have permission to brew splash potions!");
+                    ((Player)ice.getWhoClicked()).sendMessage(ChatColor.RED+"You don't have permission to use that ingredient!");
                 }
             }
         }
@@ -74,9 +88,12 @@ public class PotionNerfs extends UHCFeature {
 
     @EventHandler
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent imie){
-        if(isEnabled() && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)){
+        if(isEnabled()){
             if(imie.getDestination().getType().equals(InventoryType.BREWING)){
-                if(imie.getItem().getType().equals(Material.SULPHUR)){
+                if(imie.getItem().getType().equals(Material.SULPHUR) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)){
+                    imie.setCancelled(true);
+                }
+                if(imie.getItem().getType().equals(Material.GLOWSTONE_DUST) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED)){
                     imie.setCancelled(true);
                 }
             }
