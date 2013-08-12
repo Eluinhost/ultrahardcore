@@ -14,8 +14,6 @@ features:
     belowNameUnit: "&4&h"
   recipeChanges:
     enabled: true
-    disableSplash: true
-    disableAbsorb: true
   noEnderpearlDamage: true
   headDrop:
     enabled: true
@@ -59,6 +57,9 @@ features:
     renderdistance: 60
     mindistance: 2
     time: 120
+  potionNerfs:
+    disableSplash: true
+    disableAbsorb: true
   deathbans:
     enabled: false
     delay: 10
