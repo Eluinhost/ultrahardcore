@@ -60,6 +60,7 @@ features:
   potionNerfs:
     disableSplash: true
     disableAbsorb: true
+    disableGlowstone: true
   deathbans:
     enabled: false
     delay: 10
