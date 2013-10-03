@@ -2,6 +2,7 @@ package uk.co.eluinhost.UltraHardcore.features.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -10,19 +11,21 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import uk.co.eluinhost.UltraHardcore.UltraHardcore;
+import uk.co.eluinhost.UltraHardcore.bans.DeathBan;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
+import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DeathBansFeature extends UHCFeature {
 
-    private ArrayList<DeathBanGroup> groups = new ArrayList<DeathBanGroup>();
     private List<DeathBan> bans = new ArrayList<DeathBan>();
     private static Pattern pat = Pattern.compile(
             "(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?(?:([0-9]+)\\s*(?:s[a-z]*)?)?",
@@ -33,16 +36,6 @@ public class DeathBansFeature extends UHCFeature {
 		setFeatureID("DeathBans");
 		setDescription("Bans a player on death for a specified amount of time");
 
-        ConfigurationSection deathban = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
-        Set<String> perms = deathban.getKeys(false);
-        for(String groupName : perms){
-            String length = deathban.getString(groupName + ".duration");
-            String message = deathban.getString(groupName+".message");
-            long duration = parseBanTime(length);
-            DeathBanGroup group = new DeathBanGroup(groupName,message,duration);
-            groups.add(group);
-        }
-
         FileConfiguration banConfig = ConfigHandler.getConfig(ConfigHandler.BANS);
 
         @SuppressWarnings("unchecked")
@@ -50,12 +43,7 @@ public class DeathBansFeature extends UHCFeature {
         for(DeathBan d : f_bans){
             for(Player p : Bukkit.getOnlinePlayers()){
                 if(p.getName().equalsIgnoreCase(d.getPlayerName())){
-                    DeathBanGroup dbg = getGroup(d.getGroupName());
-                    if(dbg != null){
-                         p.kickPlayer(dbg.getMessage().replaceAll("%timeleft",formatTimeLeft(d.getUnbanTime())));
-                    }else{
-                        p.kickPlayer(DeathBanGroup.DEFAULT_MESSAGE.replaceAll("%timeleft",formatTimeLeft(d.getUnbanTime())));
-                    }
+                    p.kickPlayer(d.getGroupName().replaceAll("%timeleft",formatTimeLeft(d.getUnbanTime())));
                 }
             }
         }
@@ -111,32 +99,14 @@ public class DeathBansFeature extends UHCFeature {
         return sb.toString();
     }
 
-    private DeathBanGroup getGroup(String name){
-        for(DeathBanGroup d : groups){
-            if(d.getGroupName().equalsIgnoreCase(name)){
-                return d;
-            }
-        }
-        return null;
-    }
-
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent pde){
          if(isEnabled()){
              if(pde.getEntity().hasPermission(PermissionNodes.DEATH_BAN_IMMUNE)){
                  return;
              }
-             for(DeathBanGroup dbg : groups){
-                 if(pde.getEntity().hasPermission(dbg.getPermission())){
-                     banPlayer(pde.getEntity(),dbg);
-                     return;
-                 }
-             }
+             processBansForPlayer(pde.getEntity());
          }
-    }
-
-    public List<DeathBanGroup> getGroups(){
-        return groups;
     }
 
     public int removeBan(String playerName){
@@ -153,31 +123,6 @@ public class DeathBansFeature extends UHCFeature {
         return amount;
     }
 
-    public boolean banPlayer(OfflinePlayer p,DeathBanGroup d){
-        if(d.getDuration() > 0){
-            DeathBan db = new DeathBan(p.getName(),d);
-            bans.add(db);
-            final String to_be_banned = p.getName();
-            final String ban_message = d.getMessage();
-            final long unban_time = db.getUnbanTime();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        OfflinePlayer op = Bukkit.getOfflinePlayer(to_be_banned);
-                        Player p = op.getPlayer();
-                        if (p != null) {
-                            p.kickPlayer(ban_message.replaceAll("%timeleft",formatTimeLeft(unban_time)));
-                        }
-                    }
-                }
-                , ConfigHandler.getConfig(ConfigHandler.MAIN).getLong(ConfigNodes.DEATH_BANS_DELAY));
-            saveBans();
-            return true;
-        }
-        return false;
-    }
-
     private void saveBans(){
         ConfigHandler.getConfig(ConfigHandler.BANS).set("bans",bans);
         ConfigHandler.saveConfig(ConfigHandler.BANS);
@@ -192,14 +137,7 @@ public class DeathBansFeature extends UHCFeature {
                         removeBan(ple.getPlayer().getName());
                         return;
                     }
-                    String message = DeathBanGroup.DEFAULT_MESSAGE;
-                    for(DeathBanGroup db : groups){
-                        if(db.getGroupName().equals(d.getGroupName())){
-                            message = db.getMessage();
-                            break;
-                        }
-                    }
-                    ple.disallow(PlayerLoginEvent.Result.KICK_BANNED,message.replaceAll("%timeleft",formatTimeLeft(d.getUnbanTime())));
+                    ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, d.getGroupName().replaceAll("%timeleft", formatTimeLeft(d.getUnbanTime())));
                 }
             }
         }
@@ -248,6 +186,68 @@ public class DeathBansFeature extends UHCFeature {
             }
         }
         return duration;
+    }
+
+    public void banPlayer(OfflinePlayer p, final String message, long duration){
+        final long unban_time = System.currentTimeMillis()+duration;
+        DeathBan db = new DeathBan(p.getName(),unban_time, message);
+        bans.add(db);
+        final String player_name = p.getName();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        OfflinePlayer op = Bukkit.getOfflinePlayer(player_name);
+                        Player p = op.getPlayer();
+                        if (p != null) {
+                            p.kickPlayer(message.replaceAll("%timeleft",formatTimeLeft(unban_time)));
+                        }
+                    }
+                }
+                , ConfigHandler.getConfig(ConfigHandler.MAIN).getLong(ConfigNodes.DEATH_BANS_DELAY));
+        saveBans();
+        UltraHardcore.getInstance().getLogger().info("Added "+p.getName()+" to temp ban list");
+    }
+
+    public void processBansForPlayer(final Player p){
+        ConfigurationSection ban_types = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
+        Set<String> permission_names = ban_types.getKeys(false);
+        Logger logger = UltraHardcore.getInstance().getLogger();
+        for(String permission : permission_names){
+            if(!p.hasPermission("UHC.deathban.group."+permission)){
+                continue;
+            }
+            List<String> actions = ban_types.getStringList(permission + ".actions");
+            ConfigurationSection type = ban_types.getConfigurationSection(permission);
+            for(String action : actions){
+                if(action.equalsIgnoreCase("serverkick")){
+                    String kick_message = type.getString("serverkick_message","NO SERVER KICK MESSAGE SET IN CONFIG FILE");
+                    p.kickPlayer(kick_message);
+                    logger.info("Kicked "+p.getName()+" from the server");
+                }else if(action.equalsIgnoreCase("serverban")) {
+                    String length = type.getString("serverban_duration","1s");
+                    String message = type.getString("serverban_message","NO BAN MESSAGE SET IN CONFIG FILE");
+                    long duration = parseBanTime(length);
+                    banPlayer(p,message,duration);
+                }else if(action.equalsIgnoreCase("worldkick")){
+                    String world = type.getString("worldkick_world","NO WORLD IN CONFIG");
+                    World w = Bukkit.getWorld(world);
+                    if(w == null){
+                        logger.severe("World "+world+" is not a valid world to kick a player to");
+                    }else{
+                        p.setBedSpawnLocation(w.getSpawnLocation());
+                        logger.info(p.getName()+" will respawn at the spawn of the world "+world);
+                    }
+                }else if(action.equalsIgnoreCase("bungeekick")){
+                    String server =type.getString("bungeekick_server","NO SERVER SET");
+                    ServerUtil.sendPlayerToServer(p,server);
+                    logger.info("Sent "+p.getName()+" to the server "+server);
+                }else{
+                    logger.severe("Error in deathbans config, action '"+action+"' unknown");
+                }
+            }
+            return;
+        }
     }
 
 	@Override

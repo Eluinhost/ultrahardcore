@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import uk.co.eluinhost.UltraHardcore.bans.DeathBan;
 import uk.co.eluinhost.UltraHardcore.borders.BorderCreator;
 import uk.co.eluinhost.UltraHardcore.commands.*;
 import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;

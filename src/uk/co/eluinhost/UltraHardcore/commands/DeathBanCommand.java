@@ -8,7 +8,6 @@ import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.UltraHardcore.features.FeatureManager;
-import uk.co.eluinhost.UltraHardcore.features.core.DeathBanGroup;
 import uk.co.eluinhost.UltraHardcore.features.core.DeathBansFeature;
 import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
@@ -48,11 +47,8 @@ public class DeathBanCommand extends UHCCommand {
                 String playername = args[1];
                 String time = args[2];
                 long duration = DeathBansFeature.parseBanTime(time);
-                if(dbf.banPlayer(Bukkit.getOfflinePlayer(playername),new DeathBanGroup("default",DeathBanGroup.DEFAULT_MESSAGE,duration))){
-                    sender.sendMessage(ChatColor.GOLD+"Banned player "+playername+" for "+DeathBansFeature.formatTimeLeft(System.currentTimeMillis()+duration));
-                }else{
-                    sender.sendMessage(ChatColor.RED+"Invalid ban time "+time);
-                }
+                dbf.banPlayer(Bukkit.getOfflinePlayer(playername),"You are under a death ban, you will be unbanned in %timeleft",duration);
+                sender.sendMessage(ChatColor.GOLD+"Banned player "+playername+" for "+DeathBansFeature.formatTimeLeft(System.currentTimeMillis()+duration));
                 return true;
             }else if(args[0].equalsIgnoreCase("unban")){
                 if(!sender.hasPermission(PermissionNodes.DEATH_BAN_UNBAN)){

@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.features.core;
+package uk.co.eluinhost.UltraHardcore.bans;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
@@ -10,12 +10,13 @@ public class DeathBan implements ConfigurationSerializable {
     private long unbanTime;
     private String groupName;
 
-    public DeathBan(String playerName, DeathBanGroup d) {
+    public DeathBan(String playerName, long unbanTime, String message) {
         this.playerName = playerName;
-        this.unbanTime = System.currentTimeMillis()+d.getDuration();
-        this.groupName = d.getGroupName();
+        this.unbanTime = unbanTime;
+        this.groupName = message;
     }
 
+    @SuppressWarnings("unused")
     public DeathBan(Map<String,Object> ser){
         playerName = (String) ser.get("playerName");
         unbanTime = (Long) ser.get("unbanTime");

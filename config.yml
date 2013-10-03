@@ -62,15 +62,29 @@ features:
     disableAbsorb: true
     disableGlowstone: true
   deathbans:
-    enabled: false
+    enabled: true
     delay: 10
     bans:
-      example1:
-        duration: "2h"
-        message: "You are under a death ban, you will be unbanned in %timeleft"
-      opban:
-        duration: "0s"
-        message: "doesn't matter since 0, will never be applied"
+      just_server_ban:
+        actions:
+        - "serverban"
+        serverban_duration: "2h"
+        serverban_message: "You are under a death ban, you will be unbanned in %timeleft"
+      bungee_kick_and_server_ban:
+        actions:
+        - "bungeekick"
+        - "serverban"
+        serverban_duration: "1h"
+        serverban_message: "You are under a death ban, you will be unbanned in %timeleft"
+        bungeekick_server: "lobby"
+      kick_to_a_world:
+        actions:
+        - "worldkick"
+        worldkick_world: "world"
+      kick_from_the_server:
+        actions:
+        - "serverkick"
+        serverkick_message: "You were kicked for dying!"
 freeze:
   delay: 40
   time: 160
