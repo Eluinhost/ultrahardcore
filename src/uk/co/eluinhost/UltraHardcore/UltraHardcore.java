@@ -43,14 +43,14 @@ public class UltraHardcore extends JavaPlugin implements Listener{
 	
 	//When the plugin gets started
 	public void onEnable(){
-		
+        ConfigurationSerialization.registerClass(DeathBan.class);
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		uhc_instance = this;
 
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
         saveConfig();
 
-        ConfigurationSerialization.registerClass(DeathBan.class);
 
         loadDefaultModules();
         setupCommands();
