@@ -115,9 +115,9 @@ public static final String DEATH_BANS_DELAY = DEATH_BANS_NODE+".delay";
 public static final String DEATH_BANS_ENABLED = DEATH_BANS_NODE+".enabled";
 
 
-public static final String POTION_NERFS = FEATURE_NODE+"potionNerfs";
+public static final String POTION_NERFS = FEATURE_NODE+".potionNerfs";
 public static final String POTION_NERFS_ENABLED = POTION_NERFS+".enabled";
 public static final String RECIPE_CHANGES_SPLASH = POTION_NERFS+".disableSplash";
 public static final String DISABLE_ABSORB = POTION_NERFS+".disableAbsorb";
-    public static final String RECIPE_CHANGES_IMPROVED = POTION_NERFS+".disableGlowstone";
+public static final String RECIPE_CHANGES_IMPROVED = POTION_NERFS+".disableGlowstone";
 }

@@ -1,5 +1,8 @@
 package uk.co.eluinhost.UltraHardcore.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import uk.co.eluinhost.UltraHardcore.UltraHardcore;
 
 public class ServerUtil {
 
@@ -18,7 +22,21 @@ public class ServerUtil {
 			}
 		}
 	}
-	
+
+    public static void sendPlayerToServer(Player p,String serverName){
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+
+        try {
+            out.writeUTF("Connect");
+            out.writeUTF(serverName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        p.sendPluginMessage(UltraHardcore.getInstance(), "BungeeCord", b.toByteArray());
+    }
+
 	public static List<String> getOnlinePlayers(){
 		ArrayList<String> p = new ArrayList<String>();
 		for(Player pl : Bukkit.getOnlinePlayers()){

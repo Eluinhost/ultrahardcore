@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import uk.co.eluinhost.UltraHardcore.bans.DeathBan;
 import uk.co.eluinhost.UltraHardcore.borders.BorderCreator;
 import uk.co.eluinhost.UltraHardcore.commands.*;
 import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
@@ -42,14 +43,14 @@ public class UltraHardcore extends JavaPlugin implements Listener{
 	
 	//When the plugin gets started
 	public void onEnable(){
-		
+        ConfigurationSerialization.registerClass(DeathBan.class);
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		uhc_instance = this;
 
         FileConfiguration config = getConfig();
         config.options().copyDefaults(true);
         saveConfig();
 
-        ConfigurationSerialization.registerClass(DeathBan.class);
 
         loadDefaultModules();
         setupCommands();
