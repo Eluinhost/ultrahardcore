@@ -1,0 +1,7 @@
+WAITING ON BUKKIT
+-----------------
+Needs Attribute API - Item attributes to change potions after brewing e.t.c.
+
+SUGGESTIONS
+-----------
+Very Low - Make note pitch on arrow hit scale on distance
