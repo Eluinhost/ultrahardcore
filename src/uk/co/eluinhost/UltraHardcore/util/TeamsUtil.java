@@ -16,7 +16,7 @@ import org.bukkit.scoreboard.Team;
 
 public class TeamsUtil {
 
-	private Pattern pat = Pattern.compile("UHC[\\d]++");
+	private final Pattern pat = Pattern.compile("UHC[\\d]++");
 	private Scoreboard sc = Bukkit.getScoreboardManager().getMainScoreboard();
 	
 	/**

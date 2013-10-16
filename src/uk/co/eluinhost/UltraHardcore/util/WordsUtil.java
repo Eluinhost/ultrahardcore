@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WordsUtil extends JavaPlugin{
 	
-	private static String[] adjectives = new String[]{"Fast",
+	private final static String[] adjectives = new String[]{"Fast",
 		"Quick",
 		"Speedy",
 		"Swift",
@@ -200,7 +200,7 @@ public class WordsUtil extends JavaPlugin{
 		"Intense",
 		"Severe"};
 	
-private static String[] nouns = new String[]{
+private final static String[] nouns = new String[]{
 	"Alumni",
 	"Analysers",
 	"Aquarist",

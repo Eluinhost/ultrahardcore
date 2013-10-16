@@ -13,8 +13,8 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 public class HardcoreHearts extends UHCFeature{
 
-	ProtocolManager pm = ProtocolLibrary.getProtocolManager();
-	PacketAdapter pa = null;
+	private ProtocolManager pm = ProtocolLibrary.getProtocolManager();
+	private PacketAdapter pa = null;
 	
 	public HardcoreHearts(boolean enabled) {
 		super(enabled);

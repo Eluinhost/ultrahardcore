@@ -25,8 +25,8 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
  */
 public class DeathDrops extends UHCFeature{
 	
-	ArrayList<ItemDrop> drops = new ArrayList<ItemDrop>();
-	Random r = new Random();
+	private ArrayList<ItemDrop> drops = new ArrayList<ItemDrop>();
+	private Random r = new Random();
 	
 	public class ItemDrop{
 		private int minAmount = 0;

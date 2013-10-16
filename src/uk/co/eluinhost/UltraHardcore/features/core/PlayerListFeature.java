@@ -37,8 +37,8 @@ public class PlayerListFeature extends UHCFeature {
 	//the list of players and their health that we are handling
 	private static HashMap<String,Double> players = new HashMap<String,Double>();
 
-    private static int health_scaling = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_LIST_SCALING);
-    private static boolean round_health = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_ROUND_HEALTH);
+    private final static int health_scaling = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_LIST_SCALING);
+    private final static boolean round_health = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_ROUND_HEALTH);
 	
 	private static Scoreboard board = null;
 	static{

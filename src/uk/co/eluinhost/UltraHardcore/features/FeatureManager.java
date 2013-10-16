@@ -16,7 +16,7 @@ public class FeatureManager {
 
 	private static UHCFeatureList features = new UHCFeatureList();
 	
-	private static Pattern name_pattern = Pattern.compile("^[\\w]++$");
+	private final static Pattern name_pattern = Pattern.compile("^[\\w]++$");
 	
 	public static void addFeature(UHCFeature feature) throws FeatureIDConflictException, InvalidFeatureIDException{
 		Matcher mat = name_pattern.matcher(feature.getFeatureID());

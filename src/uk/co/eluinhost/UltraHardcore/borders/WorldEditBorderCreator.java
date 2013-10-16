@@ -70,7 +70,7 @@ public abstract class WorldEditBorderCreator {
 		return null;
 	}
 	
-	public static boolean undoForWorld(String world) throws WorldNotFoundException{
+	public static boolean undoForWorld(String world){
 		LinkedList<EditSession> es = sessions.get(world);
 		if(es == null || es.size() == 0){
 			return false;

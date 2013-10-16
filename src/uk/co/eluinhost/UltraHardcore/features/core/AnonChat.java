@@ -16,7 +16,7 @@ public class AnonChat extends UHCFeature {
 		setDescription("Allows players to chat without revealing their name");
 	}
 	
-	private String prefix = ChatColor.RESET+"<"+ChatColor.MAGIC+"SECRET"+ChatColor.RESET+">";
+	private final String prefix = ChatColor.RESET+"<"+ChatColor.MAGIC+"SECRET"+ChatColor.RESET+">";
 	
 	@EventHandler
 	public void onAsyncChatEvent(AsyncPlayerChatEvent apce){
