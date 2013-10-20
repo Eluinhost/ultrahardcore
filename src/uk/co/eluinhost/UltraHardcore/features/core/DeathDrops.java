@@ -100,7 +100,7 @@ public class DeathDrops extends UHCFeature{
 			String chance_s = itemSection.getString("chance");
 			int itemID;
 			int metaID = 0;
-			int amount_min = 0;
+			int amount_min = -1;
 			int amount_max;
 			int chance;
 			if(itemID_s == null){
