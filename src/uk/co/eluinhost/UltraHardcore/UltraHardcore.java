@@ -130,6 +130,7 @@ public class UltraHardcore extends JavaPlugin implements Listener{
          features.add(new GoldenHeads(config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED)));
          features.add(new DeathBansFeature(config.getBoolean(ConfigNodes.DEATH_BANS_ENABLED)));
          features.add(new PotionNerfs(config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED)));
+         features.add(new NetherFeature(config.getBoolean(ConfigNodes.NETHER_DISABLE_ENABELD)));
          try{
         	 features.add(new HardcoreHearts(config.getBoolean(ConfigNodes.HARDCORE_HEARTS_ENABLED)));
          }catch(NoClassDefFoundError e){

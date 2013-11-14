@@ -120,4 +120,8 @@ public static final String POTION_NERFS_ENABLED = POTION_NERFS+".enabled";
 public static final String RECIPE_CHANGES_SPLASH = POTION_NERFS+".disableSplash";
 public static final String DISABLE_ABSORB = POTION_NERFS+".disableAbsorb";
 public static final String RECIPE_CHANGES_IMPROVED = POTION_NERFS+".disableGlowstone";
+
+
+    public static final String NETHER_DISABLE_ENABELD = FEATURE_NODE+".nether_disable.enabled";
+
 }

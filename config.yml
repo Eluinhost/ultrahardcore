@@ -61,6 +61,8 @@ features:
     disableSplash: true
     disableAbsorb: true
     disableGlowstone: true
+  nether_disable:
+    enabled: false
   deathbans:
     enabled: true
     delay: 10
