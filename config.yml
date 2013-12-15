@@ -63,6 +63,8 @@ features:
     disableGlowstone: true
   nether_disable:
     enabled: false
+  witch_spawns:
+    enabled: false
   deathbans:
     enabled: true
     delay: 10

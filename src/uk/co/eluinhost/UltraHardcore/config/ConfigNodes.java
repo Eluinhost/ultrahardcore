@@ -124,4 +124,5 @@ public static final String RECIPE_CHANGES_IMPROVED = POTION_NERFS+".disableGlows
 
     public static final String NETHER_DISABLE_ENABELD = FEATURE_NODE+".nether_disable.enabled";
 
+    public static final String WITCH_SPAWNS_ENABLED = FEATURE_NODE+".witch_spawns.enabled";
 }
