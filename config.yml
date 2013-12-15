@@ -64,7 +64,7 @@ features:
   nether_disable:
     enabled: false
   witch_spawns:
-    enabled: false
+    enabled: true
   deathbans:
     enabled: true
     delay: 10
