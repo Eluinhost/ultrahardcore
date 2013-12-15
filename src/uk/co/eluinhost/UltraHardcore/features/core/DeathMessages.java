@@ -47,14 +47,7 @@ public class DeathMessages extends UHCFeature{
 	}	
 	
 	private String locationString(Location loc){
-		StringBuilder sb = new StringBuilder();
-		sb.append("x:")
-		  .append(loc.getBlockX())
-		  .append(" y:")
-		  .append(loc.getBlockY())
-		  .append(" z:")
-		  .append(loc.getBlockZ());
-		return sb.toString();
+        return "x:" + loc.getBlockX() + " y:" + loc.getBlockY() + " z:" + loc.getBlockZ();
 	}
 	@Override
 	public void enableFeature() {}

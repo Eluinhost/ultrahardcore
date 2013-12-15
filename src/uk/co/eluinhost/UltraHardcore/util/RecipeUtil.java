@@ -127,7 +127,7 @@ public class RecipeUtil
             FurnaceRecipe r2 = (FurnaceRecipe)recipe2;
             
             //return (r1.getInput().equals(r2.getInput()));
-            return r1.getInput().getTypeId() == r2.getInput().getTypeId();
+            return r1.getInput().getType() == r2.getInput().getType();
         }
         else
         {

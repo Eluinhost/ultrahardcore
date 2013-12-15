@@ -130,14 +130,10 @@ public class FootprintFeature extends UHCFeature implements Runnable{
 			}
 			Location loc = p.getLocation();
 			if(b.getType() != Material.AIR && b.getType() != Material.WATER && noneClose(loc,MIN_DISTANCE_SQUARED,p.getName())){
-				float offset; 
-				switch(b.getTypeId()){
-					case 78:
-						offset = 1.13F;
-						break;
-					default:
-                        offset = 1.05F;
-				}
+				float offset = 1.05F;
+                if(b.getType() == Material.SNOW){
+                    offset = 1.13F;
+                }
 				loc.setY(b.getLocation().getY()+offset);
 				footsteps.add(new Footstep(loc,
 						ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_TIME_TO_LAST)/2

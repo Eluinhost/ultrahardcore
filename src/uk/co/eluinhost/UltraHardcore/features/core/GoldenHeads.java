@@ -84,7 +84,7 @@ public class GoldenHeads extends UHCFeature{
   		//8 gold ingots surrounding an apple
   		golden_head.shape("AAA","ABA","AAA");
   		golden_head.setIngredient('A', Material.GOLD_INGOT)
-  				   .setIngredient('B', Material.SKULL_ITEM,3);
+  				   .setIngredient('B', Material.SKULL_ITEM,3); //TODO deprecated but no alternative?
 
   		head_recipe = golden_head;
   		Bukkit.addRecipe(golden_head);

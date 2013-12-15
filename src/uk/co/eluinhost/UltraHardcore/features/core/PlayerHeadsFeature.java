@@ -92,7 +92,7 @@ public class PlayerHeadsFeature extends UHCFeature{
 
     private void setBlockAsHead(Player p, Block head_block){
         head_block.setType(Material.SKULL);
-        head_block.setData((byte) 1);
+        head_block.setData((byte) 1);          //TODO depreacted but no alternative?
         Skull state = (Skull) head_block.getState();
         state.setSkullType(SkullType.PLAYER);
         state.setOwner(p.getName());

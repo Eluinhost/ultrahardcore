@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -97,7 +98,7 @@ public class ServerUtil {
         int y = loc.getBlockY();
         for (; y >= 0; y--) {
             loc.setY(y);
-            if(loc.getWorld().getBlockTypeIdAt(loc) != 0) {
+            if(loc.getWorld().getBlockAt(loc).getType() != Material.AIR) {
                 loc.getChunk().unload(false, true);
                 return y;
             }

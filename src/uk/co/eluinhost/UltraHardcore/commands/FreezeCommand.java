@@ -33,7 +33,7 @@ public class FreezeCommand extends UHCCommand {
 			PotionEffectType type;
 			try{
 				int typeID = Integer.parseInt(effect[0]);
-				type = PotionEffectType.getById(typeID);
+				type = PotionEffectType.getById(typeID);      //TODO change config file to use names and use getbyname
 				if(type == null){
 					throw new Exception();
 				}

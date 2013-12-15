@@ -54,7 +54,7 @@ public class RandomCircularType extends ScatterType{
                 }
 
                 //if the block isnt allowed get a new coord
-                if (!scatterParams.blockIDAllowed(finalTeleport.getBlock().getTypeId())) {
+                if (!scatterParams.blockIDAllowed(finalTeleport.getBlock().getTypeId())) {    //TODO change config to use names and switch to getbyname
                     continue;
                 }
 

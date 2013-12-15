@@ -164,7 +164,7 @@ public class DeathDrops extends UHCFeature{
 				UltraHardcore.getInstance().getLogger().severe("Death drop item section \""+item+"\" contains invalid amount "+amount_s);
 				continue;
 			}
-			Material mat = Material.getMaterial(itemID);
+			Material mat = Material.getMaterial(itemID);      //TODO change feature to use names in config file instead of IDs and use getByName
 			if(mat == null){
 				UltraHardcore.getInstance().getLogger().severe("Death drop item section \""+item+"\" contains invalid item id "+itemID+": item for id not found");
 				continue;

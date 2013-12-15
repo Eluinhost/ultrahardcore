@@ -20,7 +20,7 @@ public enum BlockFace2DVector{
     SOUTH_SOUTH_WEST(BlockFace.SOUTH_SOUTH_WEST),
     WEST_SOUTH_WEST(BlockFace.WEST_SOUTH_WEST);
 
-    private BlockFace bf;
+    private final BlockFace bf;
 
     private BlockFace2DVector(BlockFace bf) {
         this.bf = bf;
