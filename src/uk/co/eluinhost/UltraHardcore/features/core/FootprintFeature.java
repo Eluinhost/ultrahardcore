@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.comphenix.protocol.PacketType;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -44,8 +45,8 @@ public class FootprintFeature extends UHCFeature implements Runnable{
 		private Location loc;
 		private int timeRemaining;
 		private String name;
-		
-		private PacketContainer defaultPacket = pm.createPacket(0x3F);
+
+        private PacketContainer defaultPacket = pm.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
 		
 		public Footstep(Location loc,int timeToLast,String name){
 			setName(name);
