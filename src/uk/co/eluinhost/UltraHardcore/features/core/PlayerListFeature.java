@@ -1,6 +1,6 @@
 package uk.co.eluinhost.UltraHardcore.features.core;
 
-import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,7 +35,7 @@ public class PlayerListFeature extends UHCFeature {
 	private static int task_id = -1;
 	
 	//the list of players and their health that we are handling
-	private static HashMap<String,Double> players = new HashMap<String,Double>();
+	private static WeakHashMap<Player,Double> players = new WeakHashMap<Player,Double>();
 
     private final static int health_scaling = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_LIST_SCALING);
     private final static boolean round_health = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_ROUND_HEALTH);
@@ -76,12 +76,12 @@ public class PlayerListFeature extends UHCFeature {
 	
 	public static void updatePlayers(Player[] onlinePlayers) {
 		for(Player p : onlinePlayers){
-			Double i = players.get(p.getDisplayName());
+			Double i = players.get(p);
 			if(i == null){
 				i = (double) 0;
-				players.put(p.getDisplayName(), i);
+				players.put(p, i);
 			}
-			if(p.getHealth()!=i){
+			if(i.equals(p.getHealth())){
 				updatePlayerListHealth(p,p.getHealth());
 			}
 		}
