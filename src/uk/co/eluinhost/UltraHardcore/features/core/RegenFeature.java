@@ -32,7 +32,9 @@ public class RegenFeature extends UHCFeature{
 				//If the player is in a hardcore world
 				//If its just standard health regen
 				if(erhe.getRegainReason().equals(EntityRegainHealthEvent.RegainReason.SATIATED)){
-					if(((Player)erhe.getEntity()).hasPermission(PermissionNodes.NO_HEALTH_REGEN)){
+					Player p = (Player) erhe.getEntity();
+                    if(p.hasPermission(PermissionNodes.NO_HEALTH_REGEN)){
+                        p.setExhaustion(p.getExhaustion()-3.0F);
 						//Cancel the event to stop the regen
 						erhe.setCancelled(true);
 					}
