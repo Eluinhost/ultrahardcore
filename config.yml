@@ -65,6 +65,16 @@ features:
     enabled: false
   witch_spawns:
     enabled: true
+  portal_ranges:
+    enabled: false
+    to_nether:
+      allowed: true
+      creation_range: 50
+      search_range: 50
+    from_nether:
+      allowed: true
+      creation_range: 50
+      search_range: 50
   deathbans:
     enabled: true
     delay: 10
