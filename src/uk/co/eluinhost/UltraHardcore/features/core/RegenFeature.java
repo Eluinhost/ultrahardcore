@@ -34,7 +34,9 @@ public class RegenFeature extends UHCFeature{
 				if(erhe.getRegainReason().equals(EntityRegainHealthEvent.RegainReason.SATIATED)){
 					Player p = (Player) erhe.getEntity();
                     if(p.hasPermission(PermissionNodes.NO_HEALTH_REGEN)){
-                        p.setExhaustion(p.getExhaustion()-3.0F);
+                        if((p.getFoodLevel()>=18)&&(p.getHealth()>0)&&(p.getHealth()<p.getMaxHealth())){
+                            p.setExhaustion(p.getExhaustion()-3.0F);
+                        }
 						//Cancel the event to stop the regen
 						erhe.setCancelled(true);
 					}
