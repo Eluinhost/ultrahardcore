@@ -78,10 +78,10 @@ public class PlayerListFeature extends UHCFeature {
 		for(Player p : onlinePlayers){
 			Double i = players.get(p);
 			if(i == null){
-				i = (double) 0;
+				i = 0D;
 				players.put(p, i);
 			}
-			if(i.equals(p.getHealth())){
+            if(!i.equals(p.getHealth())){
 				updatePlayerListHealth(p,p.getHealth());
 			}
 		}
