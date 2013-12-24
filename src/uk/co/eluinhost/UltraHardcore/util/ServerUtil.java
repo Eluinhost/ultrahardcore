@@ -80,7 +80,7 @@ public class ServerUtil {
     public static int getYHighest(Location loc,boolean max){
         Location l = loc.clone();
         if(max){
-            l.setY(l.getWorld().getMaxHeight());
+            l.setY(l.getWorld().getMaxHeight()-1);
         }
         return getYHighest(l);
     }
@@ -98,7 +98,7 @@ public class ServerUtil {
         int y = loc.getBlockY();
         for (; y >= 0; y--) {
             loc.setY(y);
-            if(loc.getWorld().getBlockAt(loc).getType() != Material.AIR) {
+            if(loc.getBlock().getType() != Material.AIR) {
                 loc.getChunk().unload(false, true);
                 return y;
             }
