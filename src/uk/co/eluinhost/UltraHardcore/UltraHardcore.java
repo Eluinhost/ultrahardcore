@@ -98,6 +98,11 @@ public class UltraHardcore extends JavaPlugin implements Listener{
 		setExecutor("feature",new FeatureCommand());
 		setExecutor("generateborder",new BorderCreator());
         setExecutor("givedrops",new GiveDropCommand());
+        try{
+            setExecutor("timer",new TimerCommand());
+        }catch(NoClassDefFoundError e){
+            getLogger().severe("Cannot find a class for timer command, ProtocolLib is needed for this feature to work, disabling...");
+        }
 
         for(Field field : PermissionNodes.class.getDeclaredFields()){
             try {

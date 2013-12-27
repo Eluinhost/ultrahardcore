@@ -79,6 +79,10 @@ commands:
       description: Give players items defined for death drops
       usage: /<command> groupname */player1 player2 player3
       aliases: [uhcgivedrops]
+    timer:
+      description: Dragon bar timers
+      usage: /<command>
+      aliases: [uhctimer]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
