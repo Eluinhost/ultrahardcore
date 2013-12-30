@@ -64,7 +64,7 @@ public class RandomSquareType extends ScatterType{
                 }
 				
 				//if the block isnt allowed get a new coord
-				if(!params.blockIDAllowed(finalTeleport.getWorld().getBlockTypeIdAt(finalTeleport))){  //TODO change config to use names and switch to getbyname
+				if(!params.blockIDAllowed(finalTeleport.getBlock().getTypeId())){  //TODO change config to use names and switch to getbyname
 					continue;
 				}
 				
