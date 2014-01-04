@@ -113,13 +113,14 @@ scatter:
   maxattempts: 3
   delay: 60
   allowedBlocks:
-  - 1
-  - 2
-  - 3
-  - 12
-  - 13
-  - 78
-  - 79
+  - "STONE"
+  - "GRASS"
+  - "DIRT"
+  - "SAND"
+  - "GRAVEL"
+  - "SNOW"
+  - "SNOW_BLOCK"
+  - "ICE"
   default:
     world: world
     x: 0

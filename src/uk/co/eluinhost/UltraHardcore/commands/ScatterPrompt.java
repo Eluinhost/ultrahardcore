@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -11,6 +12,7 @@ import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import uk.co.eluinhost.UltraHardcore.UltraHardcore;
 import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
 import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
 import uk.co.eluinhost.UltraHardcore.exceptions.MaxAttemptsReachedException;
@@ -22,6 +24,7 @@ import uk.co.eluinhost.UltraHardcore.scatter.types.ScatterType;
 import uk.co.eluinhost.UltraHardcore.util.SimplePair;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class ScatterPrompt extends StringPrompt {
 
@@ -301,7 +304,17 @@ public class ScatterPrompt extends StringPrompt {
     public static void scatter(ScatterType type,Boolean useTeams,Double radius,Double mindist,SimplePair<Double,Double> coords, World w,List<String> players,CommandSender sender){
         ScatterParams sp = new ScatterParams(w.getName(),coords.getKey(), coords.getValue(), radius);
         sp.setMinDistance(mindist);
-        sp.setAllowedBlocks(ConfigHandler.getConfig(ConfigHandler.MAIN).getIntegerList(ConfigNodes.SCATTER_ALLOWED_BLOCKS));
+        List<String> allowedBlocks = ConfigHandler.getConfig(ConfigHandler.MAIN).getStringList(ConfigNodes.SCATTER_ALLOWED_BLOCKS);
+        LinkedList<Material> materials = new LinkedList<Material>();
+        for(String s : allowedBlocks){
+            Material m = Material.matchMaterial(s);
+            if(m == null){
+                UltraHardcore.getInstance().getLogger().log(Level.WARNING,"Unknown scatter block "+s);
+                continue;
+            }
+            materials.add(m);
+        }
+        sp.setAllowedBlocks(materials);
 
         /*
          * get the right amount of people to scatter

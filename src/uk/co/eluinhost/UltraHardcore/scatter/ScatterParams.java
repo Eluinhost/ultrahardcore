@@ -1,5 +1,7 @@
 package uk.co.eluinhost.UltraHardcore.scatter;
 
+import org.bukkit.Material;
+
 import java.util.List;
 
 public final class ScatterParams {
@@ -8,7 +10,7 @@ public final class ScatterParams {
 	private double x;
 	private double z;
 	private String world;
-	private List<Integer> allowedBlocks = null;
+	private List<Material> allowedBlocks = null;
 	private double minDistance = 0;
 	
 	public ScatterParams(String world, double x,double z,double radius){
@@ -36,15 +38,9 @@ public final class ScatterParams {
 	public void setZ(double z) {
 		this.z = z;
 	}
-	public List<Integer> getAllowedBlocks() {
-		return allowedBlocks;
-	}
-	public void setAllowedBlocks(List<Integer> allowedBlocks) {
+	public void setAllowedBlocks(List<Material> allowedBlocks) {
 		this.allowedBlocks = allowedBlocks;
 	}
-	public boolean blockIDAllowed(Integer i){
-        return allowedBlocks == null || getAllowedBlocks().contains(i);
-    }
 	public double getMinDistance() {
 		return minDistance;
 	}
@@ -57,4 +53,13 @@ public final class ScatterParams {
 	public void setWorld(String world) {
 		this.world = world;
 	}
+
+    public boolean blockAllowed(Material m) {
+        for(Material m2 : allowedBlocks){
+            if(m.name().equals(m2.name())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
