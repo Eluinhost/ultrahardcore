@@ -22,33 +22,11 @@ public class FeatureCommand extends UHCCommand {
 			String[] args) {
 		if(command.getName().equalsIgnoreCase("feature")){
 			if(args.length == 0){
-				sender.sendMessage(ChatColor.GRAY+"/feature toggle [featureID] to toggle features");
+				sender.sendMessage(ChatColor.GRAY+"/feature toggle/on/off [featureID] to toggle features");
 				sender.sendMessage(ChatColor.GRAY+"/feature list to list features");
 				return true;
 			}
-			if(args[0].equalsIgnoreCase("toggle")){
-				if(!sender.hasPermission(PermissionNodes.FEATURE_TOGGLE)){
-					sender.sendMessage(ChatColor.RED+"You don't have permission to toggle features ("+PermissionNodes.FEATURE_TOGGLE+")");
-					return true;
-				}
-				if(args.length < 2){
-					sender.sendMessage(ChatColor.RED+"Correct syntax for toggling a feature: /feature toggle featureID");
-					return true;
-				}
-				UHCFeature feature;
-				try {
-					feature = FeatureManager.getFeature(args[1]);
-					feature.setEnabled(!feature.isEnabled());
-				} catch (FeatureIDNotFoundException e) {
-					sender.sendMessage(ChatColor.RED+"The feature \""+args[1]+" was not found, use /feature list to see a list of available features");
-					return true;
-				} catch (FeatureStateNotChangedException e) {
-					sender.sendMessage(ChatColor.RED+"There was an error changing the state of "+args[1]);
-					return true;
-				}
-				Bukkit.broadcastMessage(ChatColor.GOLD+"Feature "+args[1]+" is now globally "+(feature.isEnabled() ? "enabled" : "disabled"));
-				return true;
-			}else if(args[0].equalsIgnoreCase("list")){
+            if(args[0].equalsIgnoreCase("list")){
 				if(!sender.hasPermission(PermissionNodes.FEATURE_LIST)){
 					sender.sendMessage(ChatColor.RED+"You don't have permission to view features ("+PermissionNodes.FEATURE_LIST+")");
 					return true;
@@ -63,12 +41,51 @@ public class FeatureCommand extends UHCCommand {
 				}
 				return true;
 			}
+            if(args.length < 2){
+                sender.sendMessage(ChatColor.GRAY +"The command is unknown. Possible commands are:");
+                sender.sendMessage(ChatColor.GRAY+"/feature toggle/on/off featureID");
+                sender.sendMessage(ChatColor.GRAY+"/feature list");
+                return true;
+            }
+            UHCFeature feature;
+            try {
+                feature = FeatureManager.getFeature(args[1]);
+            } catch (FeatureIDNotFoundException e) {
+                sender.sendMessage(ChatColor.RED+"The feature \""+args[1]+" was not found, use /feature list to see a list of available features");
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("toggle")){
+                if(!sender.hasPermission(PermissionNodes.FEATURE_TOGGLE)){
+                    sender.sendMessage(ChatColor.RED+"You don't have permission to toggle features ("+PermissionNodes.FEATURE_TOGGLE+")");
+                    return true;
+                }
+                args[0] = feature.isEnabled() ? "off" : "on";
+            }
+            if(args[0].equalsIgnoreCase("on")){
+                try {
+                    feature.setEnabled(true);
+                } catch (FeatureStateNotChangedException e) {
+                    sender.sendMessage(ChatColor.RED + "Feature " + args[1] + " is already enabled!");
+                    return true;
+                }
+                Bukkit.broadcastMessage(ChatColor.GOLD + "Feature " + args[1] + " is now enabled");
+                return true;
+            }else if(args[0].equalsIgnoreCase("off")){
+                try {
+                    feature.setEnabled(false);
+                } catch (FeatureStateNotChangedException e) {
+                    sender.sendMessage(ChatColor.RED + "Feature " + args[1] + " is already disabled!");
+                    return true;
+                }
+                Bukkit.broadcastMessage(ChatColor.GOLD+"Feature "+args[1]+" is now disabled");
+                return true;
+            }
 			sender.sendMessage(ChatColor.GRAY +"The command is unknown. Possible commands are:");
-			sender.sendMessage(ChatColor.GRAY+"/feature toggle featureID");
+			sender.sendMessage(ChatColor.GRAY+"/feature toggle/on/off featureID");
 			sender.sendMessage(ChatColor.GRAY+"/feature list");
 			return true;
 		}
-		return false;
+        return false;
 	}
 
 	@Override
