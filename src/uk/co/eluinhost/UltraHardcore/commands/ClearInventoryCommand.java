@@ -5,10 +5,14 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
@@ -79,6 +83,11 @@ public class ClearInventoryCommand extends UHCCommand {
 		p.getInventory().setChestplate(null);
 		p.getInventory().setLeggings(null);
 		p.getInventory().setBoots(null);
+        p.setItemOnCursor(new ItemStack(Material.AIR));
+        InventoryView openInventory = p.getOpenInventory();
+        if(openInventory.getType().equals(InventoryType.CRAFTING)){
+            openInventory.getTopInventory().clear();
+        }
 	}
 
 	@Override
