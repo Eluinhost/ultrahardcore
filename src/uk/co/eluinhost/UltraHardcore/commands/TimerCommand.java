@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.UltraHardcore.UltraHardcore;
 import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ public class TimerCommand extends UHCCommand {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if(command.getName().equals("timer")){
+            if(!sender.hasPermission(PermissionNodes.TIMER_COMMAND)){
+                sender.sendMessage(ChatColor.RED+"You don't have permission to use this command");
+                return true;
+            }
             if(args.length >= 1 && args[0].equalsIgnoreCase("cancel")){
                 if(jobID == -1){
                     sender.sendMessage(ChatColor.RED+"There is no timer running!");

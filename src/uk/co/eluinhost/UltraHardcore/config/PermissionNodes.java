@@ -93,7 +93,7 @@ public class PermissionNodes {
     public static final String DEATH_BAN_UNBAN = "UHC.deathban.ban";
     public static final String GIVE_DROPS = "UHC.givedrops";
     public static final String PLAYER_HEAD_STAKE = "UHC.headStake";
-
+    public static final String TIMER_COMMAND = "UHC.timer";
 
     public static Permission TP_ALL = new Permission(
             "UHC.tpall",
