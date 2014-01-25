@@ -62,6 +62,10 @@ public class FeatureCommand extends UHCCommand {
                 args[0] = feature.isEnabled() ? "off" : "on";
             }
             if(args[0].equalsIgnoreCase("on")){
+                if(!sender.hasPermission(PermissionNodes.FEATURE_TOGGLE)){
+                    sender.sendMessage(ChatColor.RED+"You don't have permission to change features");
+                    return true;
+                }
                 try {
                     feature.setEnabled(true);
                 } catch (FeatureStateNotChangedException e) {
@@ -71,6 +75,10 @@ public class FeatureCommand extends UHCCommand {
                 Bukkit.broadcastMessage(ChatColor.GOLD + "Feature " + args[1] + " is now enabled");
                 return true;
             }else if(args[0].equalsIgnoreCase("off")){
+                if(!sender.hasPermission(PermissionNodes.FEATURE_TOGGLE)){
+                    sender.sendMessage(ChatColor.RED+"You don't have permission to change features");
+                    return true;
+                }
                 try {
                     feature.setEnabled(false);
                 } catch (FeatureStateNotChangedException e) {
