@@ -271,3 +271,6 @@ permissions:
     UHC.givedrops:
         description: Allows use of the givedrops command
         default: op
+    UHC.timer:
+        description: Allows use of the timer command
+        default: op
