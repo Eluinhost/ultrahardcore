@@ -15,10 +15,10 @@ public class WitchSpawnsFeature extends UHCFeature {
 
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent ese) {
-        if (!isEnabled()) {
-            if (ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
-                ese.setCancelled(true);
-            }
+        //when enabled witches can spawn, when not enabled they are cancelled
+        //TODO this is stupid, must do better
+        if (!isEnabled() && ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
+            ese.setCancelled(true);
         }
     }
 
