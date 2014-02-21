@@ -28,7 +28,7 @@ public class GoldenHeadsFeature extends UHCFeature {
     public static final int POTION_TICK_MULTIPLIER = 25;
     public static final String HEAD_NAME = ChatColor.GOLD+"Golden Head";
 
-    private ShapedRecipe m_headRecipe = null;
+    private ShapedRecipe m_headRecipe;
 
     public GoldenHeadsFeature(boolean enabled) {
         super("GoldenHeads", enabled);
