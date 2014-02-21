@@ -148,7 +148,7 @@ public class FeatureManager {
         try {
             addFeature(new DeathLightningFeature(), config.getBoolean(ConfigNodes.DEATH_LIGHTNING));
             addFeature(new EnderpearlsFeature(), config.getBoolean(ConfigNodes.NO_ENDERPEARL_DAMAGE));
-            addFeature(new GhastDropsFeature(), config.getBoolean(ConfigNodes.NO_ENDERPEARL_DAMAGE));
+            addFeature(new GhastDropsFeature(), config.getBoolean(ConfigNodes.GHAST_DROP_CHANGES));
             addFeature(new PlayerHeadsFeature(), config.getBoolean(ConfigNodes.DROP_PLAYER_HEAD));
             addFeature(new PlayerListFeature(), config.getBoolean(ConfigNodes.PLAYER_LIST_HEALTH));
             addFeature(new RecipeFeature(), config.getBoolean(ConfigNodes.RECIPE_CHANGES));
