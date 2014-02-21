@@ -28,8 +28,7 @@ public class GoldenHeads extends UHCFeature{
 	private ShapedRecipe head_recipe = null;
 	
 	public GoldenHeads(boolean enabled) {
-		super(enabled);
-		setFeatureID("GoldenHeads");
+		super("GoldenHeads",enabled);
 		setDescription("New and improved golden apples!");
 	}
 	

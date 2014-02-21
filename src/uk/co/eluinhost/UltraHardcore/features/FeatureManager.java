@@ -28,10 +28,11 @@ public class FeatureManager {
     /**
      * Add a UHC feature to the manager
      * @param feature UHCFeature the feature to be added
+     * @param enabled Whether the feature should be enabled or not after init
      * @throws FeatureIDConflictException when feature with the same ID already exists
      * @throws InvalidFeatureIDException when the feature has an invalid ID name
      */
-	public static void addFeature(UHCFeature feature) throws FeatureIDConflictException, InvalidFeatureIDException{
+	public static void addFeature(UHCFeature feature,boolean enabled) throws FeatureIDConflictException, InvalidFeatureIDException{
 
         //check for alphanumerics
 		Matcher mat = name_pattern.matcher(feature.getFeatureID());

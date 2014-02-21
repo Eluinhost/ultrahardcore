@@ -26,8 +26,7 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 public class RecipeFeature extends UHCFeature{
 
 	public RecipeFeature(boolean enabled){
-		super(enabled);
-		setFeatureID("HardRecipes");
+		super("HardRecipes",enabled);
 		setDescription("Handles changed recipes");
 	}
 

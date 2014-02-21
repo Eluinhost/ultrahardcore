@@ -9,8 +9,7 @@ public class WitchSpawnsFeature extends UHCFeature {
 
 
     public WitchSpawnsFeature(boolean enabled) {
-        super(enabled);
-        setFeatureID("WitchSpawns");
+        super("WitchSpawnsFeature",enabled);
         setDescription("Allows natural witch spawns");
     }
 

@@ -34,8 +34,7 @@ import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 public class PlayerHeadsFeature extends UHCFeature{
 	
 	public PlayerHeadsFeature(boolean enabled) {
-		super(enabled);
-		setFeatureID("PlayerHeads");
+		super("PlayerHeads",enabled);
 		setDescription("Players can drop their heads on death");
 	}
 

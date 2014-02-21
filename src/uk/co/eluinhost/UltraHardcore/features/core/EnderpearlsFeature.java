@@ -18,8 +18,7 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 public class EnderpearlsFeature extends UHCFeature{
 	
 	public EnderpearlsFeature(boolean enabled) {
-		super(enabled);
-		setFeatureID("Enderpearls");
+		super("Enderpearls",enabled);
 		setDescription("Enderpearls cause no teleport damage");
 	}
 

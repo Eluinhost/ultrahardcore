@@ -19,8 +19,7 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 public class RegenFeature extends UHCFeature{
 	
 	public RegenFeature(boolean enabled) {
-		super(enabled);
-		setFeatureID("DisableRegen");
+		super("DisableRegen",enabled);
 		setDescription("Cancels a player's passive health regeneration");
 	}
 

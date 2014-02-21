@@ -6,16 +6,16 @@ import uk.co.eluinhost.UltraHardcore.exceptions.FeatureStateNotChangedException;
 
 public abstract class UHCFeature implements Listener{
 
-	protected String featureID = "INVALID";
+    /**
+     * The feature ID for the feature, override to set one for your feature, allows [\w]++
+     */
+	private String featureID = null;
 	private boolean enabled = false;
 	private String description = "N/A";
 		
 	public abstract void enableFeature();
 	public abstract void disableFeature();
 
-	protected final void setFeatureID(String ID){
-		featureID = ID;
-	}
 	public final String getFeatureID() {
 		return featureID;
 	}
@@ -39,8 +39,9 @@ public abstract class UHCFeature implements Listener{
 		}
 	}
 
-    public UHCFeature(boolean enabled){
-		this.enabled = enabled;
+    public UHCFeature(String featureID,boolean enabled){
+		this.featureID = featureID;
+        this.enabled = enabled;
 	}
 	
 	@Override

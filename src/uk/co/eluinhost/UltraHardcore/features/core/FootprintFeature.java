@@ -32,9 +32,8 @@ public class FootprintFeature extends UHCFeature implements Runnable{
 	private int jobID = -1;
 	
 	public FootprintFeature(boolean enabled) {
-		super(enabled);
+		super("Footprints",enabled);
 		setDescription("Leave footprints behind you...");
-		setFeatureID("Footprints");
 		MAX_RENDER_DISTANCE_SQUARED = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_RENDER_DISTANCE);
 		MAX_RENDER_DISTANCE_SQUARED *= MAX_RENDER_DISTANCE_SQUARED;
 		MIN_DISTANCE_SQUARED = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_MIN_DISTANCE);

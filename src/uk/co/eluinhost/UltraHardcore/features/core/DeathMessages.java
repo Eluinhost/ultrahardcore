@@ -21,8 +21,7 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 public class DeathMessages extends UHCFeature{
 	
 	public DeathMessages(boolean enabled) {
-		super(enabled);
-		setFeatureID("DeathMessages");
+		super("DeathMessages",enabled);
 		setDescription("Adds a prefix/suffix to all player deaths");
 	}
 

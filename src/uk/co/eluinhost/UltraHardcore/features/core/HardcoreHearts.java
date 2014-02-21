@@ -15,8 +15,7 @@ public class HardcoreHearts extends UHCFeature{
 	private PacketAdapter pa = null;
 	
 	public HardcoreHearts(boolean enabled) {
-		super(enabled);
-		setFeatureID("HardcoreHearts");
+		super("HardcoreHearts",enabled);
 		setDescription("Shows the hardcore hearts instead");
 	}
 

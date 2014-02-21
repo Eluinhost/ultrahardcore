@@ -9,10 +9,9 @@ import uk.co.eluinhost.UltraHardcore.UltraHardcore;
 import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 public class AnonChat extends UHCFeature {
-	
+
 	public AnonChat(boolean enabled) {
-		super(enabled);
-		setFeatureID("AnonChat");
+		super("AnonChat",enabled);
 		setDescription("Allows players to chat without revealing their name");
 	}
 	

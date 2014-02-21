@@ -23,36 +23,34 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
  *
  */
 public class GhastDropsFeature extends UHCFeature{
-	
-	public GhastDropsFeature(boolean enabled) {
-		super(enabled);
-		setFeatureID("GhastDrops");
-		setDescription("Ghasts drop golden ingots instead of tears");
-	}
 
-	@EventHandler
-	public void onEntityDeathEvent(EntityDeathEvent ede){
-		if(isEnabled() && ede.getEntityType().equals(EntityType.GHAST)){
-			if(ConfigHandler.featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())){
-				List<ItemStack> drops = ede.getDrops();
-				Iterator<ItemStack> i = drops.iterator();
-				List<ItemStack> toAdd = new ArrayList<ItemStack>();
-				while(i.hasNext()){
-					ItemStack is = i.next();
-					if(is.getType().equals(Material.GHAST_TEAR)){
-						ItemStack newStack = new ItemStack(Material.GOLD_INGOT, is.getAmount());
-						i.remove();
-						toAdd.add(newStack);
-					}
-				}
-				drops.addAll(toAdd);
-			}
-		}
-	}
+    public GhastDropsFeature(boolean enabled) {
+    super("GhastDrops", enabled);
+        setDescription("Ghasts drop golden ingots instead of tears");
+    }
 
-	@Override
-	public void enableFeature() {}
+    @EventHandler
+    public void onEntityDeathEvent(EntityDeathEvent ede){
+    if(isEnabled() && ede.getEntityType().equals(EntityType.GHAST)){
+        if(ConfigHandler.featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())){
+            List<ItemStack> drops = ede.getDrops();
+            Iterator<ItemStack> i = drops.iterator();
+            List<ItemStack> toAdd = new ArrayList<ItemStack>();
+            while(i.hasNext()){
+                ItemStack is = i.next();
+                if(is.getType().equals(Material.GHAST_TEAR)){
+                    ItemStack newStack = new ItemStack(Material.GOLD_INGOT, is.getAmount());
+                    i.remove();
+                    toAdd.add(newStack);
+                }
+            }
+            drops.addAll(toAdd);
+        }
+    }
+}
 
-	@Override
-	public void disableFeature() {}
+    @Override
+    public void enableFeature() {} 
+    @Override
+    public void disableFeature() {}
 }
