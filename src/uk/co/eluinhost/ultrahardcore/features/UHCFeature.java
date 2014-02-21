@@ -33,6 +33,7 @@ public class UHCFeature implements Listener {
         UHCFeatureEnableEvent event = new UHCFeatureEnableEvent(this);
         if(event.isAllowed()){
             m_enabled = true;
+            enableCallback();
         }
         return true;
     }
@@ -48,6 +49,7 @@ public class UHCFeature implements Listener {
         UHCFeatureDisableEvent event = new UHCFeatureDisableEvent(this);
         if(event.isAllowed()){
             m_enabled = false;
+            disableCallback();
         }
         return true;
     }
