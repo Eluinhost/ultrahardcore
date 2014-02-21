@@ -12,20 +12,20 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 public class PortalsFeature extends UHCFeature {
 
     public PortalsFeature(boolean enabled) {
-        super("PortalRanges",enabled);
+        super("PortalRanges", enabled);
         setDescription("Change the radius portals can spawn in");
     }
 
     @EventHandler
-    public void onPortalEvent(PlayerPortalEvent entityPortalEvent){
-        if(isEnabled()){
+    public void onPortalEvent(PlayerPortalEvent entityPortalEvent) {
+        if (isEnabled()) {
             FileConfiguration c = ConfigHandler.getConfig(ConfigHandler.MAIN);
             TravelAgent ta = entityPortalEvent.getPortalTravelAgent();
-            if(entityPortalEvent.getPlayer().getWorld().getEnvironment() == World.Environment.NETHER){
+            if (entityPortalEvent.getPlayer().getWorld().getEnvironment() == World.Environment.NETHER) {
                 ta.setCanCreatePortal(c.getBoolean(ConfigNodes.PORTAL_RANGES_FROM_NETHER_ALLOWED));
                 ta.setCreationRadius(c.getInt(ConfigNodes.PORTAL_RANGES_FROM_NETHER_CREATION));
                 ta.setSearchRadius(c.getInt(ConfigNodes.PORTAL_RANGES_FROM_NETHER_SEARCH));
-            }else{
+            } else {
                 ta.setCanCreatePortal(c.getBoolean(ConfigNodes.PORTAL_RANGES_TO_NETHER_ALLOWED));
                 ta.setCreationRadius(c.getInt(ConfigNodes.PORTAL_RANGES_TO_NETHER_CREATION));
                 ta.setSearchRadius(c.getInt(ConfigNodes.PORTAL_RANGES_TO_NETHER_SEARCH));

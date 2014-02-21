@@ -9,30 +9,32 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 /**
  * DeathLightningFeature
- * 
+ * <p/>
  * hits people with lightning on death
- * @author ghowden
  *
+ * @author ghowden
  */
-public class DeathLightningFeature extends UHCFeature{
-	
-	public DeathLightningFeature(boolean enabled) {
-		super("DeathLightning",enabled);
-		setDescription("Fake lightning on a player's corpse");
-	}
+public class DeathLightningFeature extends UHCFeature {
 
-	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent pde){
-		if(isEnabled()){
-			if(pde.getEntity().hasPermission(PermissionNodes.DEATH_LIGHTNING)){
-				pde.getEntity().getWorld().strikeLightningEffect(pde.getEntity().getLocation());
-			}
-		}
-	}	
-	
-	@Override
-	public void enableFeature() {}
+    public DeathLightningFeature(boolean enabled) {
+        super("DeathLightning", enabled);
+        setDescription("Fake lightning on a player's corpse");
+    }
 
-	@Override
-	public void disableFeature() {}
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent pde) {
+        if (isEnabled()) {
+            if (pde.getEntity().hasPermission(PermissionNodes.DEATH_LIGHTNING)) {
+                pde.getEntity().getWorld().strikeLightningEffect(pde.getEntity().getLocation());
+            }
+        }
+    }
+
+    @Override
+    public void enableFeature() {
+    }
+
+    @Override
+    public void disableFeature() {
+    }
 }

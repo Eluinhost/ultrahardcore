@@ -9,14 +9,14 @@ public class WitchSpawnsFeature extends UHCFeature {
 
 
     public WitchSpawnsFeature(boolean enabled) {
-        super("WitchSpawnsFeature",enabled);
+        super("WitchSpawnsFeature", enabled);
         setDescription("Allows natural witch spawns");
     }
 
     @EventHandler
-    public void onCreatureSpawnEvent(CreatureSpawnEvent ese){
-        if(!isEnabled()){
-            if(ese.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)&&ese.getEntity().getType().equals(EntityType.WITCH)){
+    public void onCreatureSpawnEvent(CreatureSpawnEvent ese) {
+        if (!isEnabled()) {
+            if (ese.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL) && ese.getEntity().getType().equals(EntityType.WITCH)) {
                 ese.setCancelled(true);
             }
         }

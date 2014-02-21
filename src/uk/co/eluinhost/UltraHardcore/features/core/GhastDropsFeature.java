@@ -16,41 +16,44 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 /**
  * Handles conversion of ghast tears to gold ingots
- * 
+ * <p/>
  * Config is whitelist type world dependant
  * Nothing special to do on disable and enable
- * @author Graham
  *
+ * @author Graham
  */
-public class GhastDropsFeature extends UHCFeature{
+public class GhastDropsFeature extends UHCFeature {
 
     public GhastDropsFeature(boolean enabled) {
-    super("GhastDrops", enabled);
+        super("GhastDrops", enabled);
         setDescription("Ghasts drop golden ingots instead of tears");
     }
 
     @EventHandler
-    public void onEntityDeathEvent(EntityDeathEvent ede){
-    if(isEnabled() && ede.getEntityType().equals(EntityType.GHAST)){
-        if(ConfigHandler.featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())){
-            List<ItemStack> drops = ede.getDrops();
-            Iterator<ItemStack> i = drops.iterator();
-            List<ItemStack> toAdd = new ArrayList<ItemStack>();
-            while(i.hasNext()){
-                ItemStack is = i.next();
-                if(is.getType().equals(Material.GHAST_TEAR)){
-                    ItemStack newStack = new ItemStack(Material.GOLD_INGOT, is.getAmount());
-                    i.remove();
-                    toAdd.add(newStack);
+    public void onEntityDeathEvent(EntityDeathEvent ede) {
+        if (isEnabled() && ede.getEntityType().equals(EntityType.GHAST)) {
+            if (ConfigHandler.featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())) {
+                List<ItemStack> drops = ede.getDrops();
+                Iterator<ItemStack> i = drops.iterator();
+                List<ItemStack> toAdd = new ArrayList<ItemStack>();
+                while (i.hasNext()) {
+                    ItemStack is = i.next();
+                    if (is.getType().equals(Material.GHAST_TEAR)) {
+                        ItemStack newStack = new ItemStack(Material.GOLD_INGOT, is.getAmount());
+                        i.remove();
+                        toAdd.add(newStack);
+                    }
                 }
+                drops.addAll(toAdd);
             }
-            drops.addAll(toAdd);
         }
     }
-}
 
     @Override
-    public void enableFeature() {} 
+    public void enableFeature() {
+    }
+
     @Override
-    public void disableFeature() {}
+    public void disableFeature() {
+    }
 }

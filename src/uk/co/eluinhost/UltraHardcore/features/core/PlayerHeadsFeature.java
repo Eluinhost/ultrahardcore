@@ -26,62 +26,62 @@ import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
 /**
  * PlayerHeadsFeature
- * 
+ * <p/>
  * Handles the dropping of a player head on death
- * @author ghowden
  *
+ * @author ghowden
  */
-public class PlayerHeadsFeature extends UHCFeature{
-	
-	public PlayerHeadsFeature(boolean enabled) {
-		super("PlayerHeads",enabled);
-		setDescription("Players can drop their heads on death");
-	}
+public class PlayerHeadsFeature extends UHCFeature {
 
-	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent pde){
-		if(isEnabled()){
-			if(pde.getEntity().hasPermission(PermissionNodes.DROP_SKULL)){
-				if(ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)){
+    public PlayerHeadsFeature(boolean enabled) {
+        super("PlayerHeads", enabled);
+        setDescription("Players can drop their heads on death");
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent pde) {
+        if (isEnabled()) {
+            if (pde.getEntity().hasPermission(PermissionNodes.DROP_SKULL)) {
+                if (ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)) {
                     Player killer = pde.getEntity().getKiller();
-					if(killer == null){
-						return;
-					}
-                    if(ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_NON_TEAM)){
+                    if (killer == null) {
+                        return;
+                    }
+                    if (ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_NON_TEAM)) {
                         Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
                         Team team1 = sb.getPlayerTeam(pde.getEntity());
                         Team team2 = sb.getPlayerTeam(killer);
-                        if(team1 != null && team2 != null && team1.getName().equals(team2.getName())){
+                        if (team1 != null && team2 != null && team1.getName().equals(team2.getName())) {
                             return;
                         }
                     }
-				}
-				Random r = new Random();
-				if(r.nextInt(100)>=(100-ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE))){
-                    if(!ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE) || !makeHeadStakeForPlayer(pde.getEntity())){
-					    pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
+                }
+                Random r = new Random();
+                if (r.nextInt(100) >= (100 - ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE))) {
+                    if (!ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE) || !makeHeadStakeForPlayer(pde.getEntity())) {
+                        pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
                     }
-				}
-			}
-		}
-	}	
-	
-	public boolean makeHeadStakeForPlayer(Player p){
+                }
+            }
+        }
+    }
+
+    public boolean makeHeadStakeForPlayer(Player p) {
         Location head = p.getEyeLocation();
         Block head_block = head.getBlock();
-        Block ground = getClosestGround(head_block.getRelative(BlockFace.DOWN,2));
-        if(ground != null){
-            Block skull_block = ground.getRelative(BlockFace.UP,2);
-            if(skull_block == null || !skull_block.isEmpty()){
+        Block ground = getClosestGround(head_block.getRelative(BlockFace.DOWN, 2));
+        if (ground != null) {
+            Block skull_block = ground.getRelative(BlockFace.UP, 2);
+            if (skull_block == null || !skull_block.isEmpty()) {
                 return false;
             }
             p.teleport(skull_block.getLocation());
-            if(!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)){
+            if (!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)) {
                 return false;
             }
-            setBlockAsHead(p,skull_block);
+            setBlockAsHead(p, skull_block);
             Block fence_block = ground.getRelative(BlockFace.UP);
-            if(fence_block != null && fence_block.isEmpty()){
+            if (fence_block != null && fence_block.isEmpty()) {
                 fence_block.setType(Material.NETHER_FENCE);
             }
             return true;
@@ -89,7 +89,7 @@ public class PlayerHeadsFeature extends UHCFeature{
         return false;
     }
 
-    private void setBlockAsHead(Player p, Block head_block){
+    private void setBlockAsHead(Player p, Block head_block) {
         head_block.setType(Material.SKULL);
         head_block.setData((byte) 1);          //TODO depreacted but no alternative?
         Skull state = (Skull) head_block.getState();
@@ -99,28 +99,30 @@ public class PlayerHeadsFeature extends UHCFeature{
         state.update();
     }
 
-    private Block getClosestGround(Block b){
-        if(b == null){
+    private Block getClosestGround(Block b) {
+        if (b == null) {
             return null;
         }
-        if(!b.isEmpty()){
+        if (!b.isEmpty()) {
             return b;
         }
         return getClosestGround(b.getRelative(BlockFace.DOWN));
     }
 
-	private ItemStack playerSkullForName(String name){
-		ItemStack is = new ItemStack(Material.SKULL_ITEM,1);
-		is.setDurability((short) 3);
-		SkullMeta meta = (SkullMeta) is.getItemMeta();
-		meta.setOwner(name);
-		is.setItemMeta(meta);
-		return is;
-	}
+    private ItemStack playerSkullForName(String name) {
+        ItemStack is = new ItemStack(Material.SKULL_ITEM, 1);
+        is.setDurability((short) 3);
+        SkullMeta meta = (SkullMeta) is.getItemMeta();
+        meta.setOwner(name);
+        is.setItemMeta(meta);
+        return is;
+    }
 
-	@Override
-	public void enableFeature() {}
+    @Override
+    public void enableFeature() {
+    }
 
-	@Override
-	public void disableFeature() {}
+    @Override
+    public void disableFeature() {
+    }
 }

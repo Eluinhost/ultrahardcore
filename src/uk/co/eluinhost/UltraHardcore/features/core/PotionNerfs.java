@@ -20,60 +20,60 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 public class PotionNerfs extends UHCFeature {
 
-	public PotionNerfs(boolean enabled) {
-		super("PotionNerfs",enabled);
-		setDescription("Applies nerfs to potions");
-	}
+    public PotionNerfs(boolean enabled) {
+        super("PotionNerfs", enabled);
+        setDescription("Applies nerfs to potions");
+    }
 
     @EventHandler
-    public void onInventoryClickEvent(InventoryClickEvent ice){
-        if(isEnabled()){
-            if(ice.getInventory().getType().equals(InventoryType.BREWING)){
+    public void onInventoryClickEvent(InventoryClickEvent ice) {
+        if (isEnabled()) {
+            if (ice.getInventory().getType().equals(InventoryType.BREWING)) {
                 boolean cancelSulphur = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH);
                 boolean cancelGlowstone = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED);
 
                 InventoryView iv = ice.getView();
                 boolean cancel = false;
-                if(ice.isShiftClick()){
-                    if(cancelSulphur && ice.getCurrentItem().getType().equals(Material.SULPHUR)){
-                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)){
+                if (ice.isShiftClick()) {
+                    if (cancelSulphur && ice.getCurrentItem().getType().equals(Material.SULPHUR)) {
+                        if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)) {
                             cancel = true;
                         }
                     }
-                    if(cancelGlowstone && ice.getCurrentItem().getType().equals(Material.GLOWSTONE_DUST)){
-                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)){
+                    if (cancelGlowstone && ice.getCurrentItem().getType().equals(Material.GLOWSTONE_DUST)) {
+                        if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)) {
                             cancel = true;
                         }
                     }
-                }else if(ice.getSlotType().equals(InventoryType.SlotType.FUEL)){
-                    if(cancelSulphur && iv.getCursor().getType().equals(Material.SULPHUR)){
-                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)){
+                } else if (ice.getSlotType().equals(InventoryType.SlotType.FUEL)) {
+                    if (cancelSulphur && iv.getCursor().getType().equals(Material.SULPHUR)) {
+                        if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)) {
                             cancel = true;
                         }
                     }
-                    if(cancelGlowstone && iv.getCursor().getType().equals(Material.GLOWSTONE_DUST)){
-                        if(ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)){
+                    if (cancelGlowstone && iv.getCursor().getType().equals(Material.GLOWSTONE_DUST)) {
+                        if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)) {
                             cancel = true;
                         }
                     }
                 }
-                if(cancel){
+                if (cancel) {
                     ice.setCancelled(true);
                     ice.getWhoClicked().closeInventory();
-                    ((Player)ice.getWhoClicked()).sendMessage(ChatColor.RED+"You don't have permission to use that ingredient!");
+                    ((Player) ice.getWhoClicked()).sendMessage(ChatColor.RED + "You don't have permission to use that ingredient!");
                 }
             }
         }
     }
 
     @EventHandler
-    public void onPlayerEatEvent(PlayerItemConsumeEvent pee){
-        if(isEnabled() && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.DISABLE_ABSORB)){
+    public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
+        if (isEnabled() && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.DISABLE_ABSORB)) {
             ItemStack is = pee.getItem();
-            if(is.getType().equals(Material.GOLDEN_APPLE)){
+            if (is.getType().equals(Material.GOLDEN_APPLE)) {
                 final String playerName = pee.getPlayer().getName();
                 Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),
-                        new Runnable(){
+                        new Runnable() {
                             @Override
                             public void run() {
                                 Player p = Bukkit.getPlayerExact(playerName);
@@ -86,22 +86,24 @@ public class PotionNerfs extends UHCFeature {
     }
 
     @EventHandler
-    public void onInventoryMoveItemEvent(InventoryMoveItemEvent imie){
-        if(isEnabled()){
-            if(imie.getDestination().getType().equals(InventoryType.BREWING)){
-                if(imie.getItem().getType().equals(Material.SULPHUR) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)){
+    public void onInventoryMoveItemEvent(InventoryMoveItemEvent imie) {
+        if (isEnabled()) {
+            if (imie.getDestination().getType().equals(InventoryType.BREWING)) {
+                if (imie.getItem().getType().equals(Material.SULPHUR) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)) {
                     imie.setCancelled(true);
                 }
-                if(imie.getItem().getType().equals(Material.GLOWSTONE_DUST) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED)){
+                if (imie.getItem().getType().equals(Material.GLOWSTONE_DUST) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED)) {
                     imie.setCancelled(true);
                 }
             }
         }
     }
 
-	@Override
-	public void enableFeature() {}
+    @Override
+    public void enableFeature() {
+    }
 
-	@Override
-	public void disableFeature() {}	
+    @Override
+    public void disableFeature() {
+    }
 }
