@@ -28,7 +28,7 @@ public class UHCFeatureInitEvent extends Event{
     }
 
     public void setAllowed(boolean allowed){
-        this.m_allowed = allowed;
+        m_allowed = allowed;
     }
 
     public boolean isAllowed(){
