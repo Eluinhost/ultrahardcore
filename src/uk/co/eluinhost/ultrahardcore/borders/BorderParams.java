@@ -7,77 +7,49 @@ package uk.co.eluinhost.ultrahardcore.borders;
  */
 public class BorderParams {
 
-    private int x;
-    private int z;
-    private String worldName;
-    private int blockID;
-    private int blockMeta;
-    private int radius;
-    private String typeID;
+    private final int m_xCoord;
+    private final int m_zCoord;
+    private final String m_worldName;
+    private final int m_blockID;
+    private final int m_blockMeta;
+    private final int m_radius;
+    private final String m_typeID;
 
     public BorderParams(int x, int z, int radius, String typeID, String worldName, int blockID, int blockMeta) {
-        setX(x);
-        setZ(z);
-        setWorldName(worldName);
-        setBlockID(blockID);
-        setBlockMeta(blockMeta);
-        setRadius(radius);
-        setTypeID(typeID);
+        m_xCoord = x;
+        m_zCoord = z;
+        m_worldName = worldName;
+        m_blockID = blockID;
+        m_blockMeta = blockMeta;
+        m_radius = radius;
+        m_typeID = typeID;
     }
 
     public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
+        return m_xCoord;
     }
 
     public int getZ() {
-        return z;
-    }
-
-    public void setZ(int z) {
-        this.z = z;
+        return m_zCoord;
     }
 
     public String getWorldName() {
-        return worldName;
-    }
-
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
+        return m_worldName;
     }
 
     public int getBlockID() {
-        return blockID;
-    }
-
-    public void setBlockID(int blockID) {
-        this.blockID = blockID;
+        return m_blockID;
     }
 
     public int getBlockMeta() {
-        return blockMeta;
-    }
-
-    public void setBlockMeta(int blockMeta) {
-        this.blockMeta = blockMeta;
+        return m_blockMeta;
     }
 
     public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
+        return m_radius;
     }
 
     public String getTypeID() {
-        return typeID;
-    }
-
-    public void setTypeID(String typeID) {
-        this.typeID = typeID;
+        return m_typeID;
     }
 }
