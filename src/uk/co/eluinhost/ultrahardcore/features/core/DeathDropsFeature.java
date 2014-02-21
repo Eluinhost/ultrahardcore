@@ -35,10 +35,10 @@ public class DeathDropsFeature extends UHCFeature {
         private int m_dropChance;
         private Material m_material;
         private int m_meta;
-        private String m_groupName;
+        private final String m_groupName;
 
-        public ItemDrop(String name) {
-            m_groupName = name;
+        public ItemDrop(String groupName) {
+            m_groupName = groupName;
         }
 
         public int getMinAmount() {
