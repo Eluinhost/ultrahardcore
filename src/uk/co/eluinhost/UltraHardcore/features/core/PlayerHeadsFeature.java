@@ -26,12 +26,13 @@ import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
 
 /**
  * PlayerHeadsFeature
- * <p/>
  * Handles the dropping of a player head on death
  *
  * @author ghowden
  */
 public class PlayerHeadsFeature extends UHCFeature {
+
+    private static final Random RANDOM = new Random();
 
     public PlayerHeadsFeature(boolean enabled) {
         super("PlayerHeads", enabled);
@@ -40,78 +41,141 @@ public class PlayerHeadsFeature extends UHCFeature {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent pde) {
+        //if we're enabled
         if (isEnabled()) {
-            if (pde.getEntity().hasPermission(PermissionNodes.DROP_SKULL)) {
-                if (ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)) {
-                    Player killer = pde.getEntity().getKiller();
-                    if (killer == null) {
-                        return;
-                    }
-                    if (ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_NON_TEAM)) {
-                        Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
-                        Team team1 = sb.getPlayerTeam(pde.getEntity());
-                        Team team2 = sb.getPlayerTeam(killer);
-                        if (team1 != null && team2 != null && team1.getName().equals(team2.getName())) {
-                            return;
-                        }
-                    }
-                }
-                Random r = new Random();
-                if (r.nextInt(100) >= (100 - ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE))) {
-                    if (!ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE) || !makeHeadStakeForPlayer(pde.getEntity())) {
-                        pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
-                    }
+            //skip if the player isnt allowed to drop a skull
+            if (!pde.getEntity().hasPermission(PermissionNodes.DROP_SKULL)) {
+                return;
+            }
+            //if it wasn't a valid kill dont drop
+            if(!isValidKill(pde.getEntity())) {
+                return;
+            }
+            //do a random chance based on the config options
+            if (RANDOM.nextInt(100) >= 100 - ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE)) {
+                //drop the head with the loot if no stake was made
+                if (!putHeadOnStake(pde.getEntity())) {
+                    pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
                 }
             }
         }
     }
 
-    public boolean makeHeadStakeForPlayer(Player p) {
+    /**
+     * Checks if the kill was a valid PVP kill
+     * @param deadPlayer the dead player
+     * @return boolean
+     */
+    private static boolean isValidKill(Player deadPlayer){
+        if (ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)) {
+            //get the killer and if there isn't one it wasn't a PVP kill
+            Player killer = deadPlayer.getKiller();
+            if (killer == null) {
+                return false;
+            }
+            //if we're checking that teammember kills don't count
+            if (ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_NON_TEAM)) {
+                //get the scoreboard and get the teams of both players
+                Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
+                Team team1 = sb.getPlayerTeam(deadPlayer);
+                Team team2 = sb.getPlayerTeam(killer);
+                //if they're both in valid teams and its the same team it wasn't a valid kill
+                if (team1 != null && team2 != null && team1.getName().equals(team2.getName())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static boolean putHeadOnStake(Player p) {
+        if(!ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE)){
+            return false;
+        }
+        //head location
         Location head = p.getEyeLocation();
-        Block head_block = head.getBlock();
-        Block ground = getClosestGround(head_block.getRelative(BlockFace.DOWN, 2));
-        if (ground != null) {
-            Block skull_block = ground.getRelative(BlockFace.UP, 2);
-            if (skull_block == null || !skull_block.isEmpty()) {
-                return false;
-            }
-            p.teleport(skull_block.getLocation());
-            if (!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)) {
-                return false;
-            }
-            setBlockAsHead(p, skull_block);
-            Block fence_block = ground.getRelative(BlockFace.UP);
-            if (fence_block != null && fence_block.isEmpty()) {
-                fence_block.setType(Material.NETHER_FENCE);
-            }
-            return true;
+        //block the player's head is in
+        Block headBlock = head.getBlock();
+        //get the closest non air block below the players feet
+        Block ground = getClosestGround(headBlock.getRelative(BlockFace.DOWN, 2));
+        if (ground == null) {
+            return false;
         }
-        return false;
+
+        //get the block 2 above the ground
+        Block skullBlock = ground.getRelative(BlockFace.UP, 2);
+
+        //if it's not empty we can't place the block
+        if (skullBlock == null || !skullBlock.isEmpty()) {
+            return false;
+        }
+
+        //teleport the player to the skull location
+        p.teleport(skullBlock.getLocation());
+
+        //check the player's permission for the stake here, used for position based permissions
+        //TODO this doesn't appear to work as a valid way to check permissions for a coordinate
+        if (!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)) {
+            return false;
+        }
+
+        //set the skull block to an actual skull block
+        setBlockAsHead(p, skullBlock);
+
+        //get the space for a fence and set it if there's nothing there
+        Block fenceBlock = ground.getRelative(BlockFace.UP);
+        if (fenceBlock != null && fenceBlock.isEmpty()) {
+            fenceBlock.setType(Material.NETHER_FENCE);
+        }
+        //made successfully
+        return true;
     }
 
-    private void setBlockAsHead(Player p, Block head_block) {
-        head_block.setType(Material.SKULL);
-        head_block.setData((byte) 1);          //TODO depreacted but no alternative?
-        Skull state = (Skull) head_block.getState();
+    private static void setBlockAsHead(Player p, Block headBlock) {
+        //set the type to skull
+        headBlock.setType(Material.SKULL);
+        headBlock.setData((byte) 1); //TODO depreacted but no alternative yet
+        //get the state to be a player skull for the player and set its rotation based on where the player was looking
+        Skull state = (Skull) headBlock.getState();
         state.setSkullType(SkullType.PLAYER);
         state.setOwner(p.getName());
         state.setRotation(ServerUtil.getCardinalDirection(p));
         state.update();
     }
 
-    private Block getClosestGround(Block b) {
-        if (b == null) {
-            return null;
+    /**
+     * Gets the closest non empty block under the block supplied or null if none found
+     *
+     * @param block Block
+     * @return Block
+     */
+    private static Block getClosestGround(Block block) {
+        Block loopBlock = block;
+        //recurse until found
+        while (true) {
+            //if there is no block return null
+            if (loopBlock == null) {
+                return null;
+            }
+            //if it's not empty return this block
+            if (!loopBlock.isEmpty()) {
+                return block;
+            }
+            loopBlock = loopBlock.getRelative(BlockFace.DOWN);
         }
-        if (!b.isEmpty()) {
-            return b;
-        }
-        return getClosestGround(b.getRelative(BlockFace.DOWN));
     }
 
-    private ItemStack playerSkullForName(String name) {
+    /**
+     * Generates a player skull itemstack for the given name
+     * @param name the player name
+     * @return ItemStack
+     */
+    private static ItemStack playerSkullForName(String name) {
+        //1 skull item
         ItemStack is = new ItemStack(Material.SKULL_ITEM, 1);
+        //3 is a player skull
         is.setDurability((short) 3);
+        //set the metadata for the owner
         SkullMeta meta = (SkullMeta) is.getItemMeta();
         meta.setOwner(name);
         is.setItemMeta(meta);
