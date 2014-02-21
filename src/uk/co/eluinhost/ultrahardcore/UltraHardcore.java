@@ -17,7 +17,6 @@ import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.game.GameManager;
 import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
 
 /**
@@ -52,10 +51,6 @@ public class UltraHardcore extends JavaPlugin implements Listener {
 
         m_featureManager.loadDefaultModules();
         setupCommands();
-
-        //Load the game manager
-        @SuppressWarnings("unused")
-        GameManager gm = new GameManager();
 
         //Load all the metric infos
         try {
