@@ -22,6 +22,7 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.features.core.entity.Footstep;
 
 public class FootprintFeature extends UHCFeature implements Runnable {
 
@@ -37,66 +38,13 @@ public class FootprintFeature extends UHCFeature implements Runnable {
 
     private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
+    private final PacketContainer m_defaultPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
+
     private final ArrayList<Footstep> m_footsteps = new ArrayList<Footstep>();
     private int m_jobID = -1;
 
     public FootprintFeature() {
         super("Footprints","Leave footprints behind you...");
-    }
-
-    //TODO move class
-    public static class Footstep {
-
-        private final Location m_location;
-        private int m_timeRemaining;
-        private final String m_playerName;
-
-        private final PacketContainer m_defaultPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
-
-        public Footstep(Location loc, int timeToLast, String name) {
-            m_playerName = name;
-            m_location = loc;
-            m_timeRemaining = timeToLast;
-            m_defaultPacket.getStrings().write(0, "footstep");
-            m_defaultPacket.getFloat()
-                    .write(0, (float) loc.getX())//x
-                    .write(1, (float) loc.getY())//y
-                    .write(2, (float) loc.getZ())
-                    .write(3, 0.0F)//offsetx
-                    .write(4, 0.0F)//offsety
-                    .write(5, 0.0F)//offsetz
-                    .write(6, 1.0F);
-            m_defaultPacket.getIntegers().write(0, 1);
-        }
-
-        public int getTimeRemaining() {
-            return m_timeRemaining;
-        }
-
-        public void decrementTimeRemaining() {
-            m_timeRemaining -= 1;
-        }
-
-        public Location getLocation() {
-            return m_location;
-        }
-
-        public void sendPackets() {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                try {
-                    if (p.getLocation().distanceSquared(m_location) < MAX_RENDER_DISTANCE_SQUARED) {
-                        PROTOCOL_MANAGER.sendServerPacket(p, m_defaultPacket);
-                    }
-                } catch (IllegalArgumentException ignored) {
-                    //wrong world, doesn't matter
-                } catch (InvocationTargetException ignored) {}
-            }
-
-        }
-
-        public String getName() {
-            return m_playerName;
-        }
     }
 
     @Override
@@ -133,7 +81,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
                     ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_TIME_TO_LAST) / 2,
                     p.getName()
                 );
-                newFootstep.sendPackets();
+                sendFootstep(newFootstep);
                 m_footsteps.add(newFootstep);
             }
         }
@@ -144,7 +92,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
             if (footstep.getTimeRemaining() <= 0) {
                 iterator.remove();
             } else {
-                footstep.sendPackets();
+                sendFootstep(footstep);
             }
         }
     }
@@ -167,5 +115,28 @@ public class FootprintFeature extends UHCFeature implements Runnable {
             }
         }
         return true;
+    }
+
+    private void sendFootstep(Footstep footstep){
+        m_defaultPacket.getStrings().write(0, "footstep");
+        Location loc = footstep.getLocation();
+        m_defaultPacket.getFloat()
+                .write(0, (float) loc.getX())//x
+                .write(1, (float) loc.getY())//y
+                .write(2, (float) loc.getZ())
+                .write(3, 0.0F)//offsetx
+                .write(4, 0.0F)//offsety
+                .write(5, 0.0F)//offsetz
+                .write(6, 1.0F);
+        m_defaultPacket.getIntegers().write(0, 1);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            try {
+                if (p.getLocation().distanceSquared(loc) < MAX_RENDER_DISTANCE_SQUARED) {
+                    PROTOCOL_MANAGER.sendServerPacket(p, m_defaultPacket);
+                }
+            } catch (IllegalArgumentException ignored) {
+                //wrong world, doesn't matter
+            } catch (InvocationTargetException ignored) {}
+        }
     }
 }
