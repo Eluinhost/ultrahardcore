@@ -2,6 +2,7 @@ package uk.co.eluinhost.UltraHardcore.features.core;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,13 +13,13 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
+import org.bukkit.permissions.Permissible;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 
 /**
  * RecipeHandler
- * <p/>
  * Handles the alternative recipies for the regen items
  *
  * @author ghowden
@@ -32,51 +33,59 @@ public class RecipeFeature extends UHCFeature {
 
     @EventHandler
     public void onPrepareCraftItemEvent(PrepareItemCraftEvent e) {
+        //if we are enabled
         if (isEnabled()) {
-            Recipe r = e.getRecipe();
-            if (r.getResult().getType().equals(Material.GOLDEN_APPLE)) {
-                if (recipeContainsMaterial(r, Material.GOLD_BLOCK)) {
-                    if (!e.getView().getPlayer().hasPermission(PermissionNodes.ALLOW_NOTCH_APPLE)) {
-                        e.getInventory().setResult(new ItemStack(Material.AIR));
-                    }
-                }
-            } else if (r.getResult().getType().equals(Material.SPECKLED_MELON)) {
-                if (recipeContainsMaterial(r, Material.GOLD_NUGGET)) {
-                    if (e.getView().getPlayer().hasPermission(PermissionNodes.DISALLOW_OLD_GMELON)) {
-                        e.getInventory().setResult(new ItemStack(Material.AIR));
-                    }
-                } else if (recipeContainsMaterial(r, Material.GOLD_BLOCK)) {
-                    if (!e.getView().getPlayer().hasPermission(PermissionNodes.ALLOW_NEW_GMELON)) {
-                        e.getInventory().setResult(new ItemStack(Material.AIR));
-                    }
-                }
-            } else if (r.getResult().getType().equals(Material.GOLDEN_CARROT)) {
-                if (recipeContainsMaterial(r, Material.GOLD_NUGGET)) {
-                    if (e.getView().getPlayer().hasPermission(PermissionNodes.DISALLOW_OLD_GCARROT)) {
-                        e.getInventory().setResult(new ItemStack(Material.AIR));
-                    }
-                } else if (recipeContainsMaterial(r, Material.GOLD_INGOT)) {
-                    if (!e.getView().getPlayer().hasPermission(PermissionNodes.ALLOW_NEW_GCARROT)) {
-                        e.getInventory().setResult(new ItemStack(Material.AIR));
-                    }
-                }
+            //check if no permission to create
+            if(!isRecipeAllowedForPermissible(e.getView().getPlayer(),e.getRecipe())){
+                //set to air if not allowed
+                e.getInventory().setResult(new ItemStack(Material.AIR));
             }
         }
     }
 
-    private boolean recipeContainsMaterial(Recipe r, Material mat) {
-        Collection<ItemStack> ingredients = null;
-        if (r instanceof ShapedRecipe) {
-            ingredients = ((ShapedRecipe) r).getIngredientMap().values();
-        }
-        if (r instanceof ShapelessRecipe) {
-            ingredients = ((ShapelessRecipe) r).getIngredientList();
-        }
-        if (ingredients == null) {
+    /**
+     * Is the recipe allowed?
+     * @param permissible Permissible the permissible to check against
+     * @param recipe the recipe to check
+     * @return boolean true if allowed, false if not
+     * TODO abstract this into a config style instead of hardcode and loop
+     */
+    private static boolean isRecipeAllowedForPermissible(Permissible permissible, Recipe recipe){
+        Material result = recipe.getResult().getType();
+
+        if(result == Material.GOLDEN_APPLE && hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK) && !permissible.hasPermission(PermissionNodes.ALLOW_NOTCH_APPLE)){
             return false;
         }
-        for (ItemStack i : ingredients) {
-            if (i.getType().equals(mat)) {
+        if(result == Material.SPECKLED_MELON && hasRecipeGotMaterial(recipe, Material.GOLD_NUGGET) && permissible.hasPermission(PermissionNodes.DISALLOW_OLD_GMELON)){
+            return false;
+        }
+        if(result == Material.SPECKLED_MELON && hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK) && permissible.hasPermission(PermissionNodes.ALLOW_NEW_GMELON)) {
+            return false;
+        }
+        if(result == Material.GOLDEN_CARROT && hasRecipeGotMaterial(recipe, Material.GOLD_NUGGET) && permissible.hasPermission(PermissionNodes.DISALLOW_OLD_GCARROT)) {
+            return false;
+        }
+        if(result == Material.GOLDEN_CARROT && hasRecipeGotMaterial(recipe, Material.GOLD_INGOT) && permissible.hasPermission(PermissionNodes.ALLOW_NEW_GCARROT)) {
+            return false;
+        }
+        //passed all checks
+        return true;
+    }
+
+    private static boolean hasRecipeGotMaterial(Recipe r, Material mat) {
+        Collection<ItemStack> ingredients = null;
+        //noinspection ChainOfInstanceofChecks
+        if (r instanceof ShapedRecipe) {
+            ingredients = ((ShapedRecipe) r).getIngredientMap().values();
+        }else if (r instanceof ShapelessRecipe) {
+            ingredients = ((ShapelessRecipe) r).getIngredientList();
+        }
+        return null != ingredients && isMaterialInList(ingredients, mat);
+    }
+
+    private static boolean isMaterialInList(Iterable<ItemStack> itemStackList, Material mat){
+        for (ItemStack itemStack : itemStackList) {
+            if (itemStack.getType() == mat) {
                 return true;
             }
         }
@@ -109,17 +118,18 @@ public class RecipeFeature extends UHCFeature {
      */
     @Override
     public void disableFeature() {
-        Iterator<Recipe> i = Bukkit.recipeIterator();
-        while (i.hasNext()) {
-            Recipe r = i.next();
-            if (r.getResult().getType().equals(Material.SPECKLED_MELON)) {
-                if (recipeContainsMaterial(r, Material.GOLD_BLOCK)) {
-                    i.remove();
-                }
-            }else if (r.getResult().getType().equals(Material.GOLDEN_CARROT)) {
-                if (recipeContainsMaterial(r, Material.GOLD_INGOT)) {
-                    i.remove();
-                }
+        Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
+        while (recipeIterator.hasNext()) {
+            Recipe recipe = recipeIterator.next();
+            boolean removeRecipe = false;
+            if (recipe.getResult().getType() == Material.SPECKLED_MELON && hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK)) {
+                removeRecipe = true;
+            }
+            if (recipe.getResult().getType() == Material.GOLDEN_CARROT && hasRecipeGotMaterial(recipe, Material.GOLD_INGOT)) {
+                removeRecipe = true;
+            }
+            if(removeRecipe){
+                recipeIterator.remove();
             }
         }
     }
