@@ -103,4 +103,5 @@ public class PermissionNodes {
     public static final String ANON_CHAT_CHAT = "UHC.AnonChat.chat";
     public static final String ANON_CHAT_SEE_NAME = "UHC.AnonChat.seeName";
     //TODO move from plugin.yml to here
+    //TODO clean this up
 }

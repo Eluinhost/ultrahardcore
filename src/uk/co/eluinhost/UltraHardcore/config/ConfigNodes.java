@@ -132,4 +132,6 @@ public static final String RECIPE_CHANGES_IMPROVED = POTION_NERFS+".disableGlows
     public static final String PORTAL_RANGES_FROM_NETHER_CREATION = FEATURE_NODE+".portal_ranges.from_nether.creation_range";
     public static final String PORTAL_RANGES_TO_NETHER_SEARCH = FEATURE_NODE+".portal_ranges.to_nether.search_range";
     public static final String PORTAL_RANGES_FROM_NETHER_SEARCH = FEATURE_NODE+".portal_ranges.from_nether.search_range";
+
+    //TODO needs cleaning up badly
 }
