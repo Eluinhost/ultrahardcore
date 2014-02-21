@@ -1,6 +1,7 @@
 package uk.co.eluinhost.UltraHardcore.features.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 /**
  * Handles conversion of ghast tears to gold ingots
- * <p/>
  * Config is whitelist type world dependant
  * Nothing special to do on disable and enable
  *
@@ -31,17 +31,23 @@ public class GhastDropsFeature extends UHCFeature {
 
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent ede) {
-        if (isEnabled() && ede.getEntityType().equals(EntityType.GHAST)) {
+        //if we're enabled and a ghast died
+        if (isEnabled() && ede.getEntityType() == EntityType.GHAST) {
+            //if ghasts can't drop tears in this world
             if (ConfigHandler.featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())) {
+
+                //get the list of drops
                 List<ItemStack> drops = ede.getDrops();
-                Iterator<ItemStack> i = drops.iterator();
-                List<ItemStack> toAdd = new ArrayList<ItemStack>();
-                while (i.hasNext()) {
-                    ItemStack is = i.next();
-                    if (is.getType().equals(Material.GHAST_TEAR)) {
-                        ItemStack newStack = new ItemStack(Material.GOLD_INGOT, is.getAmount());
-                        i.remove();
-                        toAdd.add(newStack);
+
+                //for all the items dropped
+                Iterator<ItemStack> iterator = drops.iterator();
+                Collection<ItemStack> toAdd = new ArrayList<ItemStack>();
+                while (iterator.hasNext()) {
+                    ItemStack is = iterator.next();
+                    //if it was a ghast tear drop the same amount of gold ingots
+                    if (is.getType() == Material.GHAST_TEAR) {
+                        iterator.remove();
+                        toAdd.add(new ItemStack(Material.GOLD_INGOT, is.getAmount()));
                     }
                 }
                 drops.addAll(toAdd);
