@@ -18,7 +18,7 @@ import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureInitEvent;
  * Feature Manager Class
  * TODO make this not a utility class
  */
-public final class FeatureManager {
+public class FeatureManager {
 
     /**
      * Stores a list of all the UHC_FEATURES loaded on the server
