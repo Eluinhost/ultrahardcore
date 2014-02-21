@@ -12,14 +12,14 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
 /**
- * DeathMessages
+ * DeathMessagesFeature
  * Handles changes to death messages on death
  *
  * @author ghowden
  */
-public class DeathMessages extends UHCFeature {
+public class DeathMessagesFeature extends UHCFeature {
 
-    public DeathMessages(boolean enabled) {
+    public DeathMessagesFeature(boolean enabled) {
         super("DeathMessages", enabled);
         setDescription("Adds a prefix/suffix to all player deaths");
     }

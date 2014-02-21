@@ -23,14 +23,14 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 import uk.co.eluinhost.ultrahardcore.util.RecipeUtil;
 
-public class GoldenHeads extends UHCFeature {
+public class GoldenHeadsFeature extends UHCFeature {
 
     public static final int POTION_TICK_MULTIPLIER = 25;
     public static final String HEAD_NAME = ChatColor.GOLD+"Golden Head";
 
     private ShapedRecipe m_headRecipe = null;
 
-    public GoldenHeads(boolean enabled) {
+    public GoldenHeadsFeature(boolean enabled) {
         super("GoldenHeads", enabled);
         setDescription("New and improved golden apples!");
     }

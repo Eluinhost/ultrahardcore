@@ -7,12 +7,12 @@ import com.comphenix.protocol.events.*;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
-public class HardcoreHearts extends UHCFeature {
+public class HardcoreHeartsFeature extends UHCFeature {
 
     private final ProtocolManager m_manager = ProtocolLibrary.getProtocolManager();
     private final PacketListener m_packetAdapter = new HardcoreHeartsListener();
 
-    public HardcoreHearts(boolean enabled) {
+    public HardcoreHeartsFeature(boolean enabled) {
         super("HardcoreHearts", enabled);
         setDescription("Shows the hardcore hearts instead");
     }

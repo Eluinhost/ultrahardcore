@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -18,15 +19,14 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 /**
  * DeathDrops
- * <p/>
  * Handles extra drops on death
  *
  * @author ghowden
  */
-public class DeathDrops extends UHCFeature {
+public class DeathDropsFeature extends UHCFeature {
 
-    private List<ItemDrop> drops = new ArrayList<ItemDrop>();
-    private Random r = new Random();
+    private final Collection<ItemDrop> m_drops = new ArrayList<ItemDrop>();
+    private static final Random RANDOM = new Random();
 
     public class ItemDrop {
         private int minAmount = 0;
@@ -90,7 +90,7 @@ public class DeathDrops extends UHCFeature {
 
         public ItemStack getItemStack() {
             int range = Math.max(0, getMaxAmount() - getMinAmount());
-            int d = r.nextInt(range + 1);
+            int d = RANDOM.nextInt(range + 1);
             int amount = getMinAmount() + d;
             if (amount > 0) {
                 return new ItemStack(getItem(), amount, (short) getMeta());
@@ -99,7 +99,7 @@ public class DeathDrops extends UHCFeature {
         }
     }
 
-    public DeathDrops(boolean enabled) {
+    public DeathDropsFeature(boolean enabled) {
         super("DeathDrops", enabled);
         setDescription("Adds extra loot to players on death");
         ConfigurationSection items = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_DROPS_ITEMS);
@@ -189,15 +189,15 @@ public class DeathDrops extends UHCFeature {
             id.setChance(chance);
             id.setMaxAmount(amount_max);
             id.setMinAmount(amount_min);
-            drops.add(id);
+            m_drops.add(id);
         }
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent pde) {
         if (isEnabled()) {
-            for (ItemDrop id : drops) {
-                int randomInt = r.nextInt(100);
+            for (ItemDrop id : m_drops) {
+                int randomInt = RANDOM.nextInt(100);
                 if (randomInt < id.getChance()) {
                     ItemStack is = id.getItemStack();
                     if (is != null) {
@@ -210,7 +210,7 @@ public class DeathDrops extends UHCFeature {
 
     public List<ItemDrop> getItemDropForGroup(String name) {
         List<ItemDrop> ids = new ArrayList<ItemDrop>();
-        for (ItemDrop id : drops) {
+        for (ItemDrop id : m_drops) {
             if (id.getGroupName().equalsIgnoreCase(name)) {
                 ids.add(id);
             }
@@ -220,7 +220,7 @@ public class DeathDrops extends UHCFeature {
 
     public List<String> getItemDropGroups() {
         ArrayList<String> list = new ArrayList<String>();
-        for (ItemDrop id : drops) {
+        for (ItemDrop id : m_drops) {
             boolean found = false;
             for (String s : list) {
                 if (s.equalsIgnoreCase(id.getGroupName())) {

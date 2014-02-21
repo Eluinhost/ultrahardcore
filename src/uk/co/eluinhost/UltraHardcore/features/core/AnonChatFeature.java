@@ -9,7 +9,7 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
-public class AnonChat extends UHCFeature {
+public class AnonChatFeature extends UHCFeature {
 
     /**
      * The format before every message sent
@@ -20,7 +20,7 @@ public class AnonChat extends UHCFeature {
      * Construct an anonchat feature
      * @param enabled enabled by default or not
      */
-    public AnonChat(boolean enabled) {
+    public AnonChatFeature(boolean enabled) {
         super("AnonChat", enabled);
         setDescription("Allows players to chat without revealing their name");
     }

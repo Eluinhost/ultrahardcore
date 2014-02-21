@@ -129,17 +129,17 @@ public class UltraHardcore extends JavaPlugin implements Listener{
          features.add(new PlayerListFeature(config.getBoolean(ConfigNodes.PLAYER_LIST_HEALTH)));
          features.add(new RecipeFeature(config.getBoolean(ConfigNodes.RECIPE_CHANGES)));
          features.add(new RegenFeature(config.getBoolean(ConfigNodes.NO_HEALTH_REGEN)));
-         features.add(new DeathMessages(config.getBoolean(ConfigNodes.DEATH_MESSAGES_ENABLED)));
-         features.add(new DeathDrops(config.getBoolean(ConfigNodes.DEATH_DROPS_ENABLED)));
-         features.add(new AnonChat(config.getBoolean(ConfigNodes.ANON_CHAT_ENABLED)));
-         features.add(new GoldenHeads(config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED)));
+         features.add(new DeathMessagesFeature(config.getBoolean(ConfigNodes.DEATH_MESSAGES_ENABLED)));
+         features.add(new DeathDropsFeature(config.getBoolean(ConfigNodes.DEATH_DROPS_ENABLED)));
+         features.add(new AnonChatFeature(config.getBoolean(ConfigNodes.ANON_CHAT_ENABLED)));
+         features.add(new GoldenHeadsFeature(config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED)));
          features.add(new DeathBansFeature(config.getBoolean(ConfigNodes.DEATH_BANS_ENABLED)));
-         features.add(new PotionNerfs(config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED)));
+         features.add(new PotionNerfsFeature(config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED)));
          features.add(new NetherFeature(config.getBoolean(ConfigNodes.NETHER_DISABLE_ENABELD)));
          features.add(new WitchSpawnsFeature(config.getBoolean(ConfigNodes.WITCH_SPAWNS_ENABLED)));
          features.add(new PortalsFeature(config.getBoolean(ConfigNodes.PORTAL_RANGES_ENABLED)));
          try{
-        	 features.add(new HardcoreHearts(config.getBoolean(ConfigNodes.HARDCORE_HEARTS_ENABLED)));
+        	 features.add(new HardcoreHeartsFeature(config.getBoolean(ConfigNodes.HARDCORE_HEARTS_ENABLED)));
          }catch(NoClassDefFoundError e){
         	 log.severe("Cannot find a class for HardcoreHearts, ProtocolLib is needed for this feature to work, disabling...");
          }
@@ -151,7 +151,7 @@ public class UltraHardcore extends JavaPlugin implements Listener{
          
          for(UHCFeature f : features){
         	 try {
-				FeatureManager.addFeature(f);
+				FeatureManager.addFeature(f,true);//TODO bool
 				log.info("Loaded feature module: "+f.getFeatureID());
 			} catch (Exception e) {
 				log.severe("Failed to load a module "+(f==null?"null":f.getFeatureID()));

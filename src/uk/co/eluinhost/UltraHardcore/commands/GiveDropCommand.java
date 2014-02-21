@@ -11,7 +11,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.features.core.DeathDrops;
+import uk.co.eluinhost.ultrahardcore.features.core.DeathDropsFeature;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.ArrayList;
@@ -54,13 +54,13 @@ public class GiveDropCommand extends UHCCommand {
                 return true;
             }
             try {
-                List<DeathDrops.ItemDrop> drops = ((DeathDrops)FeatureManager.getFeature("DeathDrops")).getItemDropForGroup(args[0]);
+                List<DeathDropsFeature.ItemDrop> drops = ((DeathDropsFeature)FeatureManager.getFeature("DeathDrops")).getItemDropForGroup(args[0]);
                 if(drops.size() == 0){
                     sender.sendMessage(ChatColor.RED+"Could not find any items defined with the group name "+args[0]);
                     return true;
                 }
                 List<ItemStack> items = new ArrayList<ItemStack>();
-                for(DeathDrops.ItemDrop i : drops){
+                for(DeathDropsFeature.ItemDrop i : drops){
                     ItemStack is = i.getItemStack();
                     if(is != null){
                         items.add(is);
@@ -110,7 +110,7 @@ public class GiveDropCommand extends UHCCommand {
         }
         if(args.length == 1){
             try {
-                return ((DeathDrops)FeatureManager.getFeature("DeathDrops")).getItemDropGroups();
+                return ((DeathDropsFeature)FeatureManager.getFeature("DeathDrops")).getItemDropGroups();
             } catch (FeatureIDNotFoundException e) {
                 Bukkit.getLogger().severe("DeathDrops module is not loaded, check startup for error");
                 return p;
