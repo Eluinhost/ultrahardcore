@@ -11,7 +11,6 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 /**
  * RegenHandler
- * <p/>
  * Handles the regeneration of players and cancels if its from being near full hunger
  *
  * @author ghowden
@@ -27,13 +26,13 @@ public class RegenFeature extends UHCFeature {
     public void onHealthRegen(EntityRegainHealthEvent erhe) {
         if (isEnabled()) {
             //If its a player regen
-            if (erhe.getEntityType().equals(EntityType.PLAYER)) {
+            if (erhe.getEntityType() == EntityType.PLAYER) {
                 //If the player is in a hardcore world
                 //If its just standard health regen
-                if (erhe.getRegainReason().equals(EntityRegainHealthEvent.RegainReason.SATIATED)) {
+                if (erhe.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
                     Player p = (Player) erhe.getEntity();
                     if (p.hasPermission(PermissionNodes.NO_HEALTH_REGEN)) {
-                        if ((p.getFoodLevel() >= 18) && (p.getHealth() > 0) && (p.getHealth() < p.getMaxHealth())) {
+                        if (p.getFoodLevel() >= 18 && p.getHealth() > 0 && p.getHealth() < p.getMaxHealth()) {
                             p.setExhaustion(p.getExhaustion() - 3.0F);
                         }
                         //Cancel the event to stop the regen
