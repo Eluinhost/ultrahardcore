@@ -25,145 +25,146 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class FootprintFeature extends UHCFeature implements Runnable {
 
-    private static int MAX_RENDER_DISTANCE_SQUARED;
-    private static ProtocolManager pm = ProtocolLibrary.getProtocolManager();
-    private ArrayList<Footstep> footsteps = new ArrayList<Footstep>();
-    private static int MIN_DISTANCE_SQUARED;
-    private int jobID = -1;
+    public static final float REGULAR_OFFSET = 1.05F;
+    public static final float SNOW_OFFSET = 1.13F;
+
+    public static final int REPEAT_INTERVAL = 40;
+
+    private static final int MAX_RENDER_DISTANCE = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_RENDER_DISTANCE);
+    private static final int MAX_RENDER_DISTANCE_SQUARED = MAX_RENDER_DISTANCE * MAX_RENDER_DISTANCE;
+    private static final int MIN_RENDER_DISTANCE = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_MIN_DISTANCE);
+    private static final int MIN_DISTANCE_SQUARED = MIN_RENDER_DISTANCE * MIN_RENDER_DISTANCE;
+
+    private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
+
+    private final ArrayList<Footstep> m_footsteps = new ArrayList<Footstep>();
+    private int m_jobID = -1;
 
     public FootprintFeature(boolean enabled) {
         super("Footprints", enabled);
         setDescription("Leave footprints behind you...");
-        MAX_RENDER_DISTANCE_SQUARED = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_RENDER_DISTANCE);
-        MAX_RENDER_DISTANCE_SQUARED *= MAX_RENDER_DISTANCE_SQUARED;
-        MIN_DISTANCE_SQUARED = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_MIN_DISTANCE);
-        MIN_DISTANCE_SQUARED *= MIN_DISTANCE_SQUARED;
     }
 
-    public class Footstep {
+    //TODO move class
+    public static class Footstep {
 
-        private Location loc;
-        private int timeRemaining;
-        private String name;
+        private final Location m_location;
+        private int m_timeRemaining;
+        private final String m_playerName;
 
-        private PacketContainer defaultPacket = pm.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
+        private final PacketContainer m_defaultPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
 
         public Footstep(Location loc, int timeToLast, String name) {
-            setName(name);
-            setLocation(loc);
-            setTimeRemaining(timeToLast);
-            defaultPacket.getStrings().write(0, "footstep");
-            defaultPacket.getFloat()
+            m_playerName = name;
+            m_location = loc;
+            m_timeRemaining = timeToLast;
+            m_defaultPacket.getStrings().write(0, "footstep");
+            m_defaultPacket.getFloat()
                     .write(0, (float) loc.getX())//x
                     .write(1, (float) loc.getY())//y
                     .write(2, (float) loc.getZ())
-                    .write(3, 0F)//offsetx
-                    .write(4, 0F)//offsety
-                    .write(5, 0F)//offsetz
-                    .write(6, 1F);
-            defaultPacket.getIntegers().write(0, 1);
-            sendPackets();
+                    .write(3, 0.0F)//offsetx
+                    .write(4, 0.0F)//offsety
+                    .write(5, 0.0F)//offsetz
+                    .write(6, 1.0F);
+            m_defaultPacket.getIntegers().write(0, 1);
         }
 
         public int getTimeRemaining() {
-            return timeRemaining;
-        }
-
-        public void setTimeRemaining(int timeRemaining) {
-            this.timeRemaining = timeRemaining;
+            return m_timeRemaining;
         }
 
         public void decrementTimeRemaining() {
-            timeRemaining -= 1;
+            m_timeRemaining -= 1;
         }
 
         public Location getLocation() {
-            return loc;
-        }
-
-        public void setLocation(Location loc) {
-            this.loc = loc;
+            return m_location;
         }
 
         public void sendPackets() {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 try {
-                    if (p.getLocation().distanceSquared(loc) < MAX_RENDER_DISTANCE_SQUARED) {
-                        pm.sendServerPacket(p, defaultPacket);
+                    if (p.getLocation().distanceSquared(m_location) < MAX_RENDER_DISTANCE_SQUARED) {
+                        PROTOCOL_MANAGER.sendServerPacket(p, m_defaultPacket);
                     }
-                } catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ignored) {
                     //wrong world, doesn't matter
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                } catch (InvocationTargetException ignored) {}
             }
 
         }
 
         public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
+            return m_playerName;
         }
     }
 
     @Override
     public void enableFeature() {
-        jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), this, 1, 2 * 20);
+        m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), this, 1, REPEAT_INTERVAL);
     }
 
     @Override
     public void disableFeature() {
-        Bukkit.getScheduler().cancelTask(jobID);
-        jobID = -1;
-        footsteps.clear();
+        Bukkit.getScheduler().cancelTask(m_jobID);
+        m_jobID = -1;
+        m_footsteps.clear();
     }
 
     @Override
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.hasPermission(PermissionNodes.FOOTPRINTS_FOR_PLAYER) || p.getGameMode().equals(GameMode.CREATIVE)) {
+            if (!p.hasPermission(PermissionNodes.FOOTPRINTS_FOR_PLAYER) || p.getGameMode() == GameMode.CREATIVE) {
                 continue;
             }
-            Block b = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
-            if (b.getType() == Material.AIR) {
-                b = b.getRelative(BlockFace.DOWN);
+            Block block = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
+            if (block.getType() == Material.AIR) {
+                block = block.getRelative(BlockFace.DOWN);
             }
             Location loc = p.getLocation();
-            if (b.getType() != Material.AIR && b.getType() != Material.WATER && noneClose(loc, MIN_DISTANCE_SQUARED, p.getName())) {
-                float offset = 1.05F;
-                if (b.getType() == Material.SNOW) {
-                    offset = 1.13F;
+            if (block.getType() != Material.AIR && block.getType() != Material.WATER && isClearOfFootprints(loc, MIN_DISTANCE_SQUARED, p.getName())) {
+                float offset = REGULAR_OFFSET;
+                if (block.getType() == Material.SNOW) {
+                    offset = SNOW_OFFSET;
                 }
-                loc.setY(b.getLocation().getY() + offset);
-                footsteps.add(new Footstep(loc,
-                        ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_TIME_TO_LAST) / 2
-                        , p.getName()));
+                loc.setY(block.getLocation().getY() + offset);
+                Footstep newFootstep = new Footstep(
+                    loc,
+                    ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FOOTPRINTS_TIME_TO_LAST) / 2,
+                    p.getName()
+                );
+                newFootstep.sendPackets();
+                m_footsteps.add(newFootstep);
             }
         }
-        Iterator<Footstep> i = footsteps.iterator();
-        while (i.hasNext()) {
-            Footstep f = i.next();
-            f.decrementTimeRemaining();
-            if (f.getTimeRemaining() <= 0) {
-                i.remove();
+        Iterator<Footstep> iterator = m_footsteps.iterator();
+        while (iterator.hasNext()) {
+            Footstep footstep = iterator.next();
+            footstep.decrementTimeRemaining();
+            if (footstep.getTimeRemaining() <= 0) {
+                iterator.remove();
             } else {
-                f.sendPackets();
+                footstep.sendPackets();
             }
         }
     }
 
-    private boolean noneClose(Location loc, int distance, String name) {
-        for (Footstep f : footsteps) {
-            if (f.getName().equals(name)) {
+    /**
+     * Checks for footprints within the distance of the location for the player name
+     * @param loc Location
+     * @param distance int
+     * @param name String
+     * @return boolean true if clear, false if not
+     */
+    private boolean isClearOfFootprints(Location loc, int distance, String name) {
+        for (Footstep footstep : m_footsteps) {
+            if (footstep.getName().equals(name)) {
                 try {
-                    if (f.getLocation().distanceSquared(loc) < distance) {
+                    if (footstep.getLocation().distanceSquared(loc) < distance) {
                         return false;
                     }
-                } catch (IllegalArgumentException ignored) {
-                }
+                } catch (IllegalArgumentException ignored) {/*happens on different dimension*/}
             }
         }
         return true;
