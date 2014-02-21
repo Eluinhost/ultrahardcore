@@ -25,7 +25,10 @@ import uk.co.eluinhost.UltraHardcore.util.RecipeUtil;
 
 public class GoldenHeads extends UHCFeature {
 
-    private ShapedRecipe head_recipe = null;
+    public static final int POTION_TICK_MULTIPLIER = 25;
+    public static final String HEAD_NAME = ChatColor.GOLD+"Golden Head";
+
+    private ShapedRecipe m_headRecipe = null;
 
     public GoldenHeads(boolean enabled) {
         super("GoldenHeads", enabled);
@@ -33,37 +36,46 @@ public class GoldenHeads extends UHCFeature {
     }
 
     @EventHandler
-    public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
+    public static void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
+        //if they ate a golden apple
         ItemStack is = pee.getItem();
-        if (is.getType().equals(Material.GOLDEN_APPLE)) {
+        if (is.getType() == Material.GOLDEN_APPLE) {
+            //if it was a golden head
             ItemMeta im = is.getItemMeta();
-            if (im.hasDisplayName() && im.getDisplayName().equals(ChatColor.GOLD + "Golden Head")) {
+            if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
+                //get the factor of healing it's supposed to do
                 int factor = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.GOLDEN_HEADS_HEAL_FACTOR);
-
-                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + (factor * 25), 1));
+                //add tge new potion effect
+                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + factor * POTION_TICK_MULTIPLIER, 1));
             }
         }
     }
 
     @EventHandler
     public void onPreCraftEvent(PrepareItemCraftEvent pce) {
-        if (RecipeUtil.areSimilar(pce.getRecipe(), head_recipe)) {
+        //if it's the golden head recipe
+        if (RecipeUtil.areSimilar(pce.getRecipe(), m_headRecipe)) {
+
+            //get the result's metadata
             ItemStack res = pce.getInventory().getResult();
             ItemMeta meta = res.getItemMeta();
 
-            String name = "N/A";
-
-            for (ItemStack i : pce.getInventory().getContents()) {
-                if (i.getType().equals(Material.SKULL_ITEM)) {
-                    SkullMeta sm = (SkullMeta) i.getItemMeta();
+            //get the name of the used head
+            String name = "INVALID PLAYER";
+            for (ItemStack itemStack : pce.getInventory().getContents()) {
+                if (itemStack.getType() == Material.SKULL_ITEM) {
+                    SkullMeta sm = (SkullMeta) itemStack.getItemMeta();
                     name = sm.getOwner();
                 }
             }
 
+            //set the lore on the output golden head
             List<String> lore = meta.getLore();
             lore.add(ChatColor.AQUA + "Made from the head of: " + name);
             meta.setLore(lore);
             res.setItemMeta(meta);
+
+            //set the resulting head
             pce.getInventory().setResult(res);
         }
     }
@@ -71,34 +83,41 @@ public class GoldenHeads extends UHCFeature {
     @Override
     public void enableFeature() {
         //Make a recipe that will return a golden apple when the right shape is made
-        ItemStack i = new ItemStack(Material.GOLDEN_APPLE, 1);
-        ItemMeta meta = i.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Golden Head");
-        ArrayList<String> lore = new ArrayList<String>();
+        ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE, 1);
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setDisplayName(HEAD_NAME);
+
+        //add it's lore
+        List<String> lore = new ArrayList<String>();
         lore.add("Some say consuming the head of a");
         lore.add("fallen foe strengthens the blood");
         meta.setLore(lore);
-        i.setItemMeta(meta);
-        ShapedRecipe golden_head = new ShapedRecipe(i);
+        itemStack.setItemMeta(meta);
+
+        //make the recipe
+        ShapedRecipe goldenHead = new ShapedRecipe(itemStack);
         //8 gold ingots surrounding an apple
-        golden_head.shape("AAA", "ABA", "AAA");
-        golden_head.setIngredient('A', Material.GOLD_INGOT)
+        goldenHead.shape("AAA", "ABA", "AAA");
+        goldenHead.setIngredient('A', Material.GOLD_INGOT)
                 .setIngredient('B', Material.SKULL_ITEM, 3); //TODO deprecated but no alternative?
 
-        head_recipe = golden_head;
-        Bukkit.addRecipe(golden_head);
+        m_headRecipe = goldenHead;
+
+        //add recipe to bukkit
+        Bukkit.addRecipe(goldenHead);
     }
 
     @Override
     public void disableFeature() {
-        Iterator<Recipe> i = Bukkit.recipeIterator();
-        while (i.hasNext()) {
-            Recipe r = i.next();
+        Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
+        while (recipeIterator.hasNext()) {
+            Recipe r = recipeIterator.next();
             ItemStack is = r.getResult();
-            if (is.getType().equals(Material.GOLDEN_APPLE)) {
+            //if it's a golden apple named like ours remove it
+            if (is.getType() == Material.GOLDEN_APPLE) {
                 ItemMeta im = is.getItemMeta();
-                if (im.hasDisplayName() && im.getDisplayName().equals(ChatColor.GOLD + "Golden Head")) {
-                    i.remove();
+                if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
+                    recipeIterator.remove();
                 }
             }
         }
