@@ -1,5 +1,6 @@
 package uk.co.eluinhost.UltraHardcore.features;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.event.Listener;
 
 import uk.co.eluinhost.UltraHardcore.exceptions.FeatureStateNotChangedException;
@@ -7,32 +8,54 @@ import uk.co.eluinhost.UltraHardcore.exceptions.FeatureStateNotChangedException;
 public abstract class UHCFeature implements Listener {
 
     /**
-     * The feature ID for the feature, override to set one for your feature, allows [\w]++
+     * The feature ID for the feature
      */
-    private String featureID = null;
-    private boolean enabled = false;
-    private String description = "N/A";
+    private String m_featureID = null;
+    /**
+     * Is the feautre enabeld right now?
+     */
+    private boolean m_enabled = false;
+    /**
+     * The description of the current feature
+     */
+    private String m_description = "N/A";
 
+    //TODO refactor to events
     public abstract void enableFeature();
 
+    //TODO refactor to events
     public abstract void disableFeature();
 
-    public final String getFeatureID() {
-        return featureID;
+    /**
+     * Get the name of the current feature
+     * @return String
+     */
+    public String getFeatureID() {
+        return m_featureID;
     }
 
-    public final boolean isEnabled() {
-        return enabled;
+    /**
+     * Is the feature enabled?
+     * @return boolean
+     */
+    public boolean isEnabled() {
+        return m_enabled;
     }
 
-    public final void setEnabled(boolean enable) throws FeatureStateNotChangedException {
+    /**
+     * Set the enabled status of this feature
+     * @param enable
+     * @throws FeatureStateNotChangedException
+     * TODO remove this and put it's details in the manager
+     */
+    public void setEnabled(boolean enable) throws FeatureStateNotChangedException {
         //if we're changing state
         if (enable != isEnabled()) {
             if (enable) {
-                enabled = true;
+                m_enabled = true;
                 enableFeature();
             } else {
-                enabled = false;
+                m_enabled = false;
                 disableFeature();
             }
         } else {
@@ -40,21 +63,50 @@ public abstract class UHCFeature implements Listener {
         }
     }
 
-    public UHCFeature(String featureID, boolean enabled) {
-        this.featureID = featureID;
-        this.enabled = enabled;
+    /**
+     * Construct a new feature
+     * @param featureID the feature ID to use
+     * @param enabled
+     * TODO remove the enabled param
+     */
+    protected UHCFeature(String featureID, boolean enabled) {
+        m_featureID = featureID;
+        m_enabled = enabled;
     }
 
+    /**
+     * Are the features the same feature? Returns true if they have the same ID
+     * @param obj Object
+     * @return boolean
+     */
     @Override
-    public boolean equals(Object o) {
-        return (o instanceof UHCFeature && ((UHCFeature) o).getFeatureID().equals(this.getFeatureID()));
+    public boolean equals(Object obj) {
+        return obj instanceof UHCFeature && ((UHCFeature) obj).getFeatureID().equals(getFeatureID());
     }
 
-    public final String getDescription() {
-        return description;
+    /**
+     * Return the hashcode of this feature
+     * @return int
+     */
+    @Override
+    public int hashCode(){
+        return new HashCodeBuilder(17, 31).append(getFeatureID()).toHashCode();
     }
 
-    public final void setDescription(String description) {
-        this.description = description;
+    /**
+     * Get the description of the feature
+     * @return String
+     */
+    public String getDescription() {
+        return m_description;
+    }
+
+    /**
+     * Set the description of the feature
+     * TODO remove this feature, put in constructor
+     * @param description String
+     */
+    public void setDescription(String description) {
+        m_description = description;
     }
 }
