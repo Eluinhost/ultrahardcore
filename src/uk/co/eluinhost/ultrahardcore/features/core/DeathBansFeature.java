@@ -11,7 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.bans.DeathBan;
+import uk.co.eluinhost.ultrahardcore.features.core.entity.DeathBan;
 import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
@@ -42,7 +42,7 @@ public class DeathBansFeature extends UHCFeature {
 
     //TODO more cleanup
     public DeathBansFeature() {
-        super("DeathBans","Bans a player on death for a specified amount of time");
+        super("DeathBans", "Bans a player on death for a specified amount of time");
 
         FileConfiguration banConfig = ConfigHandler.getConfig(ConfigHandler.BANS);
 
