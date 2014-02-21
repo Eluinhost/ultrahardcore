@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.metrics;
+package uk.co.eluinhost.ultrahardcore.metrics;
 /*
  * Copyright 2011-2013 Tyler Blair. All rights reserved.
  *

@@ -1,12 +1,12 @@
-package uk.co.eluinhost.UltraHardcore.features.core;
+package uk.co.eluinhost.ultrahardcore.features.core;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
 /**

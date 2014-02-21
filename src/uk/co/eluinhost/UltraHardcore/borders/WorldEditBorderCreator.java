@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.borders;
+package uk.co.eluinhost.ultrahardcore.borders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,12 +8,12 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import uk.co.eluinhost.UltraHardcore.borders.types.Cylinder;
-import uk.co.eluinhost.UltraHardcore.borders.types.Roofing;
-import uk.co.eluinhost.UltraHardcore.borders.types.Square;
-import uk.co.eluinhost.UltraHardcore.exceptions.BorderTypeNotFoundException;
-import uk.co.eluinhost.UltraHardcore.exceptions.WorldEditMaxChangedBlocksException;
-import uk.co.eluinhost.UltraHardcore.exceptions.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.borders.types.Cylinder;
+import uk.co.eluinhost.ultrahardcore.borders.types.Roofing;
+import uk.co.eluinhost.ultrahardcore.borders.types.Square;
+import uk.co.eluinhost.ultrahardcore.exceptions.BorderTypeNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.WorldEditMaxChangedBlocksException;
+import uk.co.eluinhost.ultrahardcore.exceptions.WorldNotFoundException;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.bukkit.BukkitWorld;

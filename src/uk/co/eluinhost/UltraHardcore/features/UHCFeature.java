@@ -1,9 +1,9 @@
-package uk.co.eluinhost.UltraHardcore.features;
+package uk.co.eluinhost.ultrahardcore.features;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.event.Listener;
 
-import uk.co.eluinhost.UltraHardcore.exceptions.FeatureStateNotChangedException;
+import uk.co.eluinhost.ultrahardcore.exceptions.FeatureStateNotChangedException;
 
 public abstract class UHCFeature implements Listener {
 

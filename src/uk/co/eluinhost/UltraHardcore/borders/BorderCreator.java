@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.borders;
+package uk.co.eluinhost.ultrahardcore.borders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +10,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
-import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.exceptions.BorderTypeNotFoundException;
-import uk.co.eluinhost.UltraHardcore.exceptions.WorldEditMaxChangedBlocksException;
-import uk.co.eluinhost.UltraHardcore.exceptions.WorldEditNotFoundException;
-import uk.co.eluinhost.UltraHardcore.exceptions.WorldNotFoundException;
-import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.exceptions.BorderTypeNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.WorldEditMaxChangedBlocksException;
+import uk.co.eluinhost.ultrahardcore.exceptions.WorldEditNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 /**
  * Class to generate a border using worldedit, actual worldedit references are in WorldEditBorderCreator

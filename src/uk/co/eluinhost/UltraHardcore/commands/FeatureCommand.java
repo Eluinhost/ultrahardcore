@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
-import uk.co.eluinhost.UltraHardcore.exceptions.FeatureStateNotChangedException;
-import uk.co.eluinhost.UltraHardcore.features.FeatureManager;
-import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.FeatureStateNotChangedException;
+import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
+import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class FeatureCommand extends UHCCommand {
 

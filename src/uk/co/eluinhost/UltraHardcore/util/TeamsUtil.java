@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.util;
+package uk.co.eluinhost.ultrahardcore.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;

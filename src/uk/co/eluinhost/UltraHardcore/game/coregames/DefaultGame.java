@@ -1,6 +1,6 @@
-package uk.co.eluinhost.UltraHardcore.game.coregames;
+package uk.co.eluinhost.ultrahardcore.game.coregames;
 
-import uk.co.eluinhost.UltraHardcore.game.UHCGame;
+import uk.co.eluinhost.ultrahardcore.game.UHCGame;
 
 @SuppressWarnings("unused")
 public class DefaultGame extends UHCGame {

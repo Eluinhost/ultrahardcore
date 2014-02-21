@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,13 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.util.MathsHelper;
-import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
-import uk.co.eluinhost.UltraHardcore.util.TeamsUtil;
-import uk.co.eluinhost.UltraHardcore.util.WordsUtil;
-import uk.co.eluinhost.UltraHardcore.util.TeamsUtil.PrintFlags;
+import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.util.TeamsUtil;
+import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
+import uk.co.eluinhost.ultrahardcore.util.TeamsUtil.PrintFlags;
 
 public class TeamCommands extends UHCCommand {
 

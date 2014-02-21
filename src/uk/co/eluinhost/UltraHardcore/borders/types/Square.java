@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.borders.types;
+package uk.co.eluinhost.ultrahardcore.borders.types;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -6,8 +6,8 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.patterns.SingleBlockPattern;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import uk.co.eluinhost.UltraHardcore.borders.BorderParams;
-import uk.co.eluinhost.UltraHardcore.borders.WorldEditBorder;
+import uk.co.eluinhost.ultrahardcore.borders.BorderParams;
+import uk.co.eluinhost.ultrahardcore.borders.WorldEditBorder;
 
 public class Square extends WorldEditBorder{
 

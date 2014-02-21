@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.borders;
+package uk.co.eluinhost.ultrahardcore.borders;
 
 /**
  * Holds all the information about a border

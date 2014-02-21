@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.borders.types;
+package uk.co.eluinhost.ultrahardcore.borders.types;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,9 +10,9 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.borders.BorderParams;
-import uk.co.eluinhost.UltraHardcore.borders.WorldEditBorder;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.borders.BorderParams;
+import uk.co.eluinhost.ultrahardcore.borders.WorldEditBorder;
 
 public class Spawn extends WorldEditBorder{
 

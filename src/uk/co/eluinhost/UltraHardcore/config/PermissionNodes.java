@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.config;
+package uk.co.eluinhost.ultrahardcore.config;
 
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;

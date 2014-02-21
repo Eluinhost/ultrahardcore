@@ -1,8 +1,8 @@
-package uk.co.eluinhost.UltraHardcore.features.events;
+package uk.co.eluinhost.ultrahardcore.features.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class UHCFeatureInitEvent extends Event{
 

@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.scatter;
+package uk.co.eluinhost.ultrahardcore.scatter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,14 +9,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
-import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
-import uk.co.eluinhost.UltraHardcore.exceptions.ScatterTypeConflictException;
-import uk.co.eluinhost.UltraHardcore.scatter.types.EvenCircumferenceType;
-import uk.co.eluinhost.UltraHardcore.scatter.types.ScatterType;
-import uk.co.eluinhost.UltraHardcore.scatter.types.RandomCircularType;
-import uk.co.eluinhost.UltraHardcore.scatter.types.RandomSquareType;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
+import uk.co.eluinhost.ultrahardcore.exceptions.ScatterTypeConflictException;
+import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.ScatterType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
 
 public class ScatterManager {
 

@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -8,16 +8,16 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.commands.inter.CommandCancelHandler;
-import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
-import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.scatter.ScatterManager;
-import uk.co.eluinhost.UltraHardcore.scatter.types.ScatterType;
-import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
-import uk.co.eluinhost.UltraHardcore.util.SimplePair;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.commands.inter.CommandCancelHandler;
+import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.types.ScatterType;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.*;
 

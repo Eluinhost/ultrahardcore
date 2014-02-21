@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore;
+package uk.co.eluinhost.ultrahardcore;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -13,18 +13,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import uk.co.eluinhost.UltraHardcore.bans.DeathBan;
-import uk.co.eluinhost.UltraHardcore.borders.BorderCreator;
-import uk.co.eluinhost.UltraHardcore.commands.*;
-import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
-import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.features.FeatureManager;
-import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
-import uk.co.eluinhost.UltraHardcore.features.core.*;
-import uk.co.eluinhost.UltraHardcore.game.GameManager;
-import uk.co.eluinhost.UltraHardcore.metrics.MetricsLite;
+import uk.co.eluinhost.ultrahardcore.bans.DeathBan;
+import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
+import uk.co.eluinhost.ultrahardcore.commands.*;
+import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
+import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.features.core.*;
+import uk.co.eluinhost.ultrahardcore.game.GameManager;
+import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
 
 /**
  * UltraHardcore

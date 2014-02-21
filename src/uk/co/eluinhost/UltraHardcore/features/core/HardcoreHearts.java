@@ -1,12 +1,11 @@
-package uk.co.eluinhost.UltraHardcore.features.core;
+package uk.co.eluinhost.ultrahardcore.features.core;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.*;
-import org.bukkit.plugin.Plugin;
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class HardcoreHearts extends UHCFeature {
 

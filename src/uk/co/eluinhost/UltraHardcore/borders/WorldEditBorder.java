@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.borders;
+package uk.co.eluinhost.ultrahardcore.borders;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;

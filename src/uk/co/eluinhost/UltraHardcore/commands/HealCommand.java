@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class HealCommand extends UHCCommand {
 

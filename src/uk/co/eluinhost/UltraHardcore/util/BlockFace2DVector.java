@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.util;
+package uk.co.eluinhost.ultrahardcore.util;
 
 import org.bukkit.block.BlockFace;
 

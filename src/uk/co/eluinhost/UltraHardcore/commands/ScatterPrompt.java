@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,16 +12,16 @@ import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
-import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
-import uk.co.eluinhost.UltraHardcore.exceptions.MaxAttemptsReachedException;
-import uk.co.eluinhost.UltraHardcore.exceptions.WorldNotFoundException;
-import uk.co.eluinhost.UltraHardcore.scatter.PlayerTeleportMapping;
-import uk.co.eluinhost.UltraHardcore.scatter.ScatterManager;
-import uk.co.eluinhost.UltraHardcore.scatter.ScatterParams;
-import uk.co.eluinhost.UltraHardcore.scatter.types.ScatterType;
-import uk.co.eluinhost.UltraHardcore.util.SimplePair;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
+import uk.co.eluinhost.ultrahardcore.exceptions.MaxAttemptsReachedException;
+import uk.co.eluinhost.ultrahardcore.exceptions.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
+import uk.co.eluinhost.ultrahardcore.scatter.types.ScatterType;
+import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.*;
 import java.util.logging.Level;

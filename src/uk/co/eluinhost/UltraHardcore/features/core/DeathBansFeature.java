@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.features.core;
+package uk.co.eluinhost.ultrahardcore.features.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -10,13 +10,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.bans.DeathBan;
-import uk.co.eluinhost.UltraHardcore.config.ConfigHandler;
-import uk.co.eluinhost.UltraHardcore.config.ConfigNodes;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
-import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.bans.DeathBan;
+import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;

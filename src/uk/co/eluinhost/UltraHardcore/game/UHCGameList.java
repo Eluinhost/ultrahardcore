@@ -1,8 +1,8 @@
-package uk.co.eluinhost.UltraHardcore.game;
+package uk.co.eluinhost.ultrahardcore.game;
 
 import java.util.ArrayList;
 
-import uk.co.eluinhost.UltraHardcore.exceptions.GameIDNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.GameIDNotFoundException;
 
 @SuppressWarnings("serial")
 public class UHCGameList extends ArrayList<UHCGame>{

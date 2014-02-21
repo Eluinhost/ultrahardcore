@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.bans;
+package uk.co.eluinhost.ultrahardcore.bans;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 

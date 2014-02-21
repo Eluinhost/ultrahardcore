@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.scatter;
+package uk.co.eluinhost.ultrahardcore.scatter;
 
 import org.bukkit.Material;
 

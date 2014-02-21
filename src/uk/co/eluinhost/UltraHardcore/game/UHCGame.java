@@ -1,8 +1,8 @@
-package uk.co.eluinhost.UltraHardcore.game;
+package uk.co.eluinhost.ultrahardcore.game;
 
 import org.bukkit.event.Listener;
 
-import uk.co.eluinhost.UltraHardcore.exceptions.GameNotRunningException;
+import uk.co.eluinhost.ultrahardcore.exceptions.GameNotRunningException;
 
 @SuppressWarnings("unused")
 public abstract class UHCGame implements Listener{

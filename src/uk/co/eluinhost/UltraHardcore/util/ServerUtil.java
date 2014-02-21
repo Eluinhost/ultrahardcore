@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.util;
+package uk.co.eluinhost.ultrahardcore.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -12,7 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 
 public class ServerUtil {
 

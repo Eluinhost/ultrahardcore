@@ -1,9 +1,9 @@
-package uk.co.eluinhost.UltraHardcore.config;
+package uk.co.eluinhost.ultrahardcore.config;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,8 +1,7 @@
-package uk.co.eluinhost.UltraHardcore.features.core;
+package uk.co.eluinhost.ultrahardcore.features.core;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,8 +13,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
 import org.bukkit.permissions.Permissible;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
 /**
