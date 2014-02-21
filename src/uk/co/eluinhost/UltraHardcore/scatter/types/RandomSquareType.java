@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.scatter.types;
+package uk.co.eluinhost.ultrahardcore.scatter.types;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import uk.co.eluinhost.UltraHardcore.exceptions.MaxAttemptsReachedException;
-import uk.co.eluinhost.UltraHardcore.exceptions.WorldNotFoundException;
-import uk.co.eluinhost.UltraHardcore.scatter.ScatterManager;
-import uk.co.eluinhost.UltraHardcore.scatter.ScatterParams;
-import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.exceptions.MaxAttemptsReachedException;
+import uk.co.eluinhost.ultrahardcore.exceptions.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class RandomSquareType extends ScatterType{
 

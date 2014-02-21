@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.features;
+package uk.co.eluinhost.ultrahardcore.features;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,11 +8,11 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDConflictException;
-import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
-import uk.co.eluinhost.UltraHardcore.exceptions.InvalidFeatureIDException;
-import uk.co.eluinhost.UltraHardcore.features.events.UHCFeatureInitEvent;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDConflictException;
+import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.InvalidFeatureIDException;
+import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureInitEvent;
 
 /**
  * Feature Manager Class

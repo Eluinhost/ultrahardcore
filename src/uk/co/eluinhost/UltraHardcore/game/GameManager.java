@@ -1,11 +1,11 @@
-package uk.co.eluinhost.UltraHardcore.game;
+package uk.co.eluinhost.ultrahardcore.game;
 
 import org.bukkit.Bukkit;
 
-import uk.co.eluinhost.UltraHardcore.UltraHardcore;
-import uk.co.eluinhost.UltraHardcore.exceptions.GameIDConflictException;
-import uk.co.eluinhost.UltraHardcore.exceptions.GameIDNotFoundException;
-import uk.co.eluinhost.UltraHardcore.exceptions.GameNotRunningException;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.exceptions.GameIDConflictException;
+import uk.co.eluinhost.ultrahardcore.exceptions.GameIDNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.GameNotRunningException;
 
 /**
  * Handles the starting and running of games in UHC

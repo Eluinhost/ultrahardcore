@@ -1,4 +1,4 @@
-package uk.co.eluinhost.UltraHardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,12 +7,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import uk.co.eluinhost.UltraHardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
-import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
-import uk.co.eluinhost.UltraHardcore.features.FeatureManager;
-import uk.co.eluinhost.UltraHardcore.features.core.DeathDrops;
-import uk.co.eluinhost.UltraHardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
+import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
+import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
+import uk.co.eluinhost.ultrahardcore.features.core.DeathDrops;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
