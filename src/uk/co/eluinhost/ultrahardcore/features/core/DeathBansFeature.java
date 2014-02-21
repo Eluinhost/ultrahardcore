@@ -41,8 +41,8 @@ public class DeathBansFeature extends UHCFeature {
     private static final long MILLIS_PER_YEAR   = MILLIS_PER_DAY * 365;
 
     //TODO more cleanup
-    public DeathBansFeature(boolean enabled) {
-        super("DeathBans", enabled);
+    public DeathBansFeature() {
+        super("DeathBans");
         setDescription("Bans a player on death for a specified amount of time");
 
         FileConfiguration banConfig = ConfigHandler.getConfig(ConfigHandler.BANS);

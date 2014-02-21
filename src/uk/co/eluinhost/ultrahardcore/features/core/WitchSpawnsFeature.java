@@ -8,8 +8,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class WitchSpawnsFeature extends UHCFeature {
 
 
-    public WitchSpawnsFeature(boolean enabled) {
-        super("WitchSpawnsFeature", enabled);
+    public WitchSpawnsFeature() {
+        super("WitchSpawnsFeature");
         setDescription("Allows natural witch spawns");
     }
 

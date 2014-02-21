@@ -154,7 +154,7 @@ public class FeatureManager {
         features.add(new DeathDropsFeature(config.getBoolean(ConfigNodes.DEATH_DROPS_ENABLED)));
         features.add(new AnonChatFeature(config.getBoolean(ConfigNodes.ANON_CHAT_ENABLED)));
         features.add(new GoldenHeadsFeature(config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED)));
-        features.add(new DeathBansFeature(config.getBoolean(ConfigNodes.DEATH_BANS_ENABLED)));
+        features.add(new DeathBansFeature());
         features.add(new PotionNerfsFeature(config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED)));
         features.add(new NetherFeature(config.getBoolean(ConfigNodes.NETHER_DISABLE_ENABELD)));
         features.add(new WitchSpawnsFeature(config.getBoolean(ConfigNodes.WITCH_SPAWNS_ENABLED)));

@@ -74,12 +74,10 @@ public class UHCFeature implements Listener {
     /**
      * Construct a new feature
      * @param featureID the feature ID to use
-     * @param enabled
-     * TODO remove the enabled param
+     * TODO move description here
      */
-    protected UHCFeature(String featureID, boolean enabled) {
+    protected UHCFeature(String featureID) {
         m_featureID = featureID;
-        m_enabled = enabled;
     }
 
     /**

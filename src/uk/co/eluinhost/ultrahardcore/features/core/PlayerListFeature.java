@@ -23,8 +23,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class PlayerListFeature extends UHCFeature {
 
-    public PlayerListFeature(boolean enabled) {
-        super("PlayerList", enabled);
+    public PlayerListFeature() {
+        super("PlayerList");
         setDescription("Player's health shown in player list and under their name");
     }
 

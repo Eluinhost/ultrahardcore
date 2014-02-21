@@ -16,8 +16,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class DeathLightningFeature extends UHCFeature {
 
-    public DeathLightningFeature(boolean enabled) {
-        super("DeathLightning", enabled);
+    public DeathLightningFeature() {
+        super("DeathLightning");
         setDescription("Fake lightning on a player's corpse");
     }
 

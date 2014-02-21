@@ -97,8 +97,8 @@ public class DeathDropsFeature extends UHCFeature {
     }
 
     //TODO simplify...
-    public DeathDropsFeature(boolean enabled) {
-        super("DeathDrops", enabled);
+    public DeathDropsFeature() {
+        super("DeathDrops");
         setDescription("Adds extra loot to players on death");
         ConfigurationSection items = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_DROPS_ITEMS);
         for (String item : items.getKeys(false)) {

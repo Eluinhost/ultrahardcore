@@ -15,8 +15,8 @@ public class HardcoreHeartsFeature extends UHCFeature {
     private final ProtocolManager m_manager = ProtocolLibrary.getProtocolManager();
     private final PacketListener m_packetAdapter = new HardcoreHeartsListener();
 
-    public HardcoreHeartsFeature(boolean enabled) {
-        super("HardcoreHearts", enabled);
+    public HardcoreHeartsFeature() {
+        super("HardcoreHearts");
         setDescription("Shows the hardcore hearts instead");
     }
 

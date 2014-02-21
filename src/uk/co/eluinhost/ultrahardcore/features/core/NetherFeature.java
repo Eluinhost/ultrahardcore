@@ -13,8 +13,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class NetherFeature extends UHCFeature {
 
-    public NetherFeature(boolean enabled) {
-        super("NetherFeature", enabled);
+    public NetherFeature() {
+        super("NetherFeature");
         setDescription("Disables the use of nether portals");
     }
 

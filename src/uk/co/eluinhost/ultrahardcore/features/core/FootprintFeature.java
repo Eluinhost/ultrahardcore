@@ -40,8 +40,8 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     private final ArrayList<Footstep> m_footsteps = new ArrayList<Footstep>();
     private int m_jobID = -1;
 
-    public FootprintFeature(boolean enabled) {
-        super("Footprints", enabled);
+    public FootprintFeature() {
+        super("Footprints");
         setDescription("Leave footprints behind you...");
     }
 

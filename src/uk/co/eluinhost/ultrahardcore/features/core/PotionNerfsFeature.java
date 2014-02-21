@@ -21,8 +21,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class PotionNerfsFeature extends UHCFeature {
 
-    public PotionNerfsFeature(boolean enabled) {
-        super("PotionNerfs", enabled);
+    public PotionNerfsFeature() {
+        super("PotionNerfs");
         setDescription("Applies nerfs to potions");
     }
 

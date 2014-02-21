@@ -18,10 +18,9 @@ public class AnonChatFeature extends UHCFeature {
 
     /**
      * Construct an anonchat feature
-     * @param enabled enabled by default or not
      */
-    public AnonChatFeature(boolean enabled) {
-        super("AnonChat", enabled);
+    public AnonChatFeature() {
+        super("AnonChat");
         setDescription("Allows players to chat without revealing their name");
     }
 

@@ -34,8 +34,8 @@ public class PlayerHeadsFeature extends UHCFeature {
 
     private static final Random RANDOM = new Random();
 
-    public PlayerHeadsFeature(boolean enabled) {
-        super("PlayerHeads", enabled);
+    public PlayerHeadsFeature() {
+        super("PlayerHeads");
         setDescription("Players can drop their heads on death");
     }
 
