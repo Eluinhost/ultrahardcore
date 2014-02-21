@@ -20,7 +20,10 @@ public class NetherFeature extends UHCFeature {
 
     @EventHandler
     public void onPortalEvent(EntityPortalEvent epe) {
+        //if it's enabled
         if (isEnabled()) {
+            //if they're going into the nether cancel it
+            //TODO add a permission for this
             if (epe.getTo().getWorld().getEnvironment() == World.Environment.NETHER) {
                 epe.setCancelled(true);
             }
