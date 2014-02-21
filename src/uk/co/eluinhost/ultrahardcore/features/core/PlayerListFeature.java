@@ -50,8 +50,8 @@ public class PlayerListFeature extends UHCFeature {
     private static final double RED_BOUNDARY = 6.0;
     private static final double YELLOW_BOUNDARY = 12.0;
 
-    private Objective m_objectivePlayerList = null;
-    private Objective m_objectiveUnderName = null;
+    private Objective m_objectivePlayerList;
+    private Objective m_objectiveUnderName;
 
     //update the players name in the list with the following health number
     public void updatePlayerListHealth(Player player, double health) {
@@ -89,8 +89,8 @@ public class PlayerListFeature extends UHCFeature {
 
         //set the score for both the player and their display name
         //this allows the score to show under the head of players with a changed name
-        m_objectivePlayerList.getScore(Bukkit.getOfflinePlayer(newName)).setScore((int) (health * HEALTH_SCALING));
-        m_objectiveUnderName.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(player.getDisplayName()))).setScore((int) (health * HEALTH_SCALING));
+        m_objectivePlayerList.getScore(Bukkit.getOfflinePlayer(newName)).setScore((int) (showHealth * HEALTH_SCALING));
+        m_objectiveUnderName.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(player.getDisplayName()))).setScore((int) (showHealth * HEALTH_SCALING));
     }
 
     /**
