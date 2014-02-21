@@ -1,9 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.borders;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -23,14 +20,15 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
  *
  * @author ghowden
  */
+@SuppressWarnings("UtilityClass")
 public abstract class WorldEditBorderCreator {
 
-    private static HashMap<String, LinkedList<EditSession>> sessions = new HashMap<String, LinkedList<EditSession>>();
+    private static final HashMap<String, LinkedList<EditSession>> SESSIONS = new HashMap<String, LinkedList<EditSession>>();
 
-    private static ArrayList<WorldEditBorder> types = new ArrayList<WorldEditBorder>();
+    private static final List<WorldEditBorder> BORDER_TYPES = new ArrayList<WorldEditBorder>();
 
-    public static ArrayList<WorldEditBorder> getTypes() {
-        return types;
+    public static List<WorldEditBorder> getTypes() {
+        return Collections.unmodifiableList(BORDER_TYPES);
     }
 
     public static void build(BorderParams bp) throws WorldEditMaxChangedBlocksException, WorldNotFoundException, BorderTypeNotFoundException {
@@ -39,32 +37,32 @@ public abstract class WorldEditBorderCreator {
             if (w == null) {
                 throw new WorldNotFoundException();
             }
-            if (!sessions.containsKey(w.getName())) {
-                sessions.put(w.getName(), new LinkedList<EditSession>());
+            if (!SESSIONS.containsKey(w.getName())) {
+                SESSIONS.put(w.getName(), new LinkedList<EditSession>());
             }
             WorldEditBorder web = getBorderByID(bp.getTypeID());
             if (web == null) {
                 throw new BorderTypeNotFoundException();
             }
-            LinkedList<EditSession> esl = sessions.get(w.getName());
+            AbstractList<EditSession> esl = SESSIONS.get(w.getName());
             EditSession es = new EditSession(new BukkitWorld(w), Integer.MAX_VALUE);
             esl.add(es);
             web.createBorder(bp, es);
-        } catch (MaxChangedBlocksException e) {
+        } catch (MaxChangedBlocksException ignored) {
             throw new WorldEditMaxChangedBlocksException();
         }
     }
 
     public static List<String> getBorderIDs() {
         ArrayList<String> r = new ArrayList<String>();
-        for (WorldEditBorder web : types) {
+        for (WorldEditBorder web : BORDER_TYPES) {
             r.add(web.getID());
         }
         return r;
     }
 
     public static WorldEditBorder getBorderByID(String id) {
-        for (WorldEditBorder web : types) {
+        for (WorldEditBorder web : BORDER_TYPES) {
             if (web.getID().equals(id)) {
                 return web;
             }
@@ -73,8 +71,8 @@ public abstract class WorldEditBorderCreator {
     }
 
     public static boolean undoForWorld(String world) {
-        LinkedList<EditSession> es = sessions.get(world);
-        if (es == null || es.size() == 0) {
+        LinkedList<EditSession> es = SESSIONS.get(world);
+        if (es == null || es.isEmpty()) {
             return false;
         }
         es.getLast().undo(es.getLast());
@@ -83,11 +81,9 @@ public abstract class WorldEditBorderCreator {
     }
 
     public static void initialize() {
-        types.clear();
-        types.add(new Cylinder());
-        types.add(new Square());
-        types.add(new Roofing());
-        //not suitable for creation as of yet
-        //types.add(new Spawn());
+        BORDER_TYPES.clear();
+        BORDER_TYPES.add(new Cylinder());
+        BORDER_TYPES.add(new Square());
+        BORDER_TYPES.add(new Roofing());
     }
 }
