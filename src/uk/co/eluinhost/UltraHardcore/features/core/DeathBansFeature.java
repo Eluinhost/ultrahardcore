@@ -32,8 +32,8 @@ public class DeathBansFeature extends UHCFeature {
             Pattern.CASE_INSENSITIVE);
 
     public DeathBansFeature(boolean enabled) {
-		super("DeathBans",enabled);
-		setDescription("Bans a player on death for a specified amount of time");
+        super("DeathBans",enabled);
+        setDescription("Bans a player on death for a specified amount of time");
 
         FileConfiguration banConfig = ConfigHandler.getConfig(ConfigHandler.BANS);
 
@@ -47,7 +47,7 @@ public class DeathBansFeature extends UHCFeature {
             }
         }
         bans = f_bans;
-	}
+    }
 
     public static String formatTimeLeft(long timeUnban){
         long duration = timeUnban - System.currentTimeMillis();
@@ -249,10 +249,10 @@ public class DeathBansFeature extends UHCFeature {
         }
     }
 
-	@Override
-	public void enableFeature() {}
+    @Override
+    public void enableFeature() {}
 
-	@Override
-	public void disableFeature() {}
+    @Override
+    public void disableFeature() {}
 
 }
