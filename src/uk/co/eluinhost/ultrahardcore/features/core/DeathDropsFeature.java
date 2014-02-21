@@ -28,6 +28,7 @@ public class DeathDropsFeature extends UHCFeature {
     private final Collection<ItemDrop> m_drops = new ArrayList<ItemDrop>();
     private static final Random RANDOM = new Random();
 
+    //TODO split into it's own class
     public class ItemDrop {
         private int m_minAmount;
         private int m_maxAmount;
@@ -84,10 +85,6 @@ public class DeathDropsFeature extends UHCFeature {
             return m_groupName;
         }
 
-        public void setItemName(String groupName) {
-            m_groupName = groupName;
-        }
-
         public ItemStack getItemStack() {
             int range = Math.max(0, getMaxAmount() - getMinAmount());
             int randomInt = RANDOM.nextInt(range + 1);
@@ -99,6 +96,7 @@ public class DeathDropsFeature extends UHCFeature {
         }
     }
 
+    //TODO simplify...
     public DeathDropsFeature(boolean enabled) {
         super("DeathDrops", enabled);
         setDescription("Adds extra loot to players on death");
@@ -173,6 +171,7 @@ public class DeathDropsFeature extends UHCFeature {
                 continue;
             }
 
+            //noinspection deprecation
             Material mat = Material.getMaterial(itemID);      //TODO change feature to use names in config file instead of IDs and use getByName
             if (mat == null) {
                 UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid item id " + itemID + ": item for id not found");
