@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
@@ -54,7 +55,7 @@ public class GiveDropCommand extends UHCCommand {
                 return true;
             }
             try {
-                List<DeathDropsFeature.ItemDrop> drops = ((DeathDropsFeature)FeatureManager.getFeatureByID("DeathDrops")).getItemDropForGroup(args[0]);
+                List<DeathDropsFeature.ItemDrop> drops = ((DeathDropsFeature) UltraHardcore.getInstance().getFeatureManager().getFeatureByID("DeathDrops")).getItemDropForGroup(args[0]);
                 if(drops.size() == 0){
                     sender.sendMessage(ChatColor.RED+"Could not find any items defined with the group name "+args[0]);
                     return true;
@@ -110,7 +111,7 @@ public class GiveDropCommand extends UHCCommand {
         }
         if(args.length == 1){
             try {
-                return ((DeathDropsFeature)FeatureManager.getFeatureByID("DeathDrops")).getItemDropGroups();
+                return ((DeathDropsFeature)UltraHardcore.getInstance().getFeatureManager().getFeatureByID("DeathDrops")).getItemDropGroups();
             } catch (FeatureIDNotFoundException e) {
                 Bukkit.getLogger().severe("DeathDrops module is not loaded, check startup for error");
                 return p;

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
@@ -28,7 +29,7 @@ public class FeatureCommand extends UHCCommand {
                     sender.sendMessage(ChatColor.RED + "You don't have permission to view features (" + PermissionNodes.FEATURE_LIST + ")");
                     return true;
                 }
-                List<UHCFeature> features = FeatureManager.getFeatures();
+                List<UHCFeature> features = UltraHardcore.getInstance().getFeatureManager().getFeatures();
                 sender.sendMessage(ChatColor.GOLD + "Currently loaded features (" + features.size() + "):");
                 if (features.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "Nothing to see here!");
@@ -46,7 +47,7 @@ public class FeatureCommand extends UHCCommand {
             }
             UHCFeature feature;
             try {
-                feature = FeatureManager.getFeatureByID(args[1]);
+                feature = UltraHardcore.getInstance().getFeatureManager().getFeatureByID(args[1]);
             } catch (FeatureIDNotFoundException ignored) {
                 sender.sendMessage(ChatColor.RED + "The feature \"" + args[1] + " was not found, use /feature list to see a list of available features");
                 return true;
@@ -100,7 +101,7 @@ public class FeatureCommand extends UHCCommand {
             results.add("list");
         }
         if (args.length == 2 && "toggle".equalsIgnoreCase(args[0])) {
-            results.addAll(FeatureManager.getFeatureNames());
+            results.addAll(UltraHardcore.getInstance().getFeatureManager().getFeatureNames());
         }
         return results;
     }
