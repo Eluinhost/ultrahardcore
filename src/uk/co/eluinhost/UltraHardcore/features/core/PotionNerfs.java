@@ -28,30 +28,30 @@ public class PotionNerfs extends UHCFeature {
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent ice) {
         if (isEnabled()) {
-            if (ice.getInventory().getType().equals(InventoryType.BREWING)) {
+            if (ice.getInventory().getType() == InventoryType.BREWING) {
                 boolean cancelSulphur = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH);
                 boolean cancelGlowstone = ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED);
 
                 InventoryView iv = ice.getView();
                 boolean cancel = false;
                 if (ice.isShiftClick()) {
-                    if (cancelSulphur && ice.getCurrentItem().getType().equals(Material.SULPHUR)) {
+                    if (cancelSulphur && ice.getCurrentItem().getType() == Material.SULPHUR) {
                         if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)) {
                             cancel = true;
                         }
                     }
-                    if (cancelGlowstone && ice.getCurrentItem().getType().equals(Material.GLOWSTONE_DUST)) {
+                    if (cancelGlowstone && ice.getCurrentItem().getType() == Material.GLOWSTONE_DUST) {
                         if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)) {
                             cancel = true;
                         }
                     }
-                } else if (ice.getSlotType().equals(InventoryType.SlotType.FUEL)) {
-                    if (cancelSulphur && iv.getCursor().getType().equals(Material.SULPHUR)) {
+                } else if (ice.getSlotType() == InventoryType.SlotType.FUEL) {
+                    if (cancelSulphur && iv.getCursor().getType() == Material.SULPHUR) {
                         if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)) {
                             cancel = true;
                         }
                     }
-                    if (cancelGlowstone && iv.getCursor().getType().equals(Material.GLOWSTONE_DUST)) {
+                    if (cancelGlowstone && iv.getCursor().getType() == Material.GLOWSTONE_DUST) {
                         if (ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)) {
                             cancel = true;
                         }
@@ -70,7 +70,7 @@ public class PotionNerfs extends UHCFeature {
     public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
         if (isEnabled() && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.DISABLE_ABSORB)) {
             ItemStack is = pee.getItem();
-            if (is.getType().equals(Material.GOLDEN_APPLE)) {
+            if (is.getType() == Material.GOLDEN_APPLE) {
                 final String playerName = pee.getPlayer().getName();
                 Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),
                         new Runnable() {
@@ -88,11 +88,11 @@ public class PotionNerfs extends UHCFeature {
     @EventHandler
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent imie) {
         if (isEnabled()) {
-            if (imie.getDestination().getType().equals(InventoryType.BREWING)) {
-                if (imie.getItem().getType().equals(Material.SULPHUR) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)) {
+            if (imie.getDestination().getType() == InventoryType.BREWING) {
+                if (imie.getItem().getType() == Material.SULPHUR && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)) {
                     imie.setCancelled(true);
                 }
-                if (imie.getItem().getType().equals(Material.GLOWSTONE_DUST) && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED)) {
+                if (imie.getItem().getType() == Material.GLOWSTONE_DUST && ConfigHandler.getConfig(ConfigHandler.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED)) {
                     imie.setCancelled(true);
                 }
             }
