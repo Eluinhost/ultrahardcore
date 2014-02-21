@@ -2,20 +2,20 @@ package uk.co.eluinhost.ultrahardcore.util;
 
 public class SimplePair<K, V> {
 
-    private K key;
+    private final K m_key;
 
     public K getKey() {
-        return key;
+        return m_key;
     }
 
-    private V value;
+    private final V m_value;
 
     public V getValue() {
-        return value;
+        return m_value;
     }
 
     public SimplePair(K key, V value) {
-        this.key = key;
-        this.value = value;
+        this.m_key = key;
+        this.m_value = value;
     }
 }

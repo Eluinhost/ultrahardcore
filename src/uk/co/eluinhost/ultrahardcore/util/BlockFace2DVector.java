@@ -20,34 +20,34 @@ public enum BlockFace2DVector{
     SOUTH_SOUTH_WEST(BlockFace.SOUTH_SOUTH_WEST),
     WEST_SOUTH_WEST(BlockFace.WEST_SOUTH_WEST);
 
-    private final BlockFace bf;
+    private final BlockFace m_blockFace;
 
-    private BlockFace2DVector(BlockFace bf) {
-        this.bf = bf;
+    BlockFace2DVector(BlockFace blockFace) {
+        m_blockFace = blockFace;
     }
 
     public int getX() {
-        return -bf.getModX();
+        return -m_blockFace.getModX();
     }
 
     public int getZ() {
-        return bf.getModZ();
+        return m_blockFace.getModZ();
     }
 
     public BlockFace getBlockFace(){
-        return bf;
+        return m_blockFace;
     }
 
     public double getAngle(){
-        return Math.atan2(this.getX(), this.getZ());
+        return StrictMath.atan2(getX(), getZ());
     }
 
-    public static BlockFace getClosest(double look_angle){
+    public static BlockFace getClosest(double lookAngle){
         BlockFace2DVector[] vectors = BlockFace2DVector.values();
         BlockFace2DVector best = vectors[0];
         double angle = Math.abs(best.getAngle());
         for(BlockFace2DVector bfv : BlockFace2DVector.values()){
-            double a = look_angle-bfv.getAngle();
+            double a = lookAngle-bfv.getAngle();
             if(a > Math.PI*2){
                 a -= Math.PI*2;
             }else if(a < 0){

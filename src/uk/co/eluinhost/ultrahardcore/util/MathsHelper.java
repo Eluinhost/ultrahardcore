@@ -3,29 +3,33 @@ package uk.co.eluinhost.ultrahardcore.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class MathsHelper {
+@SuppressWarnings("UtilityClass")
+public class MathsHelper {
 
-	public static double getZFromRadians(double radius,double angle){
-		return Math.round(radius*Math.sin(angle));
-	}
-	public static double getXFromRadians(double radius, double angle){
-		return radius*Math.cos(angle);
-	}
+    private MathsHelper() {}
 
-	public static <T> List<List<T>> split(List<T> list, int size) {
-	    List<List<T>> result = new ArrayList<List<T>>(size);
+    public static double getZFromRadians(double radius, double angle) {
+        return Math.round(radius * StrictMath.sin(angle));
+    }
 
-	    for (int i = 0; i < size; i++) {
-	        result.add(new ArrayList<T>());
-	    }
+    public static double getXFromRadians(double radius, double angle) {
+        return radius * StrictMath.cos(angle);
+    }
 
-	    int index = 0;
+    public static <T> List<List<T>> split(Iterable<T> list, int size) {
+        List<List<T>> result = new ArrayList<List<T>>(size);
 
-	    for (T t : list) {
-	        result.get(index).add(t);
-	        index = (index + 1) % size;
-	    }
+        for (int i = 0; i < size; i++) {
+            result.add(new ArrayList<T>());
+        }
 
-	    return result;
-	}
+        int index = 0;
+
+        for (T t : list) {
+            result.get(index).add(t);
+            index = (index + 1) % size;
+        }
+
+        return result;
+    }
 }
