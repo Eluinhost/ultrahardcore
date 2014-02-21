@@ -30,7 +30,7 @@ public class DeathBanCommand extends UHCCommand {
             }
             DeathBansFeature dbf;
             try {
-                dbf = (DeathBansFeature) FeatureManager.getFeature("DeathBans");
+                dbf = (DeathBansFeature) FeatureManager.getFeatureByID("DeathBans");
             } catch (FeatureIDNotFoundException e) {
                 sender.sendMessage(ChatColor.RED+"Module DeathBans is not loaded!");
                 return true;

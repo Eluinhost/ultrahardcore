@@ -54,7 +54,7 @@ public class GiveDropCommand extends UHCCommand {
                 return true;
             }
             try {
-                List<DeathDropsFeature.ItemDrop> drops = ((DeathDropsFeature)FeatureManager.getFeature("DeathDrops")).getItemDropForGroup(args[0]);
+                List<DeathDropsFeature.ItemDrop> drops = ((DeathDropsFeature)FeatureManager.getFeatureByID("DeathDrops")).getItemDropForGroup(args[0]);
                 if(drops.size() == 0){
                     sender.sendMessage(ChatColor.RED+"Could not find any items defined with the group name "+args[0]);
                     return true;
@@ -110,7 +110,7 @@ public class GiveDropCommand extends UHCCommand {
         }
         if(args.length == 1){
             try {
-                return ((DeathDropsFeature)FeatureManager.getFeature("DeathDrops")).getItemDropGroups();
+                return ((DeathDropsFeature)FeatureManager.getFeatureByID("DeathDrops")).getItemDropGroups();
             } catch (FeatureIDNotFoundException e) {
                 Bukkit.getLogger().severe("DeathDrops module is not loaded, check startup for error");
                 return p;

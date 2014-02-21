@@ -46,7 +46,7 @@ public class FeatureCommand extends UHCCommand {
             }
             UHCFeature feature;
             try {
-                feature = FeatureManager.getFeature(args[1]);
+                feature = FeatureManager.getFeatureByID(args[1]);
             } catch (FeatureIDNotFoundException ignored) {
                 sender.sendMessage(ChatColor.RED + "The feature \"" + args[1] + " was not found, use /feature list to see a list of available features");
                 return true;
