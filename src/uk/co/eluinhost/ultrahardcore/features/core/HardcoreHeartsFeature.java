@@ -13,10 +13,20 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class HardcoreHeartsFeature extends UHCFeature {
 
     private final ProtocolManager m_manager = ProtocolLibrary.getProtocolManager();
-    private final PacketListener m_packetAdapter = new HardcoreHeartsListener();
+    private final PacketListener m_listner = new HardcoreHeartsListener();
 
     public HardcoreHeartsFeature() {
-        super("HardcoreHearts","Shows the hardcore hearts instead");
+        super("HardcoreHearts", "Shows the hardcore hearts instead");
+    }
+
+    @Override
+    public void enableCallback(){
+        m_manager.addPacketListener(m_listner);
+    }
+
+    @Override
+    public void disableCallback(){
+        m_manager.removePacketListener(m_listner);
     }
 
     private static class HardcoreHeartsListener extends PacketAdapter {
