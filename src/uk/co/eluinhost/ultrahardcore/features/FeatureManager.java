@@ -21,19 +21,14 @@ import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureInitEvent;
 public class FeatureManager {
 
     /**
-     * Stores a list of all the UHC_FEATURES loaded on the server
+     * Stores a list of all the uhcFeatures loaded on the server
      */
-    private static final List<UHCFeature> UHC_FEATURES = new ArrayList<UHCFeature>();
+    private final List<UHCFeature> m_uhcFeatureList = new ArrayList<UHCFeature>();
 
     /**
-     * Only allow UHC_FEATURES with this pattern as an ID
+     * Only allow uhcFeatures with this pattern as an ID
      */
     private static final Pattern NAME_PATTERN = Pattern.compile("^[\\w]++$");
-
-    /**
-     * Don't allow constuct
-     */
-    private FeatureManager() {}
 
     /**
      * Add a UHC feature to the manager
@@ -43,7 +38,7 @@ public class FeatureManager {
      * @throws FeatureIDConflictException when feature with the same ID already exists
      * @throws InvalidFeatureIDException  when the feature has an invalid ID name
      */
-    public static void addFeature(UHCFeature feature, boolean enabled) throws FeatureIDConflictException, InvalidFeatureIDException {
+    public void addFeature(UHCFeature feature, boolean enabled) throws FeatureIDConflictException, InvalidFeatureIDException {
 
         //check for alphanumerics
         Matcher mat = NAME_PATTERN.matcher(feature.getFeatureID());
@@ -52,7 +47,7 @@ public class FeatureManager {
         }
 
         //check for existing feature of the same name
-        for (UHCFeature uhcFeature : UHC_FEATURES) {
+        for (UHCFeature uhcFeature : m_uhcFeatureList) {
             if (uhcFeature.getFeatureID().equals(feature.getFeatureID())) {
                 throw new FeatureIDConflictException();
             }
@@ -72,7 +67,7 @@ public class FeatureManager {
         //add the feature
 
         //TODO change this >.>
-        UHC_FEATURES.add(feature);
+        m_uhcFeatureList.add(feature);
         if (feature.isEnabled()) {
             feature.enableFeature();
         } else {
@@ -90,8 +85,8 @@ public class FeatureManager {
      * @return boolean true if enabled, false otherwise
      * @throws FeatureIDNotFoundException when feature not found
      */
-    public static boolean isEnabled(String featureID) throws FeatureIDNotFoundException {
-        for (UHCFeature feature : UHC_FEATURES) {
+    public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException {
+        for (UHCFeature feature : m_uhcFeatureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
@@ -106,8 +101,8 @@ public class FeatureManager {
      * @return UHCFeature the returned feature
      * @throws FeatureIDNotFoundException when feature ID not found
      */
-    public static UHCFeature getFeature(String featureID) throws FeatureIDNotFoundException {
-        for (UHCFeature feature : UHC_FEATURES) {
+    public UHCFeature getFeatureByID(String featureID) throws FeatureIDNotFoundException {
+        for (UHCFeature feature : m_uhcFeatureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
@@ -116,12 +111,12 @@ public class FeatureManager {
     }
 
     /**
-     * Returns an unmodifiable list of all of the UHC_FEATURES loaded
+     * Returns an unmodifiable list of all of the uhcFeatures loaded
      *
      * @return List
      */
-    public static List<UHCFeature> getFeatures() {
-        return Collections.unmodifiableList(UHC_FEATURES);
+    public List<UHCFeature> getFeatures() {
+        return Collections.unmodifiableList(m_uhcFeatureList);
     }
 
     /**
@@ -129,9 +124,9 @@ public class FeatureManager {
      *
      * @return List String
      */
-    public static List<String> getFeatureNames() {
+    public List<String> getFeatureNames() {
         List<String> features = new ArrayList<String>();
-        for (UHCFeature uhc : UHC_FEATURES) {
+        for (UHCFeature uhc : m_uhcFeatureList) {
             features.add(uhc.getFeatureID());
         }
         return features;
