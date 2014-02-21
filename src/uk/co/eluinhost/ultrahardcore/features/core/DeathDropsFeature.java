@@ -28,69 +28,70 @@ public class DeathDropsFeature extends UHCFeature {
     private final Collection<ItemDrop> m_drops = new ArrayList<ItemDrop>();
     private static final Random RANDOM = new Random();
 
-    public static class ItemDrop {
-        private int m_minAmount = 0;
-        private int m_maxAmount = 0;
-        private int m_dropChance = 0;
-        private Material m_material = null;
-        private int m_damageValue = 0;
-        private String m_groupName;
+    public class ItemDrop {
+        private int minAmount = 0;
+        private int maxAmount = 0;
+        private int chance = 0;
+        private Material item;
+        private int meta;
+        private String groupName;
 
         public ItemDrop(String name) {
-            m_groupName = name;
+            groupName = name;
         }
 
         public int getMinAmount() {
-            return m_minAmount;
+            return minAmount;
         }
 
         public void setMinAmount(int minAmount) {
-            m_minAmount = minAmount;
+            this.minAmount = minAmount;
         }
 
         public int getMaxAmount() {
-            return m_maxAmount;
+            return maxAmount;
         }
 
         public void setMaxAmount(int maxAmount) {
-            m_maxAmount = maxAmount;
+            this.maxAmount = maxAmount;
         }
 
         public int getChance() {
-            return m_dropChance;
+            return chance;
         }
 
         public void setChance(int chance) {
-            m_dropChance = chance;
+            this.chance = chance;
         }
 
         public Material getItem() {
-            return m_material;
+            return item;
         }
 
         public void setItem(Material item) {
-            m_material = item;
+            this.item = item;
         }
 
         public int getMeta() {
-            return m_damageValue;
+            return meta;
         }
 
         public void setMeta(int meta) {
-            m_damageValue = meta;
+            this.meta = meta;
         }
 
         public String getGroupName() {
-            return m_groupName;
+            return groupName;
         }
 
         public void setItemName(String groupName) {
-            m_groupName = groupName;
+            this.groupName = groupName;
         }
 
         public ItemStack getItemStack() {
             int range = Math.max(0, getMaxAmount() - getMinAmount());
-            int amount = getMinAmount() + RANDOM.nextInt(range + 1);
+            int d = RANDOM.nextInt(range + 1);
+            int amount = getMinAmount() + d;
             if (amount > 0) {
                 return new ItemStack(getItem(), amount, (short) getMeta());
             }
