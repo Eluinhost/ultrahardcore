@@ -29,12 +29,4 @@ public class NetherFeature extends UHCFeature {
             }
         }
     }
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
 }

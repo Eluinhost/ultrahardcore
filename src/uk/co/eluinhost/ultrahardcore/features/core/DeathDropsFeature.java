@@ -234,12 +234,4 @@ public class DeathDropsFeature extends UHCFeature {
         }
         return list;
     }
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
 }

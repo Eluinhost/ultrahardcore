@@ -46,12 +46,4 @@ public class RegenFeature extends UHCFeature {
             }
         }
     }
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
 }

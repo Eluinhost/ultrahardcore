@@ -116,7 +116,7 @@ public class PlayerListFeature extends UHCFeature {
     }
 
     @Override
-    public void enableFeature() {
+    protected void enableCallback() {
         //set up the timer that runs
         m_taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
                 UltraHardcore.getInstance(),
@@ -129,7 +129,7 @@ public class PlayerListFeature extends UHCFeature {
     }
 
     @Override
-    public void disableFeature() {
+    protected void disableCallback() {
         //disable the task if its running
         if (m_taskID >= 0) {
             Bukkit.getScheduler().cancelTask(m_taskID);

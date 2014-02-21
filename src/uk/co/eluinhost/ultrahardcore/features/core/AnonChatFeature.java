@@ -44,15 +44,6 @@ public class AnonChatFeature extends UHCFeature {
         }
     }
 
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
-
     private static class ChatRunnable implements Runnable {
 
         /**

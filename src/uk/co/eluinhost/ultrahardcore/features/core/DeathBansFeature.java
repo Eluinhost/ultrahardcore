@@ -232,12 +232,6 @@ public class DeathBansFeature extends UHCFeature {
         }
     }
 
-    @Override
-    public void enableFeature() {}
-
-    @Override
-    public void disableFeature() {}
-
     private static class PlayerBanner implements Runnable {
         private final String m_playerName;
         private final String m_message;

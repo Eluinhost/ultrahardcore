@@ -61,12 +61,4 @@ public class DeathMessagesFeature extends UHCFeature {
     private static String locationString(Location loc) {
         return "x:" + loc.getBlockX() + " y:" + loc.getBlockY() + " z:" + loc.getBlockZ();
     }
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
 }

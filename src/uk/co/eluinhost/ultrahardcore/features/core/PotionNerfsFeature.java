@@ -119,14 +119,6 @@ public class PotionNerfsFeature extends UHCFeature {
         }
     }
 
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
-
     /**
      * When run removes absorption effect from the player name supplied
      */

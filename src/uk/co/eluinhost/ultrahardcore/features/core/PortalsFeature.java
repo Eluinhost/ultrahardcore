@@ -42,14 +42,4 @@ public class PortalsFeature extends UHCFeature {
             }
         }
     }
-
-    @Override
-    public void enableFeature() {
-
-    }
-
-    @Override
-    public void disableFeature() {
-
-    }
 }

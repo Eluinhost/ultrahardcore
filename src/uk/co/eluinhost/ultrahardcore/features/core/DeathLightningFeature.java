@@ -29,12 +29,4 @@ public class DeathLightningFeature extends UHCFeature {
             }
         }
     }
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
 }

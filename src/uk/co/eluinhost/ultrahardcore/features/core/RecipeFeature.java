@@ -95,7 +95,7 @@ public class RecipeFeature extends UHCFeature {
      * Add our recipes
      */
     @Override
-    public void enableFeature() {
+    protected void enableCallback() {
         //Make a recipe that will return a golden carrot when the right shape is made
         ShapedRecipe newGoldenCarrot = new ShapedRecipe(new ItemStack(Material.GOLDEN_CARROT, 1));
         //8 gold ingots surrounding an apple
@@ -116,7 +116,7 @@ public class RecipeFeature extends UHCFeature {
      * Remove the recipes we added
      */
     @Override
-    public void disableFeature() {
+    protected void disableCallback() {
         Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
         while (recipeIterator.hasNext()) {
             Recipe recipe = recipeIterator.next();

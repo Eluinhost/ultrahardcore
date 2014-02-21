@@ -182,12 +182,4 @@ public class PlayerHeadsFeature extends UHCFeature {
         is.setItemMeta(meta);
         return is;
     }
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
 }

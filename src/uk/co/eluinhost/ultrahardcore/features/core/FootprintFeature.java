@@ -101,12 +101,12 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     }
 
     @Override
-    public void enableFeature() {
+    protected void enableCallback() {
         m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), this, 1, REPEAT_INTERVAL);
     }
 
     @Override
-    public void disableFeature() {
+    protected void disableCallback() {
         Bukkit.getScheduler().cancelTask(m_jobID);
         m_jobID = -1;
         m_footsteps.clear();

@@ -20,16 +20,6 @@ public class HardcoreHeartsFeature extends UHCFeature {
         setDescription("Shows the hardcore hearts instead");
     }
 
-    @Override
-    public void enableFeature() {
-        m_manager.addPacketListener(m_packetAdapter);
-    }
-
-    @Override
-    public void disableFeature() {
-        m_manager.removePacketListener(m_packetAdapter);
-    }
-
     private static class HardcoreHeartsListener extends PacketAdapter {
 
         HardcoreHeartsListener(){

@@ -21,14 +21,4 @@ public class WitchSpawnsFeature extends UHCFeature {
             ese.setCancelled(true);
         }
     }
-
-    @Override
-    public void enableFeature() {
-
-    }
-
-    @Override
-    public void disableFeature() {
-
-    }
 }

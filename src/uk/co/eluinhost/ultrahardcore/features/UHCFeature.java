@@ -4,8 +4,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.event.Listener;
 
 import uk.co.eluinhost.ultrahardcore.exceptions.FeatureStateNotChangedException;
+import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureDisableEvent;
+import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureEnableEvent;
 
-public abstract class UHCFeature implements Listener {
+public class UHCFeature implements Listener {
 
     /**
      * The feature ID for the feature
@@ -20,11 +22,38 @@ public abstract class UHCFeature implements Listener {
      */
     private String m_description = "N/A";
 
-    //TODO refactor to events
-    public abstract void enableFeature();
+    /**
+     * Attempt to enable the feature
+     * @return bool true if the feature was enabled, false if already enabled or event cancelled
+     */
+    public final boolean enableFeature(){
+        if(isEnabled()){
+            return false;
+        }
+        UHCFeatureEnableEvent event = new UHCFeatureEnableEvent(this);
+        if(event.isAllowed()){
+            m_enabled = true;
+        }
+        return true;
+    }
 
-    //TODO refactor to events
-    public abstract void disableFeature();
+    /**
+     * Attempt to disable the feature
+     * @return bool true if the feature was disabled, false if already disabled or event cancelled
+     */
+    public final boolean disableFeature(){
+        if(!isEnabled()){
+            return false;
+        }
+        UHCFeatureDisableEvent event = new UHCFeatureDisableEvent(this);
+        if(event.isAllowed()){
+            m_enabled = false;
+        }
+        return true;
+    }
+
+    protected void enableCallback(){}
+    protected void disableCallback(){}
 
     /**
      * Get the name of the current feature
@@ -40,27 +69,6 @@ public abstract class UHCFeature implements Listener {
      */
     public boolean isEnabled() {
         return m_enabled;
-    }
-
-    /**
-     * Set the enabled status of this feature
-     * @param enable bool
-     * @throws FeatureStateNotChangedException
-     * TODO remove this and put it's details in the manager
-     */
-    public void setEnabled(boolean enable) throws FeatureStateNotChangedException {
-        //if we're changing state
-        if (enable != isEnabled()) {
-            if (enable) {
-                m_enabled = true;
-                enableFeature();
-            } else {
-                m_enabled = false;
-                disableFeature();
-            }
-        } else {
-            throw new FeatureStateNotChangedException();
-        }
     }
 
     /**

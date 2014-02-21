@@ -54,12 +54,4 @@ public class GhastDropsFeature extends UHCFeature {
             }
         }
     }
-
-    @Override
-    public void enableFeature() {
-    }
-
-    @Override
-    public void disableFeature() {
-    }
 }

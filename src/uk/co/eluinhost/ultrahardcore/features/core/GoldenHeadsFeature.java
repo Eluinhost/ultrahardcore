@@ -81,7 +81,7 @@ public class GoldenHeadsFeature extends UHCFeature {
     }
 
     @Override
-    public void enableFeature() {
+    protected void enableCallback() {
         //Make a recipe that will return a golden apple when the right shape is made
         ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE, 1);
         ItemMeta meta = itemStack.getItemMeta();
@@ -109,7 +109,7 @@ public class GoldenHeadsFeature extends UHCFeature {
     }
 
     @Override
-    public void disableFeature() {
+    protected void disableCallback() {
         Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
         while (recipeIterator.hasNext()) {
             Recipe r = recipeIterator.next();
