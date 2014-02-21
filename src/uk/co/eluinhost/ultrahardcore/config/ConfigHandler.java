@@ -10,60 +10,66 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
+//TODO make not utility, cleaner usage
+@SuppressWarnings("UtilityClass")
 public class ConfigHandler {
 
     public static final int MAIN = 0;
     public static final int BANS = 1;
 
-	private static FileConfiguration main_config;
-    private static FileConfiguration ban_config;
+    private static final FileConfiguration MAIN_CONFIG;
+    private static final FileConfiguration BAN_CONFIG;
 
-    static{
-        main_config = UltraHardcore.getInstance().getConfig();
-        File ban_file = new File(UltraHardcore.getInstance().getDataFolder(),"bans.yml");
-        if(!ban_file.exists()){
-            UltraHardcore.getInstance().saveResource("bans.yml",false);
+    //TODO eww
+    static {
+        MAIN_CONFIG = UltraHardcore.getInstance().getConfig();
+        File banFile = new File(UltraHardcore.getInstance().getDataFolder(), "bans.yml");
+        if (!banFile.exists()) {
+            UltraHardcore.getInstance().saveResource("bans.yml", false);
         }
-        ban_config = YamlConfiguration.loadConfiguration(ban_file);
+        BAN_CONFIG = YamlConfiguration.loadConfiguration(banFile);
         // Look for defaults in the jar
         InputStream defConfigStream = UltraHardcore.getInstance().getResource("bans.yml");
         if (defConfigStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-            ban_config.setDefaults(defConfig);
+            BAN_CONFIG.setDefaults(defConfig);
         }
     }
 
-    public static FileConfiguration getConfig(int v){
-        switch (v){
+    private ConfigHandler() {}
+
+    public static FileConfiguration getConfig(int v) {
+        switch (v) {
             case MAIN:
-                return main_config;
+                return MAIN_CONFIG;
             case BANS:
-                return ban_config;
+                return BAN_CONFIG;
             default:
                 return null;
         }
     }
 
-	public static boolean featureEnabledForWorld(String featureNode, String worldName){
-		//w&&f = enabled
-		//w&&!f = disabled
-		//!w&&f = disabled
-		//!w&&!f = enabled
-		// = AND
-		boolean whitelist = main_config.getBoolean(featureNode+".whitelist");
-		boolean found = main_config.getStringList(featureNode+".worlds").contains(worldName);
-		return !(whitelist ^ found);
-	}
+    public static boolean featureEnabledForWorld(String featureNode, String worldName) {
+        //w&&f = enabled
+        //w&&!f = disabled
+        //!w&&f = disabled
+        //!w&&!f = enabled
+        // = AND
+        boolean whitelist = MAIN_CONFIG.getBoolean(featureNode + ".whitelist");
+        boolean found = MAIN_CONFIG.getStringList(featureNode + ".worlds").contains(worldName);
+        return !(whitelist ^ found);
+    }
 
-    public static void saveConfig(int type){
-        switch (type){
+    public static void saveConfig(int type) {
+        switch (type) {
             case MAIN:
                 UltraHardcore.getInstance().saveConfig();
+                break;
             case BANS:
                 try {
-                    ban_config.save(new File(UltraHardcore.getInstance().getDataFolder(),"bans.yml"));
+                    BAN_CONFIG.save(new File(UltraHardcore.getInstance().getDataFolder(), "bans.yml"));
                 } catch (IOException ex) {
-                    Bukkit.getLogger().log(Level.SEVERE, "Could not save ban config file. "+ex);
+                    Bukkit.getLogger().log(Level.SEVERE, "Could not save ban config file. " + ex);
                 }
         }
     }
