@@ -2,8 +2,6 @@ package uk.co.eluinhost.ultrahardcore;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -17,12 +15,8 @@ import uk.co.eluinhost.ultrahardcore.bans.DeathBan;
 import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
-import uk.co.eluinhost.ultrahardcore.features.core.*;
 import uk.co.eluinhost.ultrahardcore.game.GameManager;
 import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
 
