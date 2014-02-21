@@ -6,32 +6,33 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 public class UHCFeatureInitEvent extends Event{
 
-    private static final HandlerList handlers = new HandlerList();
-    private final UHCFeature feature;
-    private boolean allowed = true;
+    private static final HandlerList HANDLER_LIST = new HandlerList();
+    private final UHCFeature m_feature;
+    private boolean m_allowed = true;
 
     public UHCFeatureInitEvent(UHCFeature feature){
-        this.feature = feature;
+        m_feature = feature;
     }
 
+    @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLER_LIST;
     }
 
     public static HandlerList getHandlerList() {
-        return handlers;
+        return HANDLER_LIST;
     }
 
     public UHCFeature getFeature(){
-        return feature;
+        return m_feature;
     }
 
     public void setAllowed(boolean allowed){
-        this.allowed = allowed;
+        this.m_allowed = allowed;
     }
 
     public boolean isAllowed(){
-        return allowed;
+        return m_allowed;
     }
 
 }
