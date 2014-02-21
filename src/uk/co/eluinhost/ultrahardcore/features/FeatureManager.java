@@ -3,15 +3,20 @@ package uk.co.eluinhost.ultrahardcore.features;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.InvalidFeatureIDException;
+import uk.co.eluinhost.ultrahardcore.features.core.*;
 import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureInitEvent;
 
 /**
@@ -130,5 +135,49 @@ public class FeatureManager {
             features.add(uhc.getFeatureID());
         }
         return features;
+    }
+
+    public void loadDefaultModules() {
+        Logger log = Bukkit.getLogger();
+        log.info("Loading UHC feature modules...");
+        //Load the default features with settings in config
+        FileConfiguration config = ConfigHandler.getConfig(ConfigHandler.MAIN);
+        ArrayList<UHCFeature> features = new ArrayList<UHCFeature>();
+        features.add(new DeathLightningFeature(config.getBoolean(ConfigNodes.DEATH_LIGHTNING)));
+        features.add(new EnderpearlsFeature(config.getBoolean(ConfigNodes.NO_ENDERPEARL_DAMAGE)));
+        features.add(new GhastDropsFeature(config.getBoolean(ConfigNodes.GHAST_DROP_CHANGES)));
+        features.add(new PlayerHeadsFeature(config.getBoolean(ConfigNodes.DROP_PLAYER_HEAD)));
+        features.add(new PlayerListFeature(config.getBoolean(ConfigNodes.PLAYER_LIST_HEALTH)));
+        features.add(new RecipeFeature(config.getBoolean(ConfigNodes.RECIPE_CHANGES)));
+        features.add(new RegenFeature(config.getBoolean(ConfigNodes.NO_HEALTH_REGEN)));
+        features.add(new DeathMessagesFeature(config.getBoolean(ConfigNodes.DEATH_MESSAGES_ENABLED)));
+        features.add(new DeathDropsFeature(config.getBoolean(ConfigNodes.DEATH_DROPS_ENABLED)));
+        features.add(new AnonChatFeature(config.getBoolean(ConfigNodes.ANON_CHAT_ENABLED)));
+        features.add(new GoldenHeadsFeature(config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED)));
+        features.add(new DeathBansFeature(config.getBoolean(ConfigNodes.DEATH_BANS_ENABLED)));
+        features.add(new PotionNerfsFeature(config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED)));
+        features.add(new NetherFeature(config.getBoolean(ConfigNodes.NETHER_DISABLE_ENABELD)));
+        features.add(new WitchSpawnsFeature(config.getBoolean(ConfigNodes.WITCH_SPAWNS_ENABLED)));
+        features.add(new PortalsFeature(config.getBoolean(ConfigNodes.PORTAL_RANGES_ENABLED)));
+        try {
+            features.add(new HardcoreHeartsFeature(config.getBoolean(ConfigNodes.HARDCORE_HEARTS_ENABLED)));
+        } catch (NoClassDefFoundError e) {
+            log.severe("Cannot find a class for HardcoreHearts, ProtocolLib is needed for this feature to work, disabling...");
+        }
+        try {
+            features.add(new FootprintFeature(config.getBoolean(ConfigNodes.FOOTPRINTS_ENABLED)));
+        } catch (NoClassDefFoundError e) {
+            log.severe("Cannot find a class for Footprints, ProtocolLib is needed for this feature to work, disabling...");
+        }
+
+        for (UHCFeature f : features) {
+            try {
+                addFeature(f, true);//TODO bool
+                log.info("Loaded feature module: " + f.getFeatureID());
+            } catch (Exception e) {
+                log.severe("Failed to load a module " + (f == null ? "null" : f.getFeatureID()));
+                e.printStackTrace();
+            }
+        }
     }
 }
