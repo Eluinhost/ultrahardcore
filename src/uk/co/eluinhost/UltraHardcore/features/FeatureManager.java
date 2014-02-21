@@ -1,6 +1,7 @@
 package uk.co.eluinhost.UltraHardcore.features;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,17 +14,26 @@ import uk.co.eluinhost.UltraHardcore.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.UltraHardcore.exceptions.InvalidFeatureIDException;
 import uk.co.eluinhost.UltraHardcore.features.events.UHCFeatureInitEvent;
 
-public class FeatureManager {
+/**
+ * Feature Manager Class
+ * TODO make this not a utility class
+ */
+public final class FeatureManager {
 
     /**
-     * Stores a list of all the features loaded on the server
+     * Stores a list of all the UHC_FEATURES loaded on the server
      */
-    private static ArrayList<UHCFeature> features = new ArrayList<UHCFeature>();
+    private static final List<UHCFeature> UHC_FEATURES = new ArrayList<UHCFeature>();
 
     /**
-     * Only allow features with this pattern as an ID
+     * Only allow UHC_FEATURES with this pattern as an ID
      */
-    private final static Pattern name_pattern = Pattern.compile("^[\\w]++$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[\\w]++$");
+
+    /**
+     * Don't allow constuct
+     */
+    private FeatureManager() {}
 
     /**
      * Add a UHC feature to the manager
@@ -36,33 +46,33 @@ public class FeatureManager {
     public static void addFeature(UHCFeature feature, boolean enabled) throws FeatureIDConflictException, InvalidFeatureIDException {
 
         //check for alphanumerics
-        Matcher mat = name_pattern.matcher(feature.getFeatureID());
+        Matcher mat = NAME_PATTERN.matcher(feature.getFeatureID());
         if (!mat.matches()) {
             throw new InvalidFeatureIDException();
         }
 
         //check for existing feature of the same name
-        for (UHCFeature f : features) {
-            if (f.getFeatureID().equals(feature.getFeatureID())) {
+        for (UHCFeature uhcFeature : UHC_FEATURES) {
+            if (uhcFeature.getFeatureID().equals(feature.getFeatureID())) {
                 throw new FeatureIDConflictException();
             }
         }
 
         //Make an init event for the feature creation
-        UHCFeatureInitEvent uhc_init_event = new UHCFeatureInitEvent(feature);
+        UHCFeatureInitEvent initEvent = new UHCFeatureInitEvent(feature);
 
         //call the event
-        Bukkit.getServer().getPluginManager().callEvent(uhc_init_event);
+        Bukkit.getServer().getPluginManager().callEvent(initEvent);
 
         //if it was cancelled return
-        if (!uhc_init_event.isAllowed()) {
+        if (!initEvent.isAllowed()) {
             return;
         }
 
         //add the feature
 
         //TODO change this >.>
-        features.add(feature);
+        UHC_FEATURES.add(feature);
         if (feature.isEnabled()) {
             feature.enableFeature();
         } else {
@@ -76,13 +86,13 @@ public class FeatureManager {
     /**
      * Check if a feature is enabled by it's ID
      *
-     * @param ID String the ID to check for
+     * @param featureID String the ID to check for
      * @return boolean true if enabled, false otherwise
      * @throws FeatureIDNotFoundException when feature not found
      */
-    public static boolean isEnabled(String ID) throws FeatureIDNotFoundException {
-        for (UHCFeature feature : features) {
-            if (feature.getFeatureID().equals(ID)) {
+    public static boolean isEnabled(String featureID) throws FeatureIDNotFoundException {
+        for (UHCFeature feature : UHC_FEATURES) {
+            if (feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
         }
@@ -92,13 +102,13 @@ public class FeatureManager {
     /**
      * Get the UHCFeature based on it's ID
      *
-     * @param ID String the ID to check for
+     * @param featureID String the ID to check for
      * @return UHCFeature the returned feature
      * @throws FeatureIDNotFoundException when feature ID not found
      */
-    public static UHCFeature getFeature(String ID) throws FeatureIDNotFoundException {
-        for (UHCFeature feature : features) {
-            if (feature.getFeatureID().equals(ID)) {
+    public static UHCFeature getFeature(String featureID) throws FeatureIDNotFoundException {
+        for (UHCFeature feature : UHC_FEATURES) {
+            if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
         }
@@ -106,12 +116,12 @@ public class FeatureManager {
     }
 
     /**
-     * Returns all of the features loaded
+     * Returns an unmodifiable list of all of the UHC_FEATURES loaded
      *
-     * @return ArrayList
+     * @return List
      */
-    public static ArrayList<UHCFeature> getFeatures() {
-        return features;
+    public static List<UHCFeature> getFeatures() {
+        return Collections.unmodifiableList(UHC_FEATURES);
     }
 
     /**
@@ -120,10 +130,10 @@ public class FeatureManager {
      * @return List String
      */
     public static List<String> getFeatureNames() {
-        ArrayList<String> f = new ArrayList<String>();
-        for (UHCFeature uhc : features) {
-            f.add(uhc.getFeatureID());
+        List<String> features = new ArrayList<String>();
+        for (UHCFeature uhc : UHC_FEATURES) {
+            features.add(uhc.getFeatureID());
         }
-        return f;
+        return features;
     }
 }
