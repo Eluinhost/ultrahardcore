@@ -3,7 +3,10 @@ package uk.co.eluinhost.ultrahardcore.features.core;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.*;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.events.PacketListener;
+import com.comphenix.protocol.events.PacketAdapter;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
