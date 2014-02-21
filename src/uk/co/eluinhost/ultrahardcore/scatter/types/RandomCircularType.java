@@ -6,8 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import uk.co.eluinhost.ultrahardcore.exceptions.MaxAttemptsReachedException;
-import uk.co.eluinhost.ultrahardcore.exceptions.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
+import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;

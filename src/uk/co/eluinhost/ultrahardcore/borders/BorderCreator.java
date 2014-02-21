@@ -14,10 +14,10 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.BorderTypeNotFoundException;
-import uk.co.eluinhost.ultrahardcore.exceptions.WorldEditMaxChangedBlocksException;
-import uk.co.eluinhost.ultrahardcore.exceptions.WorldEditNotFoundException;
-import uk.co.eluinhost.ultrahardcore.exceptions.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.borders.BorderTypeNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.WorldEditMaxChangedBlocksException;
+import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.WorldEditNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 /**

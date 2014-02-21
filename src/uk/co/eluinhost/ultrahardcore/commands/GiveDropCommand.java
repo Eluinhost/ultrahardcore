@@ -10,8 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
-import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
+import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.core.DeathDropsFeature;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 

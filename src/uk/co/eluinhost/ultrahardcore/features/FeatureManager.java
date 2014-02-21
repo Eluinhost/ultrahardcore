@@ -14,10 +14,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.FeatureException;
-import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDConflictException;
-import uk.co.eluinhost.ultrahardcore.exceptions.FeatureIDNotFoundException;
-import uk.co.eluinhost.ultrahardcore.exceptions.InvalidFeatureIDException;
+import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureException;
+import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
+import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
 import uk.co.eluinhost.ultrahardcore.features.core.*;
 import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureInitEvent;
 

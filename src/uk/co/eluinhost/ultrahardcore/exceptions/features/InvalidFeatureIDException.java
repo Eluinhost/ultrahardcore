@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.exceptions;
+package uk.co.eluinhost.ultrahardcore.exceptions.features;
 
 @SuppressWarnings("serial")
 public class InvalidFeatureIDException extends FeatureException{
