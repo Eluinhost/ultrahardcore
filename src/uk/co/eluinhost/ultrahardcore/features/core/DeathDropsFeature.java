@@ -29,11 +29,11 @@ public class DeathDropsFeature extends UHCFeature {
     private static final Random RANDOM = new Random();
 
     public class ItemDrop {
-        private int m_minAmount = 0;
-        private int m_maxAmount = 0;
-        private int m_dropChance = 0;
-        private Material m_material = null;
-        private int m_meta = 0;
+        private int m_minAmount;
+        private int m_maxAmount;
+        private int m_dropChance;
+        private Material m_material;
+        private int m_meta;
         private String m_groupName;
 
         public ItemDrop(String name) {
@@ -45,7 +45,7 @@ public class DeathDropsFeature extends UHCFeature {
         }
 
         public void setMinAmount(int minAmount) {
-            this.m_minAmount = minAmount;
+            m_minAmount = minAmount;
         }
 
         public int getMaxAmount() {
@@ -53,7 +53,7 @@ public class DeathDropsFeature extends UHCFeature {
         }
 
         public void setMaxAmount(int maxAmount) {
-            this.m_maxAmount = maxAmount;
+            m_maxAmount = maxAmount;
         }
 
         public int getChance() {
@@ -61,7 +61,7 @@ public class DeathDropsFeature extends UHCFeature {
         }
 
         public void setChance(int chance) {
-            this.m_dropChance = chance;
+            m_dropChance = chance;
         }
 
         public Material getItem() {
@@ -69,7 +69,7 @@ public class DeathDropsFeature extends UHCFeature {
         }
 
         public void setItem(Material item) {
-            this.m_material = item;
+            m_material = item;
         }
 
         public int getMeta() {
@@ -77,7 +77,7 @@ public class DeathDropsFeature extends UHCFeature {
         }
 
         public void setMeta(int meta) {
-            this.m_meta = meta;
+            m_meta = meta;
         }
 
         public String getGroupName() {
@@ -85,7 +85,7 @@ public class DeathDropsFeature extends UHCFeature {
         }
 
         public void setItemName(String groupName) {
-            this.m_groupName = groupName;
+            m_groupName = groupName;
         }
 
         public ItemStack getItemStack() {
