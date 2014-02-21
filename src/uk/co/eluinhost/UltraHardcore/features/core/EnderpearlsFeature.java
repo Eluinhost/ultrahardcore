@@ -4,13 +4,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.permissions.Permissible;
 import uk.co.eluinhost.UltraHardcore.config.PermissionNodes;
 import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
 
 
 /**
  * EnderpearlsFeature
- * <p/>
  * Handles the damage taken from throwing enderpearls
  *
  * @author ghowden
@@ -25,8 +25,8 @@ public class EnderpearlsFeature extends UHCFeature {
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent ede) {
         if (isEnabled()) {
-            if (ede.getDamager().getType().equals(EntityType.ENDER_PEARL)) {
-                if (((Player) ede.getEntity()).hasPermission(PermissionNodes.NO_ENDERPEARL_DAMAGE)) {
+            if (ede.getDamager().getType() == EntityType.ENDER_PEARL) {
+                if (((Permissible) ede.getEntity()).hasPermission(PermissionNodes.NO_ENDERPEARL_DAMAGE)) {
                     ede.setCancelled(true);
                 }
             }
