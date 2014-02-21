@@ -15,6 +15,7 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.features.core.entity.ItemDrop;
 
 
 /**
@@ -28,77 +29,9 @@ public class DeathDropsFeature extends UHCFeature {
     private final Collection<ItemDrop> m_drops = new ArrayList<ItemDrop>();
     private static final Random RANDOM = new Random();
 
-    //TODO split into it's own class
-    public class ItemDrop {
-        private int m_minAmount;
-        private int m_maxAmount;
-        private int m_dropChance;
-        private Material m_material;
-        private int m_meta;
-        private final String m_groupName;
-
-        public ItemDrop(String groupName) {
-            m_groupName = groupName;
-        }
-
-        public int getMinAmount() {
-            return m_minAmount;
-        }
-
-        public void setMinAmount(int minAmount) {
-            m_minAmount = minAmount;
-        }
-
-        public int getMaxAmount() {
-            return m_maxAmount;
-        }
-
-        public void setMaxAmount(int maxAmount) {
-            m_maxAmount = maxAmount;
-        }
-
-        public int getChance() {
-            return m_dropChance;
-        }
-
-        public void setChance(int chance) {
-            m_dropChance = chance;
-        }
-
-        public Material getItem() {
-            return m_material;
-        }
-
-        public void setItem(Material item) {
-            m_material = item;
-        }
-
-        public int getMeta() {
-            return m_meta;
-        }
-
-        public void setMeta(int meta) {
-            m_meta = meta;
-        }
-
-        public String getGroupName() {
-            return m_groupName;
-        }
-
-        public ItemStack getItemStack() {
-            int range = Math.max(0, getMaxAmount() - getMinAmount());
-            int randomInt = RANDOM.nextInt(range + 1);
-            int amount = getMinAmount() + randomInt;
-            if (amount > 0) {
-                return new ItemStack(getItem(), amount, (short) getMeta());
-            }
-            return null;
-        }
-    }
-
     //TODO simplify...
     public DeathDropsFeature() {
-        super("DeathDrops","Adds extra loot to players on death");
+        super("DeathDrops", "Adds extra loot to players on death");
         ConfigurationSection items = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_DROPS_ITEMS);
         for (String item : items.getKeys(false)) {
             ConfigurationSection itemSection = items.getConfigurationSection(item);

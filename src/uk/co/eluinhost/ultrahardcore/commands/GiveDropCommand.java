@@ -12,6 +12,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.core.DeathDropsFeature;
+import uk.co.eluinhost.ultrahardcore.features.core.entity.ItemDrop;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.ArrayList;
@@ -54,13 +55,13 @@ public class GiveDropCommand extends UHCCommand {
                 return true;
             }
             try {
-                List<DeathDropsFeature.ItemDrop> drops = ((DeathDropsFeature) UltraHardcore.getInstance().getFeatureManager().getFeatureByID("DeathDrops")).getItemDropForGroup(args[0]);
+                List<ItemDrop> drops = ((DeathDropsFeature) UltraHardcore.getInstance().getFeatureManager().getFeatureByID("DeathDrops")).getItemDropForGroup(args[0]);
                 if(drops.size() == 0){
                     sender.sendMessage(ChatColor.RED+"Could not find any items defined with the group name "+args[0]);
                     return true;
                 }
                 List<ItemStack> items = new ArrayList<ItemStack>();
-                for(DeathDropsFeature.ItemDrop i : drops){
+                for(ItemDrop i : drops){
                     ItemStack is = i.getItemStack();
                     if(is != null){
                         items.add(is);
