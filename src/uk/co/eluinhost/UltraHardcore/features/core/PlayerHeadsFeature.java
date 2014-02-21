@@ -134,6 +134,7 @@ public class PlayerHeadsFeature extends UHCFeature {
     private static void setBlockAsHead(Player p, Block headBlock) {
         //set the type to skull
         headBlock.setType(Material.SKULL);
+        //noinspection deprecation
         headBlock.setData((byte) 1); //TODO depreacted but no alternative yet
         //get the state to be a player skull for the player and set its rotation based on where the player was looking
         Skull state = (Skull) headBlock.getState();

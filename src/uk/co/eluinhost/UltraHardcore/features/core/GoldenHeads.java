@@ -98,6 +98,7 @@ public class GoldenHeads extends UHCFeature {
         ShapedRecipe goldenHead = new ShapedRecipe(itemStack);
         //8 gold ingots surrounding an apple
         goldenHead.shape("AAA", "ABA", "AAA");
+        //noinspection deprecation
         goldenHead.setIngredient('A', Material.GOLD_INGOT)
                 .setIngredient('B', Material.SKULL_ITEM, 3); //TODO deprecated but no alternative?
 
