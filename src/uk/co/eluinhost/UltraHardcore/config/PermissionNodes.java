@@ -100,5 +100,7 @@ public class PermissionNodes {
             "Allows player to teleport players to players/locations",
             PermissionDefault.OP);
 
+    public static final String ANON_CHAT_CHAT = "UHC.AnonChat.chat";
+    public static final String ANON_CHAT_SEE_NAME = "UHC.AnonChat.seeName";
     //TODO move from plugin.yml to here
 }
