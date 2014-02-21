@@ -26,11 +26,21 @@ import java.util.regex.Pattern;
 
 public class DeathBansFeature extends UHCFeature {
 
-    private List<DeathBan> bans = new ArrayList<DeathBan>();
+    private List<DeathBan> m_deathBans = new ArrayList<DeathBan>();
+
     private static final Pattern BAN_LENGTH_PATTERN = Pattern.compile(
             "(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?(?:([0-9]+)\\s*(?:s[a-z]*)?)?",
             Pattern.CASE_INSENSITIVE);
 
+    private static final long MILLIS_PER_SECOND = 1000;
+    private static final long MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60;
+    private static final long MILLIS_PER_HOUR   = MILLIS_PER_MINUTE * 60;
+    private static final long MILLIS_PER_DAY    = MILLIS_PER_HOUR * 24;
+    private static final long MILLIS_PER_WEEK   = MILLIS_PER_DAY * 7;
+    private static final long MILLIS_PER_MONTH  = MILLIS_PER_DAY * 30;
+    private static final long MILLIS_PER_YEAR   = MILLIS_PER_DAY * 365;
+
+    //TODO more cleanup
     public DeathBansFeature(boolean enabled) {
         super("DeathBans", enabled);
         setDescription("Bans a player on death for a specified amount of time");
@@ -38,20 +48,19 @@ public class DeathBansFeature extends UHCFeature {
         FileConfiguration banConfig = ConfigHandler.getConfig(ConfigHandler.BANS);
 
         @SuppressWarnings("unchecked")
-        List<DeathBan> f_bans = (List<DeathBan>) banConfig.getList("bans",new ArrayList<Object>());
-        for(DeathBan d : f_bans){
-            for(Player p : Bukkit.getOnlinePlayers()){
-                if(p.getName().equalsIgnoreCase(d.getPlayerName())){
-                    p.kickPlayer(d.getGroupName().replaceAll("%timeleft",formatTimeLeft(d.getUnbanTime())));
+        List<DeathBan> banList = (List<DeathBan>) banConfig.getList("bans",new ArrayList<Object>());
+        for(DeathBan deathBan : banList){
+            for(Player player : Bukkit.getOnlinePlayers()){
+                if(player.getName().equalsIgnoreCase(deathBan.getPlayerName())){
+                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", formatTimeLeft(deathBan.getUnbanTime())));
                 }
             }
         }
-        bans = f_bans;
+        m_deathBans = banList;
     }
 
     public static String formatTimeLeft(long timeUnban){
         long duration = timeUnban - System.currentTimeMillis();
-
         long days = TimeUnit.MILLISECONDS.toDays(duration);
         if(days > Short.MAX_VALUE){
             return " forever";
@@ -64,36 +73,16 @@ public class DeathBansFeature extends UHCFeature {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
         StringBuilder sb = new StringBuilder();
         if(days > 0){
-            sb.append(" ");
-            sb.append(days);
-            if(days == 1)
-                sb.append(" day");
-            else
-                sb.append(" days");
+            sb.append(" ").append(days).append(days == 1 ? " day" : " days");
         }
         if(hours > 0){
-            sb.append(" ");
-            sb.append(hours);
-            if(hours == 1)
-                sb.append(" hour");
-            else
-                sb.append(" hours");
+            sb.append(" ").append(hours).append(hours == 1 ? " hour" : " hours");
         }
         if(mins > 0){
-            sb.append(" ");
-            sb.append(mins);
-            if(mins == 1)
-                sb.append(" min");
-            else
-                sb.append(" mins");
+            sb.append(" ").append(mins).append(mins == 1 ? " min" : " mins");
         }
         if(seconds > 0){
-            sb.append(" ");
-            sb.append(seconds);
-            if(seconds ==1)
-                sb.append(" second");
-            else
-                sb.append(" seconds");
+            sb.append(" ").append(seconds).append(seconds == 1 ? " second" : " seconds");
         }
         return sb.toString();
     }
@@ -109,12 +98,12 @@ public class DeathBansFeature extends UHCFeature {
     }
 
     public int removeBan(String playerName){
-        Iterator<DeathBan> i = bans.iterator();
+        Iterator<DeathBan> iterator = m_deathBans.iterator();
         int amount = 0;
-        while(i.hasNext()){
-            DeathBan d = i.next();
-            if(d.getPlayerName().equals(playerName)){
-                i.remove();
+        while(iterator.hasNext()){
+            DeathBan deathBan = iterator.next();
+            if(deathBan.getPlayerName().equals(playerName)){
+                iterator.remove();
                 amount++;
             }
         }
@@ -123,62 +112,61 @@ public class DeathBansFeature extends UHCFeature {
     }
 
     private void saveBans(){
-        ConfigHandler.getConfig(ConfigHandler.BANS).set("bans",bans);
+        ConfigHandler.getConfig(ConfigHandler.BANS).set("bans", m_deathBans);
         ConfigHandler.saveConfig(ConfigHandler.BANS);
     }
 
     @EventHandler
     public void onPlayerLoginEvent(PlayerLoginEvent ple){
         if(isEnabled()){
-            for(DeathBan d : bans){
-                if(d.getPlayerName().equalsIgnoreCase(ple.getPlayer().getName())){
-                    if(System.currentTimeMillis() >= d.getUnbanTime()){
+            for(DeathBan deathBan : m_deathBans){
+                if(deathBan.getPlayerName().equalsIgnoreCase(ple.getPlayer().getName())){
+                    if(System.currentTimeMillis() >= deathBan.getUnbanTime()){
                         removeBan(ple.getPlayer().getName());
                         return;
                     }
-                    ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, d.getGroupName().replaceAll("%timeleft", formatTimeLeft(d.getUnbanTime())));
+                    ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, deathBan.getGroupName().replaceAll("%timeleft", formatTimeLeft(deathBan.getUnbanTime())));
                 }
             }
         }
     }
 
     public static long parseBanTime(String banTime) {
-        if(banTime.equalsIgnoreCase("infinite")){
+        if("infinite".equalsIgnoreCase(banTime)){
             return Long.MAX_VALUE/2;
         }
         long duration = 0;
         boolean match = false;
-        Matcher m = BAN_LENGTH_PATTERN.matcher(banTime);
-        while (m.find())    {
-            if ((m.group() != null) && (!m.group().isEmpty())) {
-                for (int i = 0; i < m.groupCount(); i++) {
-                    if ((m.group(i) != null) && (!m.group(i).isEmpty())) {
+        Matcher mat = BAN_LENGTH_PATTERN.matcher(banTime);
+        while (mat.find())    {
+            if (mat.group() != null && !mat.group().isEmpty()) {
+                for (int i = 0; i < mat.groupCount(); i++) {
+                    if (mat.group(i) != null && !mat.group(i).isEmpty()) {
                         match = true;
                         break;
                     }
                 }
-
                 if (match){
-                    if ((m.group(1) != null) && (!m.group(1).isEmpty())){
-                        duration +=   1000*60*24*365*Integer.parseInt(m.group(1));
+                    if (mat.group(1) != null && !mat.group(1).isEmpty()){
+                        duration += MILLIS_PER_YEAR * Integer.parseInt(mat.group(1));
                     }
-                    if ((m.group(2) != null) && (!m.group(2).isEmpty())){
-                        duration +=    1000*60*24*7*30*Integer.parseInt(m.group(2));
+                    if (mat.group(2) != null && !mat.group(2).isEmpty()){
+                        duration += MILLIS_PER_MONTH * Integer.parseInt(mat.group(2));
                     }
-                    if ((m.group(3) != null) && (!m.group(3).isEmpty())){
-                        duration +=  1000*60*60*24*7*Integer.parseInt(m.group(3));
+                    if (mat.group(3) != null && !mat.group(3).isEmpty()){
+                        duration += MILLIS_PER_WEEK * Integer.parseInt(mat.group(3));
                     }
-                    if ((m.group(4) != null) && (!m.group(4).isEmpty())){
-                        duration +=     1000*60*60*24*Integer.parseInt(m.group(4));
+                    if (mat.group(4) != null && !mat.group(4).isEmpty()){
+                        duration += MILLIS_PER_DAY * Integer.parseInt(mat.group(4));
                     }
-                    if ((m.group(5) != null) && (!m.group(5).isEmpty())){
-                        duration +=     1000*60*60*Integer.parseInt(m.group(5));
+                    if (mat.group(5) != null && !mat.group(5).isEmpty()){
+                        duration += MILLIS_PER_HOUR * Integer.parseInt(mat.group(5));
                     }
-                    if ((m.group(6) != null) && (!m.group(6).isEmpty())){
-                        duration +=     1000*60*  Integer.parseInt(m.group(6));
+                    if (mat.group(6) != null && !mat.group(6).isEmpty()){
+                        duration += MILLIS_PER_MINUTE * Integer.parseInt(mat.group(6));
                     }
-                    if ((m.group(7) != null) && (!m.group(7).isEmpty())){
-                         duration+=   1000* Integer.parseInt(m.group(7));
+                    if (mat.group(7) != null && !mat.group(7).isEmpty()){
+                         duration+= MILLIS_PER_SECOND * Integer.parseInt(mat.group(7));
                     }
                     break;
                 }
@@ -187,48 +175,43 @@ public class DeathBansFeature extends UHCFeature {
         return duration;
     }
 
-    public void banPlayer(OfflinePlayer p, final String message, long duration){
-        final long unban_time = System.currentTimeMillis()+duration;
-        DeathBan db = new DeathBan(p.getName(),unban_time, message);
-        bans.add(db);
-        final String player_name = p.getName();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        OfflinePlayer op = Bukkit.getOfflinePlayer(player_name);
-                        Player p = op.getPlayer();
-                        if (p != null) {
-                            p.kickPlayer(message.replaceAll("%timeleft",formatTimeLeft(unban_time)));
-                        }
-                    }
-                }
-                , ConfigHandler.getConfig(ConfigHandler.MAIN).getLong(ConfigNodes.DEATH_BANS_DELAY));
+    @SuppressWarnings("TypeMayBeWeakened")
+    public void banPlayer(OfflinePlayer offlinePlayer, String message, long duration){
+        long unbanTime = System.currentTimeMillis()+duration;
+        DeathBan db = new DeathBan(offlinePlayer.getName(),unbanTime, message);
+        m_deathBans.add(db);
+        String playerName = offlinePlayer.getName();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(
+                UltraHardcore.getInstance(),
+                new PlayerBanner(playerName, message, unbanTime),
+                ConfigHandler.getConfig(ConfigHandler.MAIN).getLong(ConfigNodes.DEATH_BANS_DELAY)
+        );
         saveBans();
-        UltraHardcore.getInstance().getLogger().info("Added "+p.getName()+" to temp ban list");
+        UltraHardcore.getInstance().getLogger().info("Added " + offlinePlayer.getName() + " to temp ban list");
     }
 
-    public void processBansForPlayer(final Player p){
-        ConfigurationSection ban_types = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
-        Set<String> permission_names = ban_types.getKeys(false);
+    public void processBansForPlayer(Player p){
+        ConfigurationSection banTypes = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
+        Set<String> permissionNames = banTypes.getKeys(false);
         Logger logger = UltraHardcore.getInstance().getLogger();
-        for(String permission : permission_names){
+        for(String permission : permissionNames){
             if(!p.hasPermission("UHC.deathban.group."+permission)){
                 continue;
             }
-            List<String> actions = ban_types.getStringList(permission + ".actions");
-            ConfigurationSection type = ban_types.getConfigurationSection(permission);
+            List<String> actions = banTypes.getStringList(permission + ".actions");
+            ConfigurationSection type = banTypes.getConfigurationSection(permission);
             for(String action : actions){
-                if(action.equalsIgnoreCase("serverkick")){
-                    String kick_message = type.getString("serverkick_message","NO SERVER KICK MESSAGE SET IN CONFIG FILE");
-                    p.kickPlayer(kick_message);
+                //TODO clean up
+                if("serverkick".equalsIgnoreCase(action)){
+                    String kickMessage = type.getString("serverkick_message","NO SERVER KICK MESSAGE SET IN CONFIG FILE");
+                    p.kickPlayer(kickMessage);
                     logger.info("Kicked "+p.getName()+" from the server");
-                }else if(action.equalsIgnoreCase("serverban")) {
+                }else if("serverban".equalsIgnoreCase(action)) {
                     String length = type.getString("serverban_duration","1s");
                     String message = type.getString("serverban_message","NO BAN MESSAGE SET IN CONFIG FILE");
                     long duration = parseBanTime(length);
                     banPlayer(p,message,duration);
-                }else if(action.equalsIgnoreCase("worldkick")){
+                }else if("worldkick".equalsIgnoreCase(action)){
                     String world = type.getString("worldkick_world","NO WORLD IN CONFIG");
                     World w = Bukkit.getWorld(world);
                     if(w == null){
@@ -237,7 +220,7 @@ public class DeathBansFeature extends UHCFeature {
                         p.setBedSpawnLocation(w.getSpawnLocation());
                         logger.info(p.getName()+" will respawn at the spawn of the world "+world);
                     }
-                }else if(action.equalsIgnoreCase("bungeekick")){
+                }else if("bungeekick".equalsIgnoreCase(action)){
                     String server =type.getString("bungeekick_server","NO SERVER SET");
                     ServerUtil.sendPlayerToServer(p,server);
                     logger.info("Sent "+p.getName()+" to the server "+server);
@@ -255,4 +238,24 @@ public class DeathBansFeature extends UHCFeature {
     @Override
     public void disableFeature() {}
 
+    private static class PlayerBanner implements Runnable {
+        private final String m_playerName;
+        private final String m_message;
+        private final long m_unbanTime;
+
+        PlayerBanner(String playerName, String message, long unbanTime) {
+            m_playerName = playerName;
+            m_message = message;
+            m_unbanTime = unbanTime;
+        }
+
+        @Override
+        public void run() {
+            OfflinePlayer op = Bukkit.getOfflinePlayer(m_playerName);
+            Player p = op.getPlayer();
+            if (p != null) {
+                p.kickPlayer(m_message.replaceAll("%timeleft", formatTimeLeft(m_unbanTime)));
+            }
+        }
+    }
 }
