@@ -19,7 +19,7 @@ import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import uk.co.eluinhost.ultrahardcore.util.TeamsUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
-import uk.co.eluinhost.ultrahardcore.util.TeamsUtil.PrintFlags;
+import uk.co.eluinhost.ultrahardcore.util.PrintFlags;
 
 public class TeamCommands extends UHCCommand {
 
