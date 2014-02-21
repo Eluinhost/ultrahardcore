@@ -35,16 +35,6 @@ public class RecipeFeature extends UHCFeature {
         if (isEnabled()) {
             Recipe r = e.getRecipe();
             if (r.getResult().getType().equals(Material.GOLDEN_APPLE)) {
-                /*if(recipeContainsMaterial(r,Material.GOLD_NUGGET)){
-					if(e.getView().getPlayer().hasPermission(PermissionNodes.DISALLOW_OLD_GAPPLE)){
-						e.getInventory().setResult(new ItemStack(Material.AIR));
-					}
-				}else if(recipeContainsMaterial(r,Material.GOLD_INGOT)){
-					if(!e.getView().getPlayer().hasPermission(PermissionNodes.ALLOW_NEW_GAPPLE)){
-						e.getInventory().setResult(new ItemStack(Material.AIR));
-					}
-				}else 
-				*/
                 if (recipeContainsMaterial(r, Material.GOLD_BLOCK)) {
                     if (!e.getView().getPlayer().hasPermission(PermissionNodes.ALLOW_NOTCH_APPLE)) {
                         e.getInventory().setResult(new ItemStack(Material.AIR));
@@ -98,15 +88,6 @@ public class RecipeFeature extends UHCFeature {
      */
     @Override
     public void enableFeature() {
-		/*
-		//Make a recipe that will return a golden apple when the right shape is made
-		ShapedRecipe newGoldenApple = new ShapedRecipe(new ItemStack(Material.GOLDEN_APPLE,1));
-		//8 gold ingots surrounding an apple
-		newGoldenApple.shape("AAA","ABA","AAA");
-		newGoldenApple.setIngredient('A', Material.GOLD_INGOT);
-		newGoldenApple.setIngredient('B', Material.APPLE);
-		Bukkit.addRecipe(newGoldenApple);
-		*/
         //Make a recipe that will return a golden carrot when the right shape is made
         ShapedRecipe newGoldenCarrot = new ShapedRecipe(new ItemStack(Material.GOLDEN_CARROT, 1));
         //8 gold ingots surrounding an apple
@@ -135,11 +116,7 @@ public class RecipeFeature extends UHCFeature {
                 if (recipeContainsMaterial(r, Material.GOLD_BLOCK)) {
                     i.remove();
                 }
-            }/*else if(r.getResult().getType().equals(Material.GOLDEN_APPLE)){
-				if(recipeContainsMaterial(r,Material.GOLD_INGOT)){
-					i.remove();
-				}
-			}*/ else if (r.getResult().getType().equals(Material.GOLDEN_CARROT)) {
+            }else if (r.getResult().getType().equals(Material.GOLDEN_CARROT)) {
                 if (recipeContainsMaterial(r, Material.GOLD_INGOT)) {
                     i.remove();
                 }
