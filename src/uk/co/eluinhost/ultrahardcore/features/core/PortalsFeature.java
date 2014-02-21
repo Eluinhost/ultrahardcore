@@ -12,8 +12,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class PortalsFeature extends UHCFeature {
 
     public PortalsFeature() {
-        super("PortalRanges");
-        setDescription("Change the radius portals can spawn in");
+        super("PortalRanges","Change the radius portals can spawn in");
     }
 
     @EventHandler

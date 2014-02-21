@@ -20,7 +20,7 @@ public class UHCFeature implements Listener {
     /**
      * The description of the current feature
      */
-    private String m_description = "N/A";
+    private final String m_description;
 
     /**
      * Attempt to enable the feature
@@ -76,10 +76,11 @@ public class UHCFeature implements Listener {
     /**
      * Construct a new feature
      * @param featureID the feature ID to use
-     * TODO move description here
+     * @param description the description for the feature
      */
-    protected UHCFeature(String featureID) {
+    protected UHCFeature(String featureID,String description) {
         m_featureID = featureID;
+        m_description = description;
     }
 
     /**
@@ -107,14 +108,5 @@ public class UHCFeature implements Listener {
      */
     public String getDescription() {
         return m_description;
-    }
-
-    /**
-     * Set the description of the feature
-     * TODO remove this feature, put in constructor
-     * @param description String
-     */
-    public void setDescription(String description) {
-        m_description = description;
     }
 }

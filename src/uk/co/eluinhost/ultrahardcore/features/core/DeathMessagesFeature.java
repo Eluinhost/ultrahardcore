@@ -20,8 +20,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class DeathMessagesFeature extends UHCFeature {
 
     public DeathMessagesFeature() {
-        super("DeathMessages");
-        setDescription("Adds a prefix/suffix to all player deaths");
+        super("DeathMessages","Adds a prefix/suffix to all player deaths");
     }
 
     @EventHandler

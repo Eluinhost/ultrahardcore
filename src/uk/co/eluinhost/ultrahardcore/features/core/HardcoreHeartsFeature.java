@@ -16,8 +16,7 @@ public class HardcoreHeartsFeature extends UHCFeature {
     private final PacketListener m_packetAdapter = new HardcoreHeartsListener();
 
     public HardcoreHeartsFeature() {
-        super("HardcoreHearts");
-        setDescription("Shows the hardcore hearts instead");
+        super("HardcoreHearts","Shows the hardcore hearts instead");
     }
 
     private static class HardcoreHeartsListener extends PacketAdapter {

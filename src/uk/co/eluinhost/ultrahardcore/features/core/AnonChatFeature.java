@@ -20,8 +20,7 @@ public class AnonChatFeature extends UHCFeature {
      * Construct an anonchat feature
      */
     public AnonChatFeature() {
-        super("AnonChat");
-        setDescription("Allows players to chat without revealing their name");
+        super("AnonChat","Allows players to chat without revealing their name");
     }
 
     /**

@@ -22,8 +22,7 @@ public class RegenFeature extends UHCFeature {
     private static final float EXHAUSTION_OFFSET = 3.0F;
 
     public RegenFeature() {
-        super("DisableRegen");
-        setDescription("Cancels a player's passive health regeneration");
+        super("DisableRegen","Cancels a player's passive health regeneration");
     }
 
     @EventHandler

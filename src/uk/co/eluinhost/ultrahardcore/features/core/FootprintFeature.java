@@ -41,8 +41,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     private int m_jobID = -1;
 
     public FootprintFeature() {
-        super("Footprints");
-        setDescription("Leave footprints behind you...");
+        super("Footprints","Leave footprints behind you...");
     }
 
     //TODO move class

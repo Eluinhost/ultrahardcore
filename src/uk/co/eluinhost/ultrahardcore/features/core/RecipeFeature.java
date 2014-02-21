@@ -26,8 +26,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class RecipeFeature extends UHCFeature {
 
     public RecipeFeature() {
-        super("HardRecipes");
-        setDescription("Handles changed recipes");
+        super("HardRecipes","Handles changed recipes");
     }
 
     @EventHandler

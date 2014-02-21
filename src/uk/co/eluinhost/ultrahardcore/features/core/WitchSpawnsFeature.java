@@ -9,8 +9,7 @@ public class WitchSpawnsFeature extends UHCFeature {
 
 
     public WitchSpawnsFeature() {
-        super("WitchSpawnsFeature");
-        setDescription("Allows natural witch spawns");
+        super("WitchSpawnsFeature","Allows natural witch spawns");
     }
 
     @EventHandler

@@ -24,8 +24,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class PlayerListFeature extends UHCFeature {
 
     public PlayerListFeature() {
-        super("PlayerList");
-        setDescription("Player's health shown in player list and under their name");
+        super("PlayerList","Player's health shown in player list and under their name");
     }
 
     //the internal bukkit id for the task

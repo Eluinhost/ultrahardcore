@@ -31,8 +31,7 @@ public class GoldenHeadsFeature extends UHCFeature {
     private ShapedRecipe m_headRecipe;
 
     public GoldenHeadsFeature() {
-        super("GoldenHeads");
-        setDescription("New and improved golden apples!");
+        super("GoldenHeads","New and improved golden apples!");
     }
 
     @EventHandler

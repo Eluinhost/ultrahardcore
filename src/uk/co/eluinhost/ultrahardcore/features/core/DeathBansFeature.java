@@ -42,8 +42,7 @@ public class DeathBansFeature extends UHCFeature {
 
     //TODO more cleanup
     public DeathBansFeature() {
-        super("DeathBans");
-        setDescription("Bans a player on death for a specified amount of time");
+        super("DeathBans","Bans a player on death for a specified amount of time");
 
         FileConfiguration banConfig = ConfigHandler.getConfig(ConfigHandler.BANS);
 

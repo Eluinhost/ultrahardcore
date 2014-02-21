@@ -14,8 +14,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class NetherFeature extends UHCFeature {
 
     public NetherFeature() {
-        super("NetherFeature");
-        setDescription("Disables the use of nether portals");
+        super("NetherFeature","Disables the use of nether portals");
     }
 
     @EventHandler

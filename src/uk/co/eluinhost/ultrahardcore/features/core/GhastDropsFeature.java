@@ -25,8 +25,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 public class GhastDropsFeature extends UHCFeature {
 
     public GhastDropsFeature() {
-        super("GhastDrops");
-        setDescription("Ghasts drop golden ingots instead of tears");
+        super("GhastDrops","Ghasts drop golden ingots instead of tears");
     }
 
     @EventHandler

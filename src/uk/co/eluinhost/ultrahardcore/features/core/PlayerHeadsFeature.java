@@ -35,8 +35,7 @@ public class PlayerHeadsFeature extends UHCFeature {
     private static final Random RANDOM = new Random();
 
     public PlayerHeadsFeature() {
-        super("PlayerHeads");
-        setDescription("Players can drop their heads on death");
+        super("PlayerHeads","Players can drop their heads on death");
     }
 
     @EventHandler
