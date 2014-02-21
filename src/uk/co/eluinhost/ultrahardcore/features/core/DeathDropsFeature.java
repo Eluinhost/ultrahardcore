@@ -105,90 +105,91 @@ public class DeathDropsFeature extends UHCFeature {
         ConfigurationSection items = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_DROPS_ITEMS);
         for (String item : items.getKeys(false)) {
             ConfigurationSection itemSection = items.getConfigurationSection(item);
-            String itemID_s = itemSection.getString("id");
-            String amount_s = itemSection.getString("amount");
-            String chance_s = itemSection.getString("chance");
-            int itemID;
-            int metaID = 0;
-            int amount_min = -1;
-            int amount_max;
-            int chance;
-            if (itemID_s == null) {
+
+            String itemIDString = itemSection.getString("id");
+            if (itemIDString == null) {
                 UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'id'");
                 continue;
             }
-            if (amount_s == null) {
+
+            String amountString = itemSection.getString("amount");
+            if (amountString == null) {
                 UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'amount'");
                 continue;
             }
-            if (chance_s == null) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'chance', assuming 100%");
-                chance_s = "100";
+            int minAmount = -1;
+            if (amountString.contains("-")) {
+                String[] amountParts = amountString.split("-");
+                if (amountParts.length != 2) {
+                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid amount. Syntax 'amount' or 'amount_min-amount_max'");
+                    continue;
+                }
+                try {
+                    minAmount = Integer.parseInt(amountParts[0]);
+                    amountString = amountParts[1];
+                } catch (NumberFormatException ignored) {
+                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" has an invalid minimum amount " + amountParts[0]);
+                    continue;
+                }
             }
+            int maxAmount;
             try {
-                chance = Integer.parseInt(chance_s);
-            } catch (Exception ex) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid chance " + chance_s);
+                maxAmount = Integer.parseInt(amountString);
+                if (minAmount == -1) {
+                    minAmount = maxAmount;
+                }
+            } catch (NumberFormatException ignored) {
+                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid amount " + amountString);
                 continue;
             }
-            if (itemID_s.contains(":")) {
-                String[] itemParts = itemID_s.split(":");
+
+            int chance = itemSection.getInt("chance",-1);
+            if (chance < 0) {
+                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid chance value, assuming 100%");
+                chance = 100;
+            }
+
+            int metaID = 0;
+            if (itemIDString.contains(":")) {
+                String[] itemParts = itemIDString.split(":");
                 if (itemParts.length != 2) {
                     UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid item id. Syntax 'item_id' or 'item_id:meta'");
                     continue;
                 }
                 try {
                     metaID = Integer.parseInt(itemParts[1]);
-                    itemID_s = itemParts[0];
-                } catch (Exception ex) {
+                    itemIDString = itemParts[0];
+                } catch (NumberFormatException ignored) {
                     UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" has an invalid metadata value " + itemParts[1]);
                     continue;
                 }
             }
+
+            int itemID;
             try {
-                itemID = Integer.parseInt(itemID_s);
-            } catch (Exception ex) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid id " + itemID_s);
+                itemID = Integer.parseInt(itemIDString);
+            } catch (NumberFormatException ignored) {
+                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid id " + itemIDString);
                 continue;
             }
-            if (amount_s.contains("-")) {
-                String[] amountParts = amount_s.split("-");
-                if (amountParts.length != 2) {
-                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid amount. Syntax 'amount' or 'amount_min-amount_max'");
-                    continue;
-                }
-                try {
-                    amount_min = Integer.parseInt(amountParts[0]);
-                    amount_s = amountParts[1];
-                } catch (Exception ex) {
-                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" has an invalid minimum amount " + amountParts[0]);
-                    continue;
-                }
-            }
-            try {
-                amount_max = Integer.parseInt(amount_s);
-                if (amount_min == -1) {
-                    amount_min = amount_max;
-                }
-            } catch (Exception ex) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid amount " + amount_s);
-                continue;
-            }
+
             Material mat = Material.getMaterial(itemID);      //TODO change feature to use names in config file instead of IDs and use getByName
             if (mat == null) {
                 UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid item id " + itemID + ": item for id not found");
                 continue;
             }
+
             String group = itemSection.getString("group");
             if (group == null) {
                 group = "N/A";
             }
+
             ItemDrop id = new ItemDrop(group);
             id.setItem(mat);
             id.setMeta(metaID);
             id.setChance(chance);
-            id.setMaxAmount(amount_max);
-            id.setMinAmount(amount_min);
+            id.setMaxAmount(maxAmount);
+            id.setMinAmount(minAmount);
             m_drops.add(id);
         }
     }
