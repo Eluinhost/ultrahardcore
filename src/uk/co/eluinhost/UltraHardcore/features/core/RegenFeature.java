@@ -17,6 +17,10 @@ import uk.co.eluinhost.UltraHardcore.features.UHCFeature;
  */
 public class RegenFeature extends UHCFeature {
 
+    private static final int FOOD_LEVEL = 18;
+    private static final double PLAYER_DEAD_HEALTH = 0.0;
+    private static final float EXHAUSTION_OFFSET = 3.0F;
+
     public RegenFeature(boolean enabled) {
         super("DisableRegen", enabled);
         setDescription("Cancels a player's passive health regeneration");
@@ -32,8 +36,8 @@ public class RegenFeature extends UHCFeature {
                 if (erhe.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
                     Player p = (Player) erhe.getEntity();
                     if (p.hasPermission(PermissionNodes.NO_HEALTH_REGEN)) {
-                        if (p.getFoodLevel() >= 18 && p.getHealth() > 0 && p.getHealth() < p.getMaxHealth()) {
-                            p.setExhaustion(p.getExhaustion() - 3.0F);
+                        if (p.getFoodLevel() >= FOOD_LEVEL && p.getHealth() > PLAYER_DEAD_HEALTH && p.getHealth() < p.getMaxHealth()) {
+                            p.setExhaustion(p.getExhaustion() - EXHAUSTION_OFFSET);
                         }
                         //Cancel the event to stop the regen
                         erhe.setCancelled(true);
