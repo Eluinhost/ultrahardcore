@@ -10,11 +10,11 @@ public abstract class UHCFeature implements Listener {
     /**
      * The feature ID for the feature
      */
-    private String m_featureID = null;
+    private final String m_featureID;
     /**
      * Is the feautre enabeld right now?
      */
-    private boolean m_enabled = false;
+    private boolean m_enabled;
     /**
      * The description of the current feature
      */
@@ -44,7 +44,7 @@ public abstract class UHCFeature implements Listener {
 
     /**
      * Set the enabled status of this feature
-     * @param enable
+     * @param enable bool
      * @throws FeatureStateNotChangedException
      * TODO remove this and put it's details in the manager
      */
