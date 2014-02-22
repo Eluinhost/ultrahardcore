@@ -13,7 +13,7 @@ public class RoofBorder extends WorldEditBorder {
 
     public static final int Y_VALUE = 255;
 
-    protected RoofBorder() {
+    public RoofBorder() {
         super("Roof", "Creates a circular roof over the area");
     }
 

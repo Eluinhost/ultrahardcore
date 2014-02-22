@@ -13,7 +13,7 @@ public class SquareBorder extends WorldEditBorder {
 
     public static final int MAX_HEIGHT = 256;
 
-    protected SquareBorder() {
+    public SquareBorder() {
         super("Square", "Creates a square wall around the map");
     }
 

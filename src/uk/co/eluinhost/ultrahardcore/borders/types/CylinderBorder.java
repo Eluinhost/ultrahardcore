@@ -13,7 +13,7 @@ public class CylinderBorder extends WorldEditBorder {
 
     public static final int MAX_HEIGHT = 256;
 
-    protected CylinderBorder() {
+    public CylinderBorder() {
         super("Cylinder", "Creates a cylinder wall around the map");
     }
 
