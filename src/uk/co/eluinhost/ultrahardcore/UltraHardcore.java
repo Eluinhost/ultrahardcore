@@ -18,6 +18,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 
 /**
  * UltraHardcore
@@ -29,6 +30,7 @@ import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
 public class UltraHardcore extends JavaPlugin implements Listener {
 
     private final FeatureManager m_featureManager = new FeatureManager();
+    private final ScatterManager m_scatterManager = new ScatterManager();
 
     //get the current plugin
     public static UltraHardcore getInstance() {
@@ -38,6 +40,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     public FeatureManager getFeatureManager(){
         return m_featureManager;
     }
+    public ScatterManager getScatterManager() { return m_scatterManager; }
 
     //When the plugin gets started
     @Override

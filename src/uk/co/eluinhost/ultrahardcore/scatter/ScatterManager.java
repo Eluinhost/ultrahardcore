@@ -33,19 +33,16 @@ public class ScatterManager {
     private int m_jobID = -1;
     private CommandSender m_commandSender;
 
-    //TODO eww
-    static {
+    public ScatterManager(){
         Bukkit.getServer().getPluginManager().registerEvents(SCATTER_PROTECTOR, UltraHardcore.getInstance());
         try {
             addScatterType(new EvenCircumferenceType());
             addScatterType(new RandomCircularType());
             addScatterType(new RandomSquareType());
-        } catch (ScatterTypeConflictException e) {
-            e.printStackTrace();
+        } catch (ScatterTypeConflictException ignored) {
+            Bukkit.getLogger().severe("Conflict error when loading default scatter types!");
         }
     }
-
-    private ScatterManager() {}
 
     public static boolean isScatterInProgress() {
         return !REMAINING_TELEPORTS.isEmpty();
