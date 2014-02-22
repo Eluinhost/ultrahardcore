@@ -21,7 +21,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
  *
  * @author ghowden
  */
-@SuppressWarnings("UtilityClass")
+//todo cleanup all border stuff
 public abstract class WorldEditBorderCreator {
 
     private static final HashMap<String, LinkedList<EditSession>> SESSIONS = new HashMap<String, LinkedList<EditSession>>();
