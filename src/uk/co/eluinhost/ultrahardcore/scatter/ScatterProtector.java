@@ -11,42 +11,42 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+//TODO use weakhashmap with player objects
 public class ScatterProtector implements Listener {
-    private static HashMap<String, Location> protectedPlayers = new HashMap<String, Location>();
+    private static final HashMap<String, Location> PROTECTED_PLAYERS = new HashMap<String, Location>();
 
     @EventHandler
     public void playerMoveEvent(PlayerMoveEvent event) {
-        if (protectedPlayers.containsKey(event.getPlayer().getName())) {
+        if (PROTECTED_PLAYERS.containsKey(event.getPlayer().getName())) {
             Player p = event.getPlayer();
-            Location new_location = event.getTo();
-            Location location = protectedPlayers.get(p.getName());
+            Location newLocation = event.getTo();
+            Location location = PROTECTED_PLAYERS.get(p.getName());
 
             //Stop if moved over 1 square
-            if (distanceXZ(location, new_location) >= 1.0) {
-                protectedPlayers.remove(p.getName());
-                return;
-            } else if (location.getY() < new_location.getY()) {
-                protectedPlayers.remove(p.getName());
+            if (distanceXZ(location, newLocation) >= 1.0 || location.getY() < newLocation.getY()) {
+                PROTECTED_PLAYERS.remove(p.getName());
                 return;
             }
-            new_location.setY(location.getY());
-            event.setTo(new_location);
+            newLocation.setY(location.getY());
+            event.setTo(newLocation);
         }
     }
 
-    private double distanceXZ(Location l1, Location l2) {
+    private static double distanceXZ(Location l1, Location l2) {
         return Math.abs(l1.getX() - l2.getX()) + Math.abs(l1.getZ() - l2.getZ());
     }
 
     @EventHandler
     public void onPlayerHurt(EntityDamageEvent ede) {
         if (ede.getEntity() instanceof Player) {
-            if (protectedPlayers.containsKey(((Player) ede.getEntity()).getName())) {
+            //noinspection OverlyStrongTypeCast
+            if (PROTECTED_PLAYERS.containsKey(((Player) ede.getEntity()).getName())) {
                 switch (ede.getCause()) {
                     case SUFFOCATION:
                     case FALL:
                     case VOID:
                         ede.setCancelled(true);
+                        break;
                     default:
                 }
             }
@@ -55,15 +55,15 @@ public class ScatterProtector implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent pqe) {
-        protectedPlayers.remove(pqe.getPlayer().getName());
+        PROTECTED_PLAYERS.remove(pqe.getPlayer().getName());
     }
 
     @EventHandler
     public void onPlayerKick(PlayerKickEvent pke) {
-        protectedPlayers.remove(pke.getPlayer().getName());
+        PROTECTED_PLAYERS.remove(pke.getPlayer().getName());
     }
 
-    public void add(String name, Location loc) {
-        protectedPlayers.put(name, loc);
+    public void addPlayer(String name, Location loc) {
+        PROTECTED_PLAYERS.put(name, loc);
     }
 }
