@@ -81,15 +81,15 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         setExecutor("ci", new ClearInventoryCommand());
         setExecutor("deathban", new DeathBanCommand());
 
-        TeamCommands tc = new TeamCommands();
-        setExecutor("randomteams", tc);
-        setExecutor("clearteams", tc);
-        setExecutor("listteams", tc);
-        setExecutor("createteam", tc);
-        setExecutor("removeteam", tc);
-        setExecutor("jointeam", tc);
-        setExecutor("leaveteam", tc);
-        setExecutor("emptyteams", tc);
+        UHCCommand teamCommands = new TeamCommands();
+        setExecutor("randomteams", teamCommands);
+        setExecutor("clearteams", teamCommands);
+        setExecutor("listteams", teamCommands);
+        setExecutor("createteam", teamCommands);
+        setExecutor("removeteam", teamCommands);
+        setExecutor("jointeam", teamCommands);
+        setExecutor("leaveteam", teamCommands);
+        setExecutor("emptyteams", teamCommands);
 
         setExecutor("scatter", new ScatterCommandConversational());
         setExecutor("freeze", new FreezeCommand());
@@ -98,7 +98,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         setExecutor("givedrops", new GiveDropCommand());
         try {
             setExecutor("timer", new TimerCommand());
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError ignored) {
             getLogger().severe("Cannot find a class for timer command, ProtocolLib is needed for this feature to work, disabling...");
         }
 
