@@ -4,51 +4,35 @@ import org.bukkit.Location;
 
 public class PlayerTeleportMapping {
 
-    private String playerName;
-    private int amountTried = 0;
-    private Location location;
-    private String teamName = null;
+    private final String m_playerName;
+    private int m_amountTried = 0;
+    private final Location m_location;
+    private final String m_team;
 
     public PlayerTeleportMapping(String name, Location loc, String teamName) {
-        setPlayerName(name);
-        setLocation(loc);
-        setTeamName(teamName);
+        m_playerName = name;
+        m_location = loc;
+        m_team = teamName;
     }
 
     public int getAmountTried() {
-        return amountTried;
-    }
-
-    @SuppressWarnings("unused")
-    public void setAmountTried(int amountTried) {
-        this.amountTried = amountTried;
+        return m_amountTried;
     }
 
     public void incrementAmountTried() {
-        amountTried++;
+        m_amountTried++;
     }
 
     public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+        return m_playerName;
     }
 
     public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
+        return m_location;
     }
 
     public String getTeamName() {
-        return teamName;
+        return m_team;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
 }
