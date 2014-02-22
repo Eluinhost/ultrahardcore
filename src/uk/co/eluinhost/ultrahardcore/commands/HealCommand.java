@@ -12,7 +12,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class HealCommand extends UHCCommand {
+public class HealCommand implements UHCCommand {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {

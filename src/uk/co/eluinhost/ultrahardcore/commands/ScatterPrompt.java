@@ -20,7 +20,7 @@ import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
-import uk.co.eluinhost.ultrahardcore.scatter.types.ScatterType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.*;
@@ -61,11 +61,11 @@ public class ScatterPrompt extends StringPrompt {
                         conversationContext.getForWhom().sendRawMessage(ty_s);
                     }
                 }else{
-                    ScatterType st = parseScatterType(s);
+                    AbstractScatterType st = parseScatterType(s);
                     if(st == null){
                         conversationContext.getForWhom().sendRawMessage(ChatColor.RED+"That isn't a valid scatter type!");
                     }else{
-                        conversationContext.getForWhom().sendRawMessage(ChatColor.AQUA+"Using the scatter type: "+st.getScatterName());
+                        conversationContext.getForWhom().sendRawMessage(ChatColor.AQUA+"Using the scatter type: "+st.getScatterID());
                         conversationContext.setSessionData(DATA.TYPE, st);
                     }
                 }
@@ -136,7 +136,7 @@ public class ScatterPrompt extends StringPrompt {
             @SuppressWarnings("unchecked")
             ArrayList<String> all_players_s = (ArrayList<String>)conversationContext.getSessionData(DATA.PLAYERS);
             Boolean usingTeams = (Boolean)conversationContext.getSessionData(DATA.TEAMS);
-            ScatterType scatterType = (ScatterType) conversationContext.getSessionData(DATA.TYPE);
+            AbstractScatterType scatterType = (AbstractScatterType) conversationContext.getSessionData(DATA.TYPE);
             CommandSender sender = (CommandSender) conversationContext.getSessionData("SENDER");
             scatter(scatterType,usingTeams,r,min,c,w,all_players_s,sender);
             return END_OF_CONVERSATION;
@@ -186,7 +186,7 @@ public class ScatterPrompt extends StringPrompt {
      * @param s the input string
      * @return the ScatterType if exists, null otherwise
      */
-    public static ScatterType parseScatterType(String s){
+    public static AbstractScatterType parseScatterType(String s){
         return ScatterManager.getScatterType(s);
     }
 
@@ -289,19 +289,19 @@ public class ScatterPrompt extends StringPrompt {
 
     public static List<String> getTypesOutput(){
         ArrayList<String> output = new ArrayList<String>();
-        ArrayList<ScatterType> scatterTypes = ScatterManager.getScatterTypes();
+        ArrayList<AbstractScatterType> scatterTypes = ScatterManager.getScatterTypes();
         if(scatterTypes.size() == 0){
             output.add(ChatColor.RED+"No scatter types loaded!");
         }else{
             output.add(ChatColor.AQUA+"Showing "+scatterTypes.size()+" loaded scatter types:");
         }
-        for(ScatterType st : scatterTypes){
-            output.add(ChatColor.GREEN+st.getScatterName()+ChatColor.GRAY+" - "+st.getDescription());
+        for(AbstractScatterType st : scatterTypes){
+            output.add(ChatColor.GREEN+st.getScatterID()+ChatColor.GRAY+" - "+st.getDescription());
         }
         return output;
     }
 
-    public static void scatter(ScatterType type,Boolean useTeams,Double radius,Double mindist,SimplePair<Double,Double> coords, World w,List<String> players,CommandSender sender){
+    public static void scatter(AbstractScatterType type,Boolean useTeams,Double radius,Double mindist,SimplePair<Double,Double> coords, World w,List<String> players,CommandSender sender){
         ScatterParams sp = new ScatterParams(w.getName(),coords.getKey(), coords.getValue(), radius);
         sp.setMinDistance(mindist);
         List<String> allowedBlocks = ConfigHandler.getConfig(ConfigHandler.MAIN).getStringList(ConfigNodes.SCATTER_ALLOWED_BLOCKS);

@@ -11,7 +11,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class FeedCommand extends UHCCommand {
+public class FeedCommand implements UHCCommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label,

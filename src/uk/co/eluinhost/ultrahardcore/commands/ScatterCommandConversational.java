@@ -15,13 +15,13 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
-import uk.co.eluinhost.ultrahardcore.scatter.types.ScatterType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.*;
 
-public class ScatterCommandConversational extends UHCCommand {
+public class ScatterCommandConversational implements UHCCommand {
 
     ConversationFactory cf = new ConversationFactory(UltraHardcore.getInstance())
             .withEscapeSequence("cancel")
@@ -162,7 +162,7 @@ public class ScatterCommandConversational extends UHCCommand {
 			 * get the type of the scatter to do
 			 */
 
-            ScatterType type = ScatterPrompt.parseScatterType(args[0]);
+            AbstractScatterType type = ScatterPrompt.parseScatterType(args[0]);
             if(type == null){
                 sender.sendMessage(ChatColor.RED+"Scatter type "+args[0]+" not found. Type /scatter types to view the list of types");
                 return true;

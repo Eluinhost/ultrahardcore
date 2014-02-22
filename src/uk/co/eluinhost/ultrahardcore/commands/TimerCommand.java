@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimerCommand extends UHCCommand {
+public class TimerCommand implements UHCCommand {
 
 
     private int jobID = -1;

@@ -13,7 +13,7 @@ import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
-public class FeatureCommand extends UHCCommand {
+public class FeatureCommand implements UHCCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

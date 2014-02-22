@@ -15,7 +15,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class TPCommand extends UHCCommand {
+public class TPCommand implements UHCCommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,

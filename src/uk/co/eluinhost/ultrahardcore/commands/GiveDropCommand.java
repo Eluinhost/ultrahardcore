@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class GiveDropCommand extends UHCCommand {
+public class GiveDropCommand implements UHCCommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,

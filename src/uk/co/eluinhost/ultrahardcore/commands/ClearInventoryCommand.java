@@ -17,7 +17,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class ClearInventoryCommand extends UHCCommand {
+public class ClearInventoryCommand implements UHCCommand {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,

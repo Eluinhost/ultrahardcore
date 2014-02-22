@@ -14,7 +14,7 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeathBanCommand extends UHCCommand {
+public class DeathBanCommand implements UHCCommand {
 
     private final String SYNTAX = ChatColor.RED+"Syntax: /deathban ban <playername> <time> OR /deathban unban <playername>";
     private final String BAN_SYNTAX = ChatColor.RED+"Syntax: /deathban ban <playername> [time]";

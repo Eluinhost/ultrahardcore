@@ -21,7 +21,7 @@ import uk.co.eluinhost.ultrahardcore.util.TeamsUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 import uk.co.eluinhost.ultrahardcore.util.PrintFlags;
 
-public class TeamCommands extends UHCCommand {
+public class TeamCommands implements UHCCommand {
 
 	private Scoreboard sc = Bukkit.getScoreboardManager().getMainScoreboard();
 	private TeamsUtil tu = new TeamsUtil();

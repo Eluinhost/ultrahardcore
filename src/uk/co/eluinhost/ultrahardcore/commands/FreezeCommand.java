@@ -18,7 +18,7 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
-public class FreezeCommand extends UHCCommand {
+public class FreezeCommand implements UHCCommand {
 	
 	private static ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
 	private static boolean active = false;
