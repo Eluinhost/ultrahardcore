@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.conversations.ConversationAbandonedListener;
 
+//TODO wtf is this even
 public class CommandCancelHandler implements ConversationAbandonedListener {
 
     @Override
