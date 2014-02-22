@@ -1,8 +1,9 @@
-package uk.co.eluinhost.ultrahardcore.borders;
+package uk.co.eluinhost.ultrahardcore.borders.types;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import uk.co.eluinhost.ultrahardcore.borders.BorderParams;
 
 public abstract class WorldEditBorder {
 
@@ -22,7 +23,7 @@ public abstract class WorldEditBorder {
         m_description = description;
     }
 
-    protected abstract void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException;
+    public abstract void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException;
 
     @Override
     public boolean equals(Object obj) {

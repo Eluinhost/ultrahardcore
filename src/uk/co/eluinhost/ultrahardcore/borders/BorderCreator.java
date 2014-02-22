@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import uk.co.eluinhost.ultrahardcore.borders.types.WorldEditBorder;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;

@@ -8,6 +8,7 @@ import org.bukkit.World;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.borders.types.RoofBorder;
 import uk.co.eluinhost.ultrahardcore.borders.types.SquareBorder;
+import uk.co.eluinhost.ultrahardcore.borders.types.WorldEditBorder;
 import uk.co.eluinhost.ultrahardcore.exceptions.borders.BorderTypeNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.WorldEditMaxChangedBlocksException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;

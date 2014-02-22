@@ -7,7 +7,6 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.patterns.SingleBlockPattern;
 
 import uk.co.eluinhost.ultrahardcore.borders.BorderParams;
-import uk.co.eluinhost.ultrahardcore.borders.WorldEditBorder;
 
 public class RoofBorder extends WorldEditBorder {
 
@@ -18,7 +17,7 @@ public class RoofBorder extends WorldEditBorder {
     }
 
     @Override
-    protected void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException {
+    public void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException {
         es.makeCylinder(
                 new Vector(bp.getX(), Y_VALUE, bp.getZ()),
                 new SingleBlockPattern(new BaseBlock(bp.getBlockID(), bp.getBlockMeta())),
