@@ -1,8 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.scatter;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,27 +12,30 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
-import uk.co.eluinhost.ultrahardcore.scatter.types.ScatterType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
 
+//TODO make not a utility class
+//TODO use a better way of restricting to one command at a time
 public class ScatterManager {
 
-    public final static int MAX_TRIES = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.SCATTER_MAX_TRIES);
-    public final static int MAX_ATTEMPTS = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.SCATTER_MAX_ATTEMPTS);
-    public final static int SCATTER_DELAY = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.SCATTER_DELAY);
+    public static final int MAX_TRIES = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.SCATTER_MAX_TRIES);
+    public static final int MAX_ATTEMPTS = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.SCATTER_MAX_ATTEMPTS);
+    public static final int SCATTER_DELAY = ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.SCATTER_DELAY);
 
-    private static ArrayList<ScatterType> scatterTypes = new ArrayList<ScatterType>();
+    private static final AbstractList<AbstractScatterType> SCATTER_TYPES = new ArrayList<AbstractScatterType>();
 
-    private static ScatterProtector sp = new ScatterProtector();
+    private static final ScatterProtector SCATTER_PROTECTOR = new ScatterProtector();
 
-    private static LinkedList<PlayerTeleportMapping> remainingTeleports = new LinkedList<PlayerTeleportMapping>();
+    private static final LinkedList<PlayerTeleportMapping> REMAINING_TELEPORTS = new LinkedList<PlayerTeleportMapping>();
 
-    private static int jobID = -1;
-    private static CommandSender commandIssuer = null;
+    private int m_jobID = -1;
+    private CommandSender m_commandSender;
 
+    //TODO eww
     static {
-        Bukkit.getServer().getPluginManager().registerEvents(sp, UltraHardcore.getInstance());
+        Bukkit.getServer().getPluginManager().registerEvents(SCATTER_PROTECTOR, UltraHardcore.getInstance());
         try {
             addScatterType(new EvenCircumferenceType());
             addScatterType(new RandomCircularType());
@@ -44,35 +45,37 @@ public class ScatterManager {
         }
     }
 
+    private ScatterManager() {}
+
     public static boolean isScatterInProgress() {
-        return remainingTeleports.size() != 0;
+        return !REMAINING_TELEPORTS.isEmpty();
     }
 
-    public static void addScatterType(ScatterType type) throws ScatterTypeConflictException {
-        for (ScatterType scatterType : scatterTypes) {
+    public static void addScatterType(AbstractScatterType type) throws ScatterTypeConflictException {
+        for (AbstractScatterType scatterType : SCATTER_TYPES) {
             if (scatterType.getScatterID().equals(type.getScatterID())) {
                 throw new ScatterTypeConflictException();
             }
         }
-        scatterTypes.add(type);
+        SCATTER_TYPES.add(type);
     }
 
-    public static ScatterType getScatterType(String ID) {
-        for (ScatterType st : scatterTypes) {
-            if (st.getScatterID().equals(ID)) {
+    public static AbstractScatterType getScatterType(String scatterID) {
+        for (AbstractScatterType st : SCATTER_TYPES) {
+            if (st.getScatterID().equals(scatterID)) {
                 return st;
             }
         }
         return null;
     }
 
-    public static ArrayList<ScatterType> getScatterTypes() {
-        return scatterTypes;
+    public static List<AbstractScatterType> getScatterTypes() {
+        return Collections.unmodifiableList(SCATTER_TYPES);
     }
 
     public static List<String> getScatterTypeNames() {
         ArrayList<String> r = new ArrayList<String>();
-        for (ScatterType st : scatterTypes) {
+        for (AbstractScatterType st : SCATTER_TYPES) {
             r.add(st.getScatterID());
         }
         return r;
@@ -81,63 +84,65 @@ public class ScatterManager {
     public static void teleportSafe(Player p, Location loc) {
         loc.getChunk().load(true);
         p.teleport(loc);
-        sp.add(p.getName(), loc);
+        SCATTER_PROTECTOR.addPlayer(p.getName(), loc);
     }
 
-    public static void addTeleportMappings(ArrayList<PlayerTeleportMapping> ptm, CommandSender sender) {
-        if (jobID == -1) {
-            remainingTeleports.addAll(ptm);
-            jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), new ScatterRunable(), 0, SCATTER_DELAY);
-            if (jobID != -1) {
-                commandIssuer = sender;
-                sender.sendMessage("Starting to scatter all players, teleports are " + ScatterManager.SCATTER_DELAY + " ticks apart");
-            } else {
+    public void addTeleportMappings(Collection<PlayerTeleportMapping> ptm, CommandSender sender) {
+        if (m_jobID == -1) {
+            REMAINING_TELEPORTS.addAll(ptm);
+            m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), new ScatterRunable(), 0, SCATTER_DELAY);
+            if (m_jobID == -1) {
                 sender.sendMessage(ChatColor.RED + "Error scheduling scatter");
-                remainingTeleports.clear();
+                REMAINING_TELEPORTS.clear();
+            } else {
+                m_commandSender = sender;
+                sender.sendMessage("Starting to scatter all players, teleports are " + SCATTER_DELAY + " ticks apart");
             }
         }
     }
 
-    public static LinkedList<PlayerTeleportMapping> getRemainingTeleports() {
-        return remainingTeleports;
+    public static Iterable<PlayerTeleportMapping> getRemainingTeleports() {
+        return Collections.unmodifiableList(REMAINING_TELEPORTS);
     }
 
-    private static boolean teleportPlayer(PlayerTeleportMapping ptm) {
-        Player p = Bukkit.getPlayerExact(ptm.getPlayerName());
-        if (p == null) {
-            return false;
+    private class ScatterRunable implements Runnable {
+        private boolean teleportPlayer(PlayerTeleportMapping ptm) {
+            Player p = Bukkit.getPlayerExact(ptm.getPlayerName());
+            if (p == null) {
+                return false;
+            }
+            Location loc = ptm.getLocation();
+            loc.add(0, 2, 0);
+            teleportSafe(p, loc);
+            p.sendMessage(ChatColor.GOLD + "You were teleported "
+                    + (ptm.getTeamName() == null ? "solo" : "with team " + ptm.getTeamName())
+                    + " to " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ());
+            return true;
         }
-        Location loc = ptm.getLocation();
-        loc.add(0, 2, 0);
-        teleportSafe(p, loc);
-        p.sendMessage(ChatColor.GOLD + "You were teleported "
-                + ((ptm.getTeamName() == null) ? "solo" : "with team " + ptm.getTeamName())
-                + " to " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ());
-        return true;
-    }
 
-    private static class ScatterRunable implements Runnable {
         @Override
         public void run() {
-            PlayerTeleportMapping ptm = remainingTeleports.pollFirst();
+            PlayerTeleportMapping ptm = REMAINING_TELEPORTS.pollFirst();
             if (ptm == null) {
                 try {
-                    commandIssuer.sendMessage(ChatColor.GOLD + "All players now scattered!");
+                    if (m_commandSender != null) {
+                        m_commandSender.sendMessage(ChatColor.GOLD + "All players now scattered!");
+                    }
                 } catch (Exception ignored) {
                 }
-                commandIssuer = null;
-                Bukkit.getScheduler().cancelTask(jobID);
-                jobID = -1;
+                m_commandSender = null;
+                Bukkit.getScheduler().cancelTask(m_jobID);
+                m_jobID = -1;
                 return;
             }
             if (!teleportPlayer(ptm)) {
                 ptm.incrementAmountTried();
                 if (ptm.getAmountTried() > MAX_ATTEMPTS) {
-                    if (commandIssuer != null) {
-                        commandIssuer.sendMessage(ChatColor.RED + "Failed to scatter " + ptm.getPlayerName() + " after " + MAX_ATTEMPTS + ", giving up");
+                    if (m_commandSender != null) {
+                        m_commandSender.sendMessage(ChatColor.RED + "Failed to scatter " + ptm.getPlayerName() + " after " + MAX_ATTEMPTS + ", giving up");
                     }
                 } else {
-                    remainingTeleports.add(ptm);
+                    REMAINING_TELEPORTS.add(ptm);
                 }
             }
         }
