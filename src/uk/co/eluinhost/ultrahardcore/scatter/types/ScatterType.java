@@ -1,6 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,28 +20,31 @@ public abstract class ScatterType {
 
     public abstract List<Location> getScatterLocations(ScatterParams params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException;
 
-    protected Random random = new Random();
+    private static final Random RANDOM = new Random();
 
-    protected boolean isLocationToClose(Location loc, ArrayList<Location> existing, Double distance) {
-        Double d_sqaured = distance * distance;
+    protected static boolean isLocationTooClose(Location loc, Iterable<Location> existing, Double distance) {
+        Double distanceSquared = distance * distance;
         for (Player p : Bukkit.getOnlinePlayers()) {
             try {
-                if (p.getLocation().distanceSquared(loc) < d_sqaured) {
+                if (p.getLocation().distanceSquared(loc) < distanceSquared) {
                     return true;
                 }
-            } catch (IllegalArgumentException ignored) {
-            }
+            } catch (IllegalArgumentException ignored) {}
         }
-        for (Location l : existing) {
-            if (l.distanceSquared(loc) < d_sqaured) {
+        for (Location location : existing) {
+            if (location.distanceSquared(loc) < distanceSquared) {
                 return true;
             }
         }
         for (PlayerTeleportMapping ptm : ScatterManager.getRemainingTeleports()) {
-            if (ptm.getLocation().distanceSquared(loc) < d_sqaured) {
+            if (ptm.getLocation().distanceSquared(loc) < distanceSquared) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static Random getRandom() {
+        return RANDOM;
     }
 }

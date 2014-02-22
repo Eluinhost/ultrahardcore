@@ -31,9 +31,9 @@ public class RandomCircularType extends ScatterType {
             boolean valid = false;
             for (int i = 0; i < ScatterManager.MAX_TRIES; i++) {
                 //get a random angle between 0 and 2PI
-                double randomAngle = random.nextDouble() * Math.PI * 2d;
+                double randomAngle = getRandom().nextDouble() * Math.PI * 2d;
                 //get a random radius for uniform circular distribution
-                double newradius = (scatterParams.getRadius() * Math.sqrt(random.nextDouble()));
+                double newradius = (scatterParams.getRadius() * Math.sqrt(getRandom().nextDouble()));
 
                 //Convert back to cartesian
                 double xcoord = MathsHelper.getXFromRadians(newradius, randomAngle) + scatterParams.getX();
@@ -50,7 +50,7 @@ public class RandomCircularType extends ScatterType {
                 //get the highest block in the Y coordinate
                 ServerUtil.setYHighest(finalTeleport);
 
-                if (isLocationToClose(finalTeleport, locations, scatterParams.getMinDistance())) {
+                if (isLocationTooClose(finalTeleport, locations, scatterParams.getMinDistance())) {
                     continue;
                 }
 

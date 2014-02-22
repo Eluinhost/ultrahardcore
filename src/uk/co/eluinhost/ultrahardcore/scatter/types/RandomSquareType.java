@@ -41,8 +41,8 @@ public class RandomSquareType extends ScatterType {
             boolean valid = false;
             for (int i = 0; i < ScatterManager.MAX_TRIES; i++) {
                 //get a coords
-                double xcoord = random.nextDouble() * params.getRadius() * 2;
-                double zcoord = random.nextDouble() * params.getRadius() * 2;
+                double xcoord = getRandom().nextDouble() * params.getRadius() * 2;
+                double zcoord = getRandom().nextDouble() * params.getRadius() * 2;
                 xcoord -= params.getRadius();
                 zcoord -= params.getRadius();
                 xcoord += params.getX();
@@ -59,7 +59,7 @@ public class RandomSquareType extends ScatterType {
                 //get the highest block in the Y coordinate
                 ServerUtil.setYHighest(finalTeleport);
 
-                if (isLocationToClose(finalTeleport, locations, params.getMinDistance())) {
+                if (isLocationTooClose(finalTeleport, locations, params.getMinDistance())) {
                     continue;
                 }
 
