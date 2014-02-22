@@ -18,14 +18,8 @@ public class RandomSquareType extends ScatterType {
     private static final String NAME = "RandomSquare";
     private static final String DESCRIPTION = "Uniformly scatter over a sqaure with sides length radius*2";
 
-    @Override
-    public String getScatterName() {
-        return NAME;
-    }
-
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
+    public RandomSquareType(){
+        super(NAME,DESCRIPTION);
     }
 
     @Override

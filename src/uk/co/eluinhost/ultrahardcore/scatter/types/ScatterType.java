@@ -14,13 +14,25 @@ import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 
 public abstract class ScatterType {
 
-    public abstract String getScatterName();
-
-    public abstract String getDescription();
-
-    public abstract List<Location> getScatterLocations(ScatterParams params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException;
+    private final String m_scatterID;
+    private final String m_description;
 
     private static final Random RANDOM = new Random();
+
+    protected ScatterType(String scatterID, String description){
+        m_scatterID = scatterID;
+        m_description = description;
+    }
+
+    public String getScatterID(){
+        return m_scatterID;
+    }
+
+    public String getDescription(){
+        return m_description;
+    }
+
+    public abstract List<Location> getScatterLocations(ScatterParams params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException;
 
     protected static boolean isLocationTooClose(Location loc, Iterable<Location> existing, Double distance) {
         Double distanceSquared = distance * distance;

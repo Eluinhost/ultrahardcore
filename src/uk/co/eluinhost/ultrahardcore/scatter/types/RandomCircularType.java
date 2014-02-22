@@ -16,8 +16,12 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class RandomCircularType extends ScatterType {
 
-    private final static String NAME = "RandomCircle";
-    private final static String DESCRIPTION = "Randomly distributes locations evenly over a circular area";
+    private static final String NAME = "RandomCircle";
+    private static final String DESCRIPTION = "Randomly distributes locations evenly over a circular area";
+
+    public RandomCircularType(){
+        super(NAME,DESCRIPTION);
+    }
 
     @Override
     public List<Location> getScatterLocations(ScatterParams scatterParams, int amount) throws WorldNotFoundException, MaxAttemptsReachedException {
@@ -70,15 +74,4 @@ public class RandomCircularType extends ScatterType {
         }
         return locations;
     }
-
-    @Override
-    public String getScatterName() {
-        return NAME;
-    }
-
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
-
 }

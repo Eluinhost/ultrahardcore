@@ -18,6 +18,10 @@ public class EvenCircumferenceType extends ScatterType {
     private static final String NAME = "EvenCircle";
     private static final String DESCRIPTION = "Puts players at even distances distance from each other along the circumference";
 
+    public EvenCircumferenceType(){
+        super(NAME,DESCRIPTION);
+    }
+
     @Override
     public List<Location> getScatterLocations(ScatterParams params, int amount)
             throws WorldNotFoundException, MaxAttemptsReachedException {
@@ -55,15 +59,4 @@ public class EvenCircumferenceType extends ScatterType {
         }
         return locations;
     }
-
-    @Override
-    public String getScatterName() {
-        return NAME;
-    }
-
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
-
 }
