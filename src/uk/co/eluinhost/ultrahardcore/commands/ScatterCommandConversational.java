@@ -28,7 +28,7 @@ public class ScatterCommandConversational implements UHCCommand {
             .withPrefix(new ConversationPrefix() {
                 @Override
                 public String getPrefix(ConversationContext conversationContext) {
-                    return ChatColor.GOLD+"";
+                    return ChatColor.GOLD + "";
                 }
             })
             .withTimeout(60)
@@ -40,48 +40,48 @@ public class ScatterCommandConversational implements UHCCommand {
     private static final String scatterSyntax = "'/scatter' for interactive mode OR /scatter typeID yes/no radius[:mindist] world:[x,z] */player1 player2 player3";
 
     @Override
-	public boolean onCommand(CommandSender sender, Command command, String label,
-			String[] args) {
-		if(command.getName().equals("scatter")){
-			if(!sender.hasPermission(PermissionNodes.SCATTER_COMMAND)){
-				sender.sendMessage(ChatColor.RED+"You don't have permission "+PermissionNodes.SCATTER_COMMAND);
-				return true;
-			}
+    public boolean onCommand(CommandSender sender, Command command, String label,
+                             String[] args) {
+        if (command.getName().equals("scatter")) {
+            if (!sender.hasPermission(PermissionNodes.SCATTER_COMMAND)) {
+                sender.sendMessage(ChatColor.RED + "You don't have permission " + PermissionNodes.SCATTER_COMMAND);
+                return true;
+            }
 
-            if(args.length == 0){
-                if(sender instanceof Player || sender instanceof ConsoleCommandSender){
-                    Map<Object,Object> initial = new HashMap<Object,Object>();
-                    initial.put("SENDER",sender);
+            if (args.length == 0) {
+                if (sender instanceof Player || sender instanceof ConsoleCommandSender) {
+                    Map<Object, Object> initial = new HashMap<Object, Object>();
+                    initial.put("SENDER", sender);
                     cf.withInitialSessionData(initial).buildConversation((Conversable) sender).begin();
                     return true;
-                }else{
+                } else {
                     sender.sendMessage("Interactive mode can only be used by players/console");
                     return true;
                 }
             }
 
-            if(args.length == 1 && args[0].equalsIgnoreCase("default")){
+            if (args.length == 1 && args[0].equalsIgnoreCase("default")) {
                 FileConfiguration config = ConfigHandler.getConfig(ConfigHandler.MAIN);
                 args = new String[5];
                 args[0] = config.getString(ConfigNodes.SCATTER_DEFAULT_TYPE);
-                args[1] = ""+config.getString(ConfigNodes.SCATTER_DEFAULT_TEAMS);
+                args[1] = "" + config.getString(ConfigNodes.SCATTER_DEFAULT_TEAMS);
                 args[2] = config.getInt(ConfigNodes.SCATTER_DEFAULT_RADIUS)
-                        +":"
-                        +config.getInt(ConfigNodes.SCATTER_DEFAULT_MINRADIUS);
+                        + ":"
+                        + config.getInt(ConfigNodes.SCATTER_DEFAULT_MINRADIUS);
                 args[3] = config.getString(ConfigNodes.SCATTER_DEFAULT_WORLD)
-                        +":"
-                        +config.getInt(ConfigNodes.SCATTER_DEFAULT_X)
-                        +","
-                        +config.getInt(ConfigNodes.SCATTER_DEFAULT_Z);
+                        + ":"
+                        + config.getInt(ConfigNodes.SCATTER_DEFAULT_X)
+                        + ","
+                        + config.getInt(ConfigNodes.SCATTER_DEFAULT_Z);
                 args[4] = config.getString(ConfigNodes.SCATTER_DEFAULT_PLAYERS);
             }
 
 			/*
-			 * Get the types of scatter available
+             * Get the types of scatter available
 			 */
-            if(args.length == 1 && args[0].equalsIgnoreCase("types")){
+            if (args.length == 1 && args[0].equalsIgnoreCase("types")) {
                 List<String> scatterTypeOutput = ScatterPrompt.getTypesOutput();
-                for(String s : scatterTypeOutput){
+                for (String s : scatterTypeOutput) {
                     sender.sendMessage(s);
                 }
                 return true;
@@ -90,8 +90,8 @@ public class ScatterCommandConversational implements UHCCommand {
 			/*
 			 * Check sane
 			 */
-            if(args.length < 5){
-                sender.sendMessage(ChatColor.RED+"Syntax: "+scatterSyntax);
+            if (args.length < 5) {
+                sender.sendMessage(ChatColor.RED + "Syntax: " + scatterSyntax);
                 return true;
             }
 
@@ -100,40 +100,40 @@ public class ScatterCommandConversational implements UHCCommand {
 			 * Get the list of people to be scattered
 			 */
             StringBuilder sb = new StringBuilder();
-            for(int i = 4; i <args.length;i++){
+            for (int i = 4; i < args.length; i++) {
                 sb.append(args[i]);
                 sb.append(" ");
             }
             String player_list = sb.toString().trim();
             SimplePair<List<String>, List<String>> parsed_list = ScatterPrompt.parsePlayers(player_list);
-            if(parsed_list.getValue().size() != 0){
-                sender.sendMessage(ChatColor.RED+"Couldn't find the players "+Arrays.toString(parsed_list.getValue().toArray()));
+            if (parsed_list.getValue().size() != 0) {
+                sender.sendMessage(ChatColor.RED + "Couldn't find the players " + Arrays.toString(parsed_list.getValue().toArray()));
             }
-            if(parsed_list.getKey().size() == 0){
-                sender.sendMessage(ChatColor.RED+"There are no players to scatter!");
+            if (parsed_list.getKey().size() == 0) {
+                sender.sendMessage(ChatColor.RED + "There are no players to scatter!");
                 return true;
-            }else{
-                sender.sendMessage(ChatColor.AQUA+"Will scatter players: "+ Arrays.toString(parsed_list.getKey().toArray()));
+            } else {
+                sender.sendMessage(ChatColor.AQUA + "Will scatter players: " + Arrays.toString(parsed_list.getKey().toArray()));
             }
 
 			/*
 			 * get the world info and centre coords
 			 */
-            SimplePair<Double,Double> coords;
+            SimplePair<Double, Double> coords;
             String[] parts = args[3].split(":");
             World w = ScatterPrompt.parseWorld(parts[0]);
-            if(w == null){
-                sender.sendMessage(ChatColor.RED+"World "+parts[0]+" not found!");
+            if (w == null) {
+                sender.sendMessage(ChatColor.RED + "World " + parts[0] + " not found!");
                 return true;
             }
-            if(parts.length == 2){
+            if (parts.length == 2) {
                 coords = ScatterPrompt.parseCoords(parts[1]);
-                if(coords == null){
-                    sender.sendMessage(ChatColor.RED+"The coords in "+args[3]+" are not recognized, use the format worldname:x,z");
+                if (coords == null) {
+                    sender.sendMessage(ChatColor.RED + "The coords in " + args[3] + " are not recognized, use the format worldname:x,z");
                     return true;
                 }
-            }else{
-                coords = new SimplePair<Double,Double>(w.getSpawnLocation().getX(), w.getSpawnLocation().getZ());
+            } else {
+                coords = new SimplePair<Double, Double>(w.getSpawnLocation().getX(), w.getSpawnLocation().getZ());
             }
 
 
@@ -143,18 +143,18 @@ public class ScatterCommandConversational implements UHCCommand {
             Double mindist;
             Double radius;
             String[] radiusparts = args[2].split(":");
-            if(radiusparts.length == 2){
+            if (radiusparts.length == 2) {
                 mindist = ScatterPrompt.parseMinDist(radiusparts[1]);
-                if(mindist == null){
-                    sender.sendMessage(ChatColor.RED+"Minimum distance in "+args[2]+" not detected as a number!");
+                if (mindist == null) {
+                    sender.sendMessage(ChatColor.RED + "Minimum distance in " + args[2] + " not detected as a number!");
                     return true;
                 }
-            }else{
+            } else {
                 mindist = 0d;
             }
             radius = ScatterPrompt.parseRadius(radiusparts[0]);
-            if(radius == null){
-                sender.sendMessage(ChatColor.RED+"Radius in "+args[2]+" not detected as a number!");
+            if (radius == null) {
+                sender.sendMessage(ChatColor.RED + "Radius in " + args[2] + " not detected as a number!");
                 return true;
             }
 
@@ -163,8 +163,8 @@ public class ScatterCommandConversational implements UHCCommand {
 			 */
 
             AbstractScatterType type = ScatterPrompt.parseScatterType(args[0]);
-            if(type == null){
-                sender.sendMessage(ChatColor.RED+"Scatter type "+args[0]+" not found. Type /scatter types to view the list of types");
+            if (type == null) {
+                sender.sendMessage(ChatColor.RED + "Scatter type " + args[0] + " not found. Type /scatter types to view the list of types");
                 return true;
             }
 
@@ -173,8 +173,8 @@ public class ScatterCommandConversational implements UHCCommand {
 			 */
 
             Boolean team_scatter = ScatterPrompt.parseTeams(args[1]);
-            if(team_scatter == null){
-                sender.sendMessage(ChatColor.RED+"I don't know what "+args[1]+" is. You must specify yes/no for teams.");
+            if (team_scatter == null) {
+                sender.sendMessage(ChatColor.RED + "I don't know what " + args[1] + " is. You must specify yes/no for teams.");
                 return true;
             }
 
@@ -187,33 +187,33 @@ public class ScatterCommandConversational implements UHCCommand {
                     w,
                     parsed_list.getKey(),
                     sender);
-			return true;
-		}
-		return false;
+            return true;
+        }
+        return false;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
         ArrayList<String> r = new ArrayList<String>();
-        if(args.length == 1){
+        if (args.length == 1) {
             r.add("types");
             r.add("default");
             r.addAll(ScatterManager.getScatterTypeNames());
             return r;
         }
-        if(args.length == 2){
-            if(args[0].equalsIgnoreCase("types")){
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("types")) {
                 return r;
             }
             r.add("yes");
             r.add("no");
             return r;
         }
-        if(args.length == 3){
+        if (args.length == 3) {
             r.add("radius:mindist");
             return r;
         }
-        if(args.length == 4){
+        if (args.length == 4) {
             return ServerUtil.getWorldNamesWithSpawn();
         }
         List<String> p = ServerUtil.getOnlinePlayers();

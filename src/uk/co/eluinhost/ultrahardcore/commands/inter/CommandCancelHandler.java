@@ -9,8 +9,8 @@ public class CommandCancelHandler implements ConversationAbandonedListener {
 
     @Override
     public void conversationAbandoned(ConversationAbandonedEvent abandonedEvent) {
-        if(!abandonedEvent.gracefulExit()){
-            abandonedEvent.getContext().getForWhom().sendRawMessage(ChatColor.RED+"Command cancelled");
+        if (!abandonedEvent.gracefulExit()) {
+            abandonedEvent.getContext().getForWhom().sendRawMessage(ChatColor.RED + "Command cancelled");
         }
     }
 }
