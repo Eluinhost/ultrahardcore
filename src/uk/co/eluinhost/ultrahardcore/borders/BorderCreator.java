@@ -29,12 +29,12 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
  */
 //TODO stop being a utility type class
 //TODO MAJOR cleanup of border code, needs a command based in commands package
-public class BorderCreator extends UHCCommand {
+public class BorderCreator implements UHCCommand {
 
-    private boolean m_worldEditFound = false;
+    private final boolean m_worldEditFound;
 
     //Generate a border that is of the params
-    public void generateBorder(BorderParams bp) throws WorldEditNotFoundException, WorldEditMaxChangedBlocksException, WorldNotFoundException, BorderTypeNotFoundException {
+    private void generateBorder(BorderParams bp) throws WorldEditNotFoundException, WorldEditMaxChangedBlocksException, WorldNotFoundException, BorderTypeNotFoundException {
         if (m_worldEditFound) {
             WorldEditBorderCreator.build(bp);
         } else {
@@ -49,7 +49,7 @@ public class BorderCreator extends UHCCommand {
         }
     }
 
-    public boolean undoForWorld(String world) throws WorldEditNotFoundException, WorldNotFoundException {
+    private boolean undoForWorld(String world) throws WorldEditNotFoundException {
         if (m_worldEditFound) {
             return WorldEditBorderCreator.undoForWorld(world);
         } else {
@@ -89,9 +89,6 @@ public class BorderCreator extends UHCCommand {
                         return true;
                     } catch (WorldEditNotFoundException ignored) {
                         sender.sendMessage(ChatColor.RED + "WorldEdit " + args[1] + " not found, required to make borders!");
-                        return true;
-                    } catch (WorldNotFoundException ignored) {
-                        sender.sendMessage(ChatColor.RED + "World " + args[1] + " was not found!");
                         return true;
                     }
                 } else if ("types".equals(args[0])) {
