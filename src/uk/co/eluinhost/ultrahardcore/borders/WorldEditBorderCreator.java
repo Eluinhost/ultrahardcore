@@ -5,9 +5,9 @@ import java.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import uk.co.eluinhost.ultrahardcore.borders.types.Cylinder;
-import uk.co.eluinhost.ultrahardcore.borders.types.Roofing;
-import uk.co.eluinhost.ultrahardcore.borders.types.Square;
+import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
+import uk.co.eluinhost.ultrahardcore.borders.types.RoofBorder;
+import uk.co.eluinhost.ultrahardcore.borders.types.SquareBorder;
 import uk.co.eluinhost.ultrahardcore.exceptions.borders.BorderTypeNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.WorldEditMaxChangedBlocksException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
@@ -82,8 +82,8 @@ public abstract class WorldEditBorderCreator {
 
     public static void initialize() {
         BORDER_TYPES.clear();
-        BORDER_TYPES.add(new Cylinder());
-        BORDER_TYPES.add(new Square());
-        BORDER_TYPES.add(new Roofing());
+        BORDER_TYPES.add(new CylinderBorder());
+        BORDER_TYPES.add(new SquareBorder());
+        BORDER_TYPES.add(new RoofBorder());
     }
 }

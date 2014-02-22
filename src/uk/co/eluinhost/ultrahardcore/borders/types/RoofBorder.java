@@ -9,7 +9,7 @@ import com.sk89q.worldedit.patterns.SingleBlockPattern;
 import uk.co.eluinhost.ultrahardcore.borders.BorderParams;
 import uk.co.eluinhost.ultrahardcore.borders.WorldEditBorder;
 
-public class Roofing extends WorldEditBorder {
+public class RoofBorder extends WorldEditBorder {
 
     public static final int Y_VALUE = 255;
 
