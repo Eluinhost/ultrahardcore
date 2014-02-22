@@ -4,69 +4,54 @@ import org.bukkit.Material;
 
 import java.util.List;
 
-public final class ScatterParams {
+//TODO store a location instead of multiple params?
+public class ScatterParams {
 
-    private double radius;
-    private double x;
-    private double z;
-    private String world;
-    private List<Material> allowedBlocks = null;
-    private double minDistance = 0;
+    private final double m_radius;
+    private final double m_centerX;
+    private final double m_centerZ;
+    private final String m_world;
+    private List<Material> m_allowedMaterials;
+    private double m_minimumDistance;
 
     public ScatterParams(String world, double x, double z, double radius) {
-        setWorld(world);
-        setRadius(radius);
-        setX(x);
-        setZ(z);
+        m_world = world;
+        m_radius = radius;
+        m_centerX = x;
+        m_centerZ = z;
     }
 
     public double getRadius() {
-        return radius;
+        return m_radius;
     }
 
-    public void setRadius(double radius) {
-        this.radius = radius;
+    public double getCenterX() {
+        return m_centerX;
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getZ() {
-        return z;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
+    public double getCenterZ() {
+        return m_centerZ;
     }
 
     public void setAllowedBlocks(List<Material> allowedBlocks) {
-        this.allowedBlocks = allowedBlocks;
+        m_allowedMaterials = allowedBlocks;
     }
 
     public double getMinDistance() {
-        return minDistance;
+        return m_minimumDistance;
     }
 
     public void setMinDistance(double minDistance) {
-        this.minDistance = minDistance;
+        m_minimumDistance = minDistance;
     }
 
     public String getWorld() {
-        return world;
+        return m_world;
     }
 
-    public void setWorld(String world) {
-        this.world = world;
-    }
-
-    public boolean blockAllowed(Material m) {
-        for (Material m2 : allowedBlocks) {
-            if (m.name().equals(m2.name())) {
+    public boolean blockAllowed(Material material) {
+        for (Material m2 : m_allowedMaterials) {
+            if (material.name().equals(m2.name())) {
                 return true;
             }
         }
