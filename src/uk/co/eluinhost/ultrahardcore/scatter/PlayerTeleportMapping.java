@@ -4,51 +4,51 @@ import org.bukkit.Location;
 
 public class PlayerTeleportMapping {
 
-	private String playerName;
-	private int amountTried = 0;
-	private Location location;
-	private String teamName = null;
-	
-	public PlayerTeleportMapping(String name,Location loc,String teamName){
-		setPlayerName(name);
-		setLocation(loc);
-		setTeamName(teamName);
-	}
+    private String playerName;
+    private int amountTried = 0;
+    private Location location;
+    private String teamName = null;
 
-	public int getAmountTried() {
-		return amountTried;
-	}
+    public PlayerTeleportMapping(String name, Location loc, String teamName) {
+        setPlayerName(name);
+        setLocation(loc);
+        setTeamName(teamName);
+    }
+
+    public int getAmountTried() {
+        return amountTried;
+    }
 
     @SuppressWarnings("unused")
-	public void setAmountTried(int amountTried) {
-		this.amountTried = amountTried;
-	}
-	
-	public void incrementAmountTried(){
-		amountTried++;
-	}
+    public void setAmountTried(int amountTried) {
+        this.amountTried = amountTried;
+    }
 
-	public String getPlayerName() {
-		return playerName;
-	}
+    public void incrementAmountTried() {
+        amountTried++;
+    }
 
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
+    public String getPlayerName() {
+        return playerName;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public String getTeamName() {
-		return teamName;
-	}
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
-	}
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
 }
