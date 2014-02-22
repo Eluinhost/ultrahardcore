@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class RandomSquareType extends ScatterType {
+public class RandomSquareType extends AbstractScatterType {
 
     private static final String NAME = "RandomSquare";
     private static final String DESCRIPTION = "Uniformly scatter over a sqaure with sides length radius*2";
@@ -29,7 +30,7 @@ public class RandomSquareType extends ScatterType {
         if (world == null) {
             throw new WorldNotFoundException();
         }
-        ArrayList<Location> locations = new ArrayList<Location>();
+        AbstractList<Location> locations = new ArrayList<Location>();
         for (int k = 0; k < amount; k++) {
             Location finalTeleport = new Location(world, 0, 0, 0);
             boolean valid = false;

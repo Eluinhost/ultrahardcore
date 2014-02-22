@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,22 +15,24 @@ import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class RandomCircularType extends ScatterType {
+public class RandomCircularType extends AbstractScatterType {
 
     private static final String NAME = "RandomCircle";
     private static final String DESCRIPTION = "Randomly distributes locations evenly over a circular area";
+    public static final double X_OFFSET = 0.5d;
+    public static final double Z_OFFSET = 0.5d;
 
     public RandomCircularType(){
         super(NAME,DESCRIPTION);
     }
 
     @Override
-    public List<Location> getScatterLocations(ScatterParams scatterParams, int amount) throws WorldNotFoundException, MaxAttemptsReachedException {
-        World world = Bukkit.getWorld(scatterParams.getWorld());
+    public List<Location> getScatterLocations(ScatterParams params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException {
+        World world = Bukkit.getWorld(params.getWorld());
         if (world == null) {
             throw new WorldNotFoundException();
         }
-        ArrayList<Location> locations = new ArrayList<Location>();
+        AbstractList<Location> locations = new ArrayList<Location>();
         for (int k = 0; k < amount; k++) {
             Location finalTeleport = new Location(world, 0, 0, 0);
             boolean valid = false;
@@ -37,15 +40,15 @@ public class RandomCircularType extends ScatterType {
                 //get a random angle between 0 and 2PI
                 double randomAngle = getRandom().nextDouble() * Math.PI * 2d;
                 //get a random radius for uniform circular distribution
-                double newradius = (scatterParams.getRadius() * Math.sqrt(getRandom().nextDouble()));
+                double newradius = params.getRadius() * Math.sqrt(getRandom().nextDouble());
 
                 //Convert back to cartesian
-                double xcoord = MathsHelper.getXFromRadians(newradius, randomAngle) + scatterParams.getX();
-                double zcoord = MathsHelper.getZFromRadians(newradius, randomAngle) + scatterParams.getZ();
+                double xcoord = MathsHelper.getXFromRadians(newradius, randomAngle) + params.getX();
+                double zcoord = MathsHelper.getZFromRadians(newradius, randomAngle) + params.getZ();
 
                 //get the center of the block/s
-                xcoord = Math.round(xcoord) + 0.5d;
-                zcoord = Math.round(zcoord) + 0.5d;
+                xcoord = Math.round(xcoord) + X_OFFSET;
+                zcoord = Math.round(zcoord) + Z_OFFSET;
 
                 //set the locations coordinates
                 finalTeleport.setX(xcoord);
@@ -54,12 +57,12 @@ public class RandomCircularType extends ScatterType {
                 //get the highest block in the Y coordinate
                 ServerUtil.setYHighest(finalTeleport);
 
-                if (isLocationTooClose(finalTeleport, locations, scatterParams.getMinDistance())) {
+                if (isLocationTooClose(finalTeleport, locations, params.getMinDistance())) {
                     continue;
                 }
 
                 //if the block isnt allowed get a new coord
-                if (!scatterParams.blockAllowed(finalTeleport.getBlock().getType())) {
+                if (!params.blockAllowed(finalTeleport.getBlock().getType())) {
                     continue;
                 }
 
