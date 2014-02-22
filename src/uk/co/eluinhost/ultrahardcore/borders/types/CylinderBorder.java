@@ -13,6 +13,10 @@ public class CylinderBorder extends WorldEditBorder {
 
     public static final int MAX_HEIGHT = 256;
 
+    protected CylinderBorder() {
+        super("Cylinder", "Creates a cylinder wall around the map");
+    }
+
     @Override
     protected void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException {
         es.makeCylinder(
@@ -22,15 +26,5 @@ public class CylinderBorder extends WorldEditBorder {
                 bp.getRadius(),
                 MAX_HEIGHT,
                 false);
-    }
-
-    @Override
-    public String getID() {
-        return "Cylinder";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Creates a cylinder wall around the map";
     }
 }

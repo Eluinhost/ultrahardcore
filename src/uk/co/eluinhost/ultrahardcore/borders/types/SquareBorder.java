@@ -13,6 +13,10 @@ public class SquareBorder extends WorldEditBorder {
 
     public static final int MAX_HEIGHT = 256;
 
+    protected SquareBorder() {
+        super("Square", "Creates a square wall around the map");
+    }
+
     @Override
     protected void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException {
         Vector pos1 = new Vector(
@@ -26,15 +30,5 @@ public class SquareBorder extends WorldEditBorder {
         es.makeCuboidWalls(new CuboidRegion(pos1, pos2)
                 , new SingleBlockPattern(
                 new BaseBlock(bp.getBlockID(), bp.getBlockMeta())));
-    }
-
-    @Override
-    public String getID() {
-        return "Square";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Creates a square wall around the map";
     }
 }

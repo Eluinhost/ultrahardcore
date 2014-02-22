@@ -13,6 +13,10 @@ public class RoofBorder extends WorldEditBorder {
 
     public static final int Y_VALUE = 255;
 
+    protected RoofBorder() {
+        super("Roof", "Creates a circular roof over the area");
+    }
+
     @Override
     protected void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException {
         es.makeCylinder(
@@ -22,15 +26,5 @@ public class RoofBorder extends WorldEditBorder {
                 bp.getRadius(),
                 1,
                 true);
-    }
-
-    @Override
-    public String getID() {
-        return "Roof";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Creates a circular roof over the area";
     }
 }

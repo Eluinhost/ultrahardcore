@@ -6,9 +6,21 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public abstract class WorldEditBorder {
 
-    public abstract String getID();
+    private final String m_borderID;
+    private final String m_description;
 
-    public abstract String getDescription();
+    public String getID(){
+        return m_borderID;
+    }
+
+    public String getDescription(){
+        return m_description;
+    }
+
+    protected WorldEditBorder(String id, String description){
+        m_borderID = id;
+        m_description = description;
+    }
 
     protected abstract void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException;
 
