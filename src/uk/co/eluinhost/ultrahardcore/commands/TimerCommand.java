@@ -19,18 +19,27 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO complete, more refactor
 public class TimerCommand implements UHCCommand {
 
+    public static final long SECONDS_PER_HOUR = 3600;
+    public static final long SECONDS_PER_MINUTE = 60;
+    public static final int Y_COORD = -200;
+    public static final int Y_MULTIPLIER = 32;
+    public static final int X_MULTIPLIER = 32;
+    public static final int Z_MULTIPLIER = 32;
+    public static final int INVISIBLE_FLAG = 0x20;
+    public static final int MAX_STRING_LEGNTH = 64;
 
-    private int jobID = -1;
-    private final int ENTITY_ID = Short.MAX_VALUE - 375;
+    private int m_jobID = -1;
+    private static final int ENTITY_ID = Short.MAX_VALUE - 375;
 
-    private ProtocolManager pm = ProtocolLibrary.getProtocolManager();
-    private PacketContainer spawnPacket = pm.createPacket(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
-    private PacketContainer destroyPacket = pm.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
+    private final ProtocolManager m_protocolManager = ProtocolLibrary.getProtocolManager();
+    private final PacketContainer m_spawnPacket = m_protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
+    private final PacketContainer m_destroyPacket = m_protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
 
     public TimerCommand() {
-        destroyPacket.getIntegerArrays().write(0, new int[]{ENTITY_ID});
+        m_destroyPacket.getIntegerArrays().write(0, new int[]{ENTITY_ID});
         try {
             destroyTextBar();
         } catch (InvocationTargetException e) {
@@ -41,13 +50,13 @@ public class TimerCommand implements UHCCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
-        if (command.getName().equals("timer")) {
+        if ("timer".equals(command.getName())) {
             if (!sender.hasPermission(PermissionNodes.TIMER_COMMAND)) {
                 sender.sendMessage(ChatColor.RED + "You don't have permission to use this command");
                 return true;
             }
-            if (args.length >= 1 && args[0].equalsIgnoreCase("cancel")) {
-                if (jobID == -1) {
+            if (args.length >= 1 && "cancel".equalsIgnoreCase(args[0])) {
+                if (m_jobID == -1) {
                     sender.sendMessage(ChatColor.RED + "There is no timer running!");
                     return true;
                 }
@@ -55,7 +64,7 @@ public class TimerCommand implements UHCCommand {
                 sender.sendMessage(ChatColor.GOLD + "Timer stopped!");
                 return true;
             }
-            if (jobID != -1) {
+            if (m_jobID != -1) {
                 sender.sendMessage(ChatColor.RED + "There is already a timer running! Cancel it with /timer cancel");
                 return true;
             }
@@ -81,9 +90,9 @@ public class TimerCommand implements UHCCommand {
     }
 
     private void stopTimer() {
-        if (jobID != -1) {
-            Bukkit.getScheduler().cancelTask(jobID);
-            jobID = -1;
+        if (m_jobID != -1) {
+            Bukkit.getScheduler().cancelTask(m_jobID);
+            m_jobID = -1;
         }
         try {
             destroyTextBar();
@@ -94,21 +103,23 @@ public class TimerCommand implements UHCCommand {
 
     /**
      * @param ticks int, number of ticks / 10 to run for
+     * TODO use a class for the runnable
      */
-    public void startTimer(final int ticks, final String message) {
-        jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(),
+    private void startTimer(final int ticks, final String message) {
+        m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(),
                 new Runnable() {
 
-                    private int ticksLeft = ticks;
+                    private int m_ticksLeft = ticks;
 
                     @Override
                     public void run() {
-                        if (--ticksLeft == 0) {
+                        --m_ticksLeft;
+                        if (m_ticksLeft == 0) {
                             stopTimer();
                             return;
                         }
                         try {
-                            displayTextBar(message + ticksToString(ticksLeft), ((float) ticksLeft / (float) ticks) * 200F);
+                            displayTextBar(message + ticksToString(m_ticksLeft), m_ticksLeft / (float) ticks * 200.0F);
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
                         }
@@ -116,44 +127,45 @@ public class TimerCommand implements UHCCommand {
                 }, 0, 10);
     }
 
-    private String ticksToString(int ticks) {
+    private static String ticksToString(long ticks) {
+        int hours = (int) Math.floor(ticks / (double)(SECONDS_PER_HOUR * 2)); //half seconds in a hour
+        ticks -= hours * SECONDS_PER_HOUR * 2;
+        int minutes = (int) Math.floor(ticks / (double)(SECONDS_PER_MINUTE * 2));    //half seconds in a minute
+        ticks -= minutes * SECONDS_PER_MINUTE * 2;
+        int seconds = (int) Math.floor(ticks / (double) 2);
+
         String output = "";
-
-        int hours = (int) Math.floor((double) ticks / 7200D); //half seconds in a hour
-        ticks = ticks - (hours * 7200);
-        int minutes = (int) Math.floor((double) ticks / 120D);    //half seconds in a minute
-        ticks = ticks - (minutes * 120);
-        int seconds = (int) Math.floor((double) ticks / 2D);
-
-        if (hours > 0)
-            output += (hours + "h");
-        if (minutes > 0)
-            output += (minutes + "m");
-        output += (seconds + "s");
+        if (hours > 0) {
+            output += hours + "h";
+        }
+        if (minutes > 0) {
+            output += minutes + "m";
+        }
+        output += seconds + "s";
 
         return output;
     }
 
-    public void destroyTextBar() throws InvocationTargetException {
+    private void destroyTextBar() throws InvocationTargetException {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            pm.sendServerPacket(p, destroyPacket);
+            m_protocolManager.sendServerPacket(p, m_destroyPacket);
         }
     }
 
-    public void displayTextBar(String text, float health) throws InvocationTargetException {
+    private void displayTextBar(String text, float health) throws InvocationTargetException {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            PacketContainer pc = spawnPacket.deepClone();
+            PacketContainer pc = m_spawnPacket.deepClone();
             pc.getIntegers()
                     .write(0, ENTITY_ID)
                     .write(1, (int) EntityType.ENDER_DRAGON.getTypeId())  //entity type ID
-                    .write(2, (int) player.getLocation().getX() * 32)        //x
-                    .write(3, -200 * 32)                                    //y
-                    .write(4, (int) player.getLocation().getZ() * 32);       //z
+                    .write(2, (int) player.getLocation().getX() * X_MULTIPLIER)        //x
+                    .write(3, Y_COORD * Y_MULTIPLIER)                                    //y
+                    .write(4, (int) player.getLocation().getZ() * Z_MULTIPLIER);       //z
             WrappedDataWatcher watcher = pc.getDataWatcherModifier().read(0);
-            watcher.setObject(0, (byte) 0x20);   //invisible
+            watcher.setObject(0, (byte) INVISIBLE_FLAG);   //invisible
             watcher.setObject(6, health);   //health
-            watcher.setObject(10, text.substring(0, Math.min(text.length(), 64)));
-            pm.sendServerPacket(player, pc);
+            watcher.setObject(10, text.substring(0, Math.min(text.length(), MAX_STRING_LEGNTH)));
+            m_protocolManager.sendServerPacket(player, pc);
         }
     }
 

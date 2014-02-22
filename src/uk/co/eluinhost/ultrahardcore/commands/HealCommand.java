@@ -14,9 +14,9 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class HealCommand implements UHCCommand {
 
-    public boolean onCommand(CommandSender sender, Command command,
-                             String label, String[] args) {
-        if (command.getName().equals("heal")) {
+    //todo needs cleaning up
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if ("heal".equals(command.getName())) {
             if (args.length == 0) {
                 if (sender instanceof Player) {
                     Player p = (Player) sender;
@@ -24,7 +24,7 @@ public class HealCommand implements UHCCommand {
                         p.setHealth(p.getMaxHealth());
                         p.sendMessage(ChatColor.GOLD + "You healed yourself to full health");
                         ServerUtil.broadcastForPermission(
-                                ChatColor.GRAY + "" + ChatColor.ITALIC + "[UHC] Player " + p.getName() + " used a heal command to heal themselves to " + (p.getMaxHealth() / 2) + " hearts"
+                                String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] Player " + p.getName() + " used a heal command to heal themselves to " + p.getMaxHealth() / 2 + " hearts"
                                 , PermissionNodes.HEAL_ANNOUNCE
                         );
                     } else {
@@ -36,7 +36,7 @@ public class HealCommand implements UHCCommand {
                     return true;
                 }
             } else {
-                if (args[0].equalsIgnoreCase("*")) {
+                if ("*".equalsIgnoreCase(args[0])) {
                     if (!sender.hasPermission(PermissionNodes.HEAL_ALL)) {
                         sender.sendMessage(ChatColor.RED + "You don't have the permission to heal all players (" + PermissionNodes.HEAL_ALL + ")");
                         return true;
@@ -46,7 +46,7 @@ public class HealCommand implements UHCCommand {
                         p.sendMessage(ChatColor.GOLD + "You were healed to full health");
                     }
                     ServerUtil.broadcastForPermission(
-                            ChatColor.GRAY + "" + ChatColor.ITALIC + "[UHC] " +
+                            String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
                                     (sender instanceof Player ? "Player " + sender.getName() : "Console") + " healed all players"
                             , PermissionNodes.HEAL_ANNOUNCE
                     );
@@ -64,7 +64,7 @@ public class HealCommand implements UHCCommand {
                 p.setHealth(p.getMaxHealth());
                 p.sendMessage(ChatColor.GOLD + "You were healed to full health");
                 ServerUtil.broadcastForPermission(
-                        ChatColor.GRAY + "" + ChatColor.ITALIC + "[UHC] " +
+                        String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
                                 (sender instanceof Player ? "Player " + sender.getName() : "Console") + " healed player " + p.getName()
                         , PermissionNodes.HEAL_ANNOUNCE
                 );

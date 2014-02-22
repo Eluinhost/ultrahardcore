@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,15 +23,16 @@ import uk.co.eluinhost.ultrahardcore.util.TeamsUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 import uk.co.eluinhost.ultrahardcore.util.PrintFlags;
 
+//todo ok wtf was I drinking
 public class TeamCommands implements UHCCommand {
 
-    private Scoreboard sc = Bukkit.getScoreboardManager().getMainScoreboard();
-    private TeamsUtil tu = new TeamsUtil();
+    private final Scoreboard m_mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    private final TeamsUtil m_teamsUtil = new TeamsUtil();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
-        if (command.getName().equals("createteam")) {
+        if ("createteam".equals(command.getName())) {
             if (!sender.hasPermission(PermissionNodes.RANDOM_TEAMS_CREATE)) {
                 sender.sendMessage(ChatColor.RED + "You don't have permission");
                 return true;
@@ -41,24 +43,25 @@ public class TeamCommands implements UHCCommand {
             }
             Team thisteam;
             if (args.length == 1) {
-                thisteam = sc.getTeam(args[0]);
+                thisteam = m_mainScoreboard.getTeam(args[0]);
                 if (thisteam != null) {
-                    sender.sendMessage(ChatColor.RED + "Team already exists!");
+                    sender.sendMessage(ChatColor.RED + "Team "+thisteam.getName()+" already exists!");
                     return true;
                 }
-                thisteam = sc.registerNewTeam(args[0]);
+                thisteam = m_mainScoreboard.registerNewTeam(args[0]);
                 thisteam.setDisplayName(WordsUtil.getRandomTeamName());
             } else {
-                thisteam = tu.getNextAvailableTeam(true);
+                thisteam = m_teamsUtil.getNextAvailableTeam(true);
             }
             sender.sendMessage(ChatColor.GOLD + "Team '" + thisteam.getDisplayName() + "' (" + thisteam.getName() + ") created!");
             return true;
-        } else if (command.getName().equals("removeteam")) {
+        }
+        if ("removeteam".equals(command.getName())) {
             if (args.length != 1) {
                 sender.sendMessage(ChatColor.RED + "Syntax: /removeteam teamID");
                 return true;
             }
-            Team team = sc.getTeam(args[0]);
+            Team team = m_mainScoreboard.getTeam(args[0]);
             if (team == null) {
                 sender.sendMessage(ChatColor.RED + "That team doesn't exist");
                 return true;
@@ -66,7 +69,7 @@ public class TeamCommands implements UHCCommand {
             boolean allowed = false;
             if (sender.hasPermission(PermissionNodes.RANDOM_TEAMS_REMOVE_ALL)) {
                 allowed = true;
-            } else if (tu.isUHCTeam(args[0])) {
+            } else if (m_teamsUtil.isUHCTeam(args[0])) {
                 if (sender.hasPermission(PermissionNodes.RANDOM_TEAMS_REMOVE_UHC)) {
                     allowed = true;
                 }
@@ -87,7 +90,8 @@ public class TeamCommands implements UHCCommand {
             }
             sender.sendMessage(ChatColor.GOLD + "Team removed!");
             return true;
-        } else if (command.getName().equals("leaveteam")) {
+        }
+        if ("leaveteam".equals(command.getName())) {
             OfflinePlayer p;
             if (args.length == 0) {
                 if (!sender.hasPermission(PermissionNodes.RANDOM_TEAMS_LEAVE_SELF)) {
@@ -98,7 +102,7 @@ public class TeamCommands implements UHCCommand {
                     sender.sendMessage(ChatColor.RED + "Must specify a player to be removed or ran as a player");
                     return true;
                 }
-                p = ((Player) sender);
+                p = (OfflinePlayer) sender;
             } else if (args.length == 1) {
                 if (!sender.hasPermission(PermissionNodes.RANDOM_TEAMS_LEAVE_OTHER)) {
                     sender.sendMessage(ChatColor.RED + "You don't have permission");
@@ -109,19 +113,20 @@ public class TeamCommands implements UHCCommand {
                 sender.sendMessage(ChatColor.RED + "Syntax: leaveteam [playername]");
                 return true;
             }
-            boolean removed = tu.removePlayerFromTeam(p, PrintFlags.BOTH);
+            boolean removed = m_teamsUtil.removePlayerFromTeam(p, PrintFlags.BOTH);
             if (!removed) {
                 sender.sendMessage(ChatColor.RED + (args.length == 1 ? p.getName() + " is" : "You are") + " not in a team!");
             } else if (args.length == 1) {
                 sender.sendMessage(ChatColor.GOLD + "Player removed from their team");
             }
             return true;
-        } else if (command.getName().equals("jointeam")) {
+        }
+        if ("jointeam".equals(command.getName())) {
             if (args.length < 1) {
                 sender.sendMessage(ChatColor.RED + "Syntax: /jointeam teamID [playername]");
                 return true;
             }
-            Team team = sc.getTeam(args[0]);
+            Team team = m_mainScoreboard.getTeam(args[0]);
             if (team == null) {
                 sender.sendMessage(ChatColor.RED + "That team doesn't exist");
                 return true;
@@ -129,7 +134,7 @@ public class TeamCommands implements UHCCommand {
             boolean allowed = false;
             if (sender.hasPermission(PermissionNodes.RANDOM_TEAMS_JOIN_ALL)) {
                 allowed = true;
-            } else if (tu.isUHCTeam(args[0])) {
+            } else if (m_teamsUtil.isUHCTeam(args[0])) {
                 if (sender.hasPermission(PermissionNodes.RANDOM_TEAMS_JOIN_UHC)) {
                     allowed = true;
                 }
@@ -144,7 +149,7 @@ public class TeamCommands implements UHCCommand {
                     sender.sendMessage(ChatColor.RED + "You need to be a player to run this command");
                     return true;
                 }
-                p = (Player) sender;
+                p = (OfflinePlayer) sender;
             } else {
                 if (!sender.hasPermission(PermissionNodes.RANDOM_TEAMS_JOIN_OTHER)) {
                     sender.sendMessage(ChatColor.RED + "You don't have permission put another player on a team");
@@ -152,59 +157,63 @@ public class TeamCommands implements UHCCommand {
                 }
                 p = Bukkit.getOfflinePlayer(args[1]);
             }
-            Team existingTeam = sc.getPlayerTeam(p);
+            Team existingTeam = m_mainScoreboard.getPlayerTeam(p);
             if (existingTeam != null) {
                 if (existingTeam.getName().equals(team.getName())) {
                     sender.sendMessage(ChatColor.RED + "Already in that team!");
                     return true;
                 }
-                tu.removePlayerFromTeam(p, PrintFlags.TEAM);
+                m_teamsUtil.removePlayerFromTeam(p, PrintFlags.TEAM);
             }
-            tu.playerJoinTeam(p, team, PrintFlags.BOTH);
+            TeamsUtil.playerJoinTeam(p, team, PrintFlags.BOTH);
             if (args.length > 1) {
                 sender.sendMessage(ChatColor.GOLD + p.getName() + " added to the team " + team.getName());
             }
             return true;
-        } else if (command.getName().equals("clearteams")) {
+        }
+        if ("clearteams".equals(command.getName())) {
             if (!sender.hasPermission(PermissionNodes.RANDOM_TEAMS_CLEAR)) {
                 sender.sendMessage(ChatColor.RED + "You don't have permission");
                 return true;
             }
-            boolean allTeams = args.length == 1 && args[0].equalsIgnoreCase("all");
-            tu.clearTeams(allTeams);
-            sender.sendMessage(ChatColor.GOLD + "All " + ((allTeams) ? "" : "UHC") + " teams cleared!");
+            boolean allTeams = args.length == 1 && "all".equalsIgnoreCase(args[0]);
+            m_teamsUtil.clearTeams(allTeams);
+            sender.sendMessage(ChatColor.GOLD + "All " + (allTeams ? "" : "UHC") + " teams cleared!");
             return true;
-        } else if (command.getName().equals("emptyteams")) {
+        }
+        if ("emptyteams".equals(command.getName())) {
             if (!sender.hasPermission(PermissionNodes.RANDOM_TEAMS_EMPTY)) {
                 sender.sendMessage(ChatColor.RED + "You don't have permission");
                 return true;
             }
-            boolean allTeams = args.length == 1 && args[0].equalsIgnoreCase("all");
-            tu.emptyTeams(allTeams);
-            sender.sendMessage(ChatColor.GOLD + "All " + ((allTeams) ? "" : "UHC") + " teams emptied!");
+            boolean allTeams = args.length == 1 && "all".equalsIgnoreCase(args[0]);
+            m_teamsUtil.emptyTeams(allTeams);
+            sender.sendMessage(ChatColor.GOLD + "All " + (allTeams ? "" : "UHC") + " teams emptied!");
             return true;
-        } else if (command.getName().equals("listteams")) {
+        }
+        if ("listteams".equals(command.getName())) {
             if (!sender.hasPermission(PermissionNodes.LIST_TEAMS)) {
                 sender.sendMessage(ChatColor.RED + "You don't have permission");
                 return true;
             }
             boolean allTeams = false;
             if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("all")) {
+                if ("all".equalsIgnoreCase(args[0])) {
                     allTeams = true;
                 } else {
-                    Team t = sc.getTeam(args[0]);
+                    Team t = m_mainScoreboard.getTeam(args[0]);
                     if (t == null) {
                         sender.sendMessage(ChatColor.RED + "Team not found!");
                         return true;
                     }
-                    sender.sendMessage(tu.teamToString(t));
+                    sender.sendMessage(TeamsUtil.teamToString(t));
                     return true;
                 }
             }
-            tu.sendTeams(sender, allTeams);
+            m_teamsUtil.sendTeams(sender, allTeams);
             return true;
-        } else if (command.getName().equals("randomteams")) {
+        }
+        if ("randomteams".equals(command.getName())) {
             if (!sender.hasPermission(PermissionNodes.RANDOM_TEAMS)) {
                 sender.sendMessage(ChatColor.RED + "You don't have permission");
                 return true;
@@ -224,12 +233,12 @@ public class TeamCommands implements UHCCommand {
 
                 Collections.shuffle(players);
 
-                tu.removeAllInTeam(players);
+                m_teamsUtil.removeAllInTeam(players);
 
                 int teamsToMake;
                 try {
                     teamsToMake = Integer.parseInt(args[0]);
-                } catch (Exception ex) {
+                } catch (Exception ignored) {
                     sender.sendMessage(ChatColor.RED + args[0] + " is not a number!");
                     return true;
                 }
@@ -245,12 +254,12 @@ public class TeamCommands implements UHCCommand {
                 }
 
                 List<List<Player>> teams = MathsHelper.split(players, teamsToMake);
-                ArrayList<Team> finalTeams = new ArrayList<Team>();
+                AbstractList<Team> finalTeams = new ArrayList<Team>();
                 for (List<Player> team : teams) {
                     if (team == null) {
                         continue;
                     }
-                    Team thisteam = tu.getNextAvailableTeam(false);
+                    Team thisteam = m_teamsUtil.getNextAvailableTeam(false);
                     finalTeams.add(thisteam);
                     for (Player p : team) {
                         if (p != null) {
@@ -259,13 +268,13 @@ public class TeamCommands implements UHCCommand {
                     }
                 }
                 for (Team t : finalTeams) {
-                    ArrayList<Player> team = new ArrayList<Player>();
+                    AbstractList<Player> team = new ArrayList<Player>();
                     for (OfflinePlayer p : t.getPlayers()) {
                         if (p.getPlayer() != null) {
                             team.add(p.getPlayer());
                         }
                     }
-                    StringBuilder buffer = new StringBuilder(ChatColor.GOLD + "")
+                    StringBuilder buffer = new StringBuilder(String.valueOf(ChatColor.GOLD))
                             .append("Your Team (")
                             .append(t.getName())
                             .append(" - ")
@@ -294,23 +303,23 @@ public class TeamCommands implements UHCCommand {
     public List<String> onTabComplete(CommandSender sender, Command command,
                                       String alias, String[] args) {
         ArrayList<String> r = new ArrayList<String>();
-        if (command.getName().equals("createteam")) {
-            return r;
-        } else if (command.getName().equals("removeteam")) {
+        if ("removeteam".equals(command.getName())) {
             if (args.length == 1) {
-                for (Team t : sc.getTeams()) {
+                for (Team t : m_mainScoreboard.getTeams()) {
                     r.add(t.getName());
                 }
                 return r;
             }
-        } else if (command.getName().equals("leaveteam")) {
+        }
+        if ("leaveteam".equals(command.getName())) {
             if (args.length == 1) {
                 return ServerUtil.getOnlinePlayers();
             }
             return r;
-        } else if (command.getName().equals("jointeam")) {
+        }
+        if ("jointeam".equals(command.getName())) {
             if (args.length == 1) {
-                for (Team t : sc.getTeams()) {
+                for (Team t : m_mainScoreboard.getTeams()) {
                     r.add(t.getName());
                 }
                 return r;
@@ -319,22 +328,22 @@ public class TeamCommands implements UHCCommand {
                 return ServerUtil.getOnlinePlayers();
             }
             return r;
-        } else if (command.getName().equals("clearteams")
-                || command.getName().equals("emptyteams")) {
+        }
+        if ("clearteams".equals(command.getName())
+                || "emptyteams".equals(command.getName())) {
             if (args.length == 1) {
                 r.add("all");
                 return r;
             }
             return r;
-        } else if (command.getName().equals("listteams")) {
+        }
+        if ("listteams".equals(command.getName())) {
             if (args.length == 1) {
-                for (Team t : sc.getTeams()) {
+                for (Team t : m_mainScoreboard.getTeams()) {
                     r.add(t.getName());
                 }
                 r.add("all");
             }
-            return r;
-        } else if (command.getName().equals("randomteams")) {
             return r;
         }
         return r;

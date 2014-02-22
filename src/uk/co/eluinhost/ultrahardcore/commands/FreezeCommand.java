@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,10 +19,11 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
+//TODO i don't like this, clean up
 public class FreezeCommand implements UHCCommand {
 
-    private static ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
-    private static boolean active = false;
+    private static final AbstractList<PotionEffect> POTION_EFFECTS = new ArrayList<PotionEffect>();
+    private boolean m_isActive;
 
     public FreezeCommand() {
         for (String configEffect : ConfigHandler.getConfig(ConfigHandler.MAIN).getStringList(ConfigNodes.FREEZE_EFFECTS)) {
@@ -35,20 +37,22 @@ public class FreezeCommand implements UHCCommand {
                 int typeID = Integer.parseInt(effect[0]);
                 type = PotionEffectType.getById(typeID);      //TODO change config file to use names and use getbyname
                 if (type == null) {
-                    throw new Exception();
+                    //TODO clean up this bit
+                    UltraHardcore.getInstance().getLogger().warning("Effect \"" + Arrays.toString(effect) + "\" has invalid potion type id \"" + effect[1] + "\"");
+                    continue;
                 }
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
                 UltraHardcore.getInstance().getLogger().warning("Effect \"" + Arrays.toString(effect) + "\" has invalid potion type id \"" + effect[1] + "\"");
                 continue;
             }
             int tier;
             try {
                 tier = Integer.parseInt(effect[1]);
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
                 UltraHardcore.getInstance().getLogger().warning("Effect \"" + Arrays.toString(effect) + "\" has invalid tier \"" + effect[1] + "\"");
                 continue;
             }
-            effects.add(new PotionEffect(type, ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FREEZE_TIME), tier));
+            POTION_EFFECTS.add(new PotionEffect(type, ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FREEZE_TIME), tier));
             UltraHardcore.getInstance().getLogger().info("Added potion effect " + type.getName() + " tier " + tier);
         }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance()
@@ -57,13 +61,13 @@ public class FreezeCommand implements UHCCommand {
                 , ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FREEZE_REAPPLY_TIME));
     }
 
-    private static class FreezeJob implements Runnable {
+    private class FreezeJob implements Runnable {
         @Override
         public void run() {
-            if (isEnabled()) {
+            if (m_isActive) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (!p.hasPermission(PermissionNodes.ANTIFREEZE)) {
-                        for (PotionEffect pot : effects) {
+                        for (PotionEffect pot : POTION_EFFECTS) {
                             p.addPotionEffect(pot, true);
                         }
                     }
@@ -72,32 +76,23 @@ public class FreezeCommand implements UHCCommand {
         }
     }
 
-    public static boolean isEnabled() {
-        return active;
-    }
-
-    public static void setEnabled(boolean a) {
-        active = a;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
-        if (command.getName().equals("freeze")) {
+        if ("freeze".equals(command.getName())) {
             if (!sender.hasPermission(PermissionNodes.FREEZE_PERMISSION)) {
                 sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.FREEZE_PERMISSION);
                 return true;
             }
-            setEnabled(!isEnabled());
-            Bukkit.broadcastMessage(ChatColor.GOLD + "All players now " + (isEnabled() ? "frozen." : "unfrozen."));
+            m_isActive = !m_isActive;
+            Bukkit.broadcastMessage(ChatColor.GOLD + "All players now " + (m_isActive ? "frozen." : "unfrozen."));
             return true;
         }
         return false;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command,
-                                      String alias, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return new ArrayList<String>();
     }
 }

@@ -26,6 +26,7 @@ import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 import java.util.*;
 import java.util.logging.Level;
 
+//TODO this thing sucks balls
 public class ScatterPrompt extends StringPrompt {
 
     private static final int MAX_DISTANCE = 2000000;
@@ -34,10 +35,10 @@ public class ScatterPrompt extends StringPrompt {
         TYPE, TEAMS, RADIUS, MINDIST, WORLD, COORDS, PLAYERS
     }
 
-    private DATA getNextMissing(ConversationContext context) {
-        for (DATA d : DATA.values()) {
-            if (context.getSessionData(d) == null) {
-                return d;
+    private static DATA getNextMissing(ConversationContext context) {
+        for (DATA data : DATA.values()) {
+            if (context.getSessionData(data) == null) {
+                return data;
             }
         }
         return null;
@@ -53,12 +54,13 @@ public class ScatterPrompt extends StringPrompt {
         if (data == null) {
             return END_OF_CONVERSATION;
         }
+        //todo really?
         switch (data) {
             case TYPE:
-                if (s.equals("types")) {
+                if ("types".equals(s)) {
                     List<String> ty = getTypesOutput();
-                    for (String ty_s : ty) {
-                        conversationContext.getForWhom().sendRawMessage(ty_s);
+                    for (String type : ty) {
+                        conversationContext.getForWhom().sendRawMessage(type);
                     }
                 } else {
                     AbstractScatterType st = parseScatterType(s);
@@ -107,38 +109,38 @@ public class ScatterPrompt extends StringPrompt {
                 }
                 break;
             case COORDS:
-                SimplePair<Double, Double> coords_d = parseCoords(s);
-                if (coords_d == null) {
+                SimplePair<Double, Double> coords = parseCoords(s);
+                if (coords == null) {
                     conversationContext.getForWhom().sendRawMessage(ChatColor.RED + "Unknown coords, use the format x,z");
                 } else {
-                    conversationContext.getForWhom().sendRawMessage(ChatColor.AQUA + "Using centre coords: " + coords_d.getKey() + "," + coords_d.getValue());
-                    conversationContext.setSessionData(DATA.COORDS, coords_d);
+                    conversationContext.getForWhom().sendRawMessage(ChatColor.AQUA + "Using centre coords: " + coords.getKey() + "," + coords.getValue());
+                    conversationContext.setSessionData(DATA.COORDS, coords);
                 }
                 break;
             case PLAYERS:
-                SimplePair<List<String>, List<String>> player_list = parsePlayers(s);
-                if (player_list.getValue().size() != 0) {
-                    conversationContext.getForWhom().sendRawMessage(ChatColor.RED + "Couldn't find the players " + Arrays.toString(player_list.getValue().toArray()));
+                SimplePair<List<String>, List<String>> playerList = parsePlayers(s);
+                if (!playerList.getValue().isEmpty()) {
+                    conversationContext.getForWhom().sendRawMessage(ChatColor.RED + "Couldn't find the players " + Arrays.toString(playerList.getValue().toArray()));
                 }
-                if (player_list.getKey().size() == 0) {
+                if (playerList.getKey().isEmpty()) {
                     conversationContext.getForWhom().sendRawMessage(ChatColor.RED + "There are no players to scatter!");
                 } else {
-                    conversationContext.getForWhom().sendRawMessage(ChatColor.AQUA + "Will scatter players: " + Arrays.toString(player_list.getKey().toArray()));
-                    conversationContext.setSessionData(DATA.PLAYERS, player_list.getKey());
+                    conversationContext.getForWhom().sendRawMessage(ChatColor.AQUA + "Will scatter players: " + Arrays.toString(playerList.getKey().toArray()));
+                    conversationContext.setSessionData(DATA.PLAYERS, playerList.getKey());
                 }
         }
         if (getNextMissing(conversationContext) == null) {
             World w = (World) conversationContext.getSessionData(DATA.WORLD);
             @SuppressWarnings("unchecked")
-            SimplePair<Double, Double> c = (SimplePair<Double, Double>) conversationContext.getSessionData(DATA.COORDS);
+            SimplePair<Double, Double> coords = (SimplePair<Double, Double>) conversationContext.getSessionData(DATA.COORDS);
             Double r = (Double) conversationContext.getSessionData(DATA.RADIUS);
             Double min = (Double) conversationContext.getSessionData(DATA.MINDIST);
             @SuppressWarnings("unchecked")
-            ArrayList<String> all_players_s = (ArrayList<String>) conversationContext.getSessionData(DATA.PLAYERS);
+            List<String> allPlayersS = (List<String>) conversationContext.getSessionData(DATA.PLAYERS);
             Boolean usingTeams = (Boolean) conversationContext.getSessionData(DATA.TEAMS);
             AbstractScatterType scatterType = (AbstractScatterType) conversationContext.getSessionData(DATA.TYPE);
             CommandSender sender = (CommandSender) conversationContext.getSessionData("SENDER");
-            scatter(scatterType, usingTeams, r, min, c, w, all_players_s, sender);
+            scatter(scatterType, usingTeams, r, min, coords, w, allPlayersS, sender);
             return END_OF_CONVERSATION;
         }
         return new ScatterPrompt();
@@ -148,8 +150,8 @@ public class ScatterPrompt extends StringPrompt {
 
     @Override
     public String getPromptText(ConversationContext conversationContext) {
-        DATA d = getNextMissing(conversationContext);
-        if (d == null) {
+        DATA data = getNextMissing(conversationContext);
+        if (data == null) {
             return "ERROR IN COMMAND";
         }
         switch (getNextMissing(conversationContext)) {
@@ -199,9 +201,10 @@ public class ScatterPrompt extends StringPrompt {
      * @return true if 'yes', false if 'no', null otherwise
      */
     public static Boolean parseTeams(String s) {
-        if (s.equalsIgnoreCase("yes")) {
+        if ("yes".equalsIgnoreCase(s)) {
             return true;
-        } else if (s.equalsIgnoreCase("no")) {
+        }
+        if ("no".equalsIgnoreCase(s)) {
             return false;
         }
         return null;
@@ -275,11 +278,11 @@ public class ScatterPrompt extends StringPrompt {
      * @return A pair of List type String (the parsed player list) and List type String (the unparsable players)
      */
     public static SimplePair<List<String>, List<String>> parsePlayers(String s) {
-        ArrayList<String> to_be_scattered = new ArrayList<String>();
+        ArrayList<String> toBeScattered = new ArrayList<String>();
         ArrayList<String> failed = new ArrayList<String>();
-        if (s.equals("*")) {
+        if ("*".equals(s)) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                to_be_scattered.add(p.getName());
+                toBeScattered.add(p.getName());
             }
         } else {
             String[] players = s.split(" ");
@@ -289,18 +292,18 @@ public class ScatterPrompt extends StringPrompt {
                     failed.add(player);
                     continue;
                 }
-                if (!to_be_scattered.contains(p.getName())) {
-                    to_be_scattered.add(p.getName());
+                if (!toBeScattered.contains(p.getName())) {
+                    toBeScattered.add(p.getName());
                 }
             }
         }
-        return new SimplePair<List<String>, List<String>>(to_be_scattered, failed);
+        return new SimplePair<List<String>, List<String>>(toBeScattered, failed);
     }
 
     public static List<String> getTypesOutput() {
-        ArrayList<String> output = new ArrayList<String>();
-        ArrayList<AbstractScatterType> scatterTypes = ScatterManager.getScatterTypes();
-        if (scatterTypes.size() == 0) {
+        AbstractList<String> output = new ArrayList<String>();
+        List<AbstractScatterType> scatterTypes = ScatterManager.getScatterTypes();
+        if (scatterTypes.isEmpty()) {
             output.add(ChatColor.RED + "No scatter types loaded!");
         } else {
             output.add(ChatColor.AQUA + "Showing " + scatterTypes.size() + " loaded scatter types:");
@@ -317,12 +320,12 @@ public class ScatterPrompt extends StringPrompt {
         List<String> allowedBlocks = ConfigHandler.getConfig(ConfigHandler.MAIN).getStringList(ConfigNodes.SCATTER_ALLOWED_BLOCKS);
         LinkedList<Material> materials = new LinkedList<Material>();
         for (String s : allowedBlocks) {
-            Material m = Material.matchMaterial(s);
-            if (m == null) {
+            Material material = Material.matchMaterial(s);
+            if (material == null) {
                 UltraHardcore.getInstance().getLogger().log(Level.WARNING, "Unknown scatter block " + s);
                 continue;
             }
-            materials.add(m);
+            materials.add(material);
         }
         sp.setAllowedBlocks(materials);
 
@@ -331,7 +334,7 @@ public class ScatterPrompt extends StringPrompt {
          */
         @SuppressWarnings("unchecked")
         HashMap<String, ArrayList<Player>> teams = new HashMap<String, ArrayList<Player>>();
-        ArrayList<Player> noteams = new ArrayList<Player>();
+        AbstractList<Player> noteams = new ArrayList<Player>();
 
         if (useTeams) {
             Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
@@ -364,30 +367,30 @@ public class ScatterPrompt extends StringPrompt {
             }
         }
 
-        int number_of_ports = noteams.size() + teams.keySet().size();
+        int numberOfPorts = noteams.size() + teams.keySet().size();
 
         List<Location> teleports;
         try {
-            teleports = type.getScatterLocations(sp, number_of_ports);
-        } catch (WorldNotFoundException e) {
+            teleports = type.getScatterLocations(sp, numberOfPorts);
+        } catch (WorldNotFoundException ignored) {
             sender.sendMessage(ChatColor.RED + "The world specified doesn't exist!");
             return;
-        } catch (MaxAttemptsReachedException e) {
+        } catch (MaxAttemptsReachedException ignored) {
             sender.sendMessage(ChatColor.RED + "Max scatter attempts reached and not all players have valid locations, cancelling scatter");
             return;
         }
-        Iterator<Location> teleport_iterator = teleports.iterator();
-        ArrayList<PlayerTeleportMapping> ptms = new ArrayList<PlayerTeleportMapping>();
+        Iterator<Location> teleportIterator = teleports.iterator();
+        AbstractList<PlayerTeleportMapping> ptms = new ArrayList<PlayerTeleportMapping>();
         for (Player p : noteams) {
-            Location next = teleport_iterator.next();
+            Location next = teleportIterator.next();
             ptms.add(new PlayerTeleportMapping(p.getName(), next, null));
         }
-        for (String team_name : teams.keySet()) {
-            Location next = teleport_iterator.next();
-            for (Player p : teams.get(team_name)) {
-                ptms.add(new PlayerTeleportMapping(p.getName(), next, team_name));
+        for (String teamName : teams.keySet()) {
+            Location next = teleportIterator.next();
+            for (Player p : teams.get(teamName)) {
+                ptms.add(new PlayerTeleportMapping(p.getName(), next, teamName));
             }
         }
-        ScatterManager.addTeleportMappings(ptms, sender);
+        UltraHardcore.getInstance().getScatterManager().addTeleportMappings(ptms, sender);
     }
 }

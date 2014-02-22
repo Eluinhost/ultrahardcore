@@ -16,14 +16,14 @@ import java.util.List;
 
 public class DeathBanCommand implements UHCCommand {
 
-    private final String SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> <time> OR /deathban unban <playername>";
-    private final String BAN_SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> [time]";
-    private final String UNBAN_SYNTAX = ChatColor.RED + "Syntax: /deathban unban <playername>";
+    private static final String SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> <time> OR /deathban unban <playername>";
+    private static final String BAN_SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> [time]";
+    private static final String UNBAN_SYNTAX = ChatColor.RED + "Syntax: /deathban unban <playername>";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
-        if (command.getName().equals("deathban")) {
+        if ("deathban".equals(command.getName())) {
             if (args.length < 1) {
                 sender.sendMessage(SYNTAX);
                 return true;
@@ -31,11 +31,11 @@ public class DeathBanCommand implements UHCCommand {
             DeathBansFeature dbf;
             try {
                 dbf = (DeathBansFeature) UltraHardcore.getInstance().getFeatureManager().getFeatureByID("DeathBans");
-            } catch (FeatureIDNotFoundException e) {
+            } catch (FeatureIDNotFoundException ignored) {
                 sender.sendMessage(ChatColor.RED + "Module DeathBans is not loaded!");
                 return true;
             }
-            if (args[0].equalsIgnoreCase("ban")) {
+            if ("ban".equalsIgnoreCase(args[0])) {
                 if (!sender.hasPermission(PermissionNodes.DEATH_BAN_BAN)) {
                     sender.sendMessage(ChatColor.RED + "You don't have permission");
                     return true;
@@ -50,7 +50,7 @@ public class DeathBanCommand implements UHCCommand {
                 dbf.banPlayer(Bukkit.getOfflinePlayer(playername), "You are under a death ban, you will be unbanned in %timeleft", duration);
                 sender.sendMessage(ChatColor.GOLD + "Banned player " + playername + " for " + DeathBansFeature.formatTimeLeft(System.currentTimeMillis() + duration));
                 return true;
-            } else if (args[0].equalsIgnoreCase("unban")) {
+            } else if ("unban".equalsIgnoreCase(args[0])) {
                 if (!sender.hasPermission(PermissionNodes.DEATH_BAN_UNBAN)) {
                     sender.sendMessage(ChatColor.RED + "You don't have permission");
                     return true;
@@ -80,13 +80,13 @@ public class DeathBanCommand implements UHCCommand {
             return r;
         }
         if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("ban") || args[0].equalsIgnoreCase("unban")) {
+            if ("ban".equalsIgnoreCase(args[0]) || "unban".equalsIgnoreCase(args[0])) {
                 r.addAll(ServerUtil.getOnlinePlayers());
                 return r;
             }
             return r;
         }
-        if (args.length == 3 && args[0].equalsIgnoreCase("ban")) {
+        if (args.length == 3 && "ban".equalsIgnoreCase(args[0])) {
             r.add("2h30m");
             return r;
         }
