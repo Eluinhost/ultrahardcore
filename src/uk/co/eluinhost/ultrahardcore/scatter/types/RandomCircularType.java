@@ -43,8 +43,8 @@ public class RandomCircularType extends AbstractScatterType {
                 double newradius = params.getRadius() * Math.sqrt(getRandom().nextDouble());
 
                 //Convert back to cartesian
-                double xcoord = MathsHelper.getXFromRadians(newradius, randomAngle) + params.getX();
-                double zcoord = MathsHelper.getZFromRadians(newradius, randomAngle) + params.getZ();
+                double xcoord = MathsHelper.getXFromRadians(newradius, randomAngle) + params.getCenterX();
+                double zcoord = MathsHelper.getZFromRadians(newradius, randomAngle) + params.getCenterZ();
 
                 //get the center of the block/s
                 xcoord = Math.round(xcoord) + X_OFFSET;

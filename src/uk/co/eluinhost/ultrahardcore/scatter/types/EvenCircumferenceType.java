@@ -55,8 +55,8 @@ public class EvenCircumferenceType extends AbstractScatterType {
 
             //get the location with offset
             Location finalTeleport = new Location(w, 0, WORLD_TOP_BLOCK, 0);
-            finalTeleport.setX(x + params.getX() + X_OFFSET);
-            finalTeleport.setZ(z + params.getZ() + Z_OFFSET);
+            finalTeleport.setX(x + params.getCenterX() + X_OFFSET);
+            finalTeleport.setZ(z + params.getCenterZ() + Z_OFFSET);
 
             ServerUtil.setYHighest(finalTeleport);
 

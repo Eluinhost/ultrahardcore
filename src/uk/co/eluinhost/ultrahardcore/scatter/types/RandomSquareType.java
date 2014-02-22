@@ -40,8 +40,8 @@ public class RandomSquareType extends AbstractScatterType {
                 double zcoord = getRandom().nextDouble() * params.getRadius() * 2;
                 xcoord -= params.getRadius();
                 zcoord -= params.getRadius();
-                xcoord += params.getX();
-                zcoord += params.getZ();
+                xcoord += params.getCenterX();
+                zcoord += params.getCenterZ();
 
                 //get the center of the block/s
                 xcoord = Math.round(xcoord) + 0.5d;
