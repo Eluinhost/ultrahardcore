@@ -12,14 +12,14 @@ import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 
-public abstract class ScatterType {
+public abstract class AbstractScatterType {
 
     private final String m_scatterID;
     private final String m_description;
 
     private static final Random RANDOM = new Random();
 
-    protected ScatterType(String scatterID, String description){
+    protected AbstractScatterType(String scatterID, String description){
         m_scatterID = scatterID;
         m_description = description;
     }
@@ -32,6 +32,7 @@ public abstract class ScatterType {
         return m_description;
     }
 
+    //TODO look at cleaning up children methods of this
     public abstract List<Location> getScatterLocations(ScatterParams params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException;
 
     protected static boolean isLocationTooClose(Location loc, Iterable<Location> existing, Double distance) {
