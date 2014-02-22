@@ -1,3 +1,4 @@
 GENERIC TO-DO LIST
 
 TODO change config checks to get only when made and not keep checking
+TODO timer command needs finishing
