@@ -1,10 +1,13 @@
 package uk.co.eluinhost.ultrahardcore.features;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Listener;
 
 import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureDisableEvent;
 import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureEnableEvent;
+import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureEvent;
 
 public class UHCFeature implements Listener {
 
@@ -29,8 +32,9 @@ public class UHCFeature implements Listener {
         if(isEnabled()){
             return false;
         }
-        UHCFeatureEnableEvent event = new UHCFeatureEnableEvent(this);
-        if(event.isAllowed()){
+        UHCFeatureEvent event = new UHCFeatureEnableEvent(this);
+        Bukkit.getPluginManager().callEvent(event);
+        if(!event.isCancelled()){
             m_enabled = true;
             enableCallback();
         }
@@ -46,7 +50,8 @@ public class UHCFeature implements Listener {
             return false;
         }
         UHCFeatureDisableEvent event = new UHCFeatureDisableEvent(this);
-        if(event.isAllowed()){
+        Bukkit.getPluginManager().callEvent(event);
+        if(!event.isCancelled()){
             m_enabled = false;
             disableCallback();
         }

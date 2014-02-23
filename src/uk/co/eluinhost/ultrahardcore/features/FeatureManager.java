@@ -64,10 +64,10 @@ public class FeatureManager {
         UHCFeatureInitEvent initEvent = new UHCFeatureInitEvent(feature);
 
         //call the event
-        Bukkit.getServer().getPluginManager().callEvent(initEvent);
+        Bukkit.getPluginManager().callEvent(initEvent);
 
         //if it was cancelled return
-        if (!initEvent.isAllowed()) {
+        if (initEvent.isCancelled()) {
             Bukkit.getLogger().log(Level.SEVERE,"Init event cancelled for feature "+featureID);
             return;
         }
