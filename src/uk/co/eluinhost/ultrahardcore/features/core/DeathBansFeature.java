@@ -61,7 +61,7 @@ public class DeathBansFeature extends UHCFeature {
     public static String formatTimeLeft(long timeUnban){
         long duration = timeUnban - System.currentTimeMillis();
         long days = TimeUnit.MILLISECONDS.toDays(duration);
-        if(days > Short.MAX_VALUE){
+        if(days > (long) Short.MAX_VALUE){
             return " forever";
         }
         duration -= TimeUnit.DAYS.toMillis(days);
@@ -71,21 +71,25 @@ public class DeathBansFeature extends UHCFeature {
         duration -= TimeUnit.MINUTES.toMillis(mins);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
         StringBuilder sb = new StringBuilder();
-        if(days > 0){
+        if(days > 0L){
             sb.append(" ").append(days).append(days == 1 ? " day" : " days");
         }
-        if(hours > 0){
+        if(hours > 0L){
             sb.append(" ").append(hours).append(hours == 1 ? " hour" : " hours");
         }
-        if(mins > 0){
+        if(mins > 0L){
             sb.append(" ").append(mins).append(mins == 1 ? " min" : " mins");
         }
-        if(seconds > 0){
+        if(seconds > 0L){
             sb.append(" ").append(seconds).append(seconds == 1 ? " second" : " seconds");
         }
         return sb.toString();
     }
 
+    /**
+     * When a player is killed
+     * @param pde the death event
+     */
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent pde){
          if(isEnabled()){
@@ -96,6 +100,11 @@ public class DeathBansFeature extends UHCFeature {
          }
     }
 
+    /**
+     * Removes all bans for the playername
+     * @param playerName the player name to unban
+     * @return amount of bans removed
+     */
     public int removeBan(String playerName){
         Iterator<DeathBan> iterator = m_deathBans.iterator();
         int amount = 0;
@@ -110,21 +119,24 @@ public class DeathBansFeature extends UHCFeature {
         return amount;
     }
 
+    /**
+     * Save all the bans to file
+     */
     private void saveBans(){
         ConfigHandler.getConfig(ConfigHandler.BANS).set("bans", m_deathBans);
         ConfigHandler.saveConfig(ConfigHandler.BANS);
     }
 
+    /**
+     * When a player logs in
+     * @param ple player login event
+     */
     @EventHandler
     public void onPlayerLoginEvent(PlayerLoginEvent ple){
         if(isEnabled()){
             for(DeathBan deathBan : m_deathBans){
-                if(deathBan.getPlayerName().equalsIgnoreCase(ple.getPlayer().getName())){
-                    if(System.currentTimeMillis() >= deathBan.getUnbanTime()){
-                        removeBan(ple.getPlayer().getName());
-                        return;
-                    }
-                    ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, deathBan.getGroupName().replaceAll("%timeleft", formatTimeLeft(deathBan.getUnbanTime())));
+                if(deathBan.processPlayerLoginEvent(ple)){
+                    removeBan(deathBan.getPlayerName());
                 }
             }
         }
@@ -174,6 +186,12 @@ public class DeathBansFeature extends UHCFeature {
         return duration;
     }
 
+    /**
+     * Ban the player
+     * @param offlinePlayer the player to ban
+     * @param message the message to ban them with
+     * @param duration how long in millis to ban them for
+     */
     @SuppressWarnings("TypeMayBeWeakened")
     public void banPlayer(OfflinePlayer offlinePlayer, String message, long duration){
         long unbanTime = System.currentTimeMillis()+duration;
@@ -189,6 +207,10 @@ public class DeathBansFeature extends UHCFeature {
         UltraHardcore.getInstance().getLogger().info("Added " + offlinePlayer.getName() + " to temp ban list");
     }
 
+    /**
+     * Bans the player based on permissions/config options
+     * @param p the player to ban
+     */
     public void processBansForPlayer(Player p){
         ConfigurationSection banTypes = ConfigHandler.getConfig(ConfigHandler.MAIN).getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
         Set<String> permissionNames = banTypes.getKeys(false);
@@ -204,7 +226,6 @@ public class DeathBansFeature extends UHCFeature {
                 if("serverkick".equalsIgnoreCase(action)){
                     String kickMessage = type.getString("serverkick_message","NO SERVER KICK MESSAGE SET IN CONFIG FILE");
                     p.kickPlayer(kickMessage);
-                    logger.info("Kicked "+p.getName()+" from the server");
                 }else if("serverban".equalsIgnoreCase(action)) {
                     String length = type.getString("serverban_duration","1s");
                     String message = type.getString("serverban_message","NO BAN MESSAGE SET IN CONFIG FILE");
@@ -213,16 +234,12 @@ public class DeathBansFeature extends UHCFeature {
                 }else if("worldkick".equalsIgnoreCase(action)){
                     String world = type.getString("worldkick_world","NO WORLD IN CONFIG");
                     World w = Bukkit.getWorld(world);
-                    if(w == null){
-                        logger.severe("World "+world+" is not a valid world to kick a player to");
-                    }else{
+                    if(w != null){
                         p.setBedSpawnLocation(w.getSpawnLocation());
-                        logger.info(p.getName()+" will respawn at the spawn of the world "+world);
                     }
                 }else if("bungeekick".equalsIgnoreCase(action)){
                     String server =type.getString("bungeekick_server","NO SERVER SET");
                     ServerUtil.sendPlayerToServer(p,server);
-                    logger.info("Sent "+p.getName()+" to the server "+server);
                 }else{
                     logger.severe("Error in deathbans config, action '"+action+"' unknown");
                 }
