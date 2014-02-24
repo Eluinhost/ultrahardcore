@@ -5,9 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Listener;
 
-import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureDisableEvent;
-import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureEnableEvent;
-import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureEvent;
+import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureDisableEvent;
+import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureEnableEvent;
+import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureEvent;
 
 public class UHCFeature implements Listener {
 

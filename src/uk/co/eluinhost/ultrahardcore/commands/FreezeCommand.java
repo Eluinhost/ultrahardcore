@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
@@ -26,7 +26,7 @@ public class FreezeCommand implements UHCCommand {
     private boolean m_isActive;
 
     public FreezeCommand() {
-        for (String configEffect : ConfigHandler.getConfig(ConfigHandler.MAIN).getStringList(ConfigNodes.FREEZE_EFFECTS)) {
+        for (String configEffect : ConfigManager.getConfig(ConfigManager.MAIN).getStringList(ConfigNodes.FREEZE_EFFECTS)) {
             String[] effect = configEffect.split(":");
             if (effect.length != 2) {
                 UltraHardcore.getInstance().getLogger().warning("Effect \"" + configEffect + "\" is invalid");
@@ -52,13 +52,13 @@ public class FreezeCommand implements UHCCommand {
                 UltraHardcore.getInstance().getLogger().warning("Effect \"" + Arrays.toString(effect) + "\" has invalid tier \"" + effect[1] + "\"");
                 continue;
             }
-            POTION_EFFECTS.add(new PotionEffect(type, ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FREEZE_TIME), tier));
+            POTION_EFFECTS.add(new PotionEffect(type, ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.FREEZE_TIME), tier));
             UltraHardcore.getInstance().getLogger().info("Added potion effect " + type.getName() + " tier " + tier);
         }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance()
                 , new FreezeJob()
                 , 0
-                , ConfigHandler.getConfig(ConfigHandler.MAIN).getInt(ConfigNodes.FREEZE_REAPPLY_TIME));
+                , ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.FREEZE_REAPPLY_TIME));
     }
 
     private class FreezeJob implements Runnable {

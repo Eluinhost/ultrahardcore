@@ -12,15 +12,31 @@ import org.bukkit.Bukkit;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
-import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
-import uk.co.eluinhost.ultrahardcore.features.core.*;
-import uk.co.eluinhost.ultrahardcore.features.events.UHCFeatureInitEvent;
+import uk.co.eluinhost.ultrahardcore.features.*;
+import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureInitEvent;
+import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathlightning.DeathLightningFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathmessages.DeathMessagesFeature;
+import uk.co.eluinhost.ultrahardcore.features.enderpearls.EnderpearlsFeature;
+import uk.co.eluinhost.ultrahardcore.features.footprints.FootprintFeature;
+import uk.co.eluinhost.ultrahardcore.features.ghastdrops.GhastDropsFeature;
+import uk.co.eluinhost.ultrahardcore.features.goldenheads.GoldenHeadsFeature;
+import uk.co.eluinhost.ultrahardcore.features.hardcorehearts.HardcoreHeartsFeature;
+import uk.co.eluinhost.ultrahardcore.features.nether.NetherFeature;
+import uk.co.eluinhost.ultrahardcore.features.playerheads.PlayerHeadsFeature;
+import uk.co.eluinhost.ultrahardcore.features.playerlist.PlayerListFeature;
+import uk.co.eluinhost.ultrahardcore.features.portals.PortalsFeature;
+import uk.co.eluinhost.ultrahardcore.features.potionnerfs.PotionNerfsFeature;
+import uk.co.eluinhost.ultrahardcore.features.recipes.RecipeFeature;
+import uk.co.eluinhost.ultrahardcore.features.regen.RegenFeature;
+import uk.co.eluinhost.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
 
 /**
  * Feature Manager Class
@@ -145,7 +161,7 @@ public class FeatureManager {
         Logger log = Bukkit.getLogger();
         log.info("Loading UHC feature modules...");
         //Load the default features with settings in config
-        FileConfiguration config = ConfigHandler.getConfig(ConfigHandler.MAIN);
+        FileConfiguration config = ConfigManager.getConfig(ConfigManager.MAIN);
         try {
             addFeature(new DeathLightningFeature(), config.getBoolean(ConfigNodes.DEATH_LIGHTNING));
             addFeature(new EnderpearlsFeature(), config.getBoolean(ConfigNodes.NO_ENDERPEARL_DAMAGE));

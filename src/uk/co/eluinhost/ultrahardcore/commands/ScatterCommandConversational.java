@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.CommandCancelHandler;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
@@ -59,7 +59,7 @@ public class ScatterCommandConversational implements UHCCommand {
             }
 
             if (args.length == 1 && "default".equalsIgnoreCase(args[0])) {
-                FileConfiguration config = ConfigHandler.getConfig(ConfigHandler.MAIN);
+                FileConfiguration config = ConfigManager.getConfig(ConfigManager.MAIN);
                 args = new String[]{
                     config.getString(ConfigNodes.SCATTER_DEFAULT_TYPE),
                     config.getString(ConfigNodes.SCATTER_DEFAULT_TEAMS),

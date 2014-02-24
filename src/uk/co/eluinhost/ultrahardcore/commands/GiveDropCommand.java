@@ -11,8 +11,8 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
-import uk.co.eluinhost.ultrahardcore.features.core.DeathDropsFeature;
-import uk.co.eluinhost.ultrahardcore.features.core.entity.ItemDrop;
+import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathdrops.ItemDrop;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.*;

@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import uk.co.eluinhost.ultrahardcore.borders.types.WorldEditBorder;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.ConfigHandler;
+import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.borders.BorderTypeNotFoundException;
@@ -167,8 +167,8 @@ public class BorderCreator implements UHCCommand {
             } else {
                 blockinfo = new String[]{
                         args[2],
-                        ConfigHandler.getConfig(ConfigHandler.MAIN).getString(ConfigNodes.BORDER_BLOCK),
-                        ConfigHandler.getConfig(ConfigHandler.MAIN).getString(ConfigNodes.BORDER_BLOCK_META)
+                        ConfigManager.getConfig(ConfigManager.MAIN).getString(ConfigNodes.BORDER_BLOCK),
+                        ConfigManager.getConfig(ConfigManager.MAIN).getString(ConfigNodes.BORDER_BLOCK_META)
                 };
             }
             int borderID;

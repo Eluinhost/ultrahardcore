@@ -15,7 +15,7 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
-import uk.co.eluinhost.ultrahardcore.features.structure.entity.ItemDrop;
+import uk.co.eluinhost.ultrahardcore.features.deathdrops.ItemDrop;
 
 
 /**

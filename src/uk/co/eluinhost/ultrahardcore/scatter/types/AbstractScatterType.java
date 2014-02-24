@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 
 public abstract class AbstractScatterType {
