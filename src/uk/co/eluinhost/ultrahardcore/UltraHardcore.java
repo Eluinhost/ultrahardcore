@@ -16,6 +16,7 @@ import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
+import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.services.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
 import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
@@ -31,6 +32,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
 
     private final FeatureManager m_featureManager = new FeatureManager();
     private final ScatterManager m_scatterManager = new ScatterManager();
+    private final ConfigManager m_configManager = new ConfigManager();
 
     //get the current plugin
     public static UltraHardcore getInstance() {
@@ -40,7 +42,14 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     public FeatureManager getFeatureManager(){
         return m_featureManager;
     }
-    public ScatterManager getScatterManager() { return m_scatterManager; }
+
+    public ScatterManager getScatterManager() {
+        return m_scatterManager;
+    }
+
+    public ConfigManager getConfigManager(){
+        return m_configManager;
+    }
 
     //When the plugin gets started
     @Override
@@ -48,11 +57,9 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(DeathBan.class);
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
-        FileConfiguration config = getConfig();
-        config.options().copyDefaults(true);
-        saveConfig();
-
         m_featureManager.loadDefaultModules();
+        m_configManager.addDefaults();
+
         setupCommands();
 
         //Load all the metric infos
