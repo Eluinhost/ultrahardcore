@@ -26,7 +26,7 @@ public class FreezeCommand implements UHCCommand {
     private boolean m_isActive;
 
     public FreezeCommand() {
-        for (String configEffect : ConfigManager.getConfig(ConfigManager.MAIN).getStringList(ConfigNodes.FREEZE_EFFECTS)) {
+        for (String configEffect : ConfigManager.getInstance().getConfig().getStringList(ConfigNodes.FREEZE_EFFECTS)) {
             String[] effect = configEffect.split(":");
             if (effect.length != 2) {
                 UltraHardcore.getInstance().getLogger().warning("Effect \"" + configEffect + "\" is invalid");
@@ -52,13 +52,13 @@ public class FreezeCommand implements UHCCommand {
                 UltraHardcore.getInstance().getLogger().warning("Effect \"" + Arrays.toString(effect) + "\" has invalid tier \"" + effect[1] + "\"");
                 continue;
             }
-            POTION_EFFECTS.add(new PotionEffect(type, ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.FREEZE_TIME), tier));
+            POTION_EFFECTS.add(new PotionEffect(type, ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FREEZE_TIME), tier));
             UltraHardcore.getInstance().getLogger().info("Added potion effect " + type.getName() + " tier " + tier);
         }
         Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance()
                 , new FreezeJob()
                 , 0
-                , ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.FREEZE_REAPPLY_TIME));
+                , ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FREEZE_REAPPLY_TIME));
     }
 
     private class FreezeJob implements Runnable {

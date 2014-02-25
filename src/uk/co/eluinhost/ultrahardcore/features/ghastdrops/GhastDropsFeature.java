@@ -33,7 +33,7 @@ public class GhastDropsFeature extends UHCFeature {
         //if we're enabled and a ghast died
         if (isEnabled() && ede.getEntityType() == EntityType.GHAST) {
             //if ghasts can't drop tears in this world
-            if (ConfigManager.featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())) {
+            if (ConfigManager.getInstance().featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())) {
 
                 //get the list of drops
                 List<ItemStack> drops = ede.getDrops();

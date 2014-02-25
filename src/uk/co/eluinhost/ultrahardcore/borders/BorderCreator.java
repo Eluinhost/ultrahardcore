@@ -167,8 +167,8 @@ public class BorderCreator implements UHCCommand {
             } else {
                 blockinfo = new String[]{
                         args[2],
-                        ConfigManager.getConfig(ConfigManager.MAIN).getString(ConfigNodes.BORDER_BLOCK),
-                        ConfigManager.getConfig(ConfigManager.MAIN).getString(ConfigNodes.BORDER_BLOCK_META)
+                        ConfigManager.getInstance().getConfig().getString(ConfigNodes.BORDER_BLOCK),
+                        ConfigManager.getInstance().getConfig().getString(ConfigNodes.BORDER_BLOCK_META)
                 };
             }
             int borderID;

@@ -46,7 +46,7 @@ public class ScatterPrompt extends StringPrompt {
 
     @Override
     public Prompt acceptInput(ConversationContext conversationContext, String s) {
-        if (ScatterManager.isScatterInProgress()) {
+        if (ScatterManager.getInstance().isScatterInProgress()) {
             conversationContext.getForWhom().sendRawMessage(ChatColor.RED + "A scatter command has already been started, please wait until it completes and try again");
             return END_OF_CONVERSATION;
         }
@@ -191,7 +191,7 @@ public class ScatterPrompt extends StringPrompt {
      * @return the ScatterType if exists, null otherwise
      */
     public static AbstractScatterType parseScatterType(String s) {
-        return ScatterManager.getScatterType(s);
+        return ScatterManager.getInstance().getScatterType(s);
     }
 
     /**
@@ -302,7 +302,7 @@ public class ScatterPrompt extends StringPrompt {
 
     public static List<String> getTypesOutput() {
         AbstractList<String> output = new ArrayList<String>();
-        List<AbstractScatterType> scatterTypes = ScatterManager.getScatterTypes();
+        List<AbstractScatterType> scatterTypes = ScatterManager.getInstance().getScatterTypes();
         if (scatterTypes.isEmpty()) {
             output.add(ChatColor.RED + "No scatter types loaded!");
         } else {

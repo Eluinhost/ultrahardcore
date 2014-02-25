@@ -18,7 +18,7 @@ public class UHCFeature implements Listener, IUHCFeature {
     /**
      * Is the feautre enabeld right now?
      */
-    private boolean m_enabled = false;
+    private boolean m_enabled;
     /**
      * The description of the current feature
      */

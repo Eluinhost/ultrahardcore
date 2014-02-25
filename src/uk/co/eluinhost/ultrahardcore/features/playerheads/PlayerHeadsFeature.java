@@ -51,7 +51,7 @@ public class PlayerHeadsFeature extends UHCFeature {
                 return;
             }
             //do a random chance based on the config options
-            if (RANDOM.nextInt(100) >= 100 - ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE)) {
+            if (RANDOM.nextInt(100) >= 100 - ConfigManager.getInstance().getConfig().getInt(ConfigNodes.PLAYER_HEAD_DROP_CHANCE)) {
                 //drop the head with the loot if no stake was made
                 if (!putHeadOnStake(pde.getEntity())) {
                     pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
@@ -66,14 +66,14 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @return boolean
      */
     private static boolean isValidKill(Player deadPlayer){
-        if (ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)) {
+        if (ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_HEAD_PVP_ONLY)) {
             //get the killer and if there isn't one it wasn't a PVP kill
             Player killer = deadPlayer.getKiller();
             if (killer == null) {
                 return false;
             }
             //if we're checking that teammember kills don't count
-            if (ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_PVP_NON_TEAM)) {
+            if (ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_HEAD_PVP_NON_TEAM)) {
                 //get the scoreboard and get the teams of both players
                 Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
                 Team team1 = sb.getPlayerTeam(deadPlayer);
@@ -88,7 +88,7 @@ public class PlayerHeadsFeature extends UHCFeature {
     }
 
     private static boolean putHeadOnStake(Player p) {
-        if(!ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE)){
+        if(!ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE)){
             return false;
         }
         //head location

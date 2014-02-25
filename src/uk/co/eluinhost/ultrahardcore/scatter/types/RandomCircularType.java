@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.bukkit.Location;
 
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
@@ -30,7 +30,7 @@ public class RandomCircularType extends AbstractScatterType {
         for (int k = 0; k < amount; k++) {
             Location finalTeleport = new Location(center.getWorld(), 0, 0, 0);
             boolean invalid = true;
-            for (int i = 0; i < UltraHardcore.getInstance().getScatterManager().getMaxTries(); i++) {
+            for (int i = 0; i < ScatterManager.getInstance().getMaxTries(); i++) {
                 //get a random angle between 0 and 2PI
                 double randomAngle = getRandom().nextDouble() * MATH_TAU;
                 //get a random radius for uniform circular distribution

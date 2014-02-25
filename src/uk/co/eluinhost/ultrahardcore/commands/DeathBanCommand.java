@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
+import uk.co.eluinhost.ultrahardcore.services.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class DeathBanCommand implements UHCCommand {
             }
             DeathBansFeature dbf;
             try {
-                dbf = (DeathBansFeature) UltraHardcore.getInstance().getFeatureManager().getFeatureByID("DeathBans");
+                dbf = (DeathBansFeature) FeatureManager.getInstance().getFeatureByID("DeathBans");
             } catch (FeatureIDNotFoundException ignored) {
                 sender.sendMessage(ChatColor.RED + "Module DeathBans is not loaded!");
                 return true;

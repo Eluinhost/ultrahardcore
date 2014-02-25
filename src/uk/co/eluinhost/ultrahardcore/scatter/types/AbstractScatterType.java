@@ -6,11 +6,10 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
-import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
+import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 
 public abstract class AbstractScatterType {
 
@@ -79,7 +78,7 @@ public abstract class AbstractScatterType {
                 return true;
             }
         }
-        for (PlayerTeleportMapping ptm : UltraHardcore.getInstance().getScatterManager().getRemainingTeleports()) {
+        for (PlayerTeleportMapping ptm : ScatterManager.getInstance().getRemainingTeleports()) {
             if (ptm.getLocation().distanceSquared(loc) < distanceSquared) {
                 return true;
             }

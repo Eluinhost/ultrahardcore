@@ -15,7 +15,7 @@ public class SimplePair<K, V> {
     }
 
     public SimplePair(K key, V value) {
-        this.m_key = key;
-        this.m_value = value;
+        m_key = key;
+        m_value = value;
     }
 }

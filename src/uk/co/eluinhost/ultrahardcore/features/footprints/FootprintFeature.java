@@ -30,9 +30,9 @@ public class FootprintFeature extends UHCFeature implements Runnable {
 
     public static final int REPEAT_INTERVAL = 40;
 
-    private static final int MAX_RENDER_DISTANCE = ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.FOOTPRINTS_RENDER_DISTANCE);
+    private static final int MAX_RENDER_DISTANCE = ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FOOTPRINTS_RENDER_DISTANCE);
     private static final int MAX_RENDER_DISTANCE_SQUARED = MAX_RENDER_DISTANCE * MAX_RENDER_DISTANCE;
-    private static final int MIN_RENDER_DISTANCE = ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.FOOTPRINTS_MIN_DISTANCE);
+    private static final int MIN_RENDER_DISTANCE = ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FOOTPRINTS_MIN_DISTANCE);
     private static final int MIN_DISTANCE_SQUARED = MIN_RENDER_DISTANCE * MIN_RENDER_DISTANCE;
 
     private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
@@ -77,7 +77,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
                 loc.setY(block.getLocation().getY() + offset);
                 Footstep newFootstep = new Footstep(
                     loc,
-                    ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.FOOTPRINTS_TIME_TO_LAST) / 2,
+                    ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FOOTPRINTS_TIME_TO_LAST) / 2,
                     p.getName()
                 );
                 sendFootstep(newFootstep);

@@ -37,8 +37,8 @@ public class PotionNerfsFeature extends UHCFeature {
             if (ice.getInventory().getType() != InventoryType.BREWING) {
                 return;
             }
-            boolean cancelSulphur = ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH);
-            boolean cancelGlowstone = ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED);
+            boolean cancelSulphur = ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH);
+            boolean cancelGlowstone = ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED);
 
             InventoryView iv = ice.getView();
             boolean cancel = false;
@@ -86,7 +86,7 @@ public class PotionNerfsFeature extends UHCFeature {
     @EventHandler
     public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
         //if we're enabled and absorbtion is disabled
-        if (isEnabled() && ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.DISABLE_ABSORB)) {
+        if (isEnabled() && ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.DISABLE_ABSORB)) {
             //if they ate a golden apple
             ItemStack is = pee.getItem();
             if (is.getType() == Material.GOLDEN_APPLE) {
@@ -107,11 +107,11 @@ public class PotionNerfsFeature extends UHCFeature {
             //if the item is being moved into a brewing stand
             if (imie.getDestination().getType() == InventoryType.BREWING) {
                 //cancel sulpher if no permission
-                if (imie.getItem().getType() == Material.SULPHUR && ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)) {
+                if (imie.getItem().getType() == Material.SULPHUR && ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.RECIPE_CHANGES_SPLASH)) {
                     imie.setCancelled(true);
                 }
                 //cancel glowstone if no permission
-                if (imie.getItem().getType() == Material.GLOWSTONE_DUST && ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED)) {
+                if (imie.getItem().getType() == Material.GLOWSTONE_DUST && ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.RECIPE_CHANGES_IMPROVED)) {
                     imie.setCancelled(true);
                 }
             }

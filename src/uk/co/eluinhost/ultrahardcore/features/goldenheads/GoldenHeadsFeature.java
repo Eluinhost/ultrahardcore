@@ -43,7 +43,7 @@ public class GoldenHeadsFeature extends UHCFeature {
             ItemMeta im = is.getItemMeta();
             if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
                 //get the factor of healing it's supposed to do
-                int factor = ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.GOLDEN_HEADS_HEAL_FACTOR);
+                int factor = ConfigManager.getInstance().getConfig().getInt(ConfigNodes.GOLDEN_HEADS_HEAL_FACTOR);
                 //add tge new potion effect
                 pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + factor * POTION_TICK_MULTIPLIER, 1));
             }

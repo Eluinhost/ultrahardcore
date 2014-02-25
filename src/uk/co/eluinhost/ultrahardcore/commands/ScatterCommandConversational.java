@@ -59,7 +59,7 @@ public class ScatterCommandConversational implements UHCCommand {
             }
 
             if (args.length == 1 && "default".equalsIgnoreCase(args[0])) {
-                FileConfiguration config = ConfigManager.getConfig(ConfigManager.MAIN);
+                FileConfiguration config = ConfigManager.getInstance().getConfig();
                 args = new String[]{
                     config.getString(ConfigNodes.SCATTER_DEFAULT_TYPE),
                     config.getString(ConfigNodes.SCATTER_DEFAULT_TEAMS),
@@ -195,7 +195,7 @@ public class ScatterCommandConversational implements UHCCommand {
         if (args.length == 1) {
             r.add("types");
             r.add("default");
-            r.addAll(ScatterManager.getScatterTypeNames());
+            r.addAll(ScatterManager.getInstance().getScatterTypeNames());
             return r;
         }
         if (args.length == 2) {

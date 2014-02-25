@@ -20,7 +20,7 @@ public class PortalsFeature extends UHCFeature {
         //if we're enabled
         if (isEnabled()) {
             //get the config
-            FileConfiguration config = ConfigManager.getConfig(ConfigManager.MAIN);
+            FileConfiguration config = ConfigManager.getInstance().getConfig();
 
             //create a travel agent for the portal
             TravelAgent ta = entityPortalEvent.getPortalTravelAgent();

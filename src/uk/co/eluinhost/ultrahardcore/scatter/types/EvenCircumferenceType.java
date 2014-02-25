@@ -3,12 +3,9 @@ package uk.co.eluinhost.ultrahardcore.scatter.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
-import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;

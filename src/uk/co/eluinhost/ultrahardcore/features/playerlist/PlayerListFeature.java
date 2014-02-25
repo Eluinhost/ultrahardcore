@@ -33,9 +33,9 @@ public class PlayerListFeature extends UHCFeature {
     //the list of players and their health that we are handling
     private static final Map<Player, Double> HANDLED_PLAYERS = new WeakHashMap<Player, Double>();
 
-    private static final double HEALTH_SCALING = ConfigManager.getConfig(ConfigManager.MAIN).getDouble(ConfigNodes.PLAYER_LIST_SCALING);
-    private static final boolean ROUND_HEALTH = ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_ROUND_HEALTH);
-    private static final boolean PLAYER_LIST_COLOURS = ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_COLOURS);
+    private static final double HEALTH_SCALING = ConfigManager.getInstance().getConfig().getDouble(ConfigNodes.PLAYER_LIST_SCALING);
+    private static final boolean ROUND_HEALTH = ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_LIST_ROUND_HEALTH);
+    private static final boolean PLAYER_LIST_COLOURS = ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_LIST_COLOURS);
 
     private static final Scoreboard MAIN_SCOREBOARD = Bukkit.getScoreboardManager().getMainScoreboard();
 
@@ -121,7 +121,7 @@ public class PlayerListFeature extends UHCFeature {
                 UltraHardcore.getInstance(),
                 new PlayerListUpdater(),
                 1L,
-                ConfigManager.getConfig(ConfigManager.MAIN).getLong(ConfigNodes.PLAYER_LIST_DELAY)
+                ConfigManager.getInstance().getConfig().getLong(ConfigNodes.PLAYER_LIST_DELAY)
         );
         //intialize the scoreboard
         initializeScoreboard();
@@ -164,13 +164,13 @@ public class PlayerListFeature extends UHCFeature {
         m_objectiveUnderName = MAIN_SCOREBOARD.getObjective(OBJECTIVE_UNDER_NAME_NAME);
 
         //set the display name of the under name objective
-        m_objectiveUnderName.setDisplayName(ChatColor.translateAlternateColorCodes('&', ConfigManager.getConfig(ConfigManager.MAIN).getString(ConfigNodes.PLAYER_LIST_HEALTH_NAME)).replaceAll("&h", "\u2665"));
+        m_objectiveUnderName.setDisplayName(ChatColor.translateAlternateColorCodes('&', ConfigManager.getInstance().getConfig().getString(ConfigNodes.PLAYER_LIST_HEALTH_NAME)).replaceAll("&h", "\u2665"));
 
         //set the slot for player list health
         m_objectivePlayerList.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
         //if under name is enabled
-        if (ConfigManager.getConfig(ConfigManager.MAIN).getBoolean(ConfigNodes.PLAYER_LIST_UNDER_NAME)) {
+        if (ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_LIST_UNDER_NAME)) {
             //set it's slot
             m_objectiveUnderName.setDisplaySlot(DisplaySlot.BELOW_NAME);
         } else {

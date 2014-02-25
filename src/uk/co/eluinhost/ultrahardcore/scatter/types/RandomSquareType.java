@@ -4,12 +4,9 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
-import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
@@ -26,26 +23,22 @@ public class RandomSquareType extends AbstractScatterType {
     @Override
     public List<Location> getScatterLocations(Parameters params, int amount)
             throws MaxAttemptsReachedException {
-        World world = Bukkit.getWorld(params.getWorld());
-        if (world == null) {
-            throw new WorldNotFoundException();
-        }
         AbstractList<Location> locations = new ArrayList<Location>();
         for (int k = 0; k < amount; k++) {
-            Location finalTeleport = new Location(world, 0, 0, 0);
+            Location finalTeleport = new Location(params.getScatterLocation().getWorld(), 0, 0, 0);
             boolean valid = false;
-            for (int i = 0; i < ScatterManager.m_maxTries; i++) {
+            for (int i = 0; i < ScatterManager.getInstance().getMaxTries(); i++) {
                 //get a coords
                 double xcoord = getRandom().nextDouble() * params.getRadius() * 2;
                 double zcoord = getRandom().nextDouble() * params.getRadius() * 2;
                 xcoord -= params.getRadius();
                 zcoord -= params.getRadius();
-                xcoord += params.getCenterX();
-                zcoord += params.getCenterZ();
+                xcoord += params.getScatterLocation().getBlockX();
+                zcoord += params.getScatterLocation().getBlockZ();
 
                 //get the center of the block/s
-                xcoord = Math.round(xcoord) + 0.5d;
-                zcoord = Math.round(zcoord) + 0.5d;
+                xcoord = Math.round(xcoord) + X_OFFSET;
+                zcoord = Math.round(zcoord) + Z_OFFSET;
 
                 //set the locations coordinates
                 finalTeleport.setX(xcoord);
@@ -54,7 +47,7 @@ public class RandomSquareType extends AbstractScatterType {
                 //get the highest block in the Y coordinate
                 ServerUtil.setYHighest(finalTeleport);
 
-                if (isLocationTooClose(finalTeleport, locations, params.getMinDistance())) {
+                if (isLocationTooClose(finalTeleport, locations, params.getMinimumDistance())) {
                     continue;
                 }
 

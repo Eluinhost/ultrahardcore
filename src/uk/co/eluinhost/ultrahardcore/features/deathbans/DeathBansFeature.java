@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
@@ -43,7 +44,7 @@ public class DeathBansFeature extends UHCFeature {
     public DeathBansFeature() {
         super("DeathBans", "Bans a player on death for a specified amount of time");
 
-        FileConfiguration banConfig = ConfigManager.getConfig(ConfigManager.BANS);
+        FileConfiguration banConfig = ConfigManager.getInstance().getConfig();
 
         @SuppressWarnings("unchecked")
         List<DeathBan> banList = (List<DeathBan>) banConfig.getList("bans",new ArrayList<Object>());
@@ -122,8 +123,8 @@ public class DeathBansFeature extends UHCFeature {
      * Save all the bans to file
      */
     private void saveBans(){
-        ConfigManager.getConfig(ConfigManager.BANS).set("bans", m_deathBans);
-        ConfigManager.saveConfig(ConfigManager.BANS);
+        ConfigManager.getInstance().getConfig(ConfigType.BANS).set("bans", m_deathBans);
+        ConfigManager.getInstance().saveConfig(ConfigType.BANS);
     }
 
     /**
@@ -200,7 +201,7 @@ public class DeathBansFeature extends UHCFeature {
         Bukkit.getScheduler().scheduleSyncDelayedTask(
                 UltraHardcore.getInstance(),
                 new PlayerBanner(playerName, message, unbanTime),
-                ConfigManager.getConfig(ConfigManager.MAIN).getLong(ConfigNodes.DEATH_BANS_DELAY)
+                ConfigManager.getInstance().getConfig().getLong(ConfigNodes.DEATH_BANS_DELAY)
         );
         saveBans();
         UltraHardcore.getInstance().getLogger().info("Added " + offlinePlayer.getName() + " to temp ban list");
@@ -211,7 +212,7 @@ public class DeathBansFeature extends UHCFeature {
      * @param p the player to ban
      */
     public void processBansForPlayer(Player p){
-        ConfigurationSection banTypes = ConfigManager.getConfig(ConfigManager.MAIN).getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
+        ConfigurationSection banTypes = ConfigManager.getInstance().getConfig().getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
         Set<String> permissionNames = banTypes.getKeys(false);
         Logger logger = UltraHardcore.getInstance().getLogger();
         for(String permission : permissionNames){
