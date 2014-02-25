@@ -7,11 +7,13 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.AbstractMap;
 import java.util.EnumMap;
+import java.util.Map;
 
 public class ConfigManager {
 
-   private final EnumMap<ConfigType, FileConfiguration> m_configurations = new EnumMap<ConfigType, FileConfiguration>(ConfigType.class);
+   private final Map<ConfigType, FileConfiguration> m_configurations = new EnumMap<ConfigType, FileConfiguration>(ConfigType.class);
 
     /**
      * Only allows 1 config per configtype
@@ -36,15 +38,16 @@ public class ConfigManager {
      * @param setDefaults whether to set the defaults from the same file in the jar
      * @return the config file
      */
-    public FileConfiguration getFromFile(String path, boolean setDefaults){
-        File configFile = new File(UltraHardcore.getInstance().getDataFolder(), path);
+    public static FileConfiguration getFromFile(String path, boolean setDefaults){
+        UltraHardcore plugin = UltraHardcore.getInstance();
+        File configFile = new File(plugin.getDataFolder(), path);
         if (!configFile.exists()) {
-            UltraHardcore.getInstance().saveResource(path, false);
+            plugin.saveResource(path, false);
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         if(setDefaults){
             // Look for defaults in the jar
-            InputStream defConfigStream = UltraHardcore.getInstance().getResource(path);
+            InputStream defConfigStream = plugin.getResource(path);
             if (defConfigStream != null) {
                 YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
                 config.setDefaults(defConfig);
@@ -53,6 +56,10 @@ public class ConfigManager {
         return config;
     }
 
+    /**
+     * @param type the type of config to get
+     * @return the configuration or null if not exists
+     */
     public FileConfiguration getConfig(ConfigType type) {
         return m_configurations.get(type);
     }
@@ -69,6 +76,10 @@ public class ConfigManager {
         return !(whitelist ^ found);
     }
 
+    /**
+     * Saves the config
+     * @param type the config type to save
+     */
     public void saveConfig(ConfigType type) {
         FileConfiguration config = m_configurations.get(type);
         if(config != null){
