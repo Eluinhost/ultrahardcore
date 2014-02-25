@@ -7,7 +7,6 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.AbstractMap;
 import java.util.EnumMap;
 import java.util.Map;
 

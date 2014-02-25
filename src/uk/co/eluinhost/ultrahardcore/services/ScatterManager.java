@@ -15,8 +15,6 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 
-//TODO make not a utility class
-//TODO use a better way of restricting to one command at a time
 public class ScatterManager {
 
     private int m_maxTries;

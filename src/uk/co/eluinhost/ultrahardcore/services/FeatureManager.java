@@ -4,39 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
 import uk.co.eluinhost.ultrahardcore.features.*;
 import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureInitEvent;
-import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
-import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
-import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
-import uk.co.eluinhost.ultrahardcore.features.deathlightning.DeathLightningFeature;
-import uk.co.eluinhost.ultrahardcore.features.deathmessages.DeathMessagesFeature;
-import uk.co.eluinhost.ultrahardcore.features.enderpearls.EnderpearlsFeature;
-import uk.co.eluinhost.ultrahardcore.features.footprints.FootprintFeature;
-import uk.co.eluinhost.ultrahardcore.features.ghastdrops.GhastDropsFeature;
-import uk.co.eluinhost.ultrahardcore.features.goldenheads.GoldenHeadsFeature;
-import uk.co.eluinhost.ultrahardcore.features.hardcorehearts.HardcoreHeartsFeature;
-import uk.co.eluinhost.ultrahardcore.features.nether.NetherFeature;
-import uk.co.eluinhost.ultrahardcore.features.playerheads.PlayerHeadsFeature;
-import uk.co.eluinhost.ultrahardcore.features.playerlist.PlayerListFeature;
-import uk.co.eluinhost.ultrahardcore.features.portals.PortalsFeature;
-import uk.co.eluinhost.ultrahardcore.features.potionnerfs.PotionNerfsFeature;
-import uk.co.eluinhost.ultrahardcore.features.recipes.RecipeFeature;
-import uk.co.eluinhost.ultrahardcore.features.regen.RegenFeature;
-import uk.co.eluinhost.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
 
 /**
  * Feature Manager Class
