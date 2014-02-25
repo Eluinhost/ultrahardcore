@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterProtector;
+import uk.co.eluinhost.ultrahardcore.scatter.Protector;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
@@ -25,7 +25,7 @@ public class ScatterManager {
 
     private final List<AbstractScatterType> m_scatterTypes = new ArrayList<AbstractScatterType>();
 
-    private final ScatterProtector m_scatterProtector = new ScatterProtector();
+    private final Protector m_protector = new Protector();
 
     private final LinkedList<PlayerTeleportMapping> m_remainingTeleports = new LinkedList<PlayerTeleportMapping>();
 
@@ -45,7 +45,7 @@ public class ScatterManager {
         m_scatterDelay = config.getInt(ConfigNodes.SCATTER_DELAY);
 
         //register ourselves for events
-        Bukkit.getServer().getPluginManager().registerEvents(m_scatterProtector, plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
     }
 
     /**
@@ -102,14 +102,14 @@ public class ScatterManager {
     }
 
     /**
-     * Scatters the player and protects them from damage using ScatterProtector
+     * Scatters the player and protects them from damage using Protector
      * @param player the player to scatter
      * @param loc the location to scatter to
      */
     public void teleportSafe(Player player, Location loc) {
         loc.getChunk().load(true);
         player.teleport(loc);
-        m_scatterProtector.addPlayer(player.getName(), loc);
+        m_protector.addPlayer(player, loc);
     }
 
     /**
