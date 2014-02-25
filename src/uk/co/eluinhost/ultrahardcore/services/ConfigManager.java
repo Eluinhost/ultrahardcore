@@ -25,14 +25,6 @@ public class ConfigManager {
     }
 
     /**
-     * Add the default config files
-     */
-    public void addDefaults(){
-        addConfiguration(ConfigType.MAIN, getFromFile("main.yml",true));
-        addConfiguration(ConfigType.BANS, getFromFile("bans.yml",true));
-    }
-
-    /**
      * Gets a FileConfiguration from the config directory
      * @param path the file to look for
      * @param setDefaults whether to set the defaults from the same file in the jar
@@ -62,6 +54,13 @@ public class ConfigManager {
      */
     public FileConfiguration getConfig(ConfigType type) {
         return m_configurations.get(type);
+    }
+
+    /**
+     * @return the ConfigType.MAIN config file
+     */
+    public FileConfiguration getConfig(){
+        return getConfig(ConfigType.MAIN);
     }
 
     //TODO wtf is this supposed to be
