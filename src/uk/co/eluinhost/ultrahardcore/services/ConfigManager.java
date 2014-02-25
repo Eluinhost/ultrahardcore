@@ -12,7 +12,18 @@ import java.util.Map;
 
 public class ConfigManager {
 
-   private final Map<ConfigType, FileConfiguration> m_configurations = new EnumMap<ConfigType, FileConfiguration>(ConfigType.class);
+    @SuppressWarnings("UtilityClass")
+    private static class LazyConfigManagerHolder {
+        private static final ConfigManager INSTANCE = new ConfigManager();
+    }
+
+    public static ConfigManager getInstance(){
+        return LazyConfigManagerHolder.INSTANCE;
+    }
+
+    private ConfigManager(){}
+
+    private final Map<ConfigType, FileConfiguration> m_configurations = new EnumMap<ConfigType, FileConfiguration>(ConfigType.class);
 
     /**
      * Only allows 1 config per configtype

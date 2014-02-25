@@ -21,6 +21,17 @@ import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureInitEvent;
  */
 public class FeatureManager {
 
+    @SuppressWarnings("UtilityClass")
+    private static class LazyFeatureManagerHolder {
+        private static final FeatureManager INSTANCE = new FeatureManager();
+    }
+
+    public static FeatureManager getInstance(){
+        return LazyFeatureManagerHolder.INSTANCE;
+    }
+
+    private FeatureManager(){}
+
     /**
      * Stores a list of all the uhcFeatures loaded on the server
      */

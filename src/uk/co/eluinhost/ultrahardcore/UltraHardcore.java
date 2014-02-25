@@ -57,28 +57,11 @@ import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
  */
 public class UltraHardcore extends JavaPlugin implements Listener {
 
-    //TODO manager interfaces?
-    private final FeatureManager m_featureManager = new FeatureManager();
-    private final ScatterManager m_scatterManager = new ScatterManager();
-    private final ConfigManager m_configManager = new ConfigManager();
-
     /**
      * @return the current instance of the plugin
      */
     public static UltraHardcore getInstance() {
         return (UltraHardcore) Bukkit.getServer().getPluginManager().getPlugin("UltraHardcore");
-    }
-
-    public FeatureManager getFeatureManager(){
-        return m_featureManager;
-    }
-
-    public ScatterManager getScatterManager() {
-        return m_scatterManager;
-    }
-
-    public ConfigManager getConfigManager(){
-        return m_configManager;
     }
 
     //When the plugin gets started
@@ -168,28 +151,29 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         Logger log = Bukkit.getLogger();
         log.info("Loading UHC feature modules...");
         //Load the default features with settings in config
-        FileConfiguration config = m_configManager.getConfig();
+        FeatureManager featureManager = FeatureManager.getInstance();
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
         try {
-            m_featureManager.addFeature(new DeathLightningFeature(), config.getBoolean(ConfigNodes.DEATH_LIGHTNING));
-            m_featureManager.addFeature(new EnderpearlsFeature(), config.getBoolean(ConfigNodes.NO_ENDERPEARL_DAMAGE));
-            m_featureManager.addFeature(new GhastDropsFeature(), config.getBoolean(ConfigNodes.GHAST_DROP_CHANGES));
-            m_featureManager.addFeature(new PlayerHeadsFeature(), config.getBoolean(ConfigNodes.DROP_PLAYER_HEAD));
-            m_featureManager.addFeature(new PlayerListFeature(), config.getBoolean(ConfigNodes.PLAYER_LIST_HEALTH));
-            m_featureManager.addFeature(new RecipeFeature(), config.getBoolean(ConfigNodes.RECIPE_CHANGES));
-            m_featureManager.addFeature(new RegenFeature(), config.getBoolean(ConfigNodes.NO_HEALTH_REGEN));
-            m_featureManager.addFeature(new DeathMessagesFeature(), config.getBoolean(ConfigNodes.DEATH_MESSAGES_ENABLED));
-            m_featureManager.addFeature(new DeathDropsFeature(), config.getBoolean(ConfigNodes.DEATH_DROPS_ENABLED));
-            m_featureManager.addFeature(new AnonChatFeature(), config.getBoolean(ConfigNodes.ANON_CHAT_ENABLED));
-            m_featureManager.addFeature(new GoldenHeadsFeature(), config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED));
-            m_featureManager.addFeature(new DeathBansFeature(), config.getBoolean(ConfigNodes.DEATH_BANS_ENABLED));
-            m_featureManager.addFeature(new PotionNerfsFeature(), config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED));
-            m_featureManager.addFeature(new NetherFeature(), config.getBoolean(ConfigNodes.NETHER_DISABLE_ENABELD));
-            m_featureManager.addFeature(new WitchSpawnsFeature(), config.getBoolean(ConfigNodes.WITCH_SPAWNS_ENABLED));
-            m_featureManager.addFeature(new PortalsFeature(), config.getBoolean(ConfigNodes.PORTAL_RANGES_ENABLED));
+            featureManager.addFeature(new DeathLightningFeature(), config.getBoolean(ConfigNodes.DEATH_LIGHTNING));
+            featureManager.addFeature(new EnderpearlsFeature(), config.getBoolean(ConfigNodes.NO_ENDERPEARL_DAMAGE));
+            featureManager.addFeature(new GhastDropsFeature(), config.getBoolean(ConfigNodes.GHAST_DROP_CHANGES));
+            featureManager.addFeature(new PlayerHeadsFeature(), config.getBoolean(ConfigNodes.DROP_PLAYER_HEAD));
+            featureManager.addFeature(new PlayerListFeature(), config.getBoolean(ConfigNodes.PLAYER_LIST_HEALTH));
+            featureManager.addFeature(new RecipeFeature(), config.getBoolean(ConfigNodes.RECIPE_CHANGES));
+            featureManager.addFeature(new RegenFeature(), config.getBoolean(ConfigNodes.NO_HEALTH_REGEN));
+            featureManager.addFeature(new DeathMessagesFeature(), config.getBoolean(ConfigNodes.DEATH_MESSAGES_ENABLED));
+            featureManager.addFeature(new DeathDropsFeature(), config.getBoolean(ConfigNodes.DEATH_DROPS_ENABLED));
+            featureManager.addFeature(new AnonChatFeature(), config.getBoolean(ConfigNodes.ANON_CHAT_ENABLED));
+            featureManager.addFeature(new GoldenHeadsFeature(), config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED));
+            featureManager.addFeature(new DeathBansFeature(), config.getBoolean(ConfigNodes.DEATH_BANS_ENABLED));
+            featureManager.addFeature(new PotionNerfsFeature(), config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED));
+            featureManager.addFeature(new NetherFeature(), config.getBoolean(ConfigNodes.NETHER_DISABLE_ENABELD));
+            featureManager.addFeature(new WitchSpawnsFeature(), config.getBoolean(ConfigNodes.WITCH_SPAWNS_ENABLED));
+            featureManager.addFeature(new PortalsFeature(), config.getBoolean(ConfigNodes.PORTAL_RANGES_ENABLED));
 
             //load the protocollib features last
-            m_featureManager.addFeature(new HardcoreHeartsFeature(), config.getBoolean(ConfigNodes.HARDCORE_HEARTS_ENABLED));
-            m_featureManager.addFeature(new FootprintFeature(), config.getBoolean(ConfigNodes.FOOTPRINTS_ENABLED));
+            featureManager.addFeature(new HardcoreHeartsFeature(), config.getBoolean(ConfigNodes.HARDCORE_HEARTS_ENABLED));
+            featureManager.addFeature(new FootprintFeature(), config.getBoolean(ConfigNodes.FOOTPRINTS_ENABLED));
         } catch (FeatureIDConflictException ignored) {
             log.severe("A default UHC Feature ID is conflicting, this should never happen!");
         } catch (InvalidFeatureIDException ignored) {
@@ -204,15 +188,17 @@ public class UltraHardcore extends JavaPlugin implements Listener {
      */
     @SuppressWarnings({"OverlyCoupledMethod", "FeatureEnvy"})
     public void loadDefaultConfigurations(){
-        m_configManager.addConfiguration(ConfigType.MAIN, ConfigManager.getFromFile("main.yml", true));
-        m_configManager.addConfiguration(ConfigType.BANS, ConfigManager.getFromFile("bans.yml", true));
+        ConfigManager configManager = ConfigManager.getInstance();
+        configManager.addConfiguration(ConfigType.MAIN, ConfigManager.getFromFile("main.yml", true));
+        configManager.addConfiguration(ConfigType.BANS, ConfigManager.getFromFile("bans.yml", true));
     }
 
     public void loadDefaultScatterTypes(){
+        ScatterManager scatterManager = ScatterManager.getInstance();
         try {
-            m_scatterManager.addScatterType(new EvenCircumferenceType());
-            m_scatterManager.addScatterType(new RandomCircularType());
-            m_scatterManager.addScatterType(new RandomSquareType());
+            scatterManager.addScatterType(new EvenCircumferenceType());
+            scatterManager.addScatterType(new RandomCircularType());
+            scatterManager.addScatterType(new RandomSquareType());
         } catch (ScatterTypeConflictException ignored) {
             Bukkit.getLogger().severe("Conflict error when loading default scatter types!");
         }

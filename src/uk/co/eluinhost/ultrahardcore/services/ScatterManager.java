@@ -21,23 +21,20 @@ public class ScatterManager {
     private int m_maxAttemtps;
     private int m_scatterDelay;
 
-    private final List<AbstractScatterType> m_scatterTypes = new ArrayList<AbstractScatterType>();
+    @SuppressWarnings("UtilityClass")
+    private static class LazyScatterManagerHolder {
+        private static final ScatterManager INSTANCE = new ScatterManager();
+    }
 
-    private final Protector m_protector = new Protector();
+    public static ScatterManager getInstance(){
+        return LazyScatterManagerHolder.INSTANCE;
+    }
 
-    private final LinkedList<PlayerTeleportMapping> m_remainingTeleports = new LinkedList<PlayerTeleportMapping>();
-
-    private int m_jobID = -1;
-    private CommandSender m_commandSender = null;
-
-    /**
-     * Scatter manager to provide ability to scatter players
-     */
-    public ScatterManager(){
+    private ScatterManager(){
         UltraHardcore plugin = UltraHardcore.getInstance();
 
         //set up default config
-        FileConfiguration config = plugin.getConfigManager().getConfig();
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
         m_maxTries = config.getInt(ConfigNodes.SCATTER_MAX_TRIES);
         m_maxAttemtps = config.getInt(ConfigNodes.SCATTER_MAX_ATTEMPTS);
         m_scatterDelay = config.getInt(ConfigNodes.SCATTER_DELAY);
@@ -45,6 +42,15 @@ public class ScatterManager {
         //register ourselves for events
         Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
     }
+
+    private final List<AbstractScatterType> m_scatterTypes = new ArrayList<AbstractScatterType>();
+
+    private final Protector m_protector = new Protector();
+
+    private final LinkedList<PlayerTeleportMapping> m_remainingTeleports = new LinkedList<PlayerTeleportMapping>();
+
+    private int m_jobID = -1;
+    private CommandSender m_commandSender;
 
     /**
      * @return true if currently busy, false otherwise
