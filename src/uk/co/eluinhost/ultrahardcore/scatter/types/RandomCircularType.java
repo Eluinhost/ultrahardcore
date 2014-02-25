@@ -36,7 +36,7 @@ public class RandomCircularType extends AbstractScatterType {
         for (int k = 0; k < amount; k++) {
             Location finalTeleport = new Location(world, 0, 0, 0);
             boolean valid = false;
-            for (int i = 0; i < ScatterManager.MAX_TRIES; i++) {
+            for (int i = 0; i < ScatterManager.m_maxTries; i++) {
                 //get a random angle between 0 and 2PI
                 double randomAngle = getRandom().nextDouble() * Math.PI * 2d;
                 //get a random radius for uniform circular distribution

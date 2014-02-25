@@ -6,61 +6,76 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterProtector;
-import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
-import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
-import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
-import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
 
 //TODO make not a utility class
 //TODO use a better way of restricting to one command at a time
 public class ScatterManager {
 
-    public static final int MAX_TRIES = ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.SCATTER_MAX_TRIES);
-    public static final int MAX_ATTEMPTS = ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.SCATTER_MAX_ATTEMPTS);
-    public static final int SCATTER_DELAY = ConfigManager.getConfig(ConfigManager.MAIN).getInt(ConfigNodes.SCATTER_DELAY);
+    private int m_maxTries;
+    private int m_maxAttemtps;
+    private int m_scatterDelay;
 
-    private static final AbstractList<AbstractScatterType> SCATTER_TYPES = new ArrayList<AbstractScatterType>();
+    private final List<AbstractScatterType> m_scatterTypes = new ArrayList<AbstractScatterType>();
 
-    private static final ScatterProtector SCATTER_PROTECTOR = new ScatterProtector();
+    private final ScatterProtector m_scatterProtector = new ScatterProtector();
 
-    private static final LinkedList<PlayerTeleportMapping> REMAINING_TELEPORTS = new LinkedList<PlayerTeleportMapping>();
+    private final LinkedList<PlayerTeleportMapping> m_remainingTeleports = new LinkedList<PlayerTeleportMapping>();
 
     private int m_jobID = -1;
-    private CommandSender m_commandSender;
+    private CommandSender m_commandSender = null;
 
+    /**
+     * Scatter manager to provide ability to scatter players
+     */
     public ScatterManager(){
-        Bukkit.getServer().getPluginManager().registerEvents(SCATTER_PROTECTOR, UltraHardcore.getInstance());
-        try {
-            addScatterType(new EvenCircumferenceType());
-            addScatterType(new RandomCircularType());
-            addScatterType(new RandomSquareType());
-        } catch (ScatterTypeConflictException ignored) {
-            Bukkit.getLogger().severe("Conflict error when loading default scatter types!");
-        }
+        UltraHardcore plugin = UltraHardcore.getInstance();
+
+        //set up default config
+        FileConfiguration config = plugin.getConfigManager().getConfig();
+        m_maxTries = config.getInt(ConfigNodes.SCATTER_MAX_TRIES);
+        m_maxAttemtps = config.getInt(ConfigNodes.SCATTER_MAX_ATTEMPTS);
+        m_scatterDelay = config.getInt(ConfigNodes.SCATTER_DELAY);
+
+        //register ourselves for events
+        Bukkit.getServer().getPluginManager().registerEvents(m_scatterProtector, plugin);
     }
 
-    public static boolean isScatterInProgress() {
-        return !REMAINING_TELEPORTS.isEmpty();
+    /**
+     * @return true if currently busy, false otherwise
+     */
+    public boolean isScatterInProgress() {
+        return !m_remainingTeleports.isEmpty();
     }
 
-    public static void addScatterType(AbstractScatterType type) throws ScatterTypeConflictException {
-        for (AbstractScatterType scatterType : SCATTER_TYPES) {
+    /**
+     * Add a scatter type to the system
+     * @param type the scatterer to add
+     * @throws ScatterTypeConflictException if the scatter ID is already taken
+     */
+    public void addScatterType(AbstractScatterType type) throws ScatterTypeConflictException {
+        for (AbstractScatterType scatterType : m_scatterTypes) {
+            //TODO make an equals method in abstractscattertype
             if (scatterType.getScatterID().equals(type.getScatterID())) {
                 throw new ScatterTypeConflictException();
             }
         }
-        SCATTER_TYPES.add(type);
+        m_scatterTypes.add(type);
     }
 
-    public static AbstractScatterType getScatterType(String scatterID) {
-        for (AbstractScatterType st : SCATTER_TYPES) {
+    /**
+     * @param scatterID the ID to look for
+     * @return the scatter type if found or null if not
+     */
+    public AbstractScatterType getScatterType(String scatterID) {
+        for (AbstractScatterType st : m_scatterTypes) {
             if (st.getScatterID().equals(scatterID)) {
                 return st;
             }
@@ -68,42 +83,77 @@ public class ScatterManager {
         return null;
     }
 
-    public static List<AbstractScatterType> getScatterTypes() {
-        return Collections.unmodifiableList(SCATTER_TYPES);
+    /**
+     * @return unmodifiable list of all scatter types
+     */
+    public List<AbstractScatterType> getScatterTypes() {
+        return Collections.unmodifiableList(m_scatterTypes);
     }
 
-    public static List<String> getScatterTypeNames() {
-        ArrayList<String> r = new ArrayList<String>();
-        for (AbstractScatterType st : SCATTER_TYPES) {
+    /**
+     * @return a list of all the scatterIDs
+     */
+    public List<String> getScatterTypeNames() {
+        List<String> r = new ArrayList<String>();
+        for (AbstractScatterType st : m_scatterTypes) {
             r.add(st.getScatterID());
         }
         return r;
     }
 
-    public static void teleportSafe(Player p, Location loc) {
+    /**
+     * Scatters the player and protects them from damage using ScatterProtector
+     * @param player the player to scatter
+     * @param loc the location to scatter to
+     */
+    public void teleportSafe(Player player, Location loc) {
         loc.getChunk().load(true);
-        p.teleport(loc);
-        SCATTER_PROTECTOR.addPlayer(p.getName(), loc);
+        player.teleport(loc);
+        m_scatterProtector.addPlayer(player.getName(), loc);
     }
 
+    /**
+     * Add a collection of teleports to be queued
+     * @param ptm the colelction of teleports
+     * @param sender the sender who issued the command to be kept updated
+     *               TODO don't want to keep sender here like this
+     */
     public void addTeleportMappings(Collection<PlayerTeleportMapping> ptm, CommandSender sender) {
         if (m_jobID == -1) {
-            REMAINING_TELEPORTS.addAll(ptm);
-            m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), new ScatterRunable(), 0, SCATTER_DELAY);
+            m_remainingTeleports.addAll(ptm);
+            m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), new ScatterRunable(), 0, m_scatterDelay);
             if (m_jobID == -1) {
                 sender.sendMessage(ChatColor.RED + "Error scheduling scatter");
-                REMAINING_TELEPORTS.clear();
+                m_remainingTeleports.clear();
             } else {
                 m_commandSender = sender;
-                sender.sendMessage("Starting to scatter all players, teleports are " + SCATTER_DELAY + " ticks apart");
+                sender.sendMessage("Starting to scatter all players, teleports are " + m_scatterDelay + " ticks apart");
             }
         }
     }
 
-    public static Iterable<PlayerTeleportMapping> getRemainingTeleports() {
-        return Collections.unmodifiableList(REMAINING_TELEPORTS);
+    /**
+     * @return unmodifiable list of teleports left to process
+     */
+    public Iterable<PlayerTeleportMapping> getRemainingTeleports() {
+        return Collections.unmodifiableList(m_remainingTeleports);
     }
 
+    /**
+     * @return the maximum amount of tries to scatter
+     */
+    public int getMaxTries() {
+        return m_maxTries;
+    }
+
+    /**
+     * @param maxTries the max amount of tries to scatter
+     */
+    public void setMaxTries(int maxTries) {
+        m_maxTries = maxTries;
+    }
+
+    //TODO move out
     private class ScatterRunable implements Runnable {
         private boolean teleportPlayer(PlayerTeleportMapping ptm) {
             Player p = Bukkit.getPlayerExact(ptm.getPlayerName());
@@ -121,7 +171,7 @@ public class ScatterManager {
 
         @Override
         public void run() {
-            PlayerTeleportMapping ptm = REMAINING_TELEPORTS.pollFirst();
+            PlayerTeleportMapping ptm = m_remainingTeleports.pollFirst();
             if (ptm == null) {
                 try {
                     if (m_commandSender != null) {
@@ -136,12 +186,12 @@ public class ScatterManager {
             }
             if (!teleportPlayer(ptm)) {
                 ptm.incrementAmountTried();
-                if (ptm.getAmountTried() > MAX_ATTEMPTS) {
+                if (ptm.getAmountTried() > m_maxAttemtps) {
                     if (m_commandSender != null) {
-                        m_commandSender.sendMessage(ChatColor.RED + "Failed to scatter " + ptm.getPlayerName() + " after " + MAX_ATTEMPTS + ", giving up");
+                        m_commandSender.sendMessage(ChatColor.RED + "Failed to scatter " + ptm.getPlayerName() + " after " + m_maxAttemtps + ", giving up");
                     }
                 } else {
-                    REMAINING_TELEPORTS.add(ptm);
+                    m_remainingTeleports.add(ptm);
                 }
             }
         }

@@ -16,6 +16,7 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
+import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBan;
 import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
@@ -39,6 +40,9 @@ import uk.co.eluinhost.ultrahardcore.features.potionnerfs.PotionNerfsFeature;
 import uk.co.eluinhost.ultrahardcore.features.recipes.RecipeFeature;
 import uk.co.eluinhost.ultrahardcore.features.regen.RegenFeature;
 import uk.co.eluinhost.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
+import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
+import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
 import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.services.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
@@ -90,6 +94,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         loadDefaultConfigurations();
         //load all the features
         loadDefaultFeatures();
+        //load all the scatter types
+        loadDefaultScatterTypes();
         //load all the commands
 
         setupCommands();
@@ -200,5 +206,15 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     public void loadDefaultConfigurations(){
         m_configManager.addConfiguration(ConfigType.MAIN, ConfigManager.getFromFile("main.yml", true));
         m_configManager.addConfiguration(ConfigType.BANS, ConfigManager.getFromFile("bans.yml", true));
+    }
+
+    public void loadDefaultScatterTypes(){
+        try {
+            m_scatterManager.addScatterType(new EvenCircumferenceType());
+            m_scatterManager.addScatterType(new RandomCircularType());
+            m_scatterManager.addScatterType(new RandomSquareType());
+        } catch (ScatterTypeConflictException ignored) {
+            Bukkit.getLogger().severe("Conflict error when loading default scatter types!");
+        }
     }
 }

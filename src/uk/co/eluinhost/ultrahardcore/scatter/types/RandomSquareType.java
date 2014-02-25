@@ -34,7 +34,7 @@ public class RandomSquareType extends AbstractScatterType {
         for (int k = 0; k < amount; k++) {
             Location finalTeleport = new Location(world, 0, 0, 0);
             boolean valid = false;
-            for (int i = 0; i < ScatterManager.MAX_TRIES; i++) {
+            for (int i = 0; i < ScatterManager.m_maxTries; i++) {
                 //get a coords
                 double xcoord = getRandom().nextDouble() * params.getRadius() * 2;
                 double zcoord = getRandom().nextDouble() * params.getRadius() * 2;
