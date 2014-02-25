@@ -46,7 +46,7 @@ public class FeatureManager {
     /**
      * Stores a list of all the uhcFeatures loaded on the server
      */
-    private final List<UHCFeature> m_uhcFeatureList = new ArrayList<UHCFeature>();
+    private final List<IUHCFeature> m_uhcFeatureList = new ArrayList<IUHCFeature>();
 
     /**
      * Only allow uhcFeatures with this pattern as an ID
@@ -71,7 +71,7 @@ public class FeatureManager {
         }
 
         //check for existing feature of the same name
-        for (UHCFeature uhcFeature : m_uhcFeatureList) {
+        for (IUHCFeature uhcFeature : m_uhcFeatureList) {
             if (uhcFeature.equals(feature)) {
                 throw new FeatureIDConflictException();
             }
@@ -111,7 +111,7 @@ public class FeatureManager {
      * @throws FeatureIDNotFoundException when feature not found
      */
     public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException {
-        for (UHCFeature feature : m_uhcFeatureList) {
+        for (IUHCFeature feature : m_uhcFeatureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
@@ -126,8 +126,8 @@ public class FeatureManager {
      * @return UHCFeature the returned feature
      * @throws FeatureIDNotFoundException when feature ID not found
      */
-    public UHCFeature getFeatureByID(String featureID) throws FeatureIDNotFoundException {
-        for (UHCFeature feature : m_uhcFeatureList) {
+    public IUHCFeature getFeatureByID(String featureID) throws FeatureIDNotFoundException {
+        for (IUHCFeature feature : m_uhcFeatureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
@@ -140,7 +140,7 @@ public class FeatureManager {
      *
      * @return List
      */
-    public List<UHCFeature> getFeatures() {
+    public List<IUHCFeature> getFeatures() {
         return Collections.unmodifiableList(m_uhcFeatureList);
     }
 
@@ -151,7 +151,7 @@ public class FeatureManager {
      */
     public List<String> getFeatureNames() {
         List<String> features = new ArrayList<String>();
-        for (UHCFeature uhc : m_uhcFeatureList) {
+        for (IUHCFeature uhc : m_uhcFeatureList) {
             features.add(uhc.getFeatureID());
         }
         return features;

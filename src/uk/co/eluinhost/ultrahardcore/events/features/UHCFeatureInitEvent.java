@@ -1,9 +1,13 @@
 package uk.co.eluinhost.ultrahardcore.events.features;
 
-import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.features.IUHCFeature;
 
 public class UHCFeatureInitEvent extends UHCFeatureEvent{
-    public UHCFeatureInitEvent(UHCFeature feature) {
+    /**
+     * Called when a feature is first initialized, cancelling stops the feature from loading
+     * @param feature the feature involved
+     */
+    public UHCFeatureInitEvent(IUHCFeature feature) {
         super(feature);
     }
 }

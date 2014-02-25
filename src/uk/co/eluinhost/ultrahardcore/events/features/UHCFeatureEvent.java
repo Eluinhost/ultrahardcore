@@ -3,15 +3,19 @@ package uk.co.eluinhost.ultrahardcore.events.features;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+import uk.co.eluinhost.ultrahardcore.features.IUHCFeature;
 
 public class UHCFeatureEvent extends Event implements Cancellable{
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    private final UHCFeature m_feature;
+    private final IUHCFeature m_feature;
     private boolean m_cancelled = true;
 
-    protected UHCFeatureEvent(UHCFeature feature){
+    /**
+     * Generic feature event
+     * @param feature feature event is running for
+     */
+    protected UHCFeatureEvent(IUHCFeature feature){
         m_feature = feature;
     }
 
@@ -20,11 +24,17 @@ public class UHCFeatureEvent extends Event implements Cancellable{
         return HANDLER_LIST;
     }
 
+    /**
+     * @return all the handlers
+     */
     public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 
-    public UHCFeature getFeature(){
+    /**
+     * @return the feature involved in this event
+     */
+    public IUHCFeature getFeature(){
         return m_feature;
     }
 

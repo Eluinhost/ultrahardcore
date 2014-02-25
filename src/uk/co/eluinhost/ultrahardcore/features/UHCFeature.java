@@ -9,7 +9,7 @@ import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureDisableEvent;
 import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureEnableEvent;
 import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureEvent;
 
-public class UHCFeature implements Listener {
+public class UHCFeature implements Listener, IUHCFeature {
 
     /**
      * The feature ID for the feature
@@ -18,17 +18,14 @@ public class UHCFeature implements Listener {
     /**
      * Is the feautre enabeld right now?
      */
-    private boolean m_enabled;
+    private boolean m_enabled = false;
     /**
      * The description of the current feature
      */
     private final String m_description;
 
-    /**
-     * Attempt to enable the feature
-     * @return bool true if the feature was enabled, false if already enabled or event cancelled
-     */
-    public final boolean enableFeature(){
+    @Override
+    public boolean enableFeature(){
         if(isEnabled()){
             return false;
         }
@@ -41,11 +38,8 @@ public class UHCFeature implements Listener {
         return true;
     }
 
-    /**
-     * Attempt to disable the feature
-     * @return bool true if the feature was disabled, false if already disabled or event cancelled
-     */
-    public final boolean disableFeature(){
+    @Override
+    public boolean disableFeature(){
         if(!isEnabled()){
             return false;
         }
@@ -58,21 +52,23 @@ public class UHCFeature implements Listener {
         return true;
     }
 
+    /**
+     * Called when the feature is being enabled
+     */
     protected void enableCallback(){}
-    protected void disableCallback(){}
 
     /**
-     * Get the name of the current feature
-     * @return String
+     * Called when the feature is being disabled
      */
+    protected void disableCallback(){}
+
+    @Override
     public String getFeatureID() {
         return m_featureID;
     }
 
-    /**
-     * Is the feature enabled?
-     * @return boolean
-     */
+
+    @Override
     public boolean isEnabled() {
         return m_enabled;
     }
@@ -94,7 +90,7 @@ public class UHCFeature implements Listener {
      */
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof UHCFeature && ((UHCFeature) obj).getFeatureID().equals(getFeatureID());
+        return obj instanceof IUHCFeature && ((IUHCFeature) obj).getFeatureID().equals(getFeatureID());
     }
 
     /**
@@ -106,10 +102,7 @@ public class UHCFeature implements Listener {
         return new HashCodeBuilder(17, 31).append(getFeatureID()).toHashCode();
     }
 
-    /**
-     * Get the description of the feature
-     * @return String
-     */
+    @Override
     public String getDescription() {
         return m_description;
     }
