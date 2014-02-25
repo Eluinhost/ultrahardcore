@@ -1,6 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,32 +9,40 @@ import org.bukkit.World;
 
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
+import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class EvenCircumferenceType extends AbstractScatterType {
 
-    private static final String NAME = "EvenCircle";
+    private static final String SCATTER_NAME = "EvenCircle";
     private static final String DESCRIPTION = "Puts players at even distances distance from each other along the circumference";
 
-    private static final double TAU = Math.PI * 2.0D;
+    private static final double MATH_TAU = Math.PI * 2.0D;
     public static final int WORLD_TOP_BLOCK = 255;
     public static final double X_OFFSET = 0.5d;
     public static final double Z_OFFSET = 0.5d;
 
+    /**
+     * Scatter players evenly along the outside of the defined circle
+     */
     public EvenCircumferenceType(){
-        super(NAME,DESCRIPTION);
+        super(SCATTER_NAME,DESCRIPTION);
     }
 
+
     @Override
-    public List<Location> getScatterLocations(ScatterParams params, int amount)
+    public List<Location> getScatterLocations(Parameters params, int amount)
             throws WorldNotFoundException, MaxAttemptsReachedException {
+        double radius = params.getRadius();
+        double centerX = params.getCenterX();
+        double centerZ = params.getCenterZ();
+
         //angular difference between players
-        double increment = TAU / amount;
+        double increment = MATH_TAU / amount;
 
         //List of locations to return
-        AbstractList<Location> locations = new ArrayList<Location>();
+        List<Location> locations = new ArrayList<Location>();
 
         //If the world isn't valid throw a fit
         World w = Bukkit.getWorld(params.getWorld());
@@ -50,13 +57,13 @@ public class EvenCircumferenceType extends AbstractScatterType {
             double angle = i * increment;
 
             //convert from radians
-            double x = MathsHelper.getXFromRadians(params.getRadius(), angle);
-            double z = MathsHelper.getZFromRadians(params.getRadius(), angle);
+            double x = MathsHelper.getXFromRadians(radius, angle);
+            double z = MathsHelper.getZFromRadians(radius, angle);
 
             //get the location with offset
             Location finalTeleport = new Location(w, 0, WORLD_TOP_BLOCK, 0);
-            finalTeleport.setX(x + params.getCenterX() + X_OFFSET);
-            finalTeleport.setZ(z + params.getCenterZ() + Z_OFFSET);
+            finalTeleport.setX(x + centerX + X_OFFSET);
+            finalTeleport.setZ(z + centerZ + Z_OFFSET);
 
             ServerUtil.setYHighest(finalTeleport);
 

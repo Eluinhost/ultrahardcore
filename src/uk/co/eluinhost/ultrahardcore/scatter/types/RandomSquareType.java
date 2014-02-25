@@ -10,8 +10,8 @@ import org.bukkit.World;
 
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class RandomSquareType extends AbstractScatterType {
@@ -24,7 +24,7 @@ public class RandomSquareType extends AbstractScatterType {
     }
 
     @Override
-    public List<Location> getScatterLocations(ScatterParams params, int amount)
+    public List<Location> getScatterLocations(Parameters params, int amount)
             throws WorldNotFoundException, MaxAttemptsReachedException {
         World world = Bukkit.getWorld(params.getWorld());
         if (world == null) {

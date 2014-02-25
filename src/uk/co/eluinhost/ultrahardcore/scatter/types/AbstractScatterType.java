@@ -9,9 +9,8 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
-import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 
 public abstract class AbstractScatterType {
 
@@ -53,7 +52,7 @@ public abstract class AbstractScatterType {
      * @throws WorldNotFoundException if the world provided doesn't exist
      * @throws MaxAttemptsReachedException if the max attempts to scatter was reached
      */
-    public abstract List<Location> getScatterLocations(ScatterParams params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException;
+    public abstract List<Location> getScatterLocations(Parameters params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException;
 
     /**
      * Checks if locations are too close to each other, also checks for teleports that are in progress in the scatter manager

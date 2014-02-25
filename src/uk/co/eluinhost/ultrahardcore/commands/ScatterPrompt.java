@@ -13,13 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
 import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterParams;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
@@ -315,7 +315,7 @@ public class ScatterPrompt extends StringPrompt {
     }
 
     public static void scatter(AbstractScatterType type, Boolean useTeams, Double radius, Double mindist, SimplePair<Double, Double> coords, World w, List<String> players, CommandSender sender) {
-        ScatterParams sp = new ScatterParams(w.getName(), coords.getKey(), coords.getValue(), radius);
+        Parameters sp = new Parameters(w.getName(), coords.getKey(), coords.getValue(), radius);
         sp.setMinDistance(mindist);
         List<String> allowedBlocks = ConfigManager.getConfig(ConfigManager.MAIN).getStringList(ConfigNodes.SCATTER_ALLOWED_BLOCKS);
         LinkedList<Material> materials = new LinkedList<Material>();
