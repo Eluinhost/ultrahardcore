@@ -25,7 +25,7 @@ public class RandomSquareType extends AbstractScatterType {
 
     @Override
     public List<Location> getScatterLocations(Parameters params, int amount)
-            throws WorldNotFoundException, MaxAttemptsReachedException {
+            throws MaxAttemptsReachedException {
         World world = Bukkit.getWorld(params.getWorld());
         if (world == null) {
             throw new WorldNotFoundException();

@@ -1,50 +1,44 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
+import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
-import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
-import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class RandomCircularType extends AbstractScatterType {
 
-    private static final String NAME = "RandomCircle";
+    private static final String SCATTER_NAME = "RandomCircle";
     private static final String DESCRIPTION = "Randomly distributes locations evenly over a circular area";
-    public static final double X_OFFSET = 0.5d;
-    public static final double Z_OFFSET = 0.5d;
 
+    /**
+     * Scatters within a circle randomly
+     */
     public RandomCircularType(){
-        super(NAME,DESCRIPTION);
+        super(SCATTER_NAME,DESCRIPTION);
     }
 
     @Override
-    public List<Location> getScatterLocations(Parameters params, int amount) throws WorldNotFoundException, MaxAttemptsReachedException {
-        World world = Bukkit.getWorld(params.getWorld());
-        if (world == null) {
-            throw new WorldNotFoundException();
-        }
-        AbstractList<Location> locations = new ArrayList<Location>();
+    public List<Location> getScatterLocations(Parameters params, int amount) throws MaxAttemptsReachedException {
+        Location center = params.getScatterLocation();
+        List<Location> locations = new ArrayList<Location>();
         for (int k = 0; k < amount; k++) {
-            Location finalTeleport = new Location(world, 0, 0, 0);
-            boolean valid = false;
-            for (int i = 0; i < ScatterManager.m_maxTries; i++) {
+            Location finalTeleport = new Location(center.getWorld(), 0, 0, 0);
+            boolean invalid = true;
+            for (int i = 0; i < UltraHardcore.getInstance().getScatterManager().getMaxTries(); i++) {
                 //get a random angle between 0 and 2PI
-                double randomAngle = getRandom().nextDouble() * Math.PI * 2d;
+                double randomAngle = getRandom().nextDouble() * MATH_TAU;
                 //get a random radius for uniform circular distribution
                 double newradius = params.getRadius() * Math.sqrt(getRandom().nextDouble());
 
                 //Convert back to cartesian
-                double xcoord = MathsHelper.getXFromRadians(newradius, randomAngle) + params.getCenterX();
-                double zcoord = MathsHelper.getZFromRadians(newradius, randomAngle) + params.getCenterZ();
+                double xcoord = MathsHelper.getXFromRadians(newradius, randomAngle) + center.getBlockX();
+                double zcoord = MathsHelper.getZFromRadians(newradius, randomAngle) + center.getBlockZ();
 
                 //get the center of the block/s
                 xcoord = Math.round(xcoord) + X_OFFSET;
@@ -57,7 +51,7 @@ public class RandomCircularType extends AbstractScatterType {
                 //get the highest block in the Y coordinate
                 ServerUtil.setYHighest(finalTeleport);
 
-                if (isLocationTooClose(finalTeleport, locations, params.getMinDistance())) {
+                if (isLocationTooClose(finalTeleport, locations, params.getMinimumDistance())) {
                     continue;
                 }
 
@@ -67,10 +61,10 @@ public class RandomCircularType extends AbstractScatterType {
                 }
 
                 //valid teleport, exit
-                valid = true;
+                invalid = false;
                 break;
             }
-            if (!valid) {
+            if (invalid) {
                 throw new MaxAttemptsReachedException();
             }
             locations.add(finalTeleport);

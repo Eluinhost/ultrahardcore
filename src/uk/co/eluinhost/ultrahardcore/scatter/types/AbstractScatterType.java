@@ -17,6 +17,11 @@ public abstract class AbstractScatterType {
     private final String m_scatterID;
     private final String m_description;
 
+    protected static final double X_OFFSET = 0.5d;
+    protected static final double Z_OFFSET = 0.5d;
+    protected static final double MATH_TAU = Math.PI * 2.0D;
+    protected static final int WORLD_TOP_BLOCK = 255;
+
     private static final Random RANDOM = new Random();
 
     /**
