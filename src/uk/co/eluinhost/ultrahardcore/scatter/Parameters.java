@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import java.util.Collection;
 import java.util.LinkedList;
 
-//TODO store a location instead of multiple params?
 public class Parameters {
 
     private double m_radius = 0.0;
