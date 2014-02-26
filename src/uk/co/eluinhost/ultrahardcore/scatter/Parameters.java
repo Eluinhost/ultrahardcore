@@ -13,6 +13,7 @@ public class Parameters {
     private final Collection<Material> m_allowedMaterials = new LinkedList<Material>();
     private double m_minimumDistance = 0.0;
     private Location m_scatterLocation;
+    private boolean m_asTeam = false;
 
     /**
      * Make new parameters for scattering
@@ -48,16 +49,11 @@ public class Parameters {
      * @return true if allowed or no materials set, false otherwise
      */
     public boolean blockAllowed(Material material) {
-        if(m_allowedMaterials == null){
-            return true;
-        }
-
         for (Material m2 : m_allowedMaterials) {
             if (material.name().equals(m2.name())) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -107,5 +103,19 @@ public class Parameters {
     public Parameters setScatterLocation(Location scatterLocation) {
         m_scatterLocation = scatterLocation;
         return this;
+    }
+
+    /**
+     * @return true if team scatter, false if not
+     */
+    public boolean isAsTeam() {
+        return m_asTeam;
+    }
+
+    /**
+     * @param asTeam whether to scatter as teams or not
+     */
+    public void setAsTeam(boolean asTeam) {
+        m_asTeam = asTeam;
     }
 }
