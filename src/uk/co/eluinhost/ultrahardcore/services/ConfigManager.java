@@ -13,14 +13,20 @@ import java.util.Map;
 public class ConfigManager {
 
     @SuppressWarnings("UtilityClass")
-    private static class LazyConfigManagerHolder {
+    private static final class LazyConfigManagerHolder {
         private static final ConfigManager INSTANCE = new ConfigManager();
     }
 
+    /**
+     * @return config manager instance
+     */
     public static ConfigManager getInstance(){
         return LazyConfigManagerHolder.INSTANCE;
     }
 
+    /**
+     * Makes a config manager
+     */
     private ConfigManager(){}
 
     private final Map<ConfigType, FileConfiguration> m_configurations = new EnumMap<ConfigType, FileConfiguration>(ConfigType.class);

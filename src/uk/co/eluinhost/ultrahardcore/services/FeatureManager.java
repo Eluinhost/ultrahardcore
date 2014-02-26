@@ -22,14 +22,20 @@ import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureInitEvent;
 public class FeatureManager {
 
     @SuppressWarnings("UtilityClass")
-    private static class LazyFeatureManagerHolder {
+    private static final class LazyFeatureManagerHolder {
         private static final FeatureManager INSTANCE = new FeatureManager();
     }
 
+    /**
+     * @return feature manager instance
+     */
     public static FeatureManager getInstance(){
         return LazyFeatureManagerHolder.INSTANCE;
     }
 
+    /**
+     * Feature manager
+     */
     private FeatureManager(){}
 
     /**
