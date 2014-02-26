@@ -1,14 +1,12 @@
 package uk.co.eluinhost.ultrahardcore.scatter;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 
 import java.lang.ref.WeakReference;
 
-public class Teleporter {
+public abstract class Teleporter {
 
     private final WeakReference<Player> m_player;
     private int m_amountTried = 0;
@@ -22,7 +20,7 @@ public class Teleporter {
      * @param loc the location to teleport to (2 is added to the Y coordinate)
      * @param teamName the team name to teleport as
      */
-    public Teleporter(Player player, Location loc, String teamName) {
+    protected Teleporter(Player player, Location loc, String teamName) {
         m_player = new WeakReference<Player>(player);
         m_location = loc.add(Y_OFFSET);
         m_team = teamName;
@@ -71,14 +69,6 @@ public class Teleporter {
     /**
      * Try to process this teleport
      */
-    public void teleport(){
-        Player player = m_player.get();
-        if(player != null){
-            ScatterManager.getInstance().teleportSafe(player,m_location);
-            player.sendMessage(ChatColor.GOLD + "You were teleported "
-                    + (getTeamName() == null ? "solo" : "with team " + getTeamName())
-                    + " to " + m_location.getBlockX() + "," + m_location.getBlockY() + "," + m_location.getBlockZ());
-        }
-    }
+    public abstract void teleport();
 
 }
