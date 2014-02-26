@@ -1,7 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.services;
 
 import java.util.*;
-import java.util.logging.Level;
 
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.SafeTeleporter;
@@ -19,7 +17,6 @@ import uk.co.eluinhost.ultrahardcore.scatter.Protector;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
-import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 //TODO more option parameters
 public class ScatterManager {
