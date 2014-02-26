@@ -14,11 +14,11 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
 import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
-import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
 import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
@@ -380,15 +380,15 @@ public class ScatterPrompt extends StringPrompt {
             return;
         }
         Iterator<Location> teleportIterator = teleports.iterator();
-        AbstractList<PlayerTeleportMapping> ptms = new ArrayList<PlayerTeleportMapping>();
+        AbstractList<Teleporter> ptms = new ArrayList<Teleporter>();
         for (Player p : noteams) {
             Location next = teleportIterator.next();
-            ptms.add(new PlayerTeleportMapping(p.getName(), next, null));
+            ptms.add(new Teleporter(p.getName(), next, null));
         }
         for (String teamName : teams.keySet()) {
             Location next = teleportIterator.next();
             for (Player p : teams.get(teamName)) {
-                ptms.add(new PlayerTeleportMapping(p.getName(), next, teamName));
+                ptms.add(new Teleporter(p.getName(), next, teamName));
             }
         }
         UltraHardcore.getInstance().getScatterManager().addTeleportMappings(ptms, sender);

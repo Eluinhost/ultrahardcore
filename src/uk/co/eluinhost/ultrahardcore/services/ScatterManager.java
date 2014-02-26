@@ -13,7 +13,7 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
-import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
+import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
 import uk.co.eluinhost.ultrahardcore.scatter.Protector;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
@@ -52,7 +52,7 @@ public class ScatterManager {
 
     private final Protector m_protector = new Protector();
 
-    private final LinkedList<PlayerTeleportMapping> m_remainingTeleports = new LinkedList<PlayerTeleportMapping>();
+    private final LinkedList<Teleporter> m_remainingTeleports = new LinkedList<Teleporter>();
 
     private int m_jobID = -1;
     private CommandSender m_commandSender;
@@ -127,7 +127,7 @@ public class ScatterManager {
      * @param sender the sender who issued the command to be kept updated
      *               TODO don't want to keep sender here like this
      */
-    public void addTeleportMappings(Collection<PlayerTeleportMapping> ptm, CommandSender sender) {
+    public void addTeleportMappings(Collection<Teleporter> ptm, CommandSender sender) {
         if (m_jobID == -1) {
             m_remainingTeleports.addAll(ptm);
             m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), new ScatterRunable(), 0, m_scatterDelay);
@@ -144,7 +144,7 @@ public class ScatterManager {
     /**
      * @return unmodifiable list of teleports left to process
      */
-    public Iterable<PlayerTeleportMapping> getRemainingTeleports() {
+    public Iterable<Teleporter> getRemainingTeleports() {
         return Collections.unmodifiableList(m_remainingTeleports);
     }
 
@@ -228,15 +228,15 @@ public class ScatterManager {
             return;
         }
         Iterator<Location> teleportIterator = teleports.iterator();
-        AbstractList<PlayerTeleportMapping> ptms = new ArrayList<PlayerTeleportMapping>();
+        AbstractList<Teleporter> ptms = new ArrayList<Teleporter>();
         for (Player p : noteams) {
             Location next = teleportIterator.next();
-            ptms.add(new PlayerTeleportMapping(p.getName(), next, null));
+            ptms.add(new Teleporter(p.getName(), next, null));
         }
         for (String teamName : teams.keySet()) {
             Location next = teleportIterator.next();
             for (Player p : teams.get(teamName)) {
-                ptms.add(new PlayerTeleportMapping(p.getName(), next, teamName));
+                ptms.add(new Teleporter(p.getName(), next, teamName));
             }
         }
         UltraHardcore.getInstance().getScatterManager().addTeleportMappings(ptms, sender);
@@ -244,7 +244,7 @@ public class ScatterManager {
 
     //TODO move out
     private class ScatterRunable implements Runnable {
-        private boolean teleportPlayer(PlayerTeleportMapping ptm) {
+        private boolean teleportPlayer(Teleporter ptm) {
             Player p = Bukkit.getPlayerExact(ptm.getPlayerName());
             if (p == null) {
                 return false;
@@ -260,7 +260,7 @@ public class ScatterManager {
 
         @Override
         public void run() {
-            PlayerTeleportMapping ptm = m_remainingTeleports.pollFirst();
+            Teleporter ptm = m_remainingTeleports.pollFirst();
             if (ptm == null) {
                 try {
                     if (m_commandSender != null) {

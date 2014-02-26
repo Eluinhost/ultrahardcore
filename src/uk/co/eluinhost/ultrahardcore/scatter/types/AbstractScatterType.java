@@ -8,7 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
-import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
+import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
 import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 
 public abstract class AbstractScatterType {
@@ -78,7 +78,7 @@ public abstract class AbstractScatterType {
                 return true;
             }
         }
-        for (PlayerTeleportMapping ptm : ScatterManager.getInstance().getRemainingTeleports()) {
+        for (Teleporter ptm : ScatterManager.getInstance().getRemainingTeleports()) {
             if (ptm.getLocation().distanceSquared(loc) < distanceSquared) {
                 return true;
             }
