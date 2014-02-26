@@ -40,6 +40,9 @@ public class DeathBansFeature extends UHCFeature {
     private static final long MILLIS_PER_MONTH  = MILLIS_PER_DAY * 30;
     private static final long MILLIS_PER_YEAR   = MILLIS_PER_DAY * 365;
 
+    public static final String BASE_DEATH_BAN = BASE_PERMISSION + "deathban.";
+    public static final String DEATH_BAN_IMMUNE = BASE_DEATH_BAN + "immune";
+
     //TODO more cleanup
     public DeathBansFeature() {
         super("DeathBans", "Bans a player on death for a specified amount of time");
@@ -93,7 +96,7 @@ public class DeathBansFeature extends UHCFeature {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent pde){
          if(isEnabled()){
-             if(pde.getEntity().hasPermission(PermissionNodes.DEATH_BAN_IMMUNE)){
+             if(pde.getEntity().hasPermission(DEATH_BAN_IMMUNE)){
                  return;
              }
              processBansForPlayer(pde.getEntity());

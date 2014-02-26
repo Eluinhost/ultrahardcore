@@ -9,39 +9,25 @@ public class PermissionNodes {
     /**
      * Players with this take no enderpearl damage
      */
-    public static final String NO_ENDERPEARL_DAMAGE = "UHC.noEnderpearlDamage";
+
 
     /**
      * Players with this have lightning strike when they die
      */
-    public static final String DEATH_LIGHTNING = "UHC.deathLightning";
 
     /**
      * Players with this have their health shown in the player list
      */
-    public static final String PLAYER_LIST_HEALTH = "UHC.playerListHealth";
 
     /**
      * Various recipe permissions for crafting new recipes
      */
-    @SuppressWarnings("unused")
-    public static final String ALLOW_NEW_GAPPLE = "UHC.recipes.allowNewGApple";
-    @SuppressWarnings("unused")
-    public static final String DISALLOW_OLD_GAPPLE = "UHC.recipes.disableGApple";
-    public static final String ALLOW_NEW_GMELON = "UHC.recipes.allowNewGMelon";
-    public static final String DISALLOW_OLD_GMELON = "UHC.recipes.disableGMelon";
-    public static final String ALLOW_NOTCH_APPLE = "UHC.recipes.allowNotchApple";
-    public static final String ALLOW_NEW_GCARROT = "UHC.recipes.allowNewGCarrot";
-    public static final String DISALLOW_OLD_GCARROT = "UHC.recipes.disableGCarrot";
-    public static final String DENY_SPLASH = "UHC.recipes.disableSplash";
-    public static final String DENY_IMPROVED = "UHC.recipes.disableImproved";
+
 
     /**
      * Whether the satiated health is cancelled
      */
-    public static final String NO_HEALTH_REGEN = "UHC.disableRegen";
 
-    public static final String DROP_SKULL = "UHC.dropSkull";
 
 
     public static final String HEAL_NODE = "UHC.heal";
@@ -72,9 +58,6 @@ public class PermissionNodes {
     public static final String CLEAR_INVENTORY_OTHER = "UHC.ci.other";
     public static final String CLEAR_INVENTORY_IMMUNE = "UHC.ci.immune";
 
-    public static final String DEATH_MESSAGE_SUPPRESSED = "UHC.deathmessages.remove";
-    public static final String DEATH_MESSAGE_AFFIXES = "UHC.deathmessages.affixes";
-
     public static final String RANDOM_TEAMS = "UHC.teams.random";
     public static final String RANDOM_TEAMS_CLEAR = "UHC.teams.clear";
     public static final String LIST_TEAMS = "UHC.teams.list";
@@ -88,12 +71,11 @@ public class PermissionNodes {
     public static final String RANDOM_TEAMS_LEAVE_OTHER = "UHC.teams.leave.other";
     public static final String RANDOM_TEAMS_EMPTY = "UHC.teams.empty";
 
-    public static final String FOOTPRINTS_FOR_PLAYER = "UHC.footprints.leavePrints";
-    public static final String DEATH_BAN_IMMUNE = "UHC.deathban.immune";
-    public static final String DEATH_BAN_BAN = "UHC.deathban.unban";
-    public static final String DEATH_BAN_UNBAN = "UHC.deathban.ban";
+
+    public static final String DEATH_BAN_BAN = BASE_DEATH_BAN + "unban";
+    public static final String DEATH_BAN_UNBAN = BASE_DEATH_BAN + "ban";
+
     public static final String GIVE_DROPS = "UHC.givedrops";
-    public static final String PLAYER_HEAD_STAKE = "UHC.headStake";
     public static final String TIMER_COMMAND = "UHC.timer";
 
     public static Permission TP_ALL = new Permission(
@@ -101,11 +83,8 @@ public class PermissionNodes {
             "Allows player to teleport players to players/locations",
             PermissionDefault.OP);
 
-    public static final String ANON_CHAT_CHAT = "UHC.AnonChat.chat";
-    public static final String ANON_CHAT_SEE_NAME = "UHC.AnonChat.seeName";
 
     private PermissionNodes() {
     }
-    //TODO move from plugin.yml to here?
-    //TODO clean this up
+    //TODO clean this up, move into relevant file
 }

@@ -21,6 +21,8 @@ public class RegenFeature extends UHCFeature {
     private static final double PLAYER_DEAD_HEALTH = 0.0;
     private static final float EXHAUSTION_OFFSET = 3.0F;
 
+    public static final String NO_HEALTH_REGEN = BASE_PERMISSION+ "disableRegen";
+
     public RegenFeature() {
         super("DisableRegen","Cancels a player's passive health regeneration");
     }
@@ -34,7 +36,7 @@ public class RegenFeature extends UHCFeature {
                 //If its just standard health regen
                 if (erhe.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
                     Player p = (Player) erhe.getEntity();
-                    if (p.hasPermission(PermissionNodes.NO_HEALTH_REGEN)) {
+                    if (p.hasPermission(NO_HEALTH_REGEN)) {
                         if (p.getFoodLevel() >= FOOD_LEVEL && p.getHealth() > PLAYER_DEAD_HEALTH && p.getHealth() < p.getMaxHealth()) {
                             p.setExhaustion(p.getExhaustion() - EXHAUSTION_OFFSET);
                         }

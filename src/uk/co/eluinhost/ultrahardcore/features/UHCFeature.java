@@ -11,6 +11,8 @@ import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureEvent;
 
 public class UHCFeature implements Listener, IUHCFeature {
 
+    public static final String BASE_PERMISSION = "UHC.";
+
     /**
      * The feature ID for the feature
      */

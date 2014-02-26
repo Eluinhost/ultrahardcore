@@ -39,6 +39,8 @@ public class FootprintFeature extends UHCFeature implements Runnable {
 
     private final PacketContainer m_defaultPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.WORLD_PARTICLES);
 
+    public static final String FOOTPRINTS_FOR_PLAYER = BASE_PERMISSION + "footprints.leavePrints";
+
     private final ArrayList<Footstep> m_footsteps = new ArrayList<Footstep>();
     private int m_jobID = -1;
 
@@ -61,7 +63,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     @Override
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.hasPermission(PermissionNodes.FOOTPRINTS_FOR_PLAYER) || p.getGameMode() == GameMode.CREATIVE) {
+            if (!p.hasPermission(FOOTPRINTS_FOR_PLAYER) || p.getGameMode() == GameMode.CREATIVE) {
                 continue;
             }
             Block block = p.getLocation().getBlock().getRelative(BlockFace.DOWN);

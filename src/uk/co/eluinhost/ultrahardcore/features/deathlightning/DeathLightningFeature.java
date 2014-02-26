@@ -16,6 +16,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class DeathLightningFeature extends UHCFeature {
 
+    public static final String DEATH_LIGHTNING = BASE_PERMISSION + "deathLightning";
+
     public DeathLightningFeature() {
         super("DeathLightning","Fake lightning on a player's corpse");
     }
@@ -23,7 +25,7 @@ public class DeathLightningFeature extends UHCFeature {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent pde) {
         if (isEnabled()) {
-            if (pde.getEntity().hasPermission(PermissionNodes.DEATH_LIGHTNING)) {
+            if (pde.getEntity().hasPermission(DEATH_LIGHTNING)) {
                 pde.getEntity().getWorld().strikeLightningEffect(pde.getEntity().getLocation());
             }
         }

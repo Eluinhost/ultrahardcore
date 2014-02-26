@@ -25,6 +25,13 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class RecipeFeature extends UHCFeature {
 
+    public static final String RECIPE_BASE = BASE_PERMISSION + "recipies.";
+    public static final String ALLOW_NEW_GMELON = RECIPE_BASE + "allowNewGMelon";
+    public static final String DISALLOW_OLD_GMELON = RECIPE_BASE + "disableGMelon";
+    public static final String ALLOW_NOTCH_APPLE = RECIPE_BASE + "allowNotchApple";
+    public static final String ALLOW_NEW_GCARROT = RECIPE_BASE + "allowNewGCarrot";
+    public static final String DISALLOW_OLD_GCARROT = RECIPE_BASE + "disableGCarrot";
+
     public RecipeFeature() {
         super("HardRecipes","Handles changed recipes");
     }
@@ -51,19 +58,19 @@ public class RecipeFeature extends UHCFeature {
     private static boolean isRecipeAllowedForPermissible(Permissible permissible, Recipe recipe){
         Material result = recipe.getResult().getType();
 
-        if(result == Material.GOLDEN_APPLE && hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK) && !permissible.hasPermission(PermissionNodes.ALLOW_NOTCH_APPLE)){
+        if(result == Material.GOLDEN_APPLE && hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK) && !permissible.hasPermission(ALLOW_NOTCH_APPLE)){
             return false;
         }
-        if(result == Material.SPECKLED_MELON && hasRecipeGotMaterial(recipe, Material.GOLD_NUGGET) && permissible.hasPermission(PermissionNodes.DISALLOW_OLD_GMELON)){
+        if(result == Material.SPECKLED_MELON && hasRecipeGotMaterial(recipe, Material.GOLD_NUGGET) && permissible.hasPermission(DISALLOW_OLD_GMELON)){
             return false;
         }
-        if(result == Material.SPECKLED_MELON && hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK) && permissible.hasPermission(PermissionNodes.ALLOW_NEW_GMELON)) {
+        if(result == Material.SPECKLED_MELON && hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK) && permissible.hasPermission(ALLOW_NEW_GMELON)) {
             return false;
         }
-        if(result == Material.GOLDEN_CARROT && hasRecipeGotMaterial(recipe, Material.GOLD_NUGGET) && permissible.hasPermission(PermissionNodes.DISALLOW_OLD_GCARROT)) {
+        if(result == Material.GOLDEN_CARROT && hasRecipeGotMaterial(recipe, Material.GOLD_NUGGET) && permissible.hasPermission(DISALLOW_OLD_GCARROT)) {
             return false;
         }
-        if(result == Material.GOLDEN_CARROT && hasRecipeGotMaterial(recipe, Material.GOLD_INGOT) && permissible.hasPermission(PermissionNodes.ALLOW_NEW_GCARROT)) {
+        if(result == Material.GOLDEN_CARROT && hasRecipeGotMaterial(recipe, Material.GOLD_INGOT) && permissible.hasPermission(ALLOW_NEW_GCARROT)) {
             return false;
         }
         //passed all checks

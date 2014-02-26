@@ -23,6 +23,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class PlayerListFeature extends UHCFeature {
 
+    public static final String PLAYER_LIST_HEALTH = BASE_PERMISSION + "playerListHealth";
+
     public PlayerListFeature() {
         super("PlayerList","Player's health shown in player list and under their name");
     }
@@ -71,7 +73,7 @@ public class PlayerListFeature extends UHCFeature {
             if (health <= RED_BOUNDARY) {
                 prefix = ChatColor.RED;
             }
-            if (!player.hasPermission(PermissionNodes.PLAYER_LIST_HEALTH)) {
+            if (!player.hasPermission(PLAYER_LIST_HEALTH)) {
                 prefix = ChatColor.BLUE;
                 showHealth = 0.0D;
             }

@@ -32,6 +32,9 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
  */
 public class PlayerHeadsFeature extends UHCFeature {
 
+    public static final String PLAYER_HEAD_STAKE = BASE_PERMISSION + "headStake";
+    public static final String DROP_SKULL = BASE_PERMISSION + "dropSkull";
+
     private static final Random RANDOM = new Random();
 
     public PlayerHeadsFeature() {
@@ -43,7 +46,7 @@ public class PlayerHeadsFeature extends UHCFeature {
         //if we're enabled
         if (isEnabled()) {
             //skip if the player isnt allowed to drop a skull
-            if (!pde.getEntity().hasPermission(PermissionNodes.DROP_SKULL)) {
+            if (!pde.getEntity().hasPermission(DROP_SKULL)) {
                 return;
             }
             //if it wasn't a valid kill dont drop
@@ -114,7 +117,7 @@ public class PlayerHeadsFeature extends UHCFeature {
 
         //check the player's permission for the stake here, used for position based permissions
         //TODO this doesn't appear to work as a valid way to check permissions for a coordinate
-        if (!p.hasPermission(PermissionNodes.PLAYER_HEAD_STAKE)) {
+        if (!p.hasPermission(PLAYER_HEAD_STAKE)) {
             return false;
         }
 

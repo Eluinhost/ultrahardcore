@@ -21,6 +21,10 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class PotionNerfsFeature extends UHCFeature {
 
+    public static final String POTION_BASE = BASE_PERMISSION + "potions.";
+    public static final String DENY_SPLASH = POTION_BASE + "disableSplash";
+    public static final String DENY_IMPROVED = POTION_BASE + "disableImproved";
+
     public PotionNerfsFeature() {
         super("PotionNerfs","Applies nerfs to potions");
     }
@@ -46,11 +50,11 @@ public class PotionNerfsFeature extends UHCFeature {
             //if the player is shift clicking
             if (ice.isShiftClick()) {
                 //if splash disabled and they're clicking sulphur and don't have permission
-                if (cancelSulphur && ice.getCurrentItem().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)) {
+                if (cancelSulphur && ice.getCurrentItem().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
                     cancel = true;
                 }
                 //if tier 2 is disabled and they're clicking glowstone and don't have permission
-                if (cancelGlowstone && ice.getCurrentItem().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)) {
+                if (cancelGlowstone && ice.getCurrentItem().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
                     cancel = true;
                 }
             }
@@ -58,11 +62,11 @@ public class PotionNerfsFeature extends UHCFeature {
             //if its the fuel slot that was clicked
             if (ice.getSlotType() == InventoryType.SlotType.FUEL) {
                 //if splash disabled and sulphur is on the cursor and no permission
-                if (cancelSulphur && iv.getCursor().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(PermissionNodes.DENY_SPLASH)) {
+                if (cancelSulphur && iv.getCursor().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
                     cancel = true;
                 }
                 //if tier 2 disabled and glowstone is on the cursor and no permission
-                if (cancelGlowstone && iv.getCursor().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(PermissionNodes.DENY_IMPROVED)) {
+                if (cancelGlowstone && iv.getCursor().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
                     cancel = true;
                 }
             }

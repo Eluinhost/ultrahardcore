@@ -19,6 +19,10 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class DeathMessagesFeature extends UHCFeature {
 
+    public static final String BASE_MESSAGES = BASE_PERMISSION + "death_messages.";
+    public static final String DEATH_MESSAGE_SUPPRESSED = BASE_MESSAGES + "remove";
+    public static final String DEATH_MESSAGE_AFFIXES = BASE_MESSAGES + "affixes";
+
     public DeathMessagesFeature() {
         super("DeathMessages","Adds a prefix/suffix to all player deaths");
     }
@@ -29,14 +33,14 @@ public class DeathMessagesFeature extends UHCFeature {
             //if death message suppression is on
             if (ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.DEATH_MESSAGES_SUPPRESSED)) {
                 //and the players death messages are suppressed
-                if (pde.getEntity().hasPermission(PermissionNodes.DEATH_MESSAGE_SUPPRESSED)) {
+                if (pde.getEntity().hasPermission(DEATH_MESSAGE_SUPPRESSED)) {
                     //set to nothing
                     pde.setDeathMessage("");
                 }
                 return;
             }
             //if there is an affix for the player
-            if (pde.getEntity().hasPermission(PermissionNodes.DEATH_MESSAGE_AFFIXES)) {
+            if (pde.getEntity().hasPermission(DEATH_MESSAGE_AFFIXES)) {
                 //grab format from config file
                 String format = ChatColor.translateAlternateColorCodes('&', ConfigManager.getInstance().getConfig().getString(ConfigNodes.DEATH_MESSAGES_FORMAT));
 

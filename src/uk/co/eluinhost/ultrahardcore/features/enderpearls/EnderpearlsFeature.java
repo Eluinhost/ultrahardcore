@@ -16,6 +16,8 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class EnderpearlsFeature extends UHCFeature {
 
+    public static final String NO_ENDERPEARL_DAMAGE = BASE_PERMISSION + "noEnderpearlDamage";
+
     public EnderpearlsFeature() {
         super("Enderpearls","Enderpearls cause no teleport damage");
     }
@@ -24,7 +26,7 @@ public class EnderpearlsFeature extends UHCFeature {
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent ede) {
         if (isEnabled()) {
             if (ede.getDamager().getType() == EntityType.ENDER_PEARL) {
-                if (((Permissible) ede.getEntity()).hasPermission(PermissionNodes.NO_ENDERPEARL_DAMAGE)) {
+                if (((Permissible) ede.getEntity()).hasPermission(NO_ENDERPEARL_DAMAGE)) {
                     ede.setCancelled(true);
                 }
             }

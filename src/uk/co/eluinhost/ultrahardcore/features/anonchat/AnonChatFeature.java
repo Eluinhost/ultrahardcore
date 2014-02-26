@@ -11,6 +11,10 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class AnonChatFeature extends UHCFeature {
 
+    public static final String ANON_BASE = BASE_PERMISSION + "anon_chat.";
+    public static final String ANON_CHAT_CHAT = ANON_BASE + "chat";
+    public static final String ANON_CHAT_SEE_NAME = ANON_BASE + "seeName";
+
     /**
      * The format before every message sent
      */
@@ -66,7 +70,7 @@ public class AnonChatFeature extends UHCFeature {
                 return;
             }
             //check the permissions
-            if (!p.hasPermission(PermissionNodes.ANON_CHAT_CHAT)) {
+            if (!p.hasPermission(ANON_CHAT_CHAT)) {
                 p.sendMessage(ChatColor.RED + "You don't have the permissions to use annonymous chat");
                 return;
             }
@@ -75,7 +79,7 @@ public class AnonChatFeature extends UHCFeature {
             String finalMessage = PREFIX+m_message;
             for (Player pl : Bukkit.getOnlinePlayers()) {
                 //check for the see name permission and send the actual name along with the message
-                if (pl.hasPermission(PermissionNodes.ANON_CHAT_SEE_NAME)) {
+                if (pl.hasPermission(ANON_CHAT_SEE_NAME)) {
                     pl.sendMessage(String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + m_playerName + finalMessage);
                 } else {
                     pl.sendMessage(PREFIX + finalMessage);
