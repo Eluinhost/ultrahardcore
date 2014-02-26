@@ -1,19 +1,24 @@
 package uk.co.eluinhost.ultrahardcore.services;
 
 import java.util.*;
+import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
+import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.PlayerTeleportMapping;
 import uk.co.eluinhost.ultrahardcore.scatter.Protector;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
+import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 public class ScatterManager {
 
@@ -155,6 +160,86 @@ public class ScatterManager {
      */
     public void setMaxTries(int maxTries) {
         m_maxTries = maxTries;
+    }
+
+    public void scatter(AbstractScatterType type, Boolean useTeams, Double radius, Double mindist, SimplePair<Double, Double> coords, World w, List<String> players, CommandSender sender) {
+        Parameters sp = new Parameters(w.getName(), coords.getKey(), coords.getValue(), radius);
+        sp.setMinDistance(mindist);
+        List<String> allowedBlocks = ConfigManager.getConfig(ConfigManager.MAIN).getStringList(ConfigNodes.SCATTER_ALLOWED_BLOCKS);
+        LinkedList<Material> materials = new LinkedList<Material>();
+        for (String s : allowedBlocks) {
+            Material material = Material.matchMaterial(s);
+            if (material == null) {
+                UltraHardcore.getInstance().getLogger().log(Level.WARNING, "Unknown scatter block " + s);
+                continue;
+            }
+            materials.add(material);
+        }
+        sp.setAllowedBlocks(materials);
+
+        /*
+         * get the right amount of people to scatter
+         */
+        @SuppressWarnings("unchecked")
+        HashMap<String, ArrayList<Player>> teams = new HashMap<String, ArrayList<Player>>();
+        AbstractList<Player> noteams = new ArrayList<Player>();
+
+        if (useTeams) {
+            Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
+            for (String p : players) {
+                Player pl = Bukkit.getPlayer(p);
+                if (pl == null) {
+                    sender.sendMessage(ChatColor.RED + "The player " + p + " is now offline, will not include them for scattering");
+                    continue;
+                }
+                Team t = sb.getPlayerTeam(pl);
+                if (t == null) {
+                    noteams.add(pl);
+                } else {
+                    ArrayList<Player> team = teams.get(t.getName());
+                    if (team == null) {
+                        team = new ArrayList<Player>();
+                        teams.put(t.getName(), team);
+                    }
+                    team.add(pl);
+                }
+            }
+        } else {
+            for (String p : players) {
+                Player pl = Bukkit.getPlayer(p);
+                if (pl == null) {
+                    sender.sendMessage(ChatColor.RED + "The player " + p + " is now offline, will not include them for scattering");
+                    continue;
+                }
+                noteams.add(pl);
+            }
+        }
+
+        int numberOfPorts = noteams.size() + teams.keySet().size();
+
+        List<Location> teleports;
+        try {
+            teleports = type.getScatterLocations(sp, numberOfPorts);
+        } catch (WorldNotFoundException ignored) {
+            sender.sendMessage(ChatColor.RED + "The world specified doesn't exist!");
+            return;
+        } catch (MaxAttemptsReachedException ignored) {
+            sender.sendMessage(ChatColor.RED + "Max scatter attempts reached and not all players have valid locations, cancelling scatter");
+            return;
+        }
+        Iterator<Location> teleportIterator = teleports.iterator();
+        AbstractList<PlayerTeleportMapping> ptms = new ArrayList<PlayerTeleportMapping>();
+        for (Player p : noteams) {
+            Location next = teleportIterator.next();
+            ptms.add(new PlayerTeleportMapping(p.getName(), next, null));
+        }
+        for (String teamName : teams.keySet()) {
+            Location next = teleportIterator.next();
+            for (Player p : teams.get(teamName)) {
+                ptms.add(new PlayerTeleportMapping(p.getName(), next, teamName));
+            }
+        }
+        UltraHardcore.getInstance().getScatterManager().addTeleportMappings(ptms, sender);
     }
 
     //TODO move out
