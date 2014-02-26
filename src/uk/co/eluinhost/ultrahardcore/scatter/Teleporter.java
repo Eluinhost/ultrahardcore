@@ -9,37 +9,18 @@ import java.lang.ref.WeakReference;
 public abstract class Teleporter {
 
     private final WeakReference<Player> m_player;
-    private int m_amountTried = 0;
-    private final Location m_location;
-    private final String m_team;
+    private Location m_location;
+    private String m_team = null;
 
     private static final Vector Y_OFFSET = new Vector(0,2,0);
 
     /**
      * @param player the player to teleport
      * @param loc the location to teleport to (2 is added to the Y coordinate)
-     * @param teamName the team name to teleport as
      */
-    protected Teleporter(Player player, Location loc, String teamName) {
+    protected Teleporter(Player player, Location loc) {
         m_player = new WeakReference<Player>(player);
         m_location = loc.add(Y_OFFSET);
-        m_team = teamName;
-    }
-
-    //TODO amount tried logic goes where?
-    /**
-     * Get the amount of times this mapping has been attempted
-     * @return int
-     */
-    public int getAmountTried() {
-        return m_amountTried;
-    }
-
-    /**
-     * Increase the amount of times tried
-     */
-    public void incrementAmountTried() {
-        m_amountTried++;
     }
 
     /**
@@ -48,14 +29,6 @@ public abstract class Teleporter {
      */
     public Player getPlayer() {
         return m_player.get();
-    }
-
-    /**
-     * Get the location to teleport to
-     * @return Location
-     */
-    public Location getLocation() {
-        return m_location;
     }
 
     /**
@@ -68,7 +41,35 @@ public abstract class Teleporter {
 
     /**
      * Try to process this teleport
+     * @return true if teleport went through, false if player object wasn't found
      */
-    public abstract void teleport();
+    public abstract boolean teleport();
 
+    /**
+     * @param team the team name to scatter with
+     */
+    public void setTeam(String team) {
+        m_team = team;
+    }
+
+    /**
+     * @return the team name to scatter with
+     */
+    public String getTeam(){
+        return m_team;
+    }
+
+    /**
+     * @param location the location to teleport to, 2 is added to Y
+     */
+    public void setLocation(Location location) {
+        m_location = location.add(Y_OFFSET);
+    }
+
+    /**
+     * @return the location to teleport to
+     */
+    public Location getLocation(){
+        return m_location;
+    }
 }
