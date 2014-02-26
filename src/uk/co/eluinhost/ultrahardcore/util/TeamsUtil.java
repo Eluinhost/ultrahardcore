@@ -1,8 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.util;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,15 +75,15 @@ public class TeamsUtil {
      */
     public void sendTeams(CommandSender sender, boolean allTeams) {
         Set<Team> teams = m_mainScoreboard.getTeams();
-        boolean oneFound = false;
+        boolean noneFound = true;
         for (Team t : teams) {
             Matcher matcher = m_teamNamePattern.matcher(t.getName());
             if (matcher.matches() || allTeams) {
-                oneFound = true;
+                noneFound = false;
                 sender.sendMessage(teamToString(t));
             }
         }
-        if (!oneFound) {
+        if (noneFound) {
             sender.sendMessage(ChatColor.GOLD + "There are no " + (allTeams ? "" : "UHC") + " teams defined yet!");
         }
     }
@@ -95,7 +93,7 @@ public class TeamsUtil {
      *
      * @param players the array list of player to remove teamed players from
      */
-    public void removeAllInTeam(ArrayList<Player> players) {
+    public void removeAllInTeam(Iterable<Player> players) {
         Iterator<Player> it = players.iterator();
         while (it.hasNext()) {
             Player p = it.next();
@@ -108,6 +106,7 @@ public class TeamsUtil {
     /**
      * Gets the next UHCxxx team available
      *
+     * @param onlyMakeNew only make a new team, dont just return an empty team
      * @return Team
      */
     public Team getNextAvailableTeam(boolean onlyMakeNew) {
@@ -127,11 +126,20 @@ public class TeamsUtil {
         }
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * @param name the team name to check for
+     * @return true if exists, false otherwise
+     */
     public boolean teamExists(String name) {
         return m_mainScoreboard.getTeam(name) != null;
     }
 
+    /**
+     * @param p the player to remove
+     * @param printflags the flags to use to tell people about it
+     *                   TODO print flags are stupid
+     * @return true if removed, false otherwise
+     */
     public boolean removePlayerFromTeam(OfflinePlayer p, int printflags) {
         Team t = m_mainScoreboard.getPlayerTeam(p);
         if (t == null) {
@@ -155,6 +163,11 @@ public class TeamsUtil {
         return true;
     }
 
+    /**
+     * @param player the player to add
+     * @param t the team to add to
+     * @param flags the print flags for feedback
+     */
     public static void playerJoinTeam(OfflinePlayer player, Team t, int flags) {
         if (PrintFlags.canPrintToTeam(flags)) {
             for (OfflinePlayer op : t.getPlayers()) {
@@ -173,12 +186,18 @@ public class TeamsUtil {
         }
     }
 
-
+    /**
+     * @param teamName the team name to check
+     * @return true if the name is a UHCxx team or false otherwise
+     */
     public boolean isUHCTeam(CharSequence teamName) {
         return m_teamNamePattern.matcher(teamName).matches();
     }
 
-
+    /**
+     * Emptiess all the teams
+     * @param allTeams if true empties all the teams, otherwise just UHCxx teams
+     */
     public void emptyTeams(boolean allTeams) {
         for (Team t : m_mainScoreboard.getTeams()) {
             Matcher matcher = m_teamNamePattern.matcher(t.getName());
