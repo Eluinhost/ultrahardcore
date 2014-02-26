@@ -6,6 +6,21 @@ import org.bukkit.permissions.PermissionDefault;
 //TODO make neater and not so stupid...
 public class PermissionNodes {
 
+    public static final PermissionNode BASE_NODE = new BukkitPermissionNode("UHC",null);
+
+    public static final PermissionNode ENDERPEAL_DAMAGE = new BukkitPermissionNode("enderpearl_damage",BASE_NODE);
+
+    public static final PermissionNode RECIPES = new BukkitPermissionNode("recipies",BASE_NODE);
+    public static final PermissionNode
+
+
+
+
+
+
+
+
+
     /**
      * Players with this take no enderpearl damage
      */
