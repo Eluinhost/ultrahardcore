@@ -3,32 +3,8 @@ package uk.co.eluinhost.ultrahardcore.config;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-//TODO make neater and not so stupid...
+//TODO move into relevant classes
 public class PermissionNodes {
-
-    /**
-     * Players with this take no enderpearl damage
-     */
-
-
-    /**
-     * Players with this have lightning strike when they die
-     */
-
-    /**
-     * Players with this have their health shown in the player list
-     */
-
-    /**
-     * Various recipe permissions for crafting new recipes
-     */
-
-
-    /**
-     * Whether the satiated health is cancelled
-     */
-
-
 
     public static final String HEAL_NODE = "UHC.heal";
     public static final String HEAL_ALL = HEAL_NODE + ".all";
@@ -82,9 +58,4 @@ public class PermissionNodes {
             "UHC.tpall",
             "Allows player to teleport players to players/locations",
             PermissionDefault.OP);
-
-
-    private PermissionNodes() {
-    }
-    //TODO clean this up, move into relevant file
 }
