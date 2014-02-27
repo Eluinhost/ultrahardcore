@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import uk.co.eluinhost.ultrahardcore.borders.BorderManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;

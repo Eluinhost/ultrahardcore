@@ -7,7 +7,6 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.patterns.SingleBlockPattern;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import org.bukkit.Location;
-import uk.co.eluinhost.ultrahardcore.borders.BorderParams;
 
 public class SquareBorder extends WorldEditBorder {
 
@@ -21,9 +20,7 @@ public class SquareBorder extends WorldEditBorder {
     }
 
     @Override
-    public void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException {
-        Location center = bp.getCenter();
-        int radius = bp.getRadius();
+    public void createBorder(Location center, int radius, int blockID, int blockMeta, EditSession es) throws MaxChangedBlocksException {
         Vector pos1 = new Vector(
                 center.getBlockX() + radius,
                 MAX_HEIGHT,
@@ -32,6 +29,6 @@ public class SquareBorder extends WorldEditBorder {
                 center.getBlockX() - radius,
                 0,
                 center.getBlockZ() - radius);
-        es.makeCuboidWalls(new CuboidRegion(pos1, pos2), new SingleBlockPattern(new BaseBlock(bp.getBlockID(), bp.getBlockMeta())));
+        es.makeCuboidWalls(new CuboidRegion(pos1, pos2), new SingleBlockPattern(new BaseBlock(blockID, blockMeta)));
     }
 }

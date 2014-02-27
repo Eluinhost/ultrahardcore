@@ -1,64 +1,28 @@
 package uk.co.eluinhost.ultrahardcore.borders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
+import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.borders.types.WorldEditBorder;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.borders.BorderTypeNotFoundException;
-import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.WorldEditMaxChangedBlocksException;
-import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.WorldEditNotFoundException;
-import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
+import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException;
+import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-/**
- * Class to generate a border using worldedit, actual worldedit references are in WorldEditBorderCreator
- *
- * @author ghowden
- */
-//TODO stop being a utility type class
-//TODO MAJOR cleanup of border code, needs a command based in commands package
-public class BorderManager implements UHCCommand {
+import java.util.ArrayList;
+import java.util.List;
 
-    private final boolean m_worldEditFound;
-
-    //Generate a border that is of the params
-    private void generateBorder(BorderParams bp) throws WorldEditNotFoundException, WorldEditMaxChangedBlocksException, WorldNotFoundException, BorderTypeNotFoundException {
-        if (m_worldEditFound) {
-            WorldEditBorderCreator.build(bp);
-        } else {
-            throw new WorldEditNotFoundException();
-        }
-    }
-
-    public BorderManager() {
-        m_worldEditFound = Bukkit.getPluginManager().getPlugin("WorldEdit") != null;
-        if (m_worldEditFound) {
-            WorldEditBorderCreator.initialize();
-        }
-    }
-
-    private boolean undoForWorld(String world) throws WorldEditNotFoundException {
-        if (m_worldEditFound) {
-            return WorldEditBorderCreator.undoForWorld(world);
-        } else {
-            throw new WorldEditNotFoundException();
-        }
-    }
+//todo BLOCKER cleanup this copypasta
+public class BorderCommand implements TabExecutor{
 
     private static final String SYNTAX = "/generateborder radius world[:x,z] typeID[:blockid:meta] OR /generateborder undo/types [world]";
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
@@ -69,44 +33,35 @@ public class BorderManager implements UHCCommand {
             }
             if (args.length >= 1) {
                 if ("undo".equalsIgnoreCase(args[0])) {
-                    try {
-                        String world;
-                        if (args.length == 1) {
-                            if (sender instanceof Player) {
-                                world = ((Entity) sender).getWorld().getName();
-                            } else {
-                                sender.sendMessage("You need to specify a world to undo using the console");
-                                return true;
-                            }
+                    String world;
+                    if (args.length == 1) {
+                        if (sender instanceof Player) {
+                            world = ((Entity) sender).getWorld().getName();
                         } else {
-                            world = args[1];
-                        }
-                        if (undoForWorld(world)) {
-                            sender.sendMessage(ChatColor.GOLD + "Undone successfully!");
-                        } else {
-                            sender.sendMessage(ChatColor.GOLD + "Nothing left to undo!");
-                        }
-                        return true;
-                    } catch (WorldEditNotFoundException ignored) {
-                        sender.sendMessage(ChatColor.RED + "WorldEdit " + args[1] + " not found, required to make borders!");
-                        return true;
-                    }
-                } else if ("types".equals(args[0])) {
-                    if (m_worldEditFound) {
-                        List<WorldEditBorder> types = WorldEditBorderCreator.getTypes();
-                        if (types.isEmpty()) {
-                            sender.sendMessage(ChatColor.RED + "No border types loaded!");
+                            sender.sendMessage("You need to specify a world to undo using the console");
                             return true;
                         }
-                        sender.sendMessage(ChatColor.GOLD + "Loaded border types: (" + types.size() + ")");
-                        for (WorldEditBorder w : WorldEditBorderCreator.getTypes()) {
-                            sender.sendMessage(ChatColor.GRAY + w.getID() + " - " + w.getDescription());
-                        }
-                        return true;
                     } else {
-                        sender.sendMessage(ChatColor.RED + "World edit was not found! It is needed to use border functions");
+                        world = args[1];
+                    }
+                    SessionManager sessionManager = SessionManager.getInstance();
+                    if (sessionManager.undoLastSession(world)) {
+                        sender.sendMessage(ChatColor.GOLD + "Undone successfully!");
+                    } else {
+                        sender.sendMessage(ChatColor.GOLD + "Nothing left to undo!");
+                    }
+                    return true;
+                } else if ("types".equals(args[0])) {
+                    List<WorldEditBorder> types = WorldEditBorderCreator.getTypes();
+                    if (types.isEmpty()) {
+                        sender.sendMessage(ChatColor.RED + "No border types loaded!");
                         return true;
                     }
+                    sender.sendMessage(ChatColor.GOLD + "Loaded border types: (" + types.size() + ")");
+                    for (WorldEditBorder w : WorldEditBorderCreator.getTypes()) {
+                        sender.sendMessage(ChatColor.GRAY + w.getID() + " - " + w.getDescription());
+                    }
+                    return true;
                 }
             }
             if (args.length != 3) {
@@ -116,7 +71,7 @@ public class BorderManager implements UHCCommand {
             int radius;
             try {
                 radius = Integer.parseInt(args[0]);
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
                 sender.sendMessage(ChatColor.RED + "Unknown radius size: " + args[0]);
                 return true;
             }
@@ -138,7 +93,7 @@ public class BorderManager implements UHCCommand {
                     x = Integer.parseInt(parts2[0]);
                     z = Integer.parseInt(parts2[1]);
                     args[1] = parts[0];
-                } catch (Exception ignored) {
+                } catch (NumberFormatException e) {
                     sender.sendMessage(ChatColor.RED + "One or more world coordinates not a number, world syntax is worldname:x,z");
                     return true;
                 }
@@ -174,34 +129,32 @@ public class BorderManager implements UHCCommand {
             int borderID;
             try {
                 borderID = Integer.parseInt(blockinfo[1]);
-            } catch (Exception ignored) {
+            } catch (NumberFormatException e) {
                 sender.sendMessage(ChatColor.RED + "Unknown number " + blockinfo[1] + " for block ID");
                 return true;
             }
             int metaID;
             try {
                 metaID = Integer.parseInt(blockinfo[2]);
-            } catch (Exception ignored) {
+            } catch (NumberFormatException e) {
                 sender.sendMessage(ChatColor.RED + "Unknown number " + blockinfo[2] + " for block meta");
                 return true;
             }
 
-            BorderParams bp = new BorderParams(x, z, radius, blockinfo[0], w.getName(), borderID, metaID);
+            //TODO BLOCKER put right border in here based on blockinfo[0]
+            BorderCreator creator = new BorderCreator(new CylinderBorder());
+            creator.setBlockID(borderID);
+            creator.setBlockMeta(metaID);
+            creator.setCenter(new); //TODO generate the location
+            creator.setRadius(radius);
+
             try {
-                generateBorder(bp);
-            } catch (WorldEditNotFoundException ignored) {
-                sender.sendMessage(ChatColor.RED + "WorldEdit not found, required to make borders!");
-                return true;
-            } catch (WorldEditMaxChangedBlocksException ignored) {
-                sender.sendMessage(ChatColor.RED + "Error, hit max changable blocks by WorldEdit");
-                return true;
-            } catch (WorldNotFoundException ignored) {
-                sender.sendMessage(ChatColor.RED + "World " + args[1] + " not found!");
-                return true;
-            } catch (BorderTypeNotFoundException ignored) {
-                sender.sendMessage(ChatColor.RED + "The border type " + blockinfo[0] + " was not found!, use /generateborder types to view all types");
+                creator.createBorder();
+            } catch (TooManyBlocksException ignored) {
+                sender.sendMessage(ChatColor.RED + "Error, hit max changable blocks");
                 return true;
             }
+
             sender.sendMessage(ChatColor.GOLD + "World border created successfully");
             return true;
         }
@@ -211,7 +164,7 @@ public class BorderManager implements UHCCommand {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command,
                                       String alias, String[] args) {
-        ArrayList<String> r = new ArrayList<String>();
+        List<String> r = new ArrayList<String>();
         if (args.length == 1) {
             r.add("radius");
             r.add("undo");
