@@ -9,4 +9,11 @@ public interface CommandHandler extends TabExecutor {
      * @param clazz the class to parse
      */
     void registerCommands(Class clazz);
+
+    /**
+     * Returns the stored object for the given class or null if none stored
+     * @param className the class name to check for
+     * @return the stored instance
+     */
+    Object getClassInstance(String className);
 }
