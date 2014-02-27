@@ -14,6 +14,16 @@ public @interface Command {
     String name();
 
     /**
+     * @return unique ID for this command
+     */
+    String id();
+
+    /**
+     * @return The command's parent's ID or empty string if root command
+     */
+    String parentID() default "";
+
+    /**
      * @return all aliases of the command
      */
     String[] aliases() default {};
