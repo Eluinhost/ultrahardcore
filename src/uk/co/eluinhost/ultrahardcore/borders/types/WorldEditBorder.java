@@ -10,19 +10,36 @@ public abstract class WorldEditBorder {
     private final String m_borderID;
     private final String m_description;
 
+    /**
+     * @return the ID of this border
+     */
     public String getID(){
         return m_borderID;
     }
 
+    /**
+     * @return the description of this border
+     */
     public String getDescription(){
         return m_description;
     }
 
+    /**
+     * Make a new border
+     * @param id the id of the border
+     * @param description the borders description
+     */
     protected WorldEditBorder(String id, String description){
         m_borderID = id;
         m_description = description;
     }
 
+    /**
+     * Create the border using the editsession and parameters
+     * @param bp the border parameters
+     * @param es the editsession to use
+     * @throws MaxChangedBlocksException when worldedit complains about too many blocks
+     */
     public abstract void createBorder(BorderParams bp, EditSession es) throws MaxChangedBlocksException;
 
     @Override
