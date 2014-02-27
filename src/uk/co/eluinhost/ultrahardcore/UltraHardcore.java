@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import uk.co.eluinhost.ultrahardcore.borders.BorderManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
@@ -19,7 +20,6 @@ import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDExcepti
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBan;
-import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
@@ -123,7 +123,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         setExecutor("scatter", new ScatterCommandConversational());
         setExecutor("freeze", new FreezeCommand());
         setExecutor("feature", new FeatureCommand());
-        setExecutor("generateborder", new BorderCreator());
+        setExecutor("generateborder", new BorderManager());
         setExecutor("givedrops", new GiveDropCommand());
         try {
             setExecutor("timer", new TimerCommand());

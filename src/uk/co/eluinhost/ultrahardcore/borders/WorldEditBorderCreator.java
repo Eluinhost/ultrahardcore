@@ -17,7 +17,7 @@ import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 
 /**
- * World edit references from BorderCreator to go here and stop classdefnotfound
+ * World edit references from BorderManager to go here and stop classdefnotfound
  *
  * @author ghowden
  */

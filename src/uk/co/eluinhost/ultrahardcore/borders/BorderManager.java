@@ -29,7 +29,7 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
  */
 //TODO stop being a utility type class
 //TODO MAJOR cleanup of border code, needs a command based in commands package
-public class BorderCreator implements UHCCommand {
+public class BorderManager implements UHCCommand {
 
     private final boolean m_worldEditFound;
 
@@ -42,7 +42,7 @@ public class BorderCreator implements UHCCommand {
         }
     }
 
-    public BorderCreator() {
+    public BorderManager() {
         m_worldEditFound = Bukkit.getPluginManager().getPlugin("WorldEdit") != null;
         if (m_worldEditFound) {
             WorldEditBorderCreator.initialize();
