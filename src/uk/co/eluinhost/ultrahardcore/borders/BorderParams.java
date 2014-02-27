@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.borders;
 
+import org.bukkit.Location;
+
 /**
  * Holds all the information about a border
  *
@@ -7,48 +9,59 @@ package uk.co.eluinhost.ultrahardcore.borders;
  */
 public class BorderParams {
 
-    private final int m_xCoord;
-    private final int m_zCoord;
-    private final String m_worldName;
+    private final Location m_location;
     private final int m_blockID;
     private final int m_blockMeta;
     private final int m_radius;
     private final String m_typeID;
 
-    public BorderParams(int x, int z, int radius, String typeID, String worldName, int blockID, int blockMeta) {
-        m_xCoord = x;
-        m_zCoord = z;
-        m_worldName = worldName;
+    /**
+     * Create new parameters for border creation
+     * @param location the center location
+     * @param typeID the ID of the border creator
+     * @param radius the radius to give the creator
+     * @param blockID the block ID to use
+     * @param blockMeta the data value for the block
+     */
+    public BorderParams(Location location, String typeID, int radius, int blockID, int blockMeta) {
+        m_location = location;
         m_blockID = blockID;
         m_blockMeta = blockMeta;
         m_radius = radius;
         m_typeID = typeID;
     }
 
-    public int getX() {
-        return m_xCoord;
+    /**
+     * @return center location
+     */
+    public Location getCenter() {
+        return m_location;
     }
 
-    public int getZ() {
-        return m_zCoord;
-    }
-
-    public String getWorldName() {
-        return m_worldName;
-    }
-
+    /**
+     * @return the block ID to use
+     */
     public int getBlockID() {
         return m_blockID;
     }
 
+    /**
+     * @return the block data value
+     */
     public int getBlockMeta() {
         return m_blockMeta;
     }
 
+    /**
+     * @return radius to use
+     */
     public int getRadius() {
         return m_radius;
     }
 
+    /**
+     * @return the border ID
+     */
     public String getTypeID() {
         return m_typeID;
     }
