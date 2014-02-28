@@ -315,7 +315,7 @@ public class ScatterPrompt extends StringPrompt {
     }
 
     public static void scatter(AbstractScatterType type, Boolean useTeams, Double radius, Double mindist, SimplePair<Double, Double> coords, World w, List<String> players, CommandSender sender) {
-        Parameters sp = new Parameters(w.getName(), coords.getKey(), coords.getValue(), radius);
+       /* Parameters sp = new Parameters(w.getName(), coords.getKey(), coords.getValue(), radius);
         sp.setMinDistance(mindist);
         List<String> allowedBlocks = ConfigManager.getConfig(ConfigManager.MAIN).getStringList(ConfigNodes.SCATTER_ALLOWED_BLOCKS);
         LinkedList<Material> materials = new LinkedList<Material>();
@@ -329,9 +329,6 @@ public class ScatterPrompt extends StringPrompt {
         }
         sp.setAllowedBlocks(materials);
 
-        /*
-         * get the right amount of people to scatter
-         */
         @SuppressWarnings("unchecked")
         HashMap<String, ArrayList<Player>> teams = new HashMap<String, ArrayList<Player>>();
         AbstractList<Player> noteams = new ArrayList<Player>();
@@ -392,5 +389,6 @@ public class ScatterPrompt extends StringPrompt {
             }
         }
         UltraHardcore.getInstance().getScatterManager().addTeleportMappings(ptms, sender);
+        */
     }
 }

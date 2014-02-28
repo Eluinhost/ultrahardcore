@@ -48,8 +48,8 @@ public class PermissionNodes {
     public static final String RANDOM_TEAMS_EMPTY = "UHC.teams.empty";
 
 
-    public static final String DEATH_BAN_BAN = BASE_DEATH_BAN + "unban";
-    public static final String DEATH_BAN_UNBAN = BASE_DEATH_BAN + "ban";
+    public static final String DEATH_BAN_BAN = "base_death_ban.unban";
+    public static final String DEATH_BAN_UNBAN = "base_death_ban.ban";
 
     public static final String GIVE_DROPS = "UHC.givedrops";
     public static final String TIMER_COMMAND = "UHC.timer";

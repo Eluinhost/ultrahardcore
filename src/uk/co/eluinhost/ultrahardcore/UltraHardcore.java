@@ -122,7 +122,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         setExecutor("scatter", new ScatterCommandConversational());
         setExecutor("freeze", new FreezeCommand());
         setExecutor("feature", new FeatureCommand());
-        setExecutor("generateborder", new BorderManager());
+     //   setExecutor("generateborder", new BorderManager());
         setExecutor("givedrops", new GiveDropCommand());
         try {
             setExecutor("timer", new TimerCommand());

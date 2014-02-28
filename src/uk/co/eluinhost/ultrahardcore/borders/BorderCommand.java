@@ -52,15 +52,15 @@ public class BorderCommand implements TabExecutor{
                     }
                     return true;
                 } else if ("types".equals(args[0])) {
-                    List<WorldEditBorder> types = WorldEditBorderCreator.getTypes();
-                    if (types.isEmpty()) {
-                        sender.sendMessage(ChatColor.RED + "No border types loaded!");
-                        return true;
-                    }
-                    sender.sendMessage(ChatColor.GOLD + "Loaded border types: (" + types.size() + ")");
-                    for (WorldEditBorder w : WorldEditBorderCreator.getTypes()) {
-                        sender.sendMessage(ChatColor.GRAY + w.getID() + " - " + w.getDescription());
-                    }
+                  //  List<WorldEditBorder> types = WorldEditBorderCreator.getTypes();
+                  //  if (types.isEmpty()) {
+                //        sender.sendMessage(ChatColor.RED + "No border types loaded!");
+                //        return true;
+               //     }
+                  //  sender.sendMessage(ChatColor.GOLD + "Loaded border types: (" + types.size() + ")");
+                    //for (WorldEditBorder w : WorldEditBorderCreator.getTypes()) {
+                   //     sender.sendMessage(ChatColor.GRAY + w.getID() + " - " + w.getDescription());
+                   /// }
                     return true;
                 }
             }
@@ -145,7 +145,7 @@ public class BorderCommand implements TabExecutor{
             BorderCreator creator = new BorderCreator(new CylinderBorder());
             creator.setBlockID(borderID);
             creator.setBlockMeta(metaID);
-            creator.setCenter(new); //TODO generate the location
+            creator.setCenter(null); //TODO generate the location
             creator.setRadius(radius);
 
             try {
@@ -181,7 +181,7 @@ public class BorderCommand implements TabExecutor{
             return ServerUtil.getWorldNamesWithSpawn();
         }
         if (args.length == 3) {
-            return WorldEditBorderCreator.getBorderIDs();
+            //return WorldEditBorderCreator.getBorderIDs();
         }
         return r;
     }
