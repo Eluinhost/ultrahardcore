@@ -9,12 +9,14 @@ public class CommandRequest {
 
     private final List<String> m_args;
     private final CommandSender m_sender;
+    private final String m_commandName;
 
     /**
      * @param args the arguements to use
      * @param sender the sender for the request
      */
-    public CommandRequest(List<String> args, CommandSender sender) {
+    public CommandRequest(String commandName, List<String> args, CommandSender sender) {
+        m_commandName = commandName;
         m_args = args;
         m_sender = sender;
     }
@@ -50,5 +52,9 @@ public class CommandRequest {
             return null;
         }
         return m_args.get(0);
+    }
+
+    public String getCommandName() {
+        return m_commandName;
     }
 }

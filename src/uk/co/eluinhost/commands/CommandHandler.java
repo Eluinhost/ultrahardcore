@@ -100,7 +100,7 @@ public class CommandHandler implements TabExecutor {
             }
         }
 
-        //for all the parent->children mappings generate the trees for the parent we own and remove the children from the list
+        //for all the parent->children mappings generate the trees for the parent
         for (Map.Entry<String, List<String>> entry : parentsToChildren.entrySet()) {
             //the parent ID
             String parentID = entry.getKey();
@@ -120,6 +120,7 @@ public class CommandHandler implements TabExecutor {
                 for (String child : children) {
                     try {
                         m_commandMap.addCommand(allCommands.get(child), entry.getKey());
+                        Bukkit.getLogger().info("Added command "+child+" with trigger "+allCommands.get(child).getTrigger()+" to map");
                     } catch (CommandNotFoundException e) {
                         e.printStackTrace();
                         //this should never happen if logic is correct
@@ -172,7 +173,7 @@ public class CommandHandler implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         try {
-            m_commandMap.callCommand(new CommandRequest(convertArgs(args),sender));
+            m_commandMap.callCommand(new CommandRequest(command.getName(),convertArgs(args),sender));
         } catch (CommandNotFoundException ex) {
             ex.printStackTrace();
             sender.sendMessage(ChatColor.RED + COMMAND_NOT_FOUND);
