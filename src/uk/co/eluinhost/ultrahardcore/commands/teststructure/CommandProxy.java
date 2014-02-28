@@ -85,7 +85,7 @@ public class CommandProxy implements ICommandProxy {
         //set out parent
         m_parent = parent;
         //if it's not null add ourselves as a child
-        if(parent != null){
+        if(parent != null && parent.getChild(m_trigger) == null){
             parent.addChild(this);
         }
     }
