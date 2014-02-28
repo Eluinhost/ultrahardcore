@@ -1,11 +1,9 @@
-package uk.co.eluinhost.ultrahardcore.commands.teststructure;
+package uk.co.eluinhost.commands;
 
-import uk.co.eluinhost.ultrahardcore.commands.teststructure.exception.CommandNotFoundException;
+import uk.co.eluinhost.commands.exceptions.CommandNotFoundException;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class CommandMap {
 

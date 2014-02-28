@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.commands.teststructure;
+package uk.co.eluinhost.commands;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

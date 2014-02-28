@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.commands.teststructure;
+package uk.co.eluinhost.commands;
 
 public interface ICommandProxy {
 

@@ -1,10 +1,10 @@
-package uk.co.eluinhost.ultrahardcore.commands.teststructure;
+package uk.co.eluinhost.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import uk.co.eluinhost.ultrahardcore.commands.teststructure.exception.*;
+import uk.co.eluinhost.commands.exceptions.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -39,7 +39,7 @@ public class CommandHandler implements TabExecutor {
     /**
      * Register the commands within the class
      * @param clazz the class to check
-     * @throws CommandCreateException if there is an error creating the instance for calling the commands
+     * @throws uk.co.eluinhost.commands.exceptions.CommandCreateException if there is an error creating the instance for calling the commands
      * @throws CommandIDConflictException when an ID is already taken
      * @throws CommandParentNotFoundException when a parent ID doesn't point to anything valid
      */
