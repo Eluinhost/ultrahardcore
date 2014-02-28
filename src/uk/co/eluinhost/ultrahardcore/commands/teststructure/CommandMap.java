@@ -10,7 +10,6 @@ import java.util.List;
 public class CommandMap {
 
     private final Collection<ICommandProxy> m_children = new ArrayList<ICommandProxy>();
-    private final Collection<ICommandProxy> m_orphans = new ArrayList<ICommandProxy>();
 
     /**
      * Start the command request chain
@@ -38,7 +37,7 @@ public class CommandMap {
      * @param command the command to add
      * @param parentID the command's parent ID
      */
-    public void addCommand(ICommandProxy command, String parentID) {
+    public void addCommand(ICommandProxy command, String parentID) throws CommandNotFoundException {
         if(parentID.isEmpty()){
             m_children.add(command);
             return;
@@ -46,8 +45,7 @@ public class CommandMap {
 
         ICommandProxy parent = getCommandByIdentifier(parentID);
         if(null == parent){
-            m_orphans.add(command);
-            return;
+            throw new CommandNotFoundException();
         }
 
         parent.addChild(command);
