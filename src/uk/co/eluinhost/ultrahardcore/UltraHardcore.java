@@ -1,7 +1,6 @@
 package uk.co.eluinhost.ultrahardcore;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -9,9 +8,9 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import uk.co.eluinhost.commands.CommandHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
@@ -20,8 +19,6 @@ import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictExcep
 import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBan;
 import uk.co.eluinhost.ultrahardcore.commands.*;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathlightning.DeathLightningFeature;
@@ -56,6 +53,8 @@ import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
  */
 public class UltraHardcore extends JavaPlugin implements Listener {
 
+    private CommandHandler m_commandHander = CommandHandler.getInstance();
+
     /**
      * @return the current instance of the plugin
      */
@@ -79,8 +78,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         //load all the scatter types
         loadDefaultScatterTypes();
         //load all the commands
-
-        setupCommands();
+        loadDefaultCommands();
 
         //Load all the metric infos
         try {
@@ -90,62 +88,47 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         }
     }
 
-    //TODO command handler stuff
-    private void setExecutor(String commandName, UHCCommand ce) {
+    private void loadDefaultCommands() {
+        setExecutor("heal");
+        try {
+            m_commandHander.registerCommands(HealCommand.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setExecutor("feed");
+        setExecutor("tpp");
+        setExecutor("ci");
+        setExecutor("deathban");
+        setExecutor("randomteams");
+        setExecutor("clearteams");
+        setExecutor("listteams");
+        setExecutor("createteam");
+        setExecutor("removeteam");
+        setExecutor("jointeam");
+        setExecutor("leaveteam");
+        setExecutor("emptyteams");
+        setExecutor("scatter");
+        setExecutor("freeze");
+        setExecutor("feature");
+        setExecutor("generateborder");
+        setExecutor("givedrops");
+        setExecutor("timer");
+    }
+
+    private void setExecutor(String commandName) {
         PluginCommand pc = getCommand(commandName);
         if (pc == null) {
             getLogger().warning("Plugin failed to register the command " + commandName + ", is the command already taken?");
         } else {
-            pc.setExecutor(ce);
-            pc.setTabCompleter(ce);
-        }
-    }
-
-    //TODO use a command handler class to do this
-    private void setupCommands() {
-        setExecutor("heal", new HealCommand());
-        setExecutor("feed", new FeedCommand());
-        setExecutor("tpp", new TPCommand());
-        setExecutor("ci", new ClearInventoryCommand());
-        setExecutor("deathban", new DeathBanCommand());
-
-        UHCCommand teamCommands = new TeamCommands();
-        setExecutor("randomteams", teamCommands);
-        setExecutor("clearteams", teamCommands);
-        setExecutor("listteams", teamCommands);
-        setExecutor("createteam", teamCommands);
-        setExecutor("removeteam", teamCommands);
-        setExecutor("jointeam", teamCommands);
-        setExecutor("leaveteam", teamCommands);
-        setExecutor("emptyteams", teamCommands);
-
-        setExecutor("scatter", new ScatterCommandConversational());
-        setExecutor("freeze", new FreezeCommand());
-        setExecutor("feature", new FeatureCommand());
-     //   setExecutor("generateborder", new BorderManager());
-        setExecutor("givedrops", new GiveDropCommand());
-        try {
-            setExecutor("timer", new TimerCommand());
-        } catch (NoClassDefFoundError ignored) {
-            getLogger().severe("Cannot find a class for timer command, ProtocolLib is needed for this feature to work, disabling...");
-        }
-
-        for (Field field : PermissionNodes.class.getDeclaredFields()) {
-            try {
-                Object o = field.get(PermissionNodes.class);
-                if (o instanceof Permission) {
-                    getServer().getPluginManager().addPermission((Permission) o);
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            pc.setExecutor(m_commandHander);
+            pc.setTabCompleter(m_commandHander);
         }
     }
 
     /**
      * Load all the default features into the feature manager
      */
-    @SuppressWarnings({"OverlyCoupledMethod", "FeatureEnvy"})
+    @SuppressWarnings("OverlyCoupledMethod")
     public void loadDefaultFeatures() {
         Logger log = Bukkit.getLogger();
         log.info("Loading UHC feature modules...");
@@ -185,7 +168,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     /**
      * Add the default config files
      */
-    @SuppressWarnings({"OverlyCoupledMethod", "FeatureEnvy"})
+    @SuppressWarnings("OverlyCoupledMethod")
     public void loadDefaultConfigurations(){
         ConfigManager configManager = ConfigManager.getInstance();
         configManager.addConfiguration(ConfigType.MAIN, ConfigManager.getFromFile("main.yml", true));
