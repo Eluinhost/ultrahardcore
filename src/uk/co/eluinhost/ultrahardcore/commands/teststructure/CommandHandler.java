@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands.teststructure;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -55,8 +56,8 @@ public class CommandHandler implements TabExecutor {
             }
         }
 
-        Map<String, List<ICommandProxy>> parentsToCommand = new HashMap<String, List<ICommandProxy>>();
-        Collection<String> allIDs = new ArrayList<String>();
+        Map<String, List<String>> parentsToChildren = new HashMap<String, List<String>>();
+        Map<String,ICommandProxy> allCommands = new HashMap<String, ICommandProxy>();
 
         Method[] methods = clazz.getDeclaredMethods();
         for(Method method : methods){
@@ -77,28 +78,56 @@ public class CommandHandler implements TabExecutor {
                 ICommandProxy commandProxy = new CommandProxy(method,instance,methodAnnotation.trigger(),methodAnnotation.identifier());
 
                 //get the list for the parent name
-                List<ICommandProxy> commands = parentsToCommand.get(methodAnnotation.parentID());
-                if(commands == null){
-                    commands = new ArrayList<ICommandProxy>();
-                    parentsToCommand.put(methodAnnotation.parentID(),commands);
+                List<String> children = parentsToChildren.get(methodAnnotation.parentID());
+                if(children == null){
+                    children = new ArrayList<String>();
+                    parentsToChildren.put(methodAnnotation.parentID(), children);
                 }
 
                 //add the object to the list
-                commands.add(commandProxy);
-                allIDs.add(commandProxy.getIdentifier());
+                children.add(commandProxy.getIdentifier());
+                allCommands.put(commandProxy.getIdentifier(), commandProxy);
             }
         }
 
         //commands don't have any conflicting IDs here, now we need to check parent IDs are all valid
-        for(String parentname : parentsToCommand.keySet()){
-            if(!allIDs.contains(parentname) || m_commandMap.getCommandByIdentifier(parentname) == null){
+        for(String parentname : parentsToChildren.keySet()){
+            if(parentname.isEmpty()){
+                continue;
+            }
+            if(!allCommands.containsKey(parentname) && m_commandMap.getCommandByIdentifier(parentname) == null){
                 throw new CommandParentNotFoundException();
             }
         }
 
-        //TODO try to map all the internal IDs correctly
+        //for all the parent->children mappings generate the trees for the parent we own and remove the children from the list
+        for (Map.Entry<String, List<String>> entry : parentsToChildren.entrySet()) {
+            //the parent ID
+            String parentID = entry.getKey();
+            //all the children we want to add to the parent
+            List<String> children = entry.getValue();
 
-        //TODO add all the commands to the commandmap
+            //if we have the parent
+            if (allCommands.containsKey(parentID)) {
+                //get the parent and add all the children
+                ICommandProxy parent = allCommands.get(entry.getKey());
+                for (String child : children) {
+                    parent.addChild(allCommands.get(child));
+                }
+            }
+            //else add the children to the existing map of commands
+            else {
+                for (String child : children) {
+                    try {
+                        m_commandMap.addCommand(allCommands.get(child), entry.getKey());
+                    } catch (CommandNotFoundException e) {
+                        e.printStackTrace();
+                        //this should never happen if logic is correct
+                        Bukkit.getLogger().severe("Error adding command to map, parent ID "+parentID+" not valid.");
+                    }
+                }
+            }
+        }
     }
 
     /**
