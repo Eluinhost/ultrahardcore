@@ -2,6 +2,7 @@ package uk.co.eluinhost.ultrahardcore.commands.teststructure;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -10,16 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BukkitCommandHandler implements CommandHandler {
+public class BukkitCommandHandler implements TabExecutor {
 
     private static final class BukkitCommandHandlerHolder {
-        private static final CommandHandler COMMAND_HANDLER = new BukkitCommandHandler();
+        private static final BukkitCommandHandler COMMAND_HANDLER = new BukkitCommandHandler();
     }
 
     /**
      * @return instance of the bukkit command handler
      */
-    public static final CommandHandler getInstance(){
+    public static final BukkitCommandHandler getInstance(){
         return BukkitCommandHandlerHolder.COMMAND_HANDLER;
     }
 
@@ -33,7 +34,10 @@ public class BukkitCommandHandler implements CommandHandler {
      */
     private final Map<String,Object> m_instances = new HashMap<String,Object>();
 
-    @Override
+    /**
+     * Register the commands within the class
+     * @param clazz the class to check
+     */
     public void registerCommands(Class clazz) {
         Method[] methods = clazz.getDeclaredMethods();
         for(Method method : methods){
@@ -49,7 +53,11 @@ public class BukkitCommandHandler implements CommandHandler {
         }
     }
 
-    @Override
+    /**
+     * Gets the instance stored for the class name
+     * @param className the class name to check for
+     * @return the class if exists or null otherwise
+     */
     public Object getClassInstance(String className) {
         return m_instances.get(className);
     }
