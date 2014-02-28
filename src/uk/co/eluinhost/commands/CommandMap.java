@@ -15,11 +15,11 @@ public class CommandMap {
      * @throws CommandNotFoundException if the root command doesn't map to anything
      */
     public void callCommand(CommandRequest request) throws CommandNotFoundException {
-        //get the first argument
-        String arg = request.getFirstArg();
+        //get the command name
+        String name = request.getCommandName();
 
         //check for commands with the given name
-        ICommandProxy commandToRun = getChild(arg);
+        ICommandProxy commandToRun = getChild(name);
 
         //if there isn't a command throw an error
         if(commandToRun == null){
@@ -71,7 +71,7 @@ public class CommandMap {
      */
     private ICommandProxy getChild(String name) {
         for(ICommandProxy command : m_children){
-            if(command.getIdentifier().equals(name)){
+            if(command.getTrigger().equals(name)){
                 return command;
             }
         }
