@@ -2,14 +2,21 @@ package uk.co.eluinhost.ultrahardcore.commands.teststructure;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.*;
 
 public class VirtualCommand {
 
     private final Method m_method;
     private final Command m_command;
     private final String m_className;
+    private final Collection<VirtualCommand> m_children = new LinkedList<VirtualCommand>();
 
+    /**
+     * A virtual command to represent a command method in a class
+     * @param method the method to run
+     * @param command the command annotation
+     * @param className the class name to lookup the instance to invoke on
+     */
     public VirtualCommand(Method method, Command command, String className) {
         m_method = method;
         m_command = command;
@@ -37,5 +44,38 @@ public class VirtualCommand {
      */
     public void runCommand(CommandRequest request) throws InvocationTargetException, IllegalAccessException {
         m_method.invoke(/*TODO get the object for this command*/ null,request);
+    }
+
+    /**
+     * Adds the child to this command
+     * @param command the command to add
+     */
+    public void addChild(VirtualCommand command){
+        m_children.add(command);
+    }
+
+    /**
+     * Returns the command with the given ID, searches all children in the tree
+     * @param id the ID to search for
+     * @return the command if found, or null otherwise
+     */
+    public VirtualCommand getByID(String id){
+        if(m_command.id().equals(id)){
+            return this;
+        }
+        for(VirtualCommand childCommand : m_children){
+            VirtualCommand command = childCommand.getByID(id);
+            if(command != null){
+                return command;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return the command annotation
+     */
+    public Command getCommand(){
+        return m_command;
     }
 }
