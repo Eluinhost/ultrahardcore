@@ -9,27 +9,17 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Command {
     /**
-     * @return name of the command
+     * @return trigger of the command
      */
-    String name();
+    String trigger();
 
     /**
      * @return unique ID for this command
      */
-    String id();
+    String identifier();
 
     /**
      * @return The command's parent's ID or empty string if root command
      */
     String parentID() default "";
-
-    /**
-     * @return all aliases of the command
-     */
-    String[] aliases() default {};
-
-    /**
-     * @return the type of sender to allow
-     */
-    SenderType[] allowedTypes();
 }
