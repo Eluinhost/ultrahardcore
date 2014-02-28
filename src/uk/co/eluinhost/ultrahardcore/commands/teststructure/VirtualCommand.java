@@ -8,10 +8,12 @@ public class VirtualCommand {
 
     private final Method m_method;
     private final Command m_command;
+    private final String m_className;
 
-    public VirtualCommand(Method method, Command command) {
+    public VirtualCommand(Method method, Command command, String className) {
         m_method = method;
         m_command = command;
+        m_className = className;
     }
 
     /**
