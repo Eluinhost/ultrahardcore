@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands.teststructure;
 
+import com.sun.swing.internal.plaf.basic.resources.basic_it;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -7,11 +8,16 @@ import org.bukkit.command.TabExecutor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BukkitCommandHandler implements TabExecutor {
+
+    /**
+     * Stores a list of class
+     */
+    private final Map<String,Object> m_instances = new HashMap<String,Object>();
+
+    private final List<VirtualCommand> m_commands = new LinkedList<VirtualCommand>();
 
     private static final class BukkitCommandHandlerHolder {
         private static final BukkitCommandHandler COMMAND_HANDLER = new BukkitCommandHandler();
@@ -28,11 +34,6 @@ public class BukkitCommandHandler implements TabExecutor {
      * Create the bukkit command handler
      */
     private BukkitCommandHandler() {}
-
-    /**
-     * Stores a list of class
-     */
-    private final Map<String,Object> m_instances = new HashMap<String,Object>();
 
     /**
      * Register the commands within the class
@@ -67,22 +68,99 @@ public class BukkitCommandHandler implements TabExecutor {
      * @param clazz The class to store it under
      * @param method the method to invoke
      * @param annotation the annotation to get details from
-     * @throws IllegalAccessException when access is denied to class/method
-     * @throws InstantiationException when class can't be created
-     * @throws NoSuchMethodException when method cannot be found
-     * @throws InvocationTargetException when exception thrown on creating the object
+     * @throws CommandIDConflictException when the command ID is already taken
+     * @throws CommandCreateException when the command class couldn't be created for use
+     * @throws CommandParentNotFoundException when the command parent couldn't be found in the tree
      */
-    private void addCommand(Class clazz,Method method,Annotation annotation) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    private void addCommand(Class clazz,Method method,Command annotation) throws CommandIDConflictException, CommandParentNotFoundException, CommandCreateException {
+        String commandID = annotation.id();
+        String parentID = annotation.parentID();
+
+        if(getVirtualCommandByID(commandID) != null){
+            throw new CommandIDConflictException();
+        }
         Object storedInstance = getClassInstance(clazz.getName());
         if(null == storedInstance){
-            storedInstance = clazz.getConstructor().newInstance();
-            m_instances.put(clazz.getName(),storedInstance);
+            //noinspection OverlyBroadCatchBlock
+            try {
+                storedInstance = clazz.getConstructor().newInstance();
+                m_instances.put(clazz.getName(),storedInstance);
+            } catch (Exception ignored) {
+                throw new CommandCreateException();
+            }
         }
-        //TODO make an internal representation of the method for easy invokation later on using the annotation details
+        VirtualCommand command = new VirtualCommand(method,annotation,clazz.getName());
+        if(parentID.isEmpty()){
+            m_commands.add(command);
+        } else {
+            VirtualCommand parentCommand = getVirtualCommandByID(parentID);
+            if(null == parentCommand){
+                throw new CommandParentNotFoundException();
+            }
+            parentCommand.addChild(command);
+        }
+    }
+
+    /**
+     * Gets the command by its ID, searches entire tree
+     * @param id the command's ID
+     * @return the virtualcommand if found, null otherwise
+     */
+    public VirtualCommand getVirtualCommandByID(String id){
+        for(VirtualCommand command : m_commands){
+            if(command.getByID(id) != null){
+                return command;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param name the name to look for, case insensitive
+     * @return the root command with the name
+     */
+    public VirtualCommand getRootCommandByName(String name){
+        for(VirtualCommand command : m_commands){
+            if(command.getCommand().name().equalsIgnoreCase(name)){
+                return command;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Converts arguements with the " char to use 1 index
+     * @param args the arguements to parse
+     * @return array of converted strings
+     */
+    private static List<String> convertArgs(String[] args){
+        List<String> finalArgs = new ArrayList<String>();
+        for(int i = 0; i < args.length; i++){
+            String arg = args[i];
+            if(arg.charAt(0) == '"'){
+                StringBuilder build = new StringBuilder();
+                build.append(arg.substring(1));
+                for(i += 1;i<args.length;i++){
+                    build.append(" ");
+                    String quotedArg = args[i];
+                    if(quotedArg.charAt(quotedArg.length()-1) == '"'){
+                        build.append(quotedArg.substring(0,quotedArg.length()-1));
+                        break;
+                    }else{
+                        build.append(quotedArg);
+                    }
+                }
+                finalArgs.add(build.toString());
+            }else{
+                finalArgs.add(arg);
+            }
+        }
+        return finalArgs;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        VirtualCommand virtualCommand = getRootCommandByName(command.getName());
         //TODO find the relevant command object
         //TODO check sender type
         //TODO generate a command request object
