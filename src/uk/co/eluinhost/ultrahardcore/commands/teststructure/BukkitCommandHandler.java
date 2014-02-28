@@ -12,6 +12,22 @@ import java.util.Map;
 
 public class BukkitCommandHandler implements CommandHandler {
 
+    private static final class BukkitCommandHandlerHolder {
+        private static final CommandHandler COMMAND_HANDLER = new BukkitCommandHandler();
+    }
+
+    /**
+     * @return instance of the bukkit command handler
+     */
+    public static final CommandHandler getInstance(){
+        return BukkitCommandHandlerHolder.COMMAND_HANDLER;
+    }
+
+    /**
+     * Create the bukkit command handler
+     */
+    private BukkitCommandHandler() {}
+
     /**
      * Stores a list of class
      */
