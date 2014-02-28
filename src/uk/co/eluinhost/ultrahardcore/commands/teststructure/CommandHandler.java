@@ -3,10 +3,7 @@ package uk.co.eluinhost.ultrahardcore.commands.teststructure;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import uk.co.eluinhost.ultrahardcore.commands.teststructure.exception.CommandCreateException;
-import uk.co.eluinhost.ultrahardcore.commands.teststructure.exception.CommandIDConflictException;
-import uk.co.eluinhost.ultrahardcore.commands.teststructure.exception.CommandNotFoundException;
-import uk.co.eluinhost.ultrahardcore.commands.teststructure.exception.CommandParentNotFoundException;
+import uk.co.eluinhost.ultrahardcore.commands.teststructure.exception.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -45,7 +42,7 @@ public class CommandHandler implements TabExecutor {
      * @throws CommandIDConflictException when an ID is already taken
      * @throws CommandParentNotFoundException when a parent ID doesn't point to anything valid
      */
-    public void registerCommands(Class clazz) throws CommandCreateException, CommandIDConflictException, CommandParentNotFoundException {
+    public void registerCommands(Class clazz) throws CommandCreateException, CommandIDConflictException, CommandParentNotFoundException, InvalidMethodParametersException {
         Object instance = getClassInstance(clazz.getName());
         if(instance == null){
             //noinspection OverlyBroadCatchBlock
@@ -68,6 +65,12 @@ public class CommandHandler implements TabExecutor {
                 //check if ID already exists
                 if(m_commandMap.getCommandByIdentifier(methodAnnotation.identifier())!=null){
                     throw new CommandIDConflictException();
+                }
+
+                //check if the method has 1 parameter of type CommandRequest
+                Class[] parameterTypes = method.getParameterTypes();
+                if(parameterTypes.length != 1 || !parameterTypes[0].equals(CommandRequest.class)){
+                    throw new InvalidMethodParametersException();
                 }
 
                 //Make the new command proxy object
