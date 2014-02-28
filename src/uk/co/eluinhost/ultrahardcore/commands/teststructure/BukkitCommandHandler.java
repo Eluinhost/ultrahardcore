@@ -23,6 +23,7 @@ public class BukkitCommandHandler implements CommandHandler {
         for(Method method : methods){
             Command methodAnnotation = method.getAnnotation(Command.class);
             if(methodAnnotation != null){
+                //noinspection OverlyBroadCatchBlock
                 try {
                     addCommand(clazz, method,methodAnnotation);
                 } catch (Exception ignored) {
@@ -42,6 +43,10 @@ public class BukkitCommandHandler implements CommandHandler {
      * @param clazz The class to store it under
      * @param method the method to invoke
      * @param annotation the annotation to get details from
+     * @throws IllegalAccessException when access is denied to class/method
+     * @throws InstantiationException when class can't be created
+     * @throws NoSuchMethodException when method cannot be found
+     * @throws InvocationTargetException when exception thrown on creating the object
      */
     private void addCommand(Class clazz,Method method,Annotation annotation) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         Object storedInstance = getClassInstance(clazz.getName());
