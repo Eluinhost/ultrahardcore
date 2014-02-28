@@ -50,7 +50,7 @@ public class HealCommand {
         );
     }
 
-    @Command(trigger = "*", identifier = "HealAllCommand")
+    @Command(trigger = "*", identifier = "HealAllCommand", parentID = "HealCommand")
     public void onHealAllCommand(CommandRequest request){
         CommandSender sender = request.getSender();
         if (!sender.hasPermission(PermissionNodes.HEAL_ALL)) {
