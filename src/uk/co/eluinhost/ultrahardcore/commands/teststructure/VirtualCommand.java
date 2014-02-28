@@ -55,6 +55,20 @@ public class VirtualCommand {
     }
 
     /**
+     * Get the child command by name
+     * @param name the name to look for
+     * @return the command if exists or null otherwise
+     */
+    public VirtualCommand getChild(String name){
+        for(VirtualCommand command : m_children){
+            if(command.getCommand().name().equalsIgnoreCase(name)){
+                return command;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the command with the given ID, searches all children in the tree
      * @param id the ID to search for
      * @return the command if found, or null otherwise
