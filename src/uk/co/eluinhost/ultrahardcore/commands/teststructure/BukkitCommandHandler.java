@@ -1,12 +1,10 @@
 package uk.co.eluinhost.ultrahardcore.commands.teststructure;
 
-import com.sun.swing.internal.plaf.basic.resources.basic_it;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -17,7 +15,11 @@ public class BukkitCommandHandler implements TabExecutor {
      */
     private final Map<String,Object> m_instances = new HashMap<String,Object>();
 
-    private final List<VirtualCommand> m_commands = new LinkedList<VirtualCommand>();
+    private final Collection<VirtualCommand> m_commands = new LinkedList<VirtualCommand>();
+
+    private static final String COMMAND_NOT_FOUND = ChatColor.RED + "Couldn't find the command requested";
+    private static final String COMMAND_SENDER_NOT_ALLOWED = ChatColor.RED + "You can't run that command from here";
+    private static final String COMMAND_EXCEPTION = ChatColor.RED + "Internal Server Error when running command, please check console for more information";
 
     private static final class BukkitCommandHandlerHolder {
         private static final BukkitCommandHandler COMMAND_HANDLER = new BukkitCommandHandler();
@@ -160,12 +162,42 @@ public class BukkitCommandHandler implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        //get the root command
         VirtualCommand virtualCommand = getRootCommandByName(command.getName());
-        //TODO find the relevant command object
-        //TODO check sender type
-        //TODO generate a command request object
-        //TODO invoke the method with the request
-        return false;
+        if(null == virtualCommand){
+            sender.sendMessage(COMMAND_NOT_FOUND);
+            return true;
+        }
+        //for each of the arguements check for nested commands
+        List<String> convertedArgs = convertArgs(args);
+
+        Iterator<String> arguementIterator = convertedArgs.iterator();
+        while(arguementIterator.hasNext()){
+            String arg = arguementIterator.next();
+            //if the command has the subcommand try and check against that
+            //otherwise use the current selected command
+            VirtualCommand subCommand = virtualCommand.getChild(arg);
+            if(subCommand != null){
+                arguementIterator.remove();
+                virtualCommand = subCommand;
+            }else{
+                break;
+            }
+        }
+        if(!virtualCommand.isSenderAllowed(SenderType.getFromCommandSender(sender))){
+            sender.sendMessage(COMMAND_SENDER_NOT_ALLOWED);
+            return true;
+        }
+
+        CommandRequest request = new CommandRequest();
+        //noinspection OverlyBroadCatchBlock
+        try {
+            virtualCommand.runCommand(request);
+        } catch (Exception e) {
+            sender.sendMessage(COMMAND_EXCEPTION);
+            e.printStackTrace();
+        }
+        return true;
     }
 
     @Override
