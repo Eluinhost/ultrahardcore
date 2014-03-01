@@ -14,6 +14,8 @@ public class CommandProxy implements ICommandProxy {
     private final String m_trigger;
     private ICommandProxy m_parent = null;
     private final String m_identifier;
+    private final int m_minArgs;
+    private final int m_maxArgs;
     private final Collection<ICommandProxy> m_children = new ArrayList<ICommandProxy>();
 
     /**
@@ -23,11 +25,13 @@ public class CommandProxy implements ICommandProxy {
      * @param trigger the trigger command
      * @param identifier the ID for this node
      */
-    public CommandProxy(Method method, Object instance, String trigger, String identifier) {
+    public CommandProxy(Method method, Object instance, String trigger, String identifier, int minArgs, int maxArgs) {
         m_method = method;
         m_instance = instance;
         m_trigger = trigger;
         m_identifier = identifier;
+        m_minArgs = minArgs;
+        m_maxArgs = maxArgs;
     }
 
     @Override
@@ -35,22 +39,35 @@ public class CommandProxy implements ICommandProxy {
         //get the first argument
         String arg = request.getFirstArg();
 
-        //check for child commands with the given name
+        //check for child commands with the given name of the next argument given
         ICommandProxy commandToRun = getChild(arg);
 
-        //if there isn't a command handle it ourselves
-        if(commandToRun == null){
-            //noinspection OverlyBroadCatchBlock
-            try {
-                m_method.invoke(m_instance,request);
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.getSender().sendMessage(ChatColor.RED+"Exception running command, please check the console for more information");
-            }
-        }else{
+        //if there is a child make them handle it
+        if(commandToRun != null){
             //remove the argument and pass on to child to handle
             request.removeFirstArg();
             commandToRun.callCommand(request);
+            return;
+        }
+
+        //check arguments length
+        if(request.getArgs().size() < m_minArgs){
+            //TODO find usage for the command
+            request.getSender().sendMessage(ChatColor.RED+"Not enough arguments supplied.");
+            return;
+        }
+        if(m_maxArgs != -1 && request.getArgs().size() > m_maxArgs){
+            //TODO find usage for the command
+            request.getSender().sendMessage(ChatColor.RED+"Too many arguments supplied.");
+            return;
+        }
+
+        //noinspection OverlyBroadCatchBlock
+        try {
+            m_method.invoke(m_instance,request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSender().sendMessage(ChatColor.RED+"Exception running command, please check the console for more information");
         }
     }
 
