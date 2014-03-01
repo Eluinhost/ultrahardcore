@@ -36,34 +36,34 @@ public class ClearInventoryCommand {
             clearInventory((HumanEntity) sender);
             sender.sendMessage(ChatColor.GOLD + "Inventory cleared successfully");
             return;
-        } else {
-            if (!sender.hasPermission(PermissionNodes.CLEAR_INVENTORY_OTHER)) {
-                sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.CLEAR_INVENTORY_OTHER);
-                return;
+        }
+
+        if (!sender.hasPermission(PermissionNodes.CLEAR_INVENTORY_OTHER)) {
+            sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.CLEAR_INVENTORY_OTHER);
+            return;
+        }
+        AbstractList<String> namesNotFound = new ArrayList<String>();
+        for (String pname : arguments) {
+            Player p = Bukkit.getPlayer(pname);
+            if (p == null) {
+                namesNotFound.add(pname);
+                continue;
             }
-            AbstractList<String> namesNotFound = new ArrayList<String>();
-            for (String pname : arguments) {
-                Player p = Bukkit.getPlayer(pname);
-                if (p == null) {
-                    namesNotFound.add(pname);
-                    continue;
-                }
-                if (p.hasPermission(PermissionNodes.CLEAR_INVENTORY_IMMUNE)) {
-                    sender.sendMessage(ChatColor.RED + "Player " + p.getName() + " is immune to inventory clears");
-                } else {
-                    clearInventory(p);
-                    p.sendMessage(ChatColor.GOLD + "Your inventory was cleared by " + sender.getName());
-                }
+            if (p.hasPermission(PermissionNodes.CLEAR_INVENTORY_IMMUNE)) {
+                sender.sendMessage(ChatColor.RED + "Player " + p.getName() + " is immune to inventory clears");
+            } else {
+                clearInventory(p);
+                p.sendMessage(ChatColor.GOLD + "Your inventory was cleared by " + sender.getName());
             }
-            sender.sendMessage(ChatColor.GOLD + "All inventories cleared successfully");
-            if (!namesNotFound.isEmpty()) {
-                StringBuilder message = new StringBuilder();
-                message.append(ChatColor.GOLD).append("Players not found to clear:");
-                for (String s : namesNotFound) {
-                    message.append(' ').append(s);
-                }
-                sender.sendMessage(message.toString());
+        }
+        sender.sendMessage(ChatColor.GOLD + "All inventories cleared successfully");
+        if (!namesNotFound.isEmpty()) {
+            StringBuilder message = new StringBuilder();
+            message.append(ChatColor.GOLD).append("Players not found to clear:");
+            for (String s : namesNotFound) {
+                message.append(' ').append(s);
             }
+            sender.sendMessage(message.toString());
         }
     }
 
