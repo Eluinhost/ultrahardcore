@@ -53,7 +53,7 @@ import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
  */
 public class UltraHardcore extends JavaPlugin implements Listener {
 
-    private CommandHandler m_commandHander = CommandHandler.getInstance();
+    private final CommandHandler m_commandHander = CommandHandler.getInstance();
 
     /**
      * @return the current instance of the plugin
@@ -89,30 +89,41 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     }
 
     private void loadDefaultCommands() {
-        setExecutor("heal");
-        try {
-            m_commandHander.registerCommands(HealCommand.class);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Class[] classes = {
+                HealCommand.class,
+                ClearInventoryCommand.class
+        };
+        for(Class clazz : classes){
+            try {
+                m_commandHander.registerCommands(clazz);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        setExecutor("feed");
-        setExecutor("tpp");
-        setExecutor("ci");
-        setExecutor("deathban");
-        setExecutor("randomteams");
-        setExecutor("clearteams");
-        setExecutor("listteams");
-        setExecutor("createteam");
-        setExecutor("removeteam");
-        setExecutor("jointeam");
-        setExecutor("leaveteam");
-        setExecutor("emptyteams");
-        setExecutor("scatter");
-        setExecutor("freeze");
-        setExecutor("feature");
-        setExecutor("generateborder");
-        setExecutor("givedrops");
-        setExecutor("timer");
+        String[] baseCommands = {
+                "heal",
+                "feed",
+                "tpp",
+                "ci",
+                "deathban",
+                "randomteams",
+                "clearteams",
+                "listteams",
+                "createteam",
+                "removeteam",
+                "jointeam",
+                "leaveteam",
+                "emptyteams",
+                "scatter",
+                "freeze",
+                "feature",
+                "generateborder",
+                "givedrops",
+                "timer"
+        };
+        for(String com : baseCommands){
+            setExecutor(com);
+        }
     }
 
     private void setExecutor(String commandName) {
