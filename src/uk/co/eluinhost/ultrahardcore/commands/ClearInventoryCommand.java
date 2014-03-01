@@ -67,7 +67,7 @@ public class ClearInventoryCommand {
         }
     }
 
-    @Command(trigger = "*", identifier = "ClearInventoryAll")
+    @Command(trigger = "*", identifier = "ClearInventoryAll", parentID = "ClearInventory", minArgs = 0, maxArgs = 0)
     public void onClearInventoryAll(CommandRequest request){
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.hasPermission(PermissionNodes.CLEAR_INVENTORY_IMMUNE)) {
