@@ -22,4 +22,14 @@ public @interface Command {
      * @return The command's parent's ID or empty string if root command
      */
     String parentID() default "";
+
+    /**
+     * @return minimum amount of arguments allowed
+     */
+    int minArgs() default 0;
+
+    /**
+     * @return maximum amount of arguments allowed
+     */
+    int maxArgs() default -1;
 }
