@@ -20,29 +20,25 @@ import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
 public class ClearInventoryCommand {
 
-    @Command(trigger = "ciself", identifier = "ClearInventorySelf", minArgs = 0, maxArgs = 0, senders = {SenderType.PLAYER})
+    @Command(trigger = "ciself",
+            identifier = "ClearInventorySelf",
+            minArgs = 0,
+            maxArgs = 0,
+            senders = {SenderType.PLAYER},
+            permission = PermissionNodes.CLEAR_INVENTORY_SELF)
     public void onClearInventorySelf(CommandRequest request){
         Player player = (Player) request.getSender();
-        if (!player.hasPermission(PermissionNodes.CLEAR_INVENTORY_SELF)) {
-            player.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.CLEAR_INVENTORY_SELF);
-            return;
-        }
-        if (!(player instanceof HumanEntity)) {
-            player.sendMessage(ChatColor.RED + "You can only clear your own inventory as a player!");
-            return;
-        }
         clearInventory(player);
         player.sendMessage(ChatColor.GOLD + "Inventory cleared successfully");
     }
 
-    @Command(trigger = "ci", identifier = "ClearInventory", minArgs = 1)
+    @Command(trigger = "ci",
+            identifier = "ClearInventory",
+            minArgs = 1,
+            permission = PermissionNodes.CLEAR_INVENTORY_OTHER)
     public void onClearInventoryCommand(CommandRequest request){
         List<String> arguments = request.getArgs();
         CommandSender sender = request.getSender();
-        if (!sender.hasPermission(PermissionNodes.CLEAR_INVENTORY_OTHER)) {
-            sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.CLEAR_INVENTORY_OTHER);
-            return;
-        }
         AbstractList<String> namesNotFound = new ArrayList<String>();
         for (String pname : arguments) {
             Player p = Bukkit.getPlayer(pname);
@@ -68,7 +64,12 @@ public class ClearInventoryCommand {
         }
     }
 
-    @Command(trigger = "*", identifier = "ClearInventoryAll", parentID = "ClearInventory", minArgs = 0, maxArgs = 0)
+    @Command(trigger = "*",
+            identifier = "ClearInventoryAll",
+            parentID = "ClearInventory",
+            minArgs = 0,
+            maxArgs = 0,
+            permission = PermissionNodes.CLEAR_INVENTORY_OTHER)
     public void onClearInventoryAll(CommandRequest request){
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.hasPermission(PermissionNodes.CLEAR_INVENTORY_IMMUNE)) {

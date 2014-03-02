@@ -6,39 +6,38 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
+import uk.co.eluinhost.commands.SenderType;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class HealCommand {
 
-    @Command(trigger = "heal", identifier = "HealCommand")
-    public void onHealCommand(CommandRequest request){
-        CommandSender sender = request.getSender();
-        if(request.getArgs().isEmpty()){
-            if(!(sender instanceof Player)){
-                sender.sendMessage(ChatColor.RED + "You can only run this command as a player");
-                return;
-            }
-            Player player = (Player) sender;
-            if (sender.hasPermission(PermissionNodes.HEAL_SELF)) {
-                sender.sendMessage(ChatColor.RED+"You don't have the permission "+PermissionNodes.HEAL_SELF);
-                return;
-            }
-            player.setHealth(player.getMaxHealth());
-            player.sendMessage(ChatColor.GOLD + "You healed yourself to full health");
-            ServerUtil.broadcastForPermission(
+    @Command(trigger = "healself",
+            identifier = "HealSelfCommand",
+            minArgs = 0,
+            maxArgs = 0,
+            senders = {SenderType.PLAYER},
+            permission = PermissionNodes.HEAL_SELF)
+    public void onHealSelfCommand(CommandRequest request){
+        Player player = (Player) request.getSender();
+        player.setHealth(player.getMaxHealth());
+        player.sendMessage(ChatColor.GOLD + "You healed yourself to full health");
+        ServerUtil.broadcastForPermission(
                 String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] Player " + player.getName() + " used a heal command to heal themselves to " + player.getMaxHealth() + " health"
                 ,PermissionNodes.HEAL_ANNOUNCE
-            );
-            return;
-        }
+        );
+    }
+
+    @Command(trigger = "heal",
+            identifier = "HealCommand",
+            minArgs = 1,
+            maxArgs = 1,
+            permission = PermissionNodes.HEAL_OTHER)
+    public void onHealCommand(CommandRequest request){
+        CommandSender sender = request.getSender();
         Player p = sender.getServer().getPlayer(request.getFirstArg());
         if (p == null) {
             sender.sendMessage(ChatColor.RED + "Invalid player name " + request.getFirstArg());
-            return;
-        }
-        if (!sender.hasPermission(PermissionNodes.HEAL_OTHER)) {
-            sender.sendMessage(ChatColor.RED + "You don't have the permission to heal another player (" + PermissionNodes.HEAL_OTHER + "). If you want to heal yourself and have permissions use '/heal' by itself");
             return;
         }
         p.setHealth(p.getMaxHealth());
@@ -50,13 +49,14 @@ public class HealCommand {
         );
     }
 
-    @Command(trigger = "*", identifier = "HealAllCommand", parentID = "HealCommand")
+    @Command(trigger = "*",
+            identifier = "HealAllCommand",
+            parentID = "HealCommand",
+            permission = PermissionNodes.HEAL_ALL,
+            minArgs = 0,
+            maxArgs = 0)
     public void onHealAllCommand(CommandRequest request){
         CommandSender sender = request.getSender();
-        if (!sender.hasPermission(PermissionNodes.HEAL_ALL)) {
-            sender.sendMessage(ChatColor.RED + "You don't have the permission to heal all players (" + PermissionNodes.HEAL_ALL + ")");
-            return;
-        }
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setHealth(p.getMaxHealth());
             p.sendMessage(ChatColor.GOLD + "You were healed to full health");
