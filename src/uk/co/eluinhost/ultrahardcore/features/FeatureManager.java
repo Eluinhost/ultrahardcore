@@ -117,16 +117,15 @@ public class FeatureManager {
      * Get the UHCFeature based on it's ID
      *
      * @param featureID String the ID to check for
-     * @return UHCFeature the returned feature
-     * @throws FeatureIDNotFoundException when feature ID not found
+     * @return UHCFeature the returned feature, or null if not found
      */
-    public IUHCFeature getFeatureByID(String featureID) throws FeatureIDNotFoundException {
+    public IUHCFeature getFeatureByID(String featureID) {
         for (IUHCFeature feature : m_uhcFeatureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
         }
-        throw new FeatureIDNotFoundException();
+        return null;
     }
 
     /**

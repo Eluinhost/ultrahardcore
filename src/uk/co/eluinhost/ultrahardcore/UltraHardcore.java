@@ -92,7 +92,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         Class[] classes = {
                 HealCommand.class,
                 ClearInventoryCommand.class,
-                TPCommand.class
+                TPCommand.class,
+                FeatureCommand.class
         };
         for(Class clazz : classes){
             try {
