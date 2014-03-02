@@ -6,20 +6,11 @@ import org.bukkit.permissions.PermissionDefault;
 //TODO move into relevant classes
 public class PermissionNodes {
 
-    public static final String HEAL_NODE = "UHC.heal";
-    public static final String HEAL_ALL = HEAL_NODE + ".all";
-    public static final String HEAL_SELF = HEAL_NODE + ".self";
-    public static final String HEAL_OTHER = HEAL_NODE + ".other";
-    public static final String HEAL_ANNOUNCE = HEAL_NODE + ".announce";
-
     public static final String FEED_NODE = "UHC.feed";
     public static final String FEED_ALL = FEED_NODE + ".all";
     public static final String FEED_SELF = FEED_NODE + ".self";
     public static final String FEED_OTHER = FEED_NODE + ".other";
     public static final String FEED_ANNOUNCE = FEED_NODE + ".announce";
-
-    public static final String FEATURE_TOGGLE = "UHC.feature.toggle";
-    public static final String FEATURE_LIST = "UHC.feature.list";
 
     public static final String ANTIFREEZE = "UHC.freeze.antifreeze";
     public static final String FREEZE_PERMISSION = "UHC.freeze.command";
@@ -29,10 +20,6 @@ public class PermissionNodes {
     public static final String GENERATE_BORDER = "UHC.generateborder";
 
     //public static final String TP_ALL = "UHC.tpall";
-
-    public static final String CLEAR_INVENTORY_SELF = "UHC.ci.self";
-    public static final String CLEAR_INVENTORY_OTHER = "UHC.ci.other";
-    public static final String CLEAR_INVENTORY_IMMUNE = "UHC.ci.immune";
 
     public static final String RANDOM_TEAMS = "UHC.teams.random";
     public static final String RANDOM_TEAMS_CLEAR = "UHC.teams.clear";

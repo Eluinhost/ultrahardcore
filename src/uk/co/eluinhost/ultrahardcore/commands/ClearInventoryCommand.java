@@ -16,16 +16,19 @@ import org.bukkit.inventory.ItemStack;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
 public class ClearInventoryCommand {
+
+    public static final String CLEAR_SELF_PERMISSION = "UHC.ci.self";
+    public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";
+    public static final String CLEAR_IMMUNE_PERMISSION = "UHC.ci.immune";
 
     @Command(trigger = "ciself",
             identifier = "ClearInventorySelf",
             minArgs = 0,
             maxArgs = 0,
             senders = {SenderType.PLAYER},
-            permission = PermissionNodes.CLEAR_INVENTORY_SELF)
+            permission = CLEAR_SELF_PERMISSION)
     public void onClearInventorySelf(CommandRequest request){
         Player player = (Player) request.getSender();
         clearInventory(player);
@@ -35,7 +38,7 @@ public class ClearInventoryCommand {
     @Command(trigger = "ci",
             identifier = "ClearInventory",
             minArgs = 1,
-            permission = PermissionNodes.CLEAR_INVENTORY_OTHER)
+            permission = CLEAR_OTHER_PERMISSION)
     public void onClearInventoryCommand(CommandRequest request){
         List<String> arguments = request.getArgs();
         CommandSender sender = request.getSender();
@@ -46,7 +49,7 @@ public class ClearInventoryCommand {
                 namesNotFound.add(pname);
                 continue;
             }
-            if (p.hasPermission(PermissionNodes.CLEAR_INVENTORY_IMMUNE)) {
+            if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
                 sender.sendMessage(ChatColor.RED + "Player " + p.getName() + " is immune to inventory clears");
             } else {
                 clearInventory(p);
@@ -69,10 +72,10 @@ public class ClearInventoryCommand {
             parentID = "ClearInventory",
             minArgs = 0,
             maxArgs = 0,
-            permission = PermissionNodes.CLEAR_INVENTORY_OTHER)
+            permission = CLEAR_OTHER_PERMISSION)
     public void onClearInventoryAll(CommandRequest request){
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.hasPermission(PermissionNodes.CLEAR_INVENTORY_IMMUNE)) {
+            if (!p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
                 clearInventory(p);
             }
         }

@@ -7,24 +7,28 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class HealCommand {
+
+    public static final String HEAL_SELF_PERMISSION = "UHC.heal.self";
+    public static final String HEAL_OTHER_PERMISSION = "UHC.heal.other";
+    public static final String HEAL_ANNOUNCE_PERMISSION = "UHC.heal.announce";
+    public static final String HEAL_ALL_PERMISSION = "UHC.heal.all";
 
     @Command(trigger = "healself",
             identifier = "HealSelfCommand",
             minArgs = 0,
             maxArgs = 0,
             senders = {SenderType.PLAYER},
-            permission = PermissionNodes.HEAL_SELF)
+            permission = HEAL_SELF_PERMISSION)
     public void onHealSelfCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         player.setHealth(player.getMaxHealth());
         player.sendMessage(ChatColor.GOLD + "You healed yourself to full health");
         ServerUtil.broadcastForPermission(
                 String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] Player " + player.getName() + " used a heal command to heal themselves to " + player.getMaxHealth() + " health"
-                ,PermissionNodes.HEAL_ANNOUNCE
+                ,HEAL_ANNOUNCE_PERMISSION
         );
     }
 
@@ -32,7 +36,7 @@ public class HealCommand {
             identifier = "HealCommand",
             minArgs = 1,
             maxArgs = 1,
-            permission = PermissionNodes.HEAL_OTHER)
+            permission = HEAL_OTHER_PERMISSION)
     public void onHealCommand(CommandRequest request){
         CommandSender sender = request.getSender();
         Player p = sender.getServer().getPlayer(request.getFirstArg());
@@ -45,14 +49,14 @@ public class HealCommand {
         ServerUtil.broadcastForPermission(
                 String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
                         (sender instanceof Player ? "Player " + sender.getName() : "Console") + " healed player " + p.getName()
-                , PermissionNodes.HEAL_ANNOUNCE
+                , HEAL_ANNOUNCE_PERMISSION
         );
     }
 
     @Command(trigger = "*",
             identifier = "HealAllCommand",
             parentID = "HealCommand",
-            permission = PermissionNodes.HEAL_ALL,
+            permission = HEAL_ALL_PERMISSION,
             minArgs = 0,
             maxArgs = 0)
     public void onHealAllCommand(CommandRequest request){
@@ -64,7 +68,7 @@ public class HealCommand {
         ServerUtil.broadcastForPermission(
                 String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
                         (sender instanceof Player ? "Player " + sender.getName() : "Console") + " healed all players"
-                , PermissionNodes.HEAL_ANNOUNCE
+                , HEAL_ANNOUNCE_PERMISSION
         );
     }
 }
