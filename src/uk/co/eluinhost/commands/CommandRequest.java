@@ -54,6 +54,16 @@ public class CommandRequest {
         return m_args.get(0);
     }
 
+    /**
+     * @return the last arg or null if not exist
+     */
+    public String getLastArg(){
+        if(m_args.isEmpty()){
+            return null;
+        }
+        return m_args.get(m_args.size()-1);
+    }
+
     public String getCommandName() {
         return m_commandName;
     }
