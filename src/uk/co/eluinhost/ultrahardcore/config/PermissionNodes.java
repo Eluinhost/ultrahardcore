@@ -53,9 +53,4 @@ public class PermissionNodes {
 
     public static final String GIVE_DROPS = "UHC.givedrops";
     public static final String TIMER_COMMAND = "UHC.timer";
-
-    public static Permission TP_ALL = new Permission(
-            "UHC.tpall",
-            "Allows player to teleport players to players/locations",
-            PermissionDefault.OP);
 }
