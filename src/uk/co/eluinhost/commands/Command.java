@@ -39,4 +39,9 @@ public @interface Command {
      * @return array of SenderType allowed to run the command, default all allowed
      */
     SenderType[] senders() default {SenderType.COMMAND_BLOCK,SenderType.CONSOLE,SenderType.PLAYER,SenderType.REMOTE_CONSOLE};
+
+    /**
+     * @return the permission required to use this command, default "" means no permission check
+     */
+    String permission() default "";
 }

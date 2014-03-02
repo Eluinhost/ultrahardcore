@@ -44,6 +44,16 @@ public class CommandProxy implements ICommandProxy {
             return;
         }
 
+        if(!Arrays.asList(m_command.senders()).contains(request.getSenderType())){
+            request.getSender().sendMessage(ChatColor.RED+"That command can't be ran from here!");
+            return;
+        }
+
+        if(!m_command.permission().isEmpty() && !request.getSender().hasPermission(m_command.permission())){
+            request.getSender().sendMessage(ChatColor.RED+"You don't have permission to use that. ("+m_command.permission()+")");
+            return;
+        }
+
         //check arguments length
         if(request.getArgs().size() < m_command.minArgs()){
             //TODO find usage for the command
@@ -53,11 +63,6 @@ public class CommandProxy implements ICommandProxy {
         if(m_command.maxArgs() != -1 && request.getArgs().size() > m_command.maxArgs()){
             //TODO find usage for the command
             request.getSender().sendMessage(ChatColor.RED+"Too many arguments supplied.");
-            return;
-        }
-
-        if(!Arrays.asList(m_command.senders()).contains(request.getSenderType())){
-            request.getSender().sendMessage(ChatColor.RED+"That command can't be ran from here!");
             return;
         }
 
