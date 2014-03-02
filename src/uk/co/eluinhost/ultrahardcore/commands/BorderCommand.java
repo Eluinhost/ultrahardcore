@@ -3,11 +3,11 @@ package uk.co.eluinhost.ultrahardcore.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import uk.co.eluinhost.commands.Command;
+import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
@@ -15,56 +15,57 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException;
 import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+public class BorderCommand {
 
-//todo BLOCKER cleanup this copypasta
-public class BorderCommand implements TabExecutor{
+    @Command(trigger = "genborder",
+            identifier = "BorderCommand",
+            permission = PermissionNodes.GENERATE_BORDER)
+    public void onBorderCommand(CommandRequest request){
+        //TODO this
+    }
+
+    @Command(trigger = "undo",
+            identifier = "BorderUndoCommand",
+            minArgs = 0,
+            maxArgs = 1,
+            permission = PermissionNodes.GENERATE_BORDER,
+            parentID = "BorderCommand")
+    public void onBorderUndoCommand(CommandRequest request){
+        CommandSender sender = request.getSender();
+        String world;
+        if (request.getArgs().size() == 1) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("You need to specify a world to undo when not ran as a player");
+                return;
+            }
+            world = ((Entity) sender).getWorld().getName();
+        } else {
+            world = request.getFirstArg();
+        }
+        SessionManager sessionManager = SessionManager.getInstance();
+        if (sessionManager.undoLastSession(world)) {
+            sender.sendMessage(ChatColor.GOLD + "Undone successfully!");
+        } else {
+            sender.sendMessage(ChatColor.GOLD + "Nothing left to undo!");
+        }
+    }
+
+    @Command(trigger = "types",
+            identifier = "BorderTypesCommand",
+            minArgs = 0,
+            maxArgs = 0,
+            permission = PermissionNodes.GENERATE_BORDER,
+            parentID = "BorderCommand")
+    public void onBorderTypesCommand(CommandRequest request){
+        //TODO this
+    }
 
     private static final String SYNTAX = "/generateborder radius world[:x,z] typeID[:blockid:meta] OR /generateborder undo/types [world]";
-    @Override
+
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
-        if ("generateborder".equals(command.getName())) {
-            if (!sender.hasPermission(PermissionNodes.GENERATE_BORDER)) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission " + PermissionNodes.GENERATE_BORDER);
-                return true;
-            }
-            if (args.length >= 1) {
-                if ("undo".equalsIgnoreCase(args[0])) {
-                    String world;
-                    if (args.length == 1) {
-                        if (sender instanceof Player) {
-                            world = ((Entity) sender).getWorld().getName();
-                        } else {
-                            sender.sendMessage("You need to specify a world to undo using the console");
-                            return true;
-                        }
-                    } else {
-                        world = args[1];
-                    }
-                    SessionManager sessionManager = SessionManager.getInstance();
-                    if (sessionManager.undoLastSession(world)) {
-                        sender.sendMessage(ChatColor.GOLD + "Undone successfully!");
-                    } else {
-                        sender.sendMessage(ChatColor.GOLD + "Nothing left to undo!");
-                    }
-                    return true;
-                } else if ("types".equals(args[0])) {
-                  //  List<WorldEditBorder> types = WorldEditBorderCreator.getTypes();
-                  //  if (types.isEmpty()) {
-                //        sender.sendMessage(ChatColor.RED + "No border types loaded!");
-                //        return true;
-               //     }
-                  //  sender.sendMessage(ChatColor.GOLD + "Loaded border types: (" + types.size() + ")");
-                    //for (WorldEditBorder w : WorldEditBorderCreator.getTypes()) {
-                   //     sender.sendMessage(ChatColor.GRAY + w.getID() + " - " + w.getDescription());
-                   /// }
-                    return true;
-                }
-            }
+        if ("generateborder".equals("")) {
             if (args.length != 3) {
                 sender.sendMessage(ChatColor.RED + "Invalid syntax: " + SYNTAX);
                 return true;
@@ -160,30 +161,5 @@ public class BorderCommand implements TabExecutor{
             return true;
         }
         return false;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command,
-                                      String alias, String[] args) {
-        List<String> r = new ArrayList<String>();
-        if (args.length == 1) {
-            r.add("radius");
-            r.add("undo");
-            r.add("types");
-            return r;
-        }
-        if (args.length == 2) {
-            if ("undo".equalsIgnoreCase(args[0])) {
-                return ServerUtil.getWorldNames();
-            }
-            if ("types".equalsIgnoreCase(args[0])) {
-                return r;
-            }
-            return ServerUtil.getWorldNamesWithSpawn();
-        }
-        if (args.length == 3) {
-            //return WorldEditBorderCreator.getBorderIDs();
-        }
-        return r;
     }
 }
