@@ -78,10 +78,7 @@ public class CommandHandler implements TabExecutor {
                 ICommandProxy commandProxy = new CommandProxy(
                         method,
                         instance,
-                        methodAnnotation.trigger(),
-                        methodAnnotation.identifier(),
-                        methodAnnotation.minArgs(),
-                        methodAnnotation.maxArgs()
+                        methodAnnotation
                 );
 
                 //get the list for the parent name

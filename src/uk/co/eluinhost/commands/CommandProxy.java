@@ -11,27 +11,20 @@ public class CommandProxy implements ICommandProxy {
 
     private final Method m_method;
     private final Object m_instance;
-    private final String m_trigger;
-    private ICommandProxy m_parent = null;
-    private final String m_identifier;
-    private final int m_minArgs;
-    private final int m_maxArgs;
+    private ICommandProxy m_parent;
     private final Collection<ICommandProxy> m_children = new ArrayList<ICommandProxy>();
+    private final Command m_command;
 
     /**
      * Create a new commandproxy
      * @param method the method to call
      * @param instance the instance to call the method on
-     * @param trigger the trigger command
-     * @param identifier the ID for this node
+     * @param command the command annotation
      */
-    public CommandProxy(Method method, Object instance, String trigger, String identifier, int minArgs, int maxArgs) {
+    public CommandProxy(Method method, Object instance, Command command) {
         m_method = method;
         m_instance = instance;
-        m_trigger = trigger;
-        m_identifier = identifier;
-        m_minArgs = minArgs;
-        m_maxArgs = maxArgs;
+        m_command = command;
     }
 
     @Override
@@ -51,12 +44,12 @@ public class CommandProxy implements ICommandProxy {
         }
 
         //check arguments length
-        if(request.getArgs().size() < m_minArgs){
+        if(request.getArgs().size() < m_command.minArgs()){
             //TODO find usage for the command
             request.getSender().sendMessage(ChatColor.RED+"Not enough arguments supplied.");
             return;
         }
-        if(m_maxArgs != -1 && request.getArgs().size() > m_maxArgs){
+        if(m_command.maxArgs() != -1 && request.getArgs().size() > m_command.maxArgs()){
             //TODO find usage for the command
             request.getSender().sendMessage(ChatColor.RED+"Too many arguments supplied.");
             return;
@@ -73,7 +66,7 @@ public class CommandProxy implements ICommandProxy {
 
     @Override
     public String getTrigger() {
-        return m_trigger;
+        return m_command.trigger();
     }
 
     @Override
@@ -97,12 +90,12 @@ public class CommandProxy implements ICommandProxy {
     public void setParent(ICommandProxy parent) {
         //remove ourselves from the parent if we're getting a new one
         if(m_parent != null){
-            m_parent.removeChild(m_trigger);
+            m_parent.removeChild(m_command.trigger());
         }
         //set out parent
         m_parent = parent;
         //if it's not null add ourselves as a child
-        if(parent != null && parent.getChild(m_trigger) == null){
+        if(parent != null && parent.getChild(m_command.trigger()) == null){
             parent.addChild(this);
         }
     }
@@ -110,9 +103,9 @@ public class CommandProxy implements ICommandProxy {
     @Override
     public String getFullTrigger() {
         if(m_parent == null){
-            return m_trigger;
+            return m_command.trigger();
         }
-        return m_parent.getFullTrigger()+" "+m_trigger;
+        return m_parent.getFullTrigger()+" "+m_command.trigger();
     }
 
     @Override
@@ -130,12 +123,12 @@ public class CommandProxy implements ICommandProxy {
 
     @Override
     public String getIdentifier() {
-        return m_identifier;
+        return m_command.identifier();
     }
 
     @Override
     public ICommandProxy findIdentifier(String id) {
-        if(m_identifier.equals(id)){
+        if(m_command.identifier().equals(id)){
             return this;
         }
         for(ICommandProxy command : m_children){
