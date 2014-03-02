@@ -34,4 +34,9 @@ public @interface Command {
      * @return maximum amount of arguments allowed
      */
     int maxArgs() default -1;
+
+    /**
+     * @return array of SenderType allowed to run the command, default all allowed
+     */
+    SenderType[] senders() default {SenderType.COMMAND_BLOCK,SenderType.CONSOLE,SenderType.PLAYER,SenderType.REMOTE_CONSOLE};
 }

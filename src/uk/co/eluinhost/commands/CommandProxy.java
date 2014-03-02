@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -52,6 +53,11 @@ public class CommandProxy implements ICommandProxy {
         if(m_command.maxArgs() != -1 && request.getArgs().size() > m_command.maxArgs()){
             //TODO find usage for the command
             request.getSender().sendMessage(ChatColor.RED+"Too many arguments supplied.");
+            return;
+        }
+
+        if(!Arrays.asList(m_command.senders()).contains(request.getSenderType())){
+            request.getSender().sendMessage(ChatColor.RED+"That command can't be ran from here!");
             return;
         }
 

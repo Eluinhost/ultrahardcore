@@ -57,4 +57,8 @@ public class CommandRequest {
     public String getCommandName() {
         return m_commandName;
     }
+
+    public SenderType getSenderType(){
+        return SenderType.getFromCommandSender(m_sender);
+    }
 }
