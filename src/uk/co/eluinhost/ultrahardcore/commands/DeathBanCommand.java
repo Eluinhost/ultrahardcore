@@ -8,7 +8,7 @@ import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
-import uk.co.eluinhost.ultrahardcore.services.FeatureManager;
+import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.ArrayList;

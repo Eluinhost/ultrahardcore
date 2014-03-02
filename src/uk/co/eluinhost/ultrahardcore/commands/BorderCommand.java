@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.borders;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,12 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
+import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
-import uk.co.eluinhost.ultrahardcore.borders.types.WorldEditBorder;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException;
-import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
+import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.ArrayList;

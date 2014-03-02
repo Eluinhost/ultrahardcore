@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
-import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 
 public abstract class AbstractScatterType {
 

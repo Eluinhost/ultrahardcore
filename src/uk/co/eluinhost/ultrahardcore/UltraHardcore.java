@@ -39,10 +39,10 @@ import uk.co.eluinhost.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
 import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
-import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.services.FeatureManager;
+import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
+import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
-import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 
 /**
  * UltraHardcore

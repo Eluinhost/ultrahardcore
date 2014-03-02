@@ -4,27 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
-import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
-import uk.co.eluinhost.ultrahardcore.services.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
-import uk.co.eluinhost.ultrahardcore.exceptions.generic.WorldNotFoundException;
-import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.*;
-import java.util.logging.Level;
 
 //TODO this thing sucks balls
 public class ScatterPrompt extends StringPrompt {

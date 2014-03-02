@@ -1,9 +1,8 @@
-package uk.co.eluinhost.ultrahardcore.services;
+package uk.co.eluinhost.ultrahardcore.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 
 import java.io.File;
 import java.io.InputStream;

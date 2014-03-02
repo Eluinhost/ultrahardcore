@@ -3,7 +3,6 @@ package uk.co.eluinhost.ultrahardcore.scatter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import uk.co.eluinhost.ultrahardcore.services.ScatterManager;
 
 public class SafeTeleporter extends Teleporter {
 
