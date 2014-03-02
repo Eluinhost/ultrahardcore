@@ -278,3 +278,6 @@ permissions:
     UHC.timer:
         description: Allows use of the timer command
         default: op
+    UHC.tpall:
+        description: TP player to a player/location
+        default: op
