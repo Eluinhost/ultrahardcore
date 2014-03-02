@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.commands.inter;
+package uk.co.eluinhost.ultrahardcore.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationAbandonedEvent;
