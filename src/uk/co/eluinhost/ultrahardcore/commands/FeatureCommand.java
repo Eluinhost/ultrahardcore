@@ -1,108 +1,86 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
+import uk.co.eluinhost.commands.Command;
+import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.ultrahardcore.features.IUHCFeature;
 import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
 
-public class FeatureCommand implements UHCCommand {
+public class FeatureCommand {
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if ("feature".equalsIgnoreCase(command.getName())) {
-            if (args.length == 0) {
-                sender.sendMessage(ChatColor.GRAY + "/feature toggle/on/off [featureID] to toggle features");
-                sender.sendMessage(ChatColor.GRAY + "/feature list to list features");
-                return true;
-            }
-            if ("list".equalsIgnoreCase(args[0])) {
-                if (!sender.hasPermission(PermissionNodes.FEATURE_LIST)) {
-                    sender.sendMessage(ChatColor.RED + "You don't have permission to view features (" + PermissionNodes.FEATURE_LIST + ")");
-                    return true;
-                }
-                List<IUHCFeature> features = FeatureManager.getInstance().getFeatures();
-                sender.sendMessage(ChatColor.GOLD + "Currently loaded features (" + features.size() + "):");
-                if (features.isEmpty()) {
-                    sender.sendMessage(ChatColor.GRAY + "Nothing to see here!");
-                }
-                for (IUHCFeature feature : features) {
-                    sender.sendMessage((feature.isEnabled() ? ChatColor.GREEN + "ON " : ChatColor.RED + "OFF ") + feature.getFeatureID() + ChatColor.GRAY + " - " + feature.getDescription());
-                }
-                return true;
-            }
-            if (args.length < 2) {
-                sender.sendMessage(ChatColor.GRAY + "The command is unknown. Possible commands are:");
-                sender.sendMessage(ChatColor.GRAY + "/feature toggle/on/off featureID");
-                sender.sendMessage(ChatColor.GRAY + "/feature list");
-                return true;
-            }
-            IUHCFeature feature;
-            try {
-                feature = FeatureManager.getInstance().getFeatureByID(args[1]);
-            } catch (FeatureIDNotFoundException ignored) {
-                sender.sendMessage(ChatColor.RED + "The feature \"" + args[1] + " was not found, use /feature list to see a list of available features");
-                return true;
-            }
-            if ("toggle".equalsIgnoreCase(args[0])) {
-                if (!sender.hasPermission(PermissionNodes.FEATURE_TOGGLE)) {
-                    sender.sendMessage(ChatColor.RED + "You don't have permission to toggle features (" + PermissionNodes.FEATURE_TOGGLE + ")");
-                    return true;
-                }
-                args[0] = feature.isEnabled() ? "off" : "on";
-            }
-            if ("on".equalsIgnoreCase(args[0])) {
-                if (!sender.hasPermission(PermissionNodes.FEATURE_TOGGLE)) {
-                    sender.sendMessage(ChatColor.RED + "You don't have permission to change features");
-                    return true;
-                }
-                boolean turnedOn = feature.enableFeature();
-                if (!turnedOn) {
-                    sender.sendMessage(ChatColor.RED + "Feature " + args[1] + " is already enabled or loading was cancelled by another plugin");
-                    return true;
-                }
-                Bukkit.broadcastMessage(ChatColor.GOLD + "Feature " + args[1] + " is now enabled");
-                return true;
-            }
-            if ("off".equalsIgnoreCase(args[0])) {
-                if (!sender.hasPermission(PermissionNodes.FEATURE_TOGGLE)) {
-                    sender.sendMessage(ChatColor.RED + "You don't have permission to change features");
-                    return true;
-                }
-                boolean turnedOff = feature.disableFeature();
-                if (!turnedOff) {
-                    sender.sendMessage(ChatColor.RED + "Feature " + args[1] + " is already disabled, or disabling was cancelled by a plugin");
-                    return true;
-                }
-                Bukkit.broadcastMessage(ChatColor.GOLD + "Feature " + args[1] + " is now disabled");
-                return true;
-            }
-            sender.sendMessage(ChatColor.GRAY + "The command is unknown. Possible commands are:");
-            sender.sendMessage(ChatColor.GRAY + "/feature toggle/on/off featureID");
-            sender.sendMessage(ChatColor.GRAY + "/feature list");
-            return true;
-        }
-        return false;
+    public static final String FEATURE_LIST_PERMISSION = "UHC.feature.list";
+    public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";
+
+    @Command(trigger = "feature",
+            identifier = "FeatureCommand")
+    public void onFeatureCommand(CommandRequest request){
+        //TODO show syntax?
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        List<String> results = new ArrayList<String>();
-        if (args.length == 1) {
-            results.add("toggle");
-            results.add("list");
+    @Command(trigger = "list",
+            identifier = "FeatureListCommand",
+            minArgs = 0,
+            maxArgs = 0,
+            permission = FEATURE_LIST_PERMISSION,
+            parentID = "FeatureCommand")
+    public void onFeatureListCommand(CommandRequest request){
+        CommandSender sender = request.getSender();
+        List<IUHCFeature> features = FeatureManager.getInstance().getFeatures();
+        sender.sendMessage(ChatColor.GOLD + "Currently loaded features (" + features.size() + "):");
+        if (features.isEmpty()) {
+            sender.sendMessage(ChatColor.GRAY + "No features loaded!");
         }
-        if (args.length == 2 && "toggle".equalsIgnoreCase(args[0])) {
-            results.addAll(FeatureManager.getInstance().getFeatureNames());
+        for (IUHCFeature feature : features) {
+            sender.sendMessage((feature.isEnabled() ? ChatColor.GREEN + "ON " : ChatColor.RED + "OFF ") + feature.getFeatureID() + ChatColor.GRAY + " - " + feature.getDescription());
         }
-        return results;
     }
 
+    @Command(trigger = "on",
+            identifier = "FeatureOnCommand",
+            minArgs = 1,
+            maxArgs = 1,
+            permission = FEATURE_TOGGLE_PERMISSION,
+            parentID = "FeatureCommand")
+    public void onFeatureOnCommand(CommandRequest request){
+        IUHCFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
+        if(null == feature){
+            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " was not found, use /feature list to see a list of available features");
+            return;
+        }
+        if(feature.isEnabled()){
+            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " is already enabled!");
+            return;
+        }
+        if(!feature.enableFeature()){
+            request.getSender().sendMessage(ChatColor.RED+"Failed to enable the feature, event was cancelled");
+            return;
+        }
+        request.getSender().sendMessage(ChatColor.GOLD+"Feature enabled");
+    }
+
+    @Command(trigger = "off",
+            identifier = "FeatureOffCommand",
+            minArgs = 1,
+            maxArgs = 1,
+            permission = FEATURE_TOGGLE_PERMISSION,
+            parentID = "FeatureCommand")
+    public void onFeatureOffCommand(CommandRequest request){
+        IUHCFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
+        if(null == feature){
+            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " was not found, use /feature list to see a list of available features");
+            return;
+        }
+        if(!feature.isEnabled()){
+            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " is already disabled!");
+            return;
+        }
+        if(!feature.disableFeature()){
+            request.getSender().sendMessage(ChatColor.RED+"Failed to disable the feature, event was cancelled");
+            return;
+        }
+        request.getSender().sendMessage(ChatColor.GOLD+"Feature disabled");
+    }
 }
