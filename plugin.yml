@@ -39,6 +39,10 @@ commands:
       description: Clears a player/s inventory
       usage: /<command> [list of space separated names/*]
       aliases: [uhcci]
+    ciself:
+      description: Clears your inventory
+      usage: /ciself
+      aliases: [uhcciself]
     randomteams:
       description: Put people in random teams
       usage: /<command> numberofteams [world_name]

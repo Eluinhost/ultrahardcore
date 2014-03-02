@@ -15,29 +15,30 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
+import uk.co.eluinhost.commands.SenderType;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
 public class ClearInventoryCommand {
 
-    @Command(trigger = "ci", identifier = "ClearInventory")
+    @Command(trigger = "ciself", identifier = "ClearInventorySelf", minArgs = 0, maxArgs = 0, senders = {SenderType.PLAYER})
+    public void onClearInventorySelf(CommandRequest request){
+        Player player = (Player) request.getSender();
+        if (!player.hasPermission(PermissionNodes.CLEAR_INVENTORY_SELF)) {
+            player.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.CLEAR_INVENTORY_SELF);
+            return;
+        }
+        if (!(player instanceof HumanEntity)) {
+            player.sendMessage(ChatColor.RED + "You can only clear your own inventory as a player!");
+            return;
+        }
+        clearInventory(player);
+        player.sendMessage(ChatColor.GOLD + "Inventory cleared successfully");
+    }
+
+    @Command(trigger = "ci", identifier = "ClearInventory", minArgs = 1)
     public void onClearInventoryCommand(CommandRequest request){
         List<String> arguments = request.getArgs();
         CommandSender sender = request.getSender();
-
-        if (arguments.isEmpty()) {
-            if (!sender.hasPermission(PermissionNodes.CLEAR_INVENTORY_SELF)) {
-                sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.CLEAR_INVENTORY_SELF);
-                return;
-            }
-            if (!(sender instanceof HumanEntity)) {
-                sender.sendMessage(ChatColor.RED + "You can only clear your own inventory as a player!");
-                return;
-            }
-            clearInventory((HumanEntity) sender);
-            sender.sendMessage(ChatColor.GOLD + "Inventory cleared successfully");
-            return;
-        }
-
         if (!sender.hasPermission(PermissionNodes.CLEAR_INVENTORY_OTHER)) {
             sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.CLEAR_INVENTORY_OTHER);
             return;

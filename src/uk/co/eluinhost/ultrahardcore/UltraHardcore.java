@@ -105,6 +105,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 "feed",
                 "tpp",
                 "ci",
+                "ciself",
                 "deathban",
                 "randomteams",
                 "clearteams",
