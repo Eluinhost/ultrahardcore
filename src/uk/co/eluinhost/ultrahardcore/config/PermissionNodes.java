@@ -21,18 +21,7 @@ public class PermissionNodes {
 
     //public static final String TP_ALL = "UHC.tpall";
 
-    public static final String RANDOM_TEAMS = "UHC.teams.random";
-    public static final String RANDOM_TEAMS_CLEAR = "UHC.teams.clear";
-    public static final String LIST_TEAMS = "UHC.teams.list";
-    public static final String RANDOM_TEAMS_CREATE = "UHC.teams.create";
-    public static final String RANDOM_TEAMS_REMOVE_UHC = "UHC.teams.remove.UHC";
-    public static final String RANDOM_TEAMS_REMOVE_ALL = "UHC.teams.remove.all";
-    public static final String RANDOM_TEAMS_JOIN_UHC = "UHC.teams.join.UHC";
-    public static final String RANDOM_TEAMS_JOIN_ALL = "UHC.teams.join.all";
-    public static final String RANDOM_TEAMS_JOIN_OTHER = "UHC.teams.join.other";
-    public static final String RANDOM_TEAMS_LEAVE_SELF = "UHC.teams.leave.self";
-    public static final String RANDOM_TEAMS_LEAVE_OTHER = "UHC.teams.leave.other";
-    public static final String RANDOM_TEAMS_EMPTY = "UHC.teams.empty";
+
 
 
     public static final String DEATH_BAN_BAN = "base_death_ban.unban";

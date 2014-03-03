@@ -230,22 +230,16 @@ permissions:
     UHC.teams.create:
         description: Allows a player to get a new random UHC team
         default: op
-    UHC.teams.remove.UHC:
-        description: Allows a player to remove a UHC team
+    UHC.teams.remove:
+        description: Allows a player to remove a team
         default: op
-    UHC.team.remove.all:
-        description: Allows the player to remove any team
-        default: op
-    UHC.teams.join.UHC:
-        description: Allows a player to join a UHC team
-        default: true
-    UHC.teams.join.all:
+    UHC.teams.join:
         description: Allows a player to join any team
         default: true
     UHC.teams.join.other:
         description: Allows a player to force another to join a team
         default: op
-    UHC.teams.leave.self:
+    UHC.teams.leave:
         description: Allows a player to leave their team
         default: true
     UHC.teams.leave.other:

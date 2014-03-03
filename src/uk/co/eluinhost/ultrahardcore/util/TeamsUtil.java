@@ -33,6 +33,55 @@ public class TeamsUtil {
     }
 
     /**
+     * @return a set of all the teams
+     */
+    public Set<Team> getAllTeams(){
+        return m_mainScoreboard.getTeams();
+    }
+
+    /**
+     * Get the team with the given name
+     * @param name the team name to check for
+     * @return the team if exists, null otherwise
+     */
+    public Team getTeam(String name){
+        return m_mainScoreboard.getTeam(name);
+    }
+
+    /**
+     * Remove the team from the scoreboard
+     * @param name the team name to remove
+     */
+    public void removeTeam(String name){
+        Team team = getTeam(name);
+        if(team != null){
+            team.unregister();
+        }
+    }
+
+    /**
+     * Registers a Team on this Scoreboard
+     *
+     * @param name Team name
+     * @return registered Team
+     * @throws IllegalArgumentException if name is null or if team by that name already exists
+     */
+    public Team registerNewTeam(String name) {
+        return m_mainScoreboard.registerNewTeam(name);
+    }
+
+    /**
+     * Gets a player's Team on this Scoreboard
+     *
+     * @param player the player to search for
+     * @return the player's Team or null if the player is not on a team
+     * @throws IllegalArgumentException if player is null
+     */
+    public Team getPlayersTeam(OfflinePlayer player){
+        return m_mainScoreboard.getPlayerTeam(player);
+    }
+
+    /**
      * Formatted team
      *
      * @param t the team

@@ -7,10 +7,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.eluinhost.commands.CommandHandler;
-import uk.co.eluinhost.ultrahardcore.commands.ClearInventoryCommand;
-import uk.co.eluinhost.ultrahardcore.commands.FeatureCommand;
-import uk.co.eluinhost.ultrahardcore.commands.HealCommand;
-import uk.co.eluinhost.ultrahardcore.commands.TPCommand;
+import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
@@ -96,7 +93,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 HealCommand.class,
                 ClearInventoryCommand.class,
                 TPCommand.class,
-                FeatureCommand.class
+                FeatureCommand.class,
+                TeamCommands.class
         };
         for(Class clazz : classes){
             try {
