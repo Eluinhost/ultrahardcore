@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.exceptions.borders;
+package uk.co.eluinhost.ultrahardcore.borders.exceptions;
 
 @SuppressWarnings("serial")
 public class BorderTypeNotFoundException extends Exception {

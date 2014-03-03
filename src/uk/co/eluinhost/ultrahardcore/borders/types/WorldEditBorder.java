@@ -5,7 +5,7 @@ import com.sk89q.worldedit.MaxChangedBlocksException;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
-import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException;
+import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 
 public abstract class WorldEditBorder implements Border {
 

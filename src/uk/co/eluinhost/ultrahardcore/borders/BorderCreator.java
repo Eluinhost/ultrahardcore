@@ -2,7 +2,7 @@ package uk.co.eluinhost.ultrahardcore.borders;
 
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.borders.types.Border;
-import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException;
+import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 
 public class BorderCreator {
 

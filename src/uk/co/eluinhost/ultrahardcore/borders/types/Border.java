@@ -1,7 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.borders.types;
 
 import org.bukkit.Location;
-import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException;
+import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 
 public interface Border {
     /**
@@ -21,7 +21,7 @@ public interface Border {
      * @param radius the radius to use
      * @param blockID the block ID to use
      * @param blockMeta the block data value
-     * @throws uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException when too many blocks changed
+     * @throws uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException when too many blocks changed
      */
     void build(Location center, int radius, int blockID, int blockMeta) throws TooManyBlocksException;
 }
