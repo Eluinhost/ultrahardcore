@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
+import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
@@ -157,8 +158,7 @@ public class BorderCommand {
                 return true;
             }
 
-            //TODO BLOCKER put right border in here based on blockinfo[0]
-            BorderCreator creator = new BorderCreator(new CylinderBorder());
+            BorderCreator creator = new BorderCreator(BorderTypeManager.getInstance().getBorderByID(blockinfo[0]));
             creator.setBlockID(borderID);
             creator.setBlockMeta(metaID);
             creator.setCenter(null); //TODO generate the location
