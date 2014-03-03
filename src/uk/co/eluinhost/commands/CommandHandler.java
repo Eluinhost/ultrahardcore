@@ -42,6 +42,7 @@ public class CommandHandler implements TabExecutor {
      * @throws uk.co.eluinhost.commands.exceptions.CommandCreateException if there is an error creating the instance for calling the commands
      * @throws CommandIDConflictException when an ID is already taken
      * @throws CommandParentNotFoundException when a parent ID doesn't point to anything valid
+     * @throws InvalidMethodParametersException when method doesn't have a single CommandRequest param
      */
     public void registerCommands(Class clazz) throws CommandCreateException, CommandIDConflictException, CommandParentNotFoundException, InvalidMethodParametersException {
         Object instance = getClassInstance(clazz.getName());

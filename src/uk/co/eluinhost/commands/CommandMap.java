@@ -34,6 +34,7 @@ public class CommandMap {
      * If the parentID doesn't exist, adds to the list of orphaned commands
      * @param command the command to add
      * @param parentID the command's parent ID
+     * @throws CommandNotFoundException when parent is specified but not found
      */
     public void addCommand(ICommandProxy command, String parentID) throws CommandNotFoundException {
         if(parentID.isEmpty()){
