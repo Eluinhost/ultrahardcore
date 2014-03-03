@@ -56,7 +56,7 @@ public class HealCommand {
     @Command(trigger = "*",
             identifier = "HealAllCommand",
             parentID = "HealCommand",
-            permission = HEAL_ALL_PERMISSION,
+            permission = HEAL_OTHER_PERMISSION,
             minArgs = 0,
             maxArgs = 0)
     public void onHealAllCommand(CommandRequest request){

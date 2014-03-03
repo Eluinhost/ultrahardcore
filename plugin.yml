@@ -128,9 +128,6 @@ permissions:
     UHC.heal.other:
         description: Fully heal another player
         default: false
-    UHC.heal.all:
-        description: Heals all players on the server
-        default: false
     UHC.heal.announce:
         description: All heal commands will be announced to this player
         default: false
