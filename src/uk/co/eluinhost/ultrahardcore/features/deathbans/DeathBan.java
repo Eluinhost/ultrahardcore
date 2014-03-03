@@ -2,7 +2,6 @@ package uk.co.eluinhost.ultrahardcore.features.deathbans;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.player.PlayerLoginEvent;
-import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 
 import java.util.HashMap;
 import java.util.Map;

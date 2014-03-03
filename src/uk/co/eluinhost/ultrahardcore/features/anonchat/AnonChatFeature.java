@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class AnonChatFeature extends UHCFeature {

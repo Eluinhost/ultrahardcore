@@ -2,7 +2,9 @@ package uk.co.eluinhost.ultrahardcore.features.footprints;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import com.comphenix.protocol.PacketType;
 import org.bukkit.Bukkit;
@@ -40,7 +42,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
 
     public static final String FOOTPRINTS_FOR_PLAYER = BASE_PERMISSION + "footprints.leavePrints";
 
-    private final ArrayList<Footstep> m_footsteps = new ArrayList<Footstep>();
+    private final Collection<Footstep> m_footsteps = new ArrayList<Footstep>();
     private int m_jobID = -1;
 
     public FootprintFeature() {

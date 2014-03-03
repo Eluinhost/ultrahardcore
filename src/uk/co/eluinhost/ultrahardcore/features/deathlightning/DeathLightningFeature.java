@@ -3,7 +3,6 @@ package uk.co.eluinhost.ultrahardcore.features.deathlightning;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 

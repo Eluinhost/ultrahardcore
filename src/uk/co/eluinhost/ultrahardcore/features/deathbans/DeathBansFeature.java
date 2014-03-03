@@ -124,8 +124,8 @@ public class DeathBansFeature extends UHCFeature {
      * Save all the bans to file
      */
     private void saveBans(){
-        ConfigManager.getInstance().getConfig(ConfigType.BANS).set("bans", m_deathBans);
-        ConfigManager.getInstance().saveConfig(ConfigType.BANS);
+        ConfigManager.getInstance().getConfig("bans").set("bans", m_deathBans);
+        ConfigManager.getInstance().saveConfig("bans");
     }
 
     /**

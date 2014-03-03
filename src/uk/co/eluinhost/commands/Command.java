@@ -1,7 +1,5 @@
 package uk.co.eluinhost.commands;
 
-import org.bukkit.ChatColor;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

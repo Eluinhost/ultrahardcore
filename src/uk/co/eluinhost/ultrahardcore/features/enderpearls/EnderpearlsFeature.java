@@ -4,7 +4,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.permissions.Permissible;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
