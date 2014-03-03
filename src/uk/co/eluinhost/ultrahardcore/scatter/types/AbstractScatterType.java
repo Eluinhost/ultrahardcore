@@ -47,7 +47,6 @@ public abstract class AbstractScatterType {
         return m_description;
     }
 
-    //TODO look at cleaning up children methods of this
     /**
      * Get a list of scatter locations for the given parameters
      * @param params the parameters to use
