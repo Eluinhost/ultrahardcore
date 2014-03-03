@@ -12,15 +12,16 @@ import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import uk.co.eluinhost.configuration.ConfigManager;
 
 public class BorderCommand {
 
+    public static final String GENERATE_BORDER = "UHC.generateborder";
+
     @Command(trigger = "genborder",
             identifier = "BorderCommand",
-            permission = PermissionNodes.GENERATE_BORDER)
+            permission = GENERATE_BORDER)
     public void onBorderCommand(CommandRequest request){
         //TODO this
     }
@@ -29,7 +30,7 @@ public class BorderCommand {
             identifier = "BorderUndoCommand",
             minArgs = 0,
             maxArgs = 1,
-            permission = PermissionNodes.GENERATE_BORDER,
+            permission = GENERATE_BORDER,
             parentID = "BorderCommand")
     public void onBorderUndoCommand(CommandRequest request){
         CommandSender sender = request.getSender();
@@ -55,7 +56,7 @@ public class BorderCommand {
             identifier = "BorderTypesCommand",
             minArgs = 0,
             maxArgs = 0,
-            permission = PermissionNodes.GENERATE_BORDER,
+            permission = GENERATE_BORDER,
             parentID = "BorderCommand")
     public void onBorderTypesCommand(CommandRequest request){
         //TODO this
@@ -65,7 +66,7 @@ public class BorderCommand {
 
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
-        if ("generateborder".equals("")) {
+        if ("generateborder".isEmpty()) {
             if (args.length != 3) {
                 sender.sendMessage(ChatColor.RED + "Invalid syntax: " + SYNTAX);
                 return true;
@@ -95,7 +96,7 @@ public class BorderCommand {
                     x = Integer.parseInt(parts2[0]);
                     z = Integer.parseInt(parts2[1]);
                     args[1] = parts[0];
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignored) {
                     sender.sendMessage(ChatColor.RED + "One or more world coordinates not a number, world syntax is worldname:x,z");
                     return true;
                 }
@@ -131,14 +132,14 @@ public class BorderCommand {
             int borderID;
             try {
                 borderID = Integer.parseInt(blockinfo[1]);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
                 sender.sendMessage(ChatColor.RED + "Unknown number " + blockinfo[1] + " for block ID");
                 return true;
             }
             int metaID;
             try {
                 metaID = Integer.parseInt(blockinfo[2]);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
                 sender.sendMessage(ChatColor.RED + "Unknown number " + blockinfo[2] + " for block meta");
                 return true;
             }

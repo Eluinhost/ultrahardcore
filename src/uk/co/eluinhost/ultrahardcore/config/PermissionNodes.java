@@ -11,7 +11,6 @@ public class PermissionNodes {
 
     public static final String SCATTER_COMMAND = "UHC.scatter";
 
-    public static final String GENERATE_BORDER = "UHC.generateborder";
 
     //public static final String TP_ALL = "UHC.tpall";
 
