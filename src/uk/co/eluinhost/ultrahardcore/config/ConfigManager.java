@@ -7,11 +7,11 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import java.io.File;
 import java.io.InputStream;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ConfigManager {
 
-    @SuppressWarnings("UtilityClass")
     private static final class LazyConfigManagerHolder {
         private static final ConfigManager INSTANCE = new ConfigManager();
     }
@@ -28,15 +28,15 @@ public class ConfigManager {
      */
     private ConfigManager(){}
 
-    private final Map<ConfigType, FileConfiguration> m_configurations = new EnumMap<ConfigType, FileConfiguration>(ConfigType.class);
+    private final Map<String, FileConfiguration> m_configurations = new HashMap<String, FileConfiguration>();
 
     /**
      * Only allows 1 config per configtype
-     * @param type the type to add for
+     * @param name the name of the config file
      * @param config the config file to save
      */
-    public void addConfiguration(ConfigType type, FileConfiguration config){
-        m_configurations.put(type,config);
+    public void addConfiguration(String name, FileConfiguration config){
+        m_configurations.put(name,config);
     }
 
     /**
@@ -64,38 +64,26 @@ public class ConfigManager {
     }
 
     /**
-     * @param type the type of config to get
+     * @param name the name of config to get
      * @return the configuration or null if not exists
      */
-    public FileConfiguration getConfig(ConfigType type) {
-        return m_configurations.get(type);
+    public FileConfiguration getConfig(String name) {
+        return m_configurations.get(name);
     }
 
     /**
-     * @return the ConfigType.MAIN config file
+     * @return the 'main' config file
      */
     public FileConfiguration getConfig(){
-        return getConfig(ConfigType.MAIN);
-    }
-
-    //TODO wtf is this supposed to be
-    public boolean featureEnabledForWorld(String featureNode, String worldName) {
-        //w&&f = enabled
-        //w&&!f = disabled
-        //!w&&f = disabled
-        //!w&&!f = enabled
-        // = AND
-        boolean whitelist = m_configurations.get(ConfigType.MAIN).getBoolean(featureNode + ".whitelist");
-        boolean found = m_configurations.get(ConfigType.MAIN).getStringList(featureNode + ".worlds").contains(worldName);
-        return !(whitelist ^ found);
+        return getConfig("main");
     }
 
     /**
      * Saves the config
-     * @param type the config type to save
+     * @param name the config to save
      */
-    public void saveConfig(ConfigType type) {
-        FileConfiguration config = m_configurations.get(type);
+    public void saveConfig(String name) {
+        FileConfiguration config = m_configurations.get(name);
         if(config != null){
             //TODO thingy to save and stuff
         }
