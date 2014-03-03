@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.exceptions.scatter;
+package uk.co.eluinhost.ultrahardcore.scatter.exceptions;
 
 @SuppressWarnings("serial")
 public class MaxAttemptsReachedException extends Exception{

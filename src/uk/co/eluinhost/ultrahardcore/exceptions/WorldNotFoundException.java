@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.exceptions.generic;
+package uk.co.eluinhost.ultrahardcore.exceptions;
 
 @SuppressWarnings("serial")
 public class WorldNotFoundException extends Exception{
