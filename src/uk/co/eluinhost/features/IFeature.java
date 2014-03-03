@@ -1,6 +1,6 @@
-package uk.co.eluinhost.ultrahardcore.features;
+package uk.co.eluinhost.features;
 
-public interface IUHCFeature {
+public interface IFeature {
 
     /**
     * Attempt to enable the feature
