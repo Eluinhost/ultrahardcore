@@ -30,10 +30,17 @@ public class GoldenHeadsFeature extends UHCFeature {
 
     private ShapedRecipe m_headRecipe;
 
+    /**
+     * Adds a recipe to make golden heads
+     */
     public GoldenHeadsFeature() {
         super("GoldenHeads","New and improved golden apples!");
     }
 
+    /**
+     * When the player eats
+     * @param pee the eat event
+     */
     @EventHandler
     public static void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
         //if they ate a golden apple
@@ -50,6 +57,10 @@ public class GoldenHeadsFeature extends UHCFeature {
         }
     }
 
+    /**
+     * When trying to craft
+     * @param pce the item craft event
+     */
     @EventHandler
     public void onPreCraftEvent(PrepareItemCraftEvent pce) {
         //if it's the golden head recipe

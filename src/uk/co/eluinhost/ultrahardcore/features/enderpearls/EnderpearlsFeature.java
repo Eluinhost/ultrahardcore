@@ -17,10 +17,17 @@ public class EnderpearlsFeature extends UHCFeature {
 
     public static final String NO_ENDERPEARL_DAMAGE = BASE_PERMISSION + "noEnderpearlDamage";
 
+    /**
+     * Enderpearls cause no damage
+     */
     public EnderpearlsFeature() {
         super("Enderpearls","Enderpearls cause no teleport damage");
     }
 
+    /**
+     * Whenever an entity is hurt
+     * @param ede the damage event
+     */
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent ede) {
         if (isEnabled()) {

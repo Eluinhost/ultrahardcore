@@ -22,10 +22,17 @@ public class RegenFeature extends UHCFeature {
 
     public static final String NO_HEALTH_REGEN = BASE_PERMISSION+ "disableRegen";
 
+    /**
+     * Disables natural regen when enabled, normal when disabled
+     */
     public RegenFeature() {
         super("DisableRegen","Cancels a player's passive health regeneration");
     }
 
+    /**
+     * Whenever an entity regains health
+     * @param erhe the entityregainhealthevent
+     */
     @EventHandler
     public void onHealthRegen(EntityRegainHealthEvent erhe) {
         if (isEnabled()) {

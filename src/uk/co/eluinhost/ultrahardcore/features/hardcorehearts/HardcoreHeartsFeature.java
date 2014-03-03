@@ -15,6 +15,9 @@ public class HardcoreHeartsFeature extends UHCFeature {
     private final ProtocolManager m_manager = ProtocolLibrary.getProtocolManager();
     private final PacketListener m_listner = new HardcoreHeartsListener();
 
+    /**
+     * Shows hardcore hearts in non hardcore worlds when enabled, requires protcollib
+     */
     public HardcoreHeartsFeature() {
         super("HardcoreHearts", "Shows the hardcore hearts instead");
     }
@@ -31,6 +34,9 @@ public class HardcoreHeartsFeature extends UHCFeature {
 
     private static class HardcoreHeartsListener extends PacketAdapter {
 
+        /**
+         * listens for login packets to edit
+         */
         HardcoreHeartsListener(){
             //listen for login packets on the normal priority
             super(UltraHardcore.getInstance(),ListenerPriority.NORMAL,PacketType.Play.Server.LOGIN);

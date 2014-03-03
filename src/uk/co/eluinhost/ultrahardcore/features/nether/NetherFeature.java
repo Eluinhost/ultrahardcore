@@ -13,10 +13,17 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class NetherFeature extends UHCFeature {
 
+    /**
+     * Stops travelling to the nether when enabled
+     */
     public NetherFeature() {
         super("NetherFeature","Disables the use of nether portals");
     }
 
+    /**
+     * On portal events
+     * @param epe related event
+     */
     @EventHandler
     public void onPortalEvent(EntityPortalEvent epe) {
         //if it's enabled

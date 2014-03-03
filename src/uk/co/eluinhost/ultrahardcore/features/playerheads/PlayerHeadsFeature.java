@@ -36,10 +36,17 @@ public class PlayerHeadsFeature extends UHCFeature {
 
     private static final Random RANDOM = new Random();
 
+    /**
+     * Player heads drop on death, normal behaviour when disabled
+     */
     public PlayerHeadsFeature() {
         super("PlayerHeads","Players can drop their heads on death");
     }
 
+    /**
+     * When a player dies
+     * @param pde the death event
+     */
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent pde) {
         //if we're enabled
@@ -89,6 +96,11 @@ public class PlayerHeadsFeature extends UHCFeature {
         return true;
     }
 
+    /**
+     * Places a player head on a stake for the player
+     * @param p the player
+     * @return true if placed, false otherwise
+     */
     private static boolean putHeadOnStake(Player p) {
         if(!ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_HEAD_DROP_STAKE)){
             return false;
@@ -132,6 +144,11 @@ public class PlayerHeadsFeature extends UHCFeature {
         return true;
     }
 
+    /**
+     * Sets the block given to head of the player
+     * @param p the player
+     * @param headBlock the block to set
+     */
     private static void setBlockAsHead(Player p, Block headBlock) {
         //set the type to skull
         headBlock.setType(Material.SKULL);

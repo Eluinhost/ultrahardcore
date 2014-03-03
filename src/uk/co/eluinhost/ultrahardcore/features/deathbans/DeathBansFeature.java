@@ -41,7 +41,9 @@ public class DeathBansFeature extends UHCFeature {
     public static final String BASE_DEATH_BAN = BASE_PERMISSION + "deathban.";
     public static final String DEATH_BAN_IMMUNE = BASE_DEATH_BAN + "immune";
 
-    //TODO more cleanup
+    /**
+     * Bans players on death
+     */
     public DeathBansFeature() {
         super("DeathBans", "Bans a player on death for a specified amount of time");
 
@@ -59,10 +61,15 @@ public class DeathBansFeature extends UHCFeature {
         m_deathBans = banList;
     }
 
+    /**
+     * Format into human readable time left
+     * @param timeUnban the unban time unix timestamp
+     * @return human readable string on how long is left
+     */
     public static String formatTimeLeft(long timeUnban){
         long duration = timeUnban - System.currentTimeMillis();
         long days = TimeUnit.MILLISECONDS.toDays(duration);
-        if(days > (long) Short.MAX_VALUE){
+        if(days > Short.MAX_VALUE){
             return " forever";
         }
         duration -= TimeUnit.DAYS.toMillis(days);
@@ -143,6 +150,11 @@ public class DeathBansFeature extends UHCFeature {
         }
     }
 
+    /**
+     * Turns human readable config times into milliseconds
+     * @param banTime the string
+     * @return the amount of millis
+     */
     public static long parseBanTime(String banTime) {
         if("infinite".equalsIgnoreCase(banTime)){
             return Long.MAX_VALUE/2;
@@ -254,6 +266,12 @@ public class DeathBansFeature extends UHCFeature {
         private final String m_message;
         private final long m_unbanTime;
 
+        /**
+         * Bans the player when ran
+         * @param playerName the player name to ban
+         * @param message the message to ban them with
+         * @param unbanTime the time to unban them again
+         */
         PlayerBanner(String playerName, String message, long unbanTime) {
             m_playerName = playerName;
             m_message = message;

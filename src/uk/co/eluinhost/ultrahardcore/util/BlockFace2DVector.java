@@ -22,26 +22,47 @@ public enum BlockFace2DVector{
 
     private final BlockFace m_blockFace;
 
+    /**
+     * @param blockFace the block face to represent
+     */
     BlockFace2DVector(BlockFace blockFace) {
         m_blockFace = blockFace;
     }
 
+    /**
+     * @return amount of X coordinates
+     */
     public int getX() {
         return -m_blockFace.getModX();
     }
 
+    /**
+     * @return amount of Z-coordinates
+     */
     public int getZ() {
         return m_blockFace.getModZ();
     }
 
+    /**
+     * @return the block face
+     */
     public BlockFace getBlockFace(){
         return m_blockFace;
     }
 
+    /**
+     * @return The angle between the x and z
+     *
+     */
     public double getAngle(){
         return StrictMath.atan2(getX(), getZ());
     }
 
+    /**
+     * Get the closest block face to the direction
+     * @param lookAngle the direction
+     * @return the closest block face
+     */
     public static BlockFace getClosest(double lookAngle){
         BlockFace2DVector[] vectors = BlockFace2DVector.values();
         BlockFace2DVector best = vectors[0];

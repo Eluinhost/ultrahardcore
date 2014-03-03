@@ -24,6 +24,9 @@ public class PlayerListFeature extends UHCFeature {
 
     public static final String PLAYER_LIST_HEALTH = BASE_PERMISSION + "playerListHealth";
 
+    /**
+     * Handles the player list health better than base mc, normal behaviour when disabled
+     */
     public PlayerListFeature() {
         super("PlayerList","Player's health shown in player list and under their name");
     }
@@ -53,7 +56,11 @@ public class PlayerListFeature extends UHCFeature {
     private Objective m_objectivePlayerList;
     private Objective m_objectiveUnderName;
 
-    //update the players name in the list with the following health number
+    /**
+     * update the players name in the list with the following health number
+     * @param player the player to update
+     * @param health the health value to update to
+     */
     public void updatePlayerListHealth(Player player, double health) {
         //TODO add config toggle for using names/display names
         //get the players display name and strip the colour codes from it

@@ -22,10 +22,17 @@ public class DeathMessagesFeature extends UHCFeature {
     public static final String DEATH_MESSAGE_SUPPRESSED = BASE_MESSAGES + "remove";
     public static final String DEATH_MESSAGE_AFFIXES = BASE_MESSAGES + "affixes";
 
+    /**
+     * Change the format of death messages
+     */
     public DeathMessagesFeature() {
         super("DeathMessages","Adds a prefix/suffix to all player deaths");
     }
 
+    /**
+     * Whenver a player dies
+     * @param pde the death event
+     */
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent pde) {
         if (isEnabled()) {

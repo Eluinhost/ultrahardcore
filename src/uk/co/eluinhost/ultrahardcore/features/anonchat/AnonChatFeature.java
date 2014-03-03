@@ -56,6 +56,11 @@ public class AnonChatFeature extends UHCFeature {
          */
         private final String m_message;
 
+        /**
+         * Sends the message when ran
+         * @param playerName the player to run for
+         * @param message the message to send
+         */
         ChatRunnable(String playerName, String message) {
             m_playerName = playerName;
             m_message = message;

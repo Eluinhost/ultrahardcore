@@ -25,10 +25,17 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  */
 public class GhastDropsFeature extends UHCFeature {
 
+    /**
+     * Stops ghasts dropping tears to get rid of regen potions
+     */
     public GhastDropsFeature() {
         super("GhastDrops","Ghasts drop golden ingots instead of tears");
     }
 
+    /**
+     * Whenever an entity dies
+     * @param ede the death event
+     */
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent ede) {
         //if we're enabled and a ghast died
@@ -59,7 +66,6 @@ public class GhastDropsFeature extends UHCFeature {
      *  Is the feature enabled for the world given
      * @param featureNode the feature name
      * @param worldName the world
-     * TODO remove
      * @return true if allowed, false otherwise
      */
     public static boolean featureEnabledForWorld(String featureNode, String worldName) {

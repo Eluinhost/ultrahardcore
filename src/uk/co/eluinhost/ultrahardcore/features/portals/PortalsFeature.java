@@ -11,10 +11,17 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class PortalsFeature extends UHCFeature {
 
+    /**
+     * Changes the radius portals will connect, normal when disabled
+     */
     public PortalsFeature() {
         super("PortalRanges","Change the radius portals can spawn in");
     }
 
+    /**
+     * When a portal event happends
+     * @param entityPortalEvent the portal event
+     */
     @EventHandler
     public void onPortalEvent(PlayerPortalEvent entityPortalEvent) {
         //if we're enabled

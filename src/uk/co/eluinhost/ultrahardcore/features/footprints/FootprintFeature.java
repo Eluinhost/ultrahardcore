@@ -44,6 +44,9 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     private final Collection<Footstep> m_footsteps = new ArrayList<Footstep>();
     private int m_jobID = -1;
 
+    /**
+     * Leave 'footprints' behind you, requires protocollib
+     */
     public FootprintFeature() {
         super("Footprints","Leave footprints behind you...");
     }
@@ -118,6 +121,10 @@ public class FootprintFeature extends UHCFeature implements Runnable {
         return true;
     }
 
+    /**
+     * Sends the footstep to nearby players
+     * @param footstep the footstep to send
+     */
     private void sendFootstep(Footstep footstep){
         m_defaultPacket.getStrings().write(0, "footstep");
         Location loc = footstep.getLocation();

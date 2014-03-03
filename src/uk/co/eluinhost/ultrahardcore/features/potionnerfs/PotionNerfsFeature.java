@@ -24,6 +24,9 @@ public class PotionNerfsFeature extends UHCFeature {
     public static final String DENY_SPLASH = POTION_BASE + "disableSplash";
     public static final String DENY_IMPROVED = POTION_BASE + "disableImproved";
 
+    /**
+     * Disallows tier 2 + splash when enabled, normal when disabled
+     */
     public PotionNerfsFeature() {
         super("PotionNerfs","Applies nerfs to potions");
     }
@@ -128,6 +131,10 @@ public class PotionNerfsFeature extends UHCFeature {
 
         private final String m_playerName;
 
+        /**
+         * Removes absorption from a player when ran
+         * @param playerName the player to run for
+         */
         RemoveAbsoptionRunnable(String playerName){
             m_playerName = playerName;
         }

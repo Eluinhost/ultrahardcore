@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+//TODO use a config file instead
 public class WordsUtil extends JavaPlugin {
 
     private static final String[] ADJECTIVES = {
@@ -258,6 +259,9 @@ public class WordsUtil extends JavaPlugin {
 
     private static final Random RANDOM = new Random();
 
+    /**
+     * @return a random team name
+     */
     public static String getRandomTeamName() {
         return "The " + ADJECTIVES[RANDOM.nextInt(ADJECTIVES.length)] + " " + NOUNS[RANDOM.nextInt(NOUNS.length)];
     }

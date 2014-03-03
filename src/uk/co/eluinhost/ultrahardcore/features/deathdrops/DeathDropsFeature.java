@@ -28,7 +28,10 @@ public class DeathDropsFeature extends UHCFeature {
     private final Collection<ItemDrop> m_drops = new ArrayList<ItemDrop>();
     private static final Random RANDOM = new Random();
 
-    //TODO simplify...
+    /**
+     * Add drops to a player when they die
+     * TODO simplify
+     */
     public DeathDropsFeature() {
         super("DeathDrops", "Adds extra loot to players on death");
         ConfigurationSection items = ConfigManager.getInstance().getConfig().getConfigurationSection(ConfigNodes.DEATH_DROPS_ITEMS);
@@ -124,6 +127,10 @@ public class DeathDropsFeature extends UHCFeature {
         }
     }
 
+    /**
+     * Whenever a player dies
+     * @param pde the death event
+     */
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent pde) {
         if (isEnabled()) {
@@ -139,6 +146,11 @@ public class DeathDropsFeature extends UHCFeature {
         }
     }
 
+    /**
+     * get the item drops from the group name
+     * @param name the group name
+     * @return the list of item drops
+     */
     public List<ItemDrop> getItemDropForGroup(String name) {
         List<ItemDrop> ids = new ArrayList<ItemDrop>();
         for (ItemDrop id : m_drops) {
@@ -149,17 +161,13 @@ public class DeathDropsFeature extends UHCFeature {
         return ids;
     }
 
+    /**
+     * @return list of all the groups
+     */
     public List<String> getItemDropGroups() {
-        ArrayList<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<String>();
         for (ItemDrop id : m_drops) {
-            boolean found = false;
-            for (String s : list) {
-                if (s.equalsIgnoreCase(id.getGroupName())) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
+            if(!list.contains(id.getGroupName())){
                 list.add(id.getGroupName());
             }
         }

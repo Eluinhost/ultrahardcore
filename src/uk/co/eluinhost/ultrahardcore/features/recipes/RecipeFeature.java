@@ -31,10 +31,17 @@ public class RecipeFeature extends UHCFeature {
     public static final String ALLOW_NEW_GCARROT = RECIPE_BASE + "allowNewGCarrot";
     public static final String DISALLOW_OLD_GCARROT = RECIPE_BASE + "disableGCarrot";
 
+    /**
+     * Harder recipes when enabled, normal when disabled
+     */
     public RecipeFeature() {
         super("HardRecipes","Handles changed recipes");
     }
 
+    /**
+     * Whenever an item is about to pop up on the crafting table
+     * @param e the prepareitemcraftevent
+     */
     @EventHandler
     public void onPrepareCraftItemEvent(PrepareItemCraftEvent e) {
         //if we are enabled
@@ -76,6 +83,12 @@ public class RecipeFeature extends UHCFeature {
         return true;
     }
 
+    /**
+     * Check if the recipe has the given material in it
+     * @param r the recipe to check
+     * @param mat the material to look for
+     * @return true if found, false if not
+     */
     private static boolean hasRecipeGotMaterial(Recipe r, Material mat) {
         Collection<ItemStack> ingredients = null;
         //noinspection ChainOfInstanceofChecks
@@ -87,6 +100,12 @@ public class RecipeFeature extends UHCFeature {
         return null != ingredients && isMaterialInList(ingredients, mat);
     }
 
+    /**
+     * Checks if the material is in the lsit
+     * @param itemStackList the list to check
+     * @param mat the material to look for
+     * @return true if found, false if not
+     */
     private static boolean isMaterialInList(Iterable<ItemStack> itemStackList, Material mat){
         for (ItemStack itemStack : itemStackList) {
             if (itemStack.getType() == mat) {

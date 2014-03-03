@@ -48,6 +48,9 @@ public class DeathBan implements ConfigurationSerializable {
         return m_playerName;
     }
 
+    /**
+     * @return the group name for this death ban
+     */
     public String getGroupName() {
         return m_groupName;
     }

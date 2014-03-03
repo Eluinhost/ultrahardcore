@@ -164,6 +164,14 @@ public class ScatterManager {
         m_maxTries = maxTries;
     }
 
+    /**
+     * Scatter the players
+     * @param type the scatter logic to use
+     * @param params the parameters to scatter with
+     * @param players the player to scatter
+     * @param sender the sender who issued the command to be kept updated
+     * @throws MaxAttemptsReachedException if scatter couldn't complete
+     */
     public void scatter(AbstractScatterType type, Parameters params, Iterable<Player> players, CommandSender sender) throws MaxAttemptsReachedException {
          /*
          * get the right amount of people to scatter

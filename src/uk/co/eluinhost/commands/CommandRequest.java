@@ -12,6 +12,7 @@ public class CommandRequest {
     private final String m_commandName;
 
     /**
+     * @param commandName the commands name
      * @param args the arguements to use
      * @param sender the sender for the request
      */
@@ -64,10 +65,16 @@ public class CommandRequest {
         return m_args.get(m_args.size()-1);
     }
 
+    /**
+     * @return the commands name
+     */
     public String getCommandName() {
         return m_commandName;
     }
 
+    /**
+     * @return the type of the sender
+     */
     public SenderType getSenderType(){
         return SenderType.getFromCommandSender(m_sender);
     }
