@@ -11,9 +11,9 @@ import org.bukkit.Bukkit;
 
 import uk.co.eluinhost.features.events.FeatureInitEvent;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
-import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
-import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
+import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
+import uk.co.eluinhost.features.exceptions.FeatureIDNotFoundException;
+import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
 
 /**
  * Feature Manager Class

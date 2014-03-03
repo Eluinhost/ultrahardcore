@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.exceptions.features;
+package uk.co.eluinhost.features.exceptions;
 
 @SuppressWarnings("serial")
 public class FeatureIDConflictException extends FeatureException{
