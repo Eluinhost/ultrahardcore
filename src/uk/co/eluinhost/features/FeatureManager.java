@@ -13,7 +13,7 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
-import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureInitEvent;
+import uk.co.eluinhost.features.events.UHCFeatureInitEvent;
 
 /**
  * Feature Manager Class

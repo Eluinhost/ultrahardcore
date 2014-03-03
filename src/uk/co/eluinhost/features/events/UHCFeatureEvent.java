@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.events.features;
+package uk.co.eluinhost.features.events;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

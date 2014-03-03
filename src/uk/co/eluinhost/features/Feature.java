@@ -4,9 +4,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureDisableEvent;
-import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureEnableEvent;
-import uk.co.eluinhost.ultrahardcore.events.features.UHCFeatureEvent;
+import uk.co.eluinhost.features.events.UHCFeatureDisableEvent;
+import uk.co.eluinhost.features.events.UHCFeatureEnableEvent;
+import uk.co.eluinhost.features.events.UHCFeatureEvent;
 
 public class Feature implements Listener, IFeature {
 
