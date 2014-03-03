@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.Location;
 
-import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
+import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;

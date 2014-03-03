@@ -6,7 +6,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedException;
+import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
