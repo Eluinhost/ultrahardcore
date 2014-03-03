@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import uk.co.eluinhost.features.IFeature;
 
-public class UHCFeatureEvent extends Event implements Cancellable{
+public class FeatureEvent extends Event implements Cancellable{
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final IFeature m_feature;
@@ -15,7 +15,7 @@ public class UHCFeatureEvent extends Event implements Cancellable{
      * Generic feature event
      * @param feature feature event is running for
      */
-    protected UHCFeatureEvent(IFeature feature){
+    protected FeatureEvent(IFeature feature){
         m_feature = feature;
     }
 

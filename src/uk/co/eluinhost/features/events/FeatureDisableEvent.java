@@ -2,12 +2,12 @@ package uk.co.eluinhost.features.events;
 
 import uk.co.eluinhost.features.IFeature;
 
-public class UHCFeatureDisableEvent extends UHCFeatureEvent{
+public class FeatureDisableEvent extends FeatureEvent {
     /**
      * Called when a feature is disabled, cancelling stops the feature disabling
      * @param feature the feature involved
      */
-    public UHCFeatureDisableEvent(IFeature feature) {
+    public FeatureDisableEvent(IFeature feature) {
         super(feature);
     }
 }

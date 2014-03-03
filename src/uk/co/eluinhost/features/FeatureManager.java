@@ -9,11 +9,11 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 
+import uk.co.eluinhost.features.events.FeatureInitEvent;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
-import uk.co.eluinhost.features.events.UHCFeatureInitEvent;
 
 /**
  * Feature Manager Class
@@ -72,7 +72,7 @@ public class FeatureManager {
         }
 
         //Make an init event for the feature creation
-        UHCFeatureInitEvent initEvent = new UHCFeatureInitEvent(feature);
+        FeatureInitEvent initEvent = new FeatureInitEvent(feature);
 
         //call the event
         Bukkit.getPluginManager().callEvent(initEvent);

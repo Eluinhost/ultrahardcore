@@ -4,9 +4,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-import uk.co.eluinhost.features.events.UHCFeatureDisableEvent;
-import uk.co.eluinhost.features.events.UHCFeatureEnableEvent;
-import uk.co.eluinhost.features.events.UHCFeatureEvent;
+import uk.co.eluinhost.features.events.FeatureDisableEvent;
+import uk.co.eluinhost.features.events.FeatureEnableEvent;
+import uk.co.eluinhost.features.events.FeatureEvent;
 
 public class Feature implements Listener, IFeature {
 
@@ -28,7 +28,7 @@ public class Feature implements Listener, IFeature {
         if(isEnabled()){
             return false;
         }
-        UHCFeatureEvent event = new UHCFeatureEnableEvent(this);
+        FeatureEvent event = new FeatureEnableEvent(this);
         Bukkit.getPluginManager().callEvent(event);
         if(!event.isCancelled()){
             m_enabled = true;
@@ -42,7 +42,7 @@ public class Feature implements Listener, IFeature {
         if(!isEnabled()){
             return false;
         }
-        UHCFeatureDisableEvent event = new UHCFeatureDisableEvent(this);
+        FeatureDisableEvent event = new FeatureDisableEvent(this);
         Bukkit.getPluginManager().callEvent(event);
         if(!event.isCancelled()){
             m_enabled = false;
