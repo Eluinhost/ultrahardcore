@@ -6,8 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
-import uk.co.eluinhost.ultrahardcore.features.IUHCFeature;
-import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
+import uk.co.eluinhost.features.IFeature;
+import uk.co.eluinhost.features.FeatureManager;
 
 public class FeatureCommand {
 
@@ -28,12 +28,12 @@ public class FeatureCommand {
             parentID = "FeatureCommand")
     public void onFeatureListCommand(CommandRequest request){
         CommandSender sender = request.getSender();
-        List<IUHCFeature> features = FeatureManager.getInstance().getFeatures();
+        List<IFeature> features = FeatureManager.getInstance().getFeatures();
         sender.sendMessage(ChatColor.GOLD + "Currently loaded features (" + features.size() + "):");
         if (features.isEmpty()) {
             sender.sendMessage(ChatColor.GRAY + "No features loaded!");
         }
-        for (IUHCFeature feature : features) {
+        for (IFeature feature : features) {
             sender.sendMessage((feature.isEnabled() ? ChatColor.GREEN + "ON " : ChatColor.RED + "OFF ") + feature.getFeatureID() + ChatColor.GRAY + " - " + feature.getDescription());
         }
     }
@@ -45,7 +45,7 @@ public class FeatureCommand {
             permission = FEATURE_TOGGLE_PERMISSION,
             parentID = "FeatureCommand")
     public void onFeatureOnCommand(CommandRequest request){
-        IUHCFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
+        IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
         if(null == feature){
             request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " was not found, use /feature list to see a list of available features");
             return;
@@ -68,7 +68,7 @@ public class FeatureCommand {
             permission = FEATURE_TOGGLE_PERMISSION,
             parentID = "FeatureCommand")
     public void onFeatureOffCommand(CommandRequest request){
-        IUHCFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
+        IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
         if(null == feature){
             request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " was not found, use /feature list to see a list of available features");
             return;

@@ -16,7 +16,7 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
-import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
+import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBan;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;

@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.features;
+package uk.co.eluinhost.features;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +40,7 @@ public class FeatureManager {
     /**
      * Stores a list of all the uhcFeatures loaded on the server
      */
-    private final List<IUHCFeature> m_uhcFeatureList = new ArrayList<IUHCFeature>();
+    private final List<IFeature> m_uhcFeatureList = new ArrayList<IFeature>();
 
     /**
      * Only allow uhcFeatures with this pattern as an ID
@@ -50,12 +50,12 @@ public class FeatureManager {
     /**
      * Add a UHC feature to the manager
      *
-     * @param feature UHCFeature the feature to be added
+     * @param feature Feature the feature to be added
      * @param enabled Whether the feature should be enabled or not after init
      * @throws FeatureIDConflictException when feature with the same ID already exists
      * @throws InvalidFeatureIDException  when the feature has an invalid ID name
      */
-    public void addFeature(UHCFeature feature, boolean enabled) throws FeatureIDConflictException, InvalidFeatureIDException {
+    public void addFeature(Feature feature, boolean enabled) throws FeatureIDConflictException, InvalidFeatureIDException {
         String featureID = feature.getFeatureID();
 
         //check for right pattern
@@ -65,7 +65,7 @@ public class FeatureManager {
         }
 
         //check for existing feature of the same name
-        for (IUHCFeature uhcFeature : m_uhcFeatureList) {
+        for (IFeature uhcFeature : m_uhcFeatureList) {
             if (uhcFeature.equals(feature)) {
                 throw new FeatureIDConflictException();
             }
@@ -105,7 +105,7 @@ public class FeatureManager {
      * @throws FeatureIDNotFoundException when feature not found
      */
     public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException {
-        for (IUHCFeature feature : m_uhcFeatureList) {
+        for (IFeature feature : m_uhcFeatureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
@@ -114,13 +114,13 @@ public class FeatureManager {
     }
 
     /**
-     * Get the UHCFeature based on it's ID
+     * Get the Feature based on it's ID
      *
      * @param featureID String the ID to check for
-     * @return UHCFeature the returned feature, or null if not found
+     * @return Feature the returned feature, or null if not found
      */
-    public IUHCFeature getFeatureByID(String featureID) {
-        for (IUHCFeature feature : m_uhcFeatureList) {
+    public IFeature getFeatureByID(String featureID) {
+        for (IFeature feature : m_uhcFeatureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
@@ -133,7 +133,7 @@ public class FeatureManager {
      *
      * @return List
      */
-    public List<IUHCFeature> getFeatures() {
+    public List<IFeature> getFeatures() {
         return Collections.unmodifiableList(m_uhcFeatureList);
     }
 
@@ -144,7 +144,7 @@ public class FeatureManager {
      */
     public List<String> getFeatureNames() {
         List<String> features = new ArrayList<String>();
-        for (IUHCFeature uhc : m_uhcFeatureList) {
+        for (IFeature uhc : m_uhcFeatureList) {
             features.add(uhc.getFeatureID());
         }
         return features;
