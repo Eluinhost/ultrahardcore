@@ -105,6 +105,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         }
         String[] baseCommands = {
                 "heal",
+                "healself",
                 "feed",
                 "tpp",
                 "ci",

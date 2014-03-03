@@ -11,6 +11,10 @@ commands:
       description: Heal a player/yourself
       usage: /<command> [player/*]
       aliases: [uhcheal]
+    healself:
+      description: Heal yourself
+      usage: /<command>
+      aliases: [uhchealself]
     feed:
       description: Feed a player/yourself
       usage: /<command> [player/*]
