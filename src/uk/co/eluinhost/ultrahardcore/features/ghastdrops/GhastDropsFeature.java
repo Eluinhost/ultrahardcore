@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -33,7 +34,7 @@ public class GhastDropsFeature extends UHCFeature {
         //if we're enabled and a ghast died
         if (isEnabled() && ede.getEntityType() == EntityType.GHAST) {
             //if ghasts can't drop tears in this world
-            if (ConfigManager.getInstance().featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())) {
+            if (featureEnabledForWorld(ConfigNodes.GHAST_DROP_CHANGES_NODE, ede.getEntity().getWorld().getName())) {
 
                 //get the list of drops
                 List<ItemStack> drops = ede.getDrops();
@@ -52,5 +53,24 @@ public class GhastDropsFeature extends UHCFeature {
                 drops.addAll(toAdd);
             }
         }
+    }
+
+    /**
+     *  Is the feature enabled for the world given
+     * @param featureNode the feature name
+     * @param worldName the world
+     * TODO remove
+     * @return true if allowed, false otherwise
+     */
+    public static boolean featureEnabledForWorld(String featureNode, String worldName) {
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        //w&&f = enabled
+        //w&&!f = disabled
+        //!w&&f = disabled
+        //!w&&!f = enabled
+        // = AND
+        boolean whitelist = config.getBoolean(featureNode + ".whitelist");
+        boolean found = config.getStringList(featureNode + ".worlds").contains(worldName);
+        return !(whitelist ^ found);
     }
 }

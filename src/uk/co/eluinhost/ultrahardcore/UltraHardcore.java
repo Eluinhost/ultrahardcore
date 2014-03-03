@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import uk.co.eluinhost.commands.CommandHandler;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;

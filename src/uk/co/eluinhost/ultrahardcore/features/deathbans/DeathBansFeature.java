@@ -11,7 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.config.ConfigType;
 import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
