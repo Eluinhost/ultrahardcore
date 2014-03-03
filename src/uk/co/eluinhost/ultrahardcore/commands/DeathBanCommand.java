@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
-import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDNotFoundException;
+import uk.co.eluinhost.features.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
