@@ -91,4 +91,9 @@ public abstract class AbstractScatterType {
     public static Random getRandom() {
         return RANDOM;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        return obj instanceof AbstractScatterType && ((AbstractScatterType) obj).getScatterID().equals(getScatterID());
+    }
 }

@@ -18,6 +18,7 @@ import uk.co.eluinhost.configuration.ConfigManager;
 //TODO more option parameters
 public class ScatterManager {
 
+    //todo max tris and attemtps somewher
     private int m_maxTries;
     private int m_maxAttemtps;
     private int m_scatterDelay;
@@ -73,8 +74,7 @@ public class ScatterManager {
      */
     public void addScatterType(AbstractScatterType type) throws ScatterTypeConflictException {
         for (AbstractScatterType scatterType : m_scatterTypes) {
-            //TODO make an equals method in abstractscattertype
-            if (scatterType.getScatterID().equals(type.getScatterID())) {
+            if (scatterType.equals(type)) {
                 throw new ScatterTypeConflictException();
             }
         }
