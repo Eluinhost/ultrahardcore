@@ -1,41 +1,33 @@
 package uk.co.eluinhost.ultrahardcore.util;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class TeamsUtil {
 
-    private final Pattern m_teamNamePattern = Pattern.compile("UHC[\\d]++");
     private final Scoreboard m_mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
     /**
-     * Clears all the teams
-     *
-     * @param allTeams flag whether to clear all teams
+     * Empties all teams and removes the teams from the scoreboard
+     * @param tellPlayer whether to tell the player they were removed or not
      */
-    public void clearTeams(boolean allTeams) {
+    public void clearTeams(boolean tellPlayer) {
         for (Team t : m_mainScoreboard.getTeams()) {
-            Matcher matcher = m_teamNamePattern.matcher(t.getName());
-            if (matcher.matches() || allTeams) {
-                for (OfflinePlayer p : t.getPlayers()) {
-                    t.removePlayer(p);
-                    if (p.isOnline()) {
-                        p.getPlayer().sendMessage(ChatColor.GOLD + "You were removed from your team");
-                    }
+            for (OfflinePlayer p : t.getPlayers()) {
+                t.removePlayer(p);
+                if (tellPlayer && p.isOnline()) {
+                    p.getPlayer().sendMessage(ChatColor.GOLD + "You were removed from your team");
                 }
-                try {
-                    t.unregister();
-                } catch (IllegalStateException ignored) {
-                }
+            }
+            try {
+                t.unregister();
+            } catch (IllegalStateException ignored) {
             }
         }
     }
@@ -68,32 +60,11 @@ public class TeamsUtil {
     }
 
     /**
-     * sends the list of teams to the sender
-     *
-     * @param sender   the sender of the command
-     * @param allTeams whether to show all teams
-     */
-    public void sendTeams(CommandSender sender, boolean allTeams) {
-        Set<Team> teams = m_mainScoreboard.getTeams();
-        boolean noneFound = true;
-        for (Team t : teams) {
-            Matcher matcher = m_teamNamePattern.matcher(t.getName());
-            if (matcher.matches() || allTeams) {
-                noneFound = false;
-                sender.sendMessage(teamToString(t));
-            }
-        }
-        if (noneFound) {
-            sender.sendMessage(ChatColor.GOLD + "There are no " + (allTeams ? "" : "UHC") + " teams defined yet!");
-        }
-    }
-
-    /**
-     * Removes all the players already in a team from supplied list
+     * Removes all the players from the list that are in a team
      *
      * @param players the array list of player to remove teamed players from
      */
-    public void removeAllInTeam(Iterable<Player> players) {
+    public void removePlayersInATeam(Iterable<Player> players) {
         Iterator<Player> it = players.iterator();
         while (it.hasNext()) {
             Player p = it.next();
@@ -107,7 +78,7 @@ public class TeamsUtil {
      * Gets the next UHCxxx team available
      *
      * @param onlyMakeNew only make a new team, dont just return an empty team
-     * @return Team
+     * @return Team first UHCxxx team
      */
     public Team getNextAvailableTeam(boolean onlyMakeNew) {
         int count = 0;
@@ -136,23 +107,23 @@ public class TeamsUtil {
 
     /**
      * @param p the player to remove
-     * @param printflags the flags to use to tell people about it
-     *                   TODO print flags are stupid
+     * @param tellPlayer whether to tell the player they were removed or not
+     * @param tellTeam whether to tell the team the player was removed or not
      * @return true if removed, false otherwise
      */
-    public boolean removePlayerFromTeam(OfflinePlayer p, int printflags) {
+    public boolean removePlayerFromTeam(OfflinePlayer p, boolean tellPlayer, boolean tellTeam) {
         Team t = m_mainScoreboard.getPlayerTeam(p);
         if (t == null) {
             return false;
         }
         t.removePlayer(p);
-        if (PrintFlags.canPrintToPlayer(printflags)) {
+        if (tellPlayer) {
             Player player = p.getPlayer();
             if (player != null) {
                 player.sendMessage(ChatColor.GOLD + "You were removed from your team");
             }
         }
-        if (PrintFlags.canPrintToTeam(printflags)) {
+        if (tellTeam) {
             for (OfflinePlayer op : t.getPlayers()) {
                 Player player = op.getPlayer();
                 if (player != null) {
@@ -166,10 +137,12 @@ public class TeamsUtil {
     /**
      * @param player the player to add
      * @param t the team to add to
-     * @param flags the print flags for feedback
+     * @param tellPlayer whether to tell the player they were removed or not
+     * @param tellTeam whether to tell the team the player was removed or not
      */
-    public static void playerJoinTeam(OfflinePlayer player, Team t, int flags) {
-        if (PrintFlags.canPrintToTeam(flags)) {
+    public static void playerJoinTeam(OfflinePlayer player, Team t, boolean tellPlayer, boolean tellTeam) {
+        t.addPlayer(player);
+        if (tellTeam) {
             for (OfflinePlayer op : t.getPlayers()) {
                 Player p = op.getPlayer();
                 if (p != null) {
@@ -177,8 +150,7 @@ public class TeamsUtil {
                 }
             }
         }
-        t.addPlayer(player);
-        if (PrintFlags.canPrintToPlayer(flags)) {
+        if (tellPlayer) {
             Player p = player.getPlayer();
             if (p != null) {
                 p.sendMessage(ChatColor.GOLD + "You joined the team " + t.getDisplayName() + " (" + t.getName() + ")");
@@ -187,26 +159,15 @@ public class TeamsUtil {
     }
 
     /**
-     * @param teamName the team name to check
-     * @return true if the name is a UHCxx team or false otherwise
+     * Empties all the teams
+     * @param tellPlayer whether to tell the player they were removed or not
      */
-    public boolean isUHCTeam(CharSequence teamName) {
-        return m_teamNamePattern.matcher(teamName).matches();
-    }
-
-    /**
-     * Emptiess all the teams
-     * @param allTeams if true empties all the teams, otherwise just UHCxx teams
-     */
-    public void emptyTeams(boolean allTeams) {
+    public void emptyTeams(boolean tellPlayer) {
         for (Team t : m_mainScoreboard.getTeams()) {
-            Matcher matcher = m_teamNamePattern.matcher(t.getName());
-            if (matcher.matches() || allTeams) {
-                for (OfflinePlayer p : t.getPlayers()) {
-                    t.removePlayer(p);
-                    if (p.isOnline()) {
-                        p.getPlayer().sendMessage(ChatColor.GOLD + "You were removed from your team");
-                    }
+            for (OfflinePlayer p : t.getPlayers()) {
+                t.removePlayer(p);
+                if (p.isOnline()) {
+                    p.getPlayer().sendMessage(ChatColor.GOLD + "You were removed from your team");
                 }
             }
         }
