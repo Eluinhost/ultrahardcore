@@ -16,6 +16,10 @@ public class HealCommand {
     public static final String HEAL_ANNOUNCE_PERMISSION = "UHC.heal.announce";
     public static final String HEAL_ALL_PERMISSION = "UHC.heal.all";
 
+    /**
+     * Ran on /healself
+     * @param request request params
+     */
     @Command(trigger = "healself",
             identifier = "HealSelfCommand",
             minArgs = 0,
@@ -32,6 +36,10 @@ public class HealCommand {
         );
     }
 
+    /**
+     * Ran on /heal {name}
+     * @param request request params
+     */
     @Command(trigger = "heal",
             identifier = "HealCommand",
             minArgs = 1,
@@ -53,6 +61,10 @@ public class HealCommand {
         );
     }
 
+    /**
+     * Ran on /heal *
+     * @param request request params
+     */
     @Command(trigger = "*",
             identifier = "HealAllCommand",
             parentID = "HealCommand",

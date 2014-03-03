@@ -17,6 +17,10 @@ public class TPCommand {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 
+    /**
+     * Ran on /tpp {list of players} {player/location}
+     * @param request request params
+     */
     @Command(trigger = "tpp",
             identifier = "TeleportCommand",
             minArgs = 2,
@@ -53,7 +57,7 @@ public class TPCommand {
                 x = Integer.parseInt(coords[0]);
                 y = Integer.parseInt(coords[1]);
                 z = Integer.parseInt(coords[2]);
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
                 sender.sendMessage(ChatColor.RED + "Invalid numbers used for coordinates: " + coords[0] + "," + coords[1] + "," + coords[2]);
                 return;
             }

@@ -23,6 +23,10 @@ public class ClearInventoryCommand {
     public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";
     public static final String CLEAR_IMMUNE_PERMISSION = "UHC.ci.immune";
 
+    /**
+     * Ran on /ciself
+     * @param request request params
+     */
     @Command(trigger = "ciself",
             identifier = "ClearInventorySelf",
             minArgs = 0,
@@ -35,6 +39,10 @@ public class ClearInventoryCommand {
         player.sendMessage(ChatColor.GOLD + "Inventory cleared successfully");
     }
 
+    /**
+     * Ran on /ci {name}*
+     * @param request request params
+     */
     @Command(trigger = "ci",
             identifier = "ClearInventory",
             minArgs = 1,
@@ -67,6 +75,10 @@ public class ClearInventoryCommand {
         }
     }
 
+    /**
+     * Ran on /ci *
+     * @param request request params
+     */
     @Command(trigger = "*",
             identifier = "ClearInventoryAll",
             parentID = "ClearInventory",
@@ -83,6 +95,10 @@ public class ClearInventoryCommand {
     }
 
 
+    /**
+     * Clears the player's inventory, armour slots, item on cursor and crafting slots
+     * @param p player
+     */
     private static void clearInventory(HumanEntity p) {
         p.getInventory().clear();
         p.getInventory().setHelmet(null);

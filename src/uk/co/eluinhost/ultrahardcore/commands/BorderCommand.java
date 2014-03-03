@@ -15,10 +15,17 @@ import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import uk.co.eluinhost.configuration.ConfigManager;
 
+//TODO finish convert
 public class BorderCommand {
 
     public static final String GENERATE_BORDER = "UHC.generateborder";
+    private static final String SYNTAX = "/generateborder radius world[:x,z] typeID[:blockid:meta] OR /generateborder undo/types [world]";
 
+
+    /**
+     * Ran on /genborder
+     * @param request request params
+     */
     @Command(trigger = "genborder",
             identifier = "BorderCommand",
             permission = GENERATE_BORDER)
@@ -26,6 +33,10 @@ public class BorderCommand {
         //TODO this
     }
 
+    /**
+     * Ran on /genborder undo
+     * @param request request params
+     */
     @Command(trigger = "undo",
             identifier = "BorderUndoCommand",
             minArgs = 0,
@@ -52,6 +63,10 @@ public class BorderCommand {
         }
     }
 
+    /**
+     * Ran on /genborder types
+     * @param request request params
+     */
     @Command(trigger = "types",
             identifier = "BorderTypesCommand",
             minArgs = 0,
@@ -61,8 +76,6 @@ public class BorderCommand {
     public void onBorderTypesCommand(CommandRequest request){
         //TODO this
     }
-
-    private static final String SYNTAX = "/generateborder radius world[:x,z] typeID[:blockid:meta] OR /generateborder undo/types [world]";
 
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {

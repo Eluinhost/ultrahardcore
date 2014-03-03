@@ -14,12 +14,20 @@ public class FeatureCommand {
     public static final String FEATURE_LIST_PERMISSION = "UHC.feature.list";
     public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";
 
+    /**
+     * Ran on /feature
+     * @param request request params
+     */
     @Command(trigger = "feature",
             identifier = "FeatureCommand")
     public void onFeatureCommand(CommandRequest request){
         //TODO show syntax?
     }
 
+    /**
+     * Ran on /feature list
+     * @param request request params
+     */
     @Command(trigger = "list",
             identifier = "FeatureListCommand",
             minArgs = 0,
@@ -38,6 +46,10 @@ public class FeatureCommand {
         }
     }
 
+    /**
+     * Ran on /feature on {name}
+     * @param request request params
+     */
     @Command(trigger = "on",
             identifier = "FeatureOnCommand",
             minArgs = 1,
@@ -61,6 +73,10 @@ public class FeatureCommand {
         request.getSender().sendMessage(ChatColor.GOLD+"Feature enabled");
     }
 
+    /**
+     * Ran on /feature off {name}
+     * @param request request params
+     */
     @Command(trigger = "off",
             identifier = "FeatureOffCommand",
             minArgs = 1,
