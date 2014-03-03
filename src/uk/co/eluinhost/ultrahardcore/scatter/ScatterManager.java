@@ -13,7 +13,7 @@ import uk.co.eluinhost.ultrahardcore.exceptions.scatter.MaxAttemptsReachedExcept
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
-import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
+import uk.co.eluinhost.configuration.ConfigManager;
 
 //TODO more option parameters
 public class ScatterManager {

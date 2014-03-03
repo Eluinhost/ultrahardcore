@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.config;
+package uk.co.eluinhost.configuration;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -6,7 +6,6 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 

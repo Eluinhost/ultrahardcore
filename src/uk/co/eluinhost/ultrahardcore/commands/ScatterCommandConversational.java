@@ -10,7 +10,7 @@ import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;

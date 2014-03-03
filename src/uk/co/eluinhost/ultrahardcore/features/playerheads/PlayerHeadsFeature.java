@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;

@@ -11,7 +11,7 @@ import uk.co.eluinhost.ultrahardcore.commands.ClearInventoryCommand;
 import uk.co.eluinhost.ultrahardcore.commands.FeatureCommand;
 import uk.co.eluinhost.ultrahardcore.commands.HealCommand;
 import uk.co.eluinhost.ultrahardcore.commands.TPCommand;
-import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;

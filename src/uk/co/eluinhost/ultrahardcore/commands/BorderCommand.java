@@ -14,7 +14,7 @@ import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.worldedit.TooManyBlocksException;
-import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
+import uk.co.eluinhost.configuration.ConfigManager;
 
 public class BorderCommand {
 
