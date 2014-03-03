@@ -6,12 +6,6 @@ import org.bukkit.permissions.PermissionDefault;
 //TODO move into relevant classes
 public class PermissionNodes {
 
-    public static final String FEED_NODE = "UHC.feed";
-    public static final String FEED_ALL = FEED_NODE + ".all";
-    public static final String FEED_SELF = FEED_NODE + ".self";
-    public static final String FEED_OTHER = FEED_NODE + ".other";
-    public static final String FEED_ANNOUNCE = FEED_NODE + ".announce";
-
     public static final String ANTIFREEZE = "UHC.freeze.antifreeze";
     public static final String FREEZE_PERMISSION = "UHC.freeze.command";
 

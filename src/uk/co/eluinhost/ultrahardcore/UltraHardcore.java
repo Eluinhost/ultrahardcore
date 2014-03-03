@@ -94,7 +94,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 ClearInventoryCommand.class,
                 TPCommand.class,
                 FeatureCommand.class,
-                TeamCommands.class
+                TeamCommands.class,
+                FeedCommand.class
         };
         for(Class clazz : classes){
             try {
@@ -107,6 +108,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 "heal",
                 "healself",
                 "feed",
+                "feedself",
                 "tpp",
                 "ci",
                 "ciself",

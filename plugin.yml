@@ -106,7 +106,6 @@ permissions:
         children:
           UHC.feed.self: true
           UHC.feed.other: true
-          UHC.feed.all: true
           UHC.feed.announce: true
     UHC.ci.*:
         description: Gives all clear inventory commands
@@ -140,9 +139,6 @@ permissions:
         default: false
     UHC.feed.other:
         description: Fully feed another player
-        default: false
-    UHC.feed.all:
-        description: Feeds all players on the server
         default: false
     UHC.feed.announce:
         description: All feed commands will be announced to this player
