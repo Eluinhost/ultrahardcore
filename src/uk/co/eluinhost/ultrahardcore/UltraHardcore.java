@@ -1,23 +1,24 @@
 package uk.co.eluinhost.ultrahardcore;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import uk.co.eluinhost.commands.CommandHandler;
+import uk.co.eluinhost.ultrahardcore.commands.ClearInventoryCommand;
+import uk.co.eluinhost.ultrahardcore.commands.FeatureCommand;
+import uk.co.eluinhost.ultrahardcore.commands.HealCommand;
+import uk.co.eluinhost.ultrahardcore.commands.TPCommand;
+import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.FeatureIDConflictException;
 import uk.co.eluinhost.ultrahardcore.exceptions.features.InvalidFeatureIDException;
 import uk.co.eluinhost.ultrahardcore.exceptions.scatter.ScatterTypeConflictException;
+import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBan;
-import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathlightning.DeathLightningFeature;
@@ -35,13 +36,14 @@ import uk.co.eluinhost.ultrahardcore.features.potionnerfs.PotionNerfsFeature;
 import uk.co.eluinhost.ultrahardcore.features.recipes.RecipeFeature;
 import uk.co.eluinhost.ultrahardcore.features.regen.RegenFeature;
 import uk.co.eluinhost.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
+import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
-import uk.co.eluinhost.ultrahardcore.config.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.metrics.MetricsLite;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+
+import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * UltraHardcore
@@ -51,8 +53,6 @@ import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
  * @author ghowden
  */
 public class UltraHardcore extends JavaPlugin implements Listener {
-
-    private final CommandHandler m_commandHander = CommandHandler.getInstance();
 
     /**
      * @return the current instance of the plugin
@@ -87,7 +87,11 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         }
     }
 
+    /**
+     * Load all the default commands
+     */
     private void loadDefaultCommands() {
+        CommandHandler commandHandler = CommandHandler.getInstance();
         Class[] classes = {
                 HealCommand.class,
                 ClearInventoryCommand.class,
@@ -96,8 +100,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         };
         for(Class clazz : classes){
             try {
-                m_commandHander.registerCommands(clazz);
-            } catch (Exception e) {
+                commandHandler.registerCommands(clazz);
+            } catch (@SuppressWarnings("OverlyBroadCatchBlock") Exception e) {
                 e.printStackTrace();
             }
         }
@@ -128,13 +132,19 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         }
     }
 
+    /**
+     * Set the command name given's executor to our command handler
+     * @param commandName the command name
+     *                    TODO this should be in the command framework
+     */
     private void setExecutor(String commandName) {
+        CommandHandler handler = CommandHandler.getInstance();
         PluginCommand pc = getCommand(commandName);
         if (pc == null) {
             getLogger().warning("Plugin failed to register the command " + commandName + ", is the command already taken?");
         } else {
-            pc.setExecutor(m_commandHander);
-            pc.setTabCompleter(m_commandHander);
+            pc.setExecutor(handler);
+            pc.setTabCompleter(handler);
         }
     }
 
@@ -142,7 +152,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
      * Load all the default features into the feature manager
      */
     @SuppressWarnings("OverlyCoupledMethod")
-    public void loadDefaultFeatures() {
+    public static void loadDefaultFeatures() {
         Logger log = Bukkit.getLogger();
         log.info("Loading UHC feature modules...");
         //Load the default features with settings in config
@@ -181,14 +191,16 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     /**
      * Add the default config files
      */
-    @SuppressWarnings("OverlyCoupledMethod")
-    public void loadDefaultConfigurations(){
+    public static void loadDefaultConfigurations(){
         ConfigManager configManager = ConfigManager.getInstance();
-        configManager.addConfiguration(ConfigType.MAIN, ConfigManager.getFromFile("main.yml", true));
-        configManager.addConfiguration(ConfigType.BANS, ConfigManager.getFromFile("bans.yml", true));
+        configManager.addConfiguration("main", ConfigManager.getFromFile("main.yml", true));
+        configManager.addConfiguration("bans", ConfigManager.getFromFile("bans.yml", true));
     }
 
-    public void loadDefaultScatterTypes(){
+    /**
+     * Load the default scatter types
+     */
+    public static void loadDefaultScatterTypes(){
         ScatterManager scatterManager = ScatterManager.getInstance();
         try {
             scatterManager.addScatterType(new EvenCircumferenceType());
