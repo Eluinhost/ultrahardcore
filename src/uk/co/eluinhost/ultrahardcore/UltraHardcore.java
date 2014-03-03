@@ -7,6 +7,11 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.eluinhost.commands.CommandHandler;
+import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
+import uk.co.eluinhost.ultrahardcore.borders.exceptions.BorderIDConflictException;
+import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
+import uk.co.eluinhost.ultrahardcore.borders.types.RoofBorder;
+import uk.co.eluinhost.ultrahardcore.borders.types.SquareBorder;
 import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
@@ -75,12 +80,28 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         loadDefaultScatterTypes();
         //load all the commands
         loadDefaultCommands();
+        //load the default border types
+        loadDefaultBorders();
 
         //Load all the metric infos
         try {
             MetricsLite met = new MetricsLite(this);
             met.start();
         } catch (IOException ignored) {
+        }
+    }
+
+    /**
+     * Load the default border types
+     */
+    private static void loadDefaultBorders() {
+        BorderTypeManager manager = BorderTypeManager.getInstance();
+        try{
+            manager.addBorder(new CylinderBorder());
+            manager.addBorder(new RoofBorder());
+            manager.addBorder(new SquareBorder());
+        } catch (BorderIDConflictException e) {
+            e.printStackTrace();
         }
     }
 
