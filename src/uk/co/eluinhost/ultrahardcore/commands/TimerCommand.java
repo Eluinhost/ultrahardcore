@@ -13,7 +13,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,6 +29,8 @@ public class TimerCommand implements UHCCommand {
     public static final int Z_MULTIPLIER = 32;
     public static final int INVISIBLE_FLAG = 0x20;
     public static final int MAX_STRING_LEGNTH = 64;
+
+    public static final String TIMER_COMMAND = "UHC.timer";
 
     private int m_jobID = -1;
     private static final int ENTITY_ID = Short.MAX_VALUE - 375;
@@ -51,7 +52,7 @@ public class TimerCommand implements UHCCommand {
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
         if ("timer".equals(command.getName())) {
-            if (!sender.hasPermission(PermissionNodes.TIMER_COMMAND)) {
+            if (!sender.hasPermission(TIMER_COMMAND)) {
                 sender.sendMessage(ChatColor.RED + "You don't have permission to use this command");
                 return true;
             }

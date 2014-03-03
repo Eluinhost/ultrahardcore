@@ -12,7 +12,6 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
@@ -24,6 +23,7 @@ import java.util.*;
 public class ScatterCommandConversational implements UHCCommand {
 
     public static final int CONVERSATION_TIMEOUT = 60;
+    public static final String SCATTER_COMMAND = "UHC.scatter";
 
     private final ConversationFactory m_conversationFactory = new ConversationFactory(UltraHardcore.getInstance())
             .withEscapeSequence("cancel")
@@ -40,8 +40,8 @@ public class ScatterCommandConversational implements UHCCommand {
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
         if ("scatter".equals(command.getName())) {
-            if (!sender.hasPermission(PermissionNodes.SCATTER_COMMAND)) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission " + PermissionNodes.SCATTER_COMMAND);
+            if (!sender.hasPermission(SCATTER_COMMAND)) {
+                sender.sendMessage(ChatColor.RED + "You don't have permission " + SCATTER_COMMAND);
                 return true;
             }
 

@@ -17,13 +17,15 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 
 //TODO i don't like this, clean up
 public class FreezeCommand implements UHCCommand {
 
     private static final AbstractList<PotionEffect> POTION_EFFECTS = new ArrayList<PotionEffect>();
     private boolean m_isActive;
+
+    public static final String ANTIFREEZE = "UHC.freeze.antifreeze";
+    public static final String FREEZE_PERMISSION = "UHC.freeze.command";
 
     public FreezeCommand() {
         for (String configEffect : ConfigManager.getInstance().getConfig().getStringList(ConfigNodes.FREEZE_EFFECTS)) {
@@ -66,7 +68,7 @@ public class FreezeCommand implements UHCCommand {
         public void run() {
             if (m_isActive) {
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (!p.hasPermission(PermissionNodes.ANTIFREEZE)) {
+                    if (!p.hasPermission(ANTIFREEZE)) {
                         for (PotionEffect pot : POTION_EFFECTS) {
                             p.addPotionEffect(pot, true);
                         }
@@ -80,8 +82,8 @@ public class FreezeCommand implements UHCCommand {
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
         if ("freeze".equals(command.getName())) {
-            if (!sender.hasPermission(PermissionNodes.FREEZE_PERMISSION)) {
-                sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.FREEZE_PERMISSION);
+            if (!sender.hasPermission(FREEZE_PERMISSION)) {
+                sender.sendMessage(ChatColor.RED + "You don't have the permission " + FREEZE_PERMISSION);
                 return true;
             }
             m_isActive = !m_isActive;

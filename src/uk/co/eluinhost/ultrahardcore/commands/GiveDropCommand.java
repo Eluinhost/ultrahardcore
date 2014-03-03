@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.features.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathdrops.ItemDrop;
@@ -19,11 +18,13 @@ import java.util.*;
 
 public class GiveDropCommand implements UHCCommand {
 
+    public static final String GIVE_DROPS = "UHC.givedrops";
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if ("givedrops".equals(command.getName())) {
-            if (!sender.hasPermission(PermissionNodes.GIVE_DROPS)) {
-                sender.sendMessage(ChatColor.RED + "You don't have the permission " + PermissionNodes.GIVE_DROPS);
+            if (!sender.hasPermission(GIVE_DROPS)) {
+                sender.sendMessage(ChatColor.RED + "You don't have the permission " + GIVE_DROPS);
                 return true;
             }
             if (args.length < 2) {

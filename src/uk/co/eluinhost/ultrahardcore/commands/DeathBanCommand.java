@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
-import uk.co.eluinhost.ultrahardcore.config.PermissionNodes;
 import uk.co.eluinhost.features.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 import uk.co.eluinhost.features.FeatureManager;
@@ -19,6 +18,9 @@ public class DeathBanCommand implements UHCCommand {
     private static final String SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> <time> OR /deathban unban <playername>";
     private static final String BAN_SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> [time]";
     private static final String UNBAN_SYNTAX = ChatColor.RED + "Syntax: /deathban unban <playername>";
+
+    public static final String DEATH_BAN_BAN = "UHC.deathban.unban";
+    public static final String DEATH_BAN_UNBAN = "UHC.deathban.ban";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command,
@@ -36,7 +38,7 @@ public class DeathBanCommand implements UHCCommand {
                 return true;
             }
             if ("ban".equalsIgnoreCase(args[0])) {
-                if (!sender.hasPermission(PermissionNodes.DEATH_BAN_BAN)) {
+                if (!sender.hasPermission(DEATH_BAN_BAN)) {
                     sender.sendMessage(ChatColor.RED + "You don't have permission");
                     return true;
                 }
@@ -51,7 +53,7 @@ public class DeathBanCommand implements UHCCommand {
                 sender.sendMessage(ChatColor.GOLD + "Banned player " + playername + " for " + DeathBansFeature.formatTimeLeft(System.currentTimeMillis() + duration));
                 return true;
             } else if ("unban".equalsIgnoreCase(args[0])) {
-                if (!sender.hasPermission(PermissionNodes.DEATH_BAN_UNBAN)) {
+                if (!sender.hasPermission(DEATH_BAN_UNBAN)) {
                     sender.sendMessage(ChatColor.RED + "You don't have permission");
                     return true;
                 }
