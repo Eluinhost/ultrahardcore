@@ -14,7 +14,6 @@ public class HealCommand {
     public static final String HEAL_SELF_PERMISSION = "UHC.heal.self";
     public static final String HEAL_OTHER_PERMISSION = "UHC.heal.other";
     public static final String HEAL_ANNOUNCE_PERMISSION = "UHC.heal.announce";
-    public static final String HEAL_ALL_PERMISSION = "UHC.heal.all";
 
     /**
      * Ran on /healself

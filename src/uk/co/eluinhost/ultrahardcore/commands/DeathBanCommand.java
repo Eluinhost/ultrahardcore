@@ -4,16 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.features.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 import uk.co.eluinhost.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class DeathBanCommand implements UHCCommand {
+public class DeathBanCommand {
 
     private static final String SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> <time> OR /deathban unban <playername>";
     private static final String BAN_SYNTAX = ChatColor.RED + "Syntax: /deathban ban <playername> [time]";
@@ -71,27 +66,5 @@ public class DeathBanCommand implements UHCCommand {
             }
         }
         return false;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
-        List<String> r = new ArrayList<String>();
-        if (args.length == 1) {
-            r.add("ban");
-            r.add("unban");
-            return r;
-        }
-        if (args.length == 2) {
-            if ("ban".equalsIgnoreCase(args[0]) || "unban".equalsIgnoreCase(args[0])) {
-                r.addAll(ServerUtil.getOnlinePlayers());
-                return r;
-            }
-            return r;
-        }
-        if (args.length == 3 && "ban".equalsIgnoreCase(args[0])) {
-            r.add("2h30m");
-            return r;
-        }
-        return r;
     }
 }

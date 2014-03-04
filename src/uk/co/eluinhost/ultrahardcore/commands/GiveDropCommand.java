@@ -7,20 +7,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.features.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathdrops.ItemDrop;
 import uk.co.eluinhost.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 import java.util.*;
 
-public class GiveDropCommand implements UHCCommand {
+public class GiveDropCommand {
 
     public static final String GIVE_DROPS = "UHC.givedrops";
 
-    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if ("givedrops".equals(command.getName())) {
             if (!sender.hasPermission(GIVE_DROPS)) {
@@ -95,24 +92,5 @@ public class GiveDropCommand implements UHCCommand {
             }
         }
         return false;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        List<String> p = new ArrayList<String>();
-        if (args.length > 1) {
-            p.add("*");
-            p.addAll(ServerUtil.getOnlinePlayers());
-            return p;
-        }
-        if (args.length == 1) {
-            try {
-                return ((DeathDropsFeature) FeatureManager.getInstance().getFeatureByID("DeathDrops")).getItemDropGroups();
-            } catch (FeatureIDNotFoundException ignored) {
-                Bukkit.getLogger().severe("DeathDrops module is not loaded, check startup for error");
-                return p;
-            }
-        }
-        return p;
     }
 }

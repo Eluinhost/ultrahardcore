@@ -12,14 +12,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 //TODO complete, more refactor
-public class TimerCommand implements UHCCommand {
+public class TimerCommand {
 
     public static final long SECONDS_PER_HOUR = 3600;
     public static final long SECONDS_PER_MINUTE = 60;
@@ -48,7 +45,6 @@ public class TimerCommand implements UHCCommand {
         }
     }
 
-    @Override
     public boolean onCommand(CommandSender sender, Command command,
                              String label, String[] args) {
         if ("timer".equals(command.getName())) {
@@ -168,10 +164,5 @@ public class TimerCommand implements UHCCommand {
             watcher.setObject(10, text.substring(0, Math.min(text.length(), MAX_STRING_LEGNTH)));
             m_protocolManager.sendServerPacket(player, pc);
         }
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        return new ArrayList<String>();
     }
 }

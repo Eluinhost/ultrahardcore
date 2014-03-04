@@ -98,7 +98,6 @@ permissions:
         children:
           UHC.heal.self: true
           UHC.heal.other: true
-          UHC.heal.all: true
           UHC.heal.announce: true
     UHC.feed.*:
         description: Gives all feed permissions

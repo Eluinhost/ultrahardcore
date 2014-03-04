@@ -9,18 +9,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
-import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.*;
 
 //TODO clean up this+prompt style
-public class ScatterCommandConversational implements UHCCommand {
+public class ScatterCommandConversational {
 
     public static final int CONVERSATION_TIMEOUT = 60;
     public static final String SCATTER_COMMAND = "UHC.scatter";
@@ -36,7 +33,6 @@ public class ScatterCommandConversational implements UHCCommand {
 
     private static final String SCATTER_SYNTAX = "'/scatter' for interactive mode OR /scatter typeID yes/no radius[:mindist] world:[x,z] */player1 player2 player3";
 
-    @Override
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
         if ("scatter".equals(command.getName())) {
@@ -186,35 +182,6 @@ public class ScatterCommandConversational implements UHCCommand {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
-        ArrayList<String> r = new ArrayList<String>();
-        if (args.length == 1) {
-            r.add("types");
-            r.add("default");
-            r.addAll(ScatterManager.getInstance().getScatterTypeNames());
-            return r;
-        }
-        if (args.length == 2) {
-            if ("types".equalsIgnoreCase(args[0])) {
-                return r;
-            }
-            r.add("yes");
-            r.add("no");
-            return r;
-        }
-        if (args.length == 3) {
-            r.add("radius:mindist");
-            return r;
-        }
-        if (args.length == 4) {
-            return ServerUtil.getWorldNamesWithSpawn();
-        }
-        List<String> p = ServerUtil.getOnlinePlayers();
-        p.add("*");
-        return p;
     }
 
     private static class ScatterPrefix implements ConversationPrefix {

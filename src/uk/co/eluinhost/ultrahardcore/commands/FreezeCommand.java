@@ -3,7 +3,6 @@ package uk.co.eluinhost.ultrahardcore.commands;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,12 +13,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.commands.inter.UHCCommand;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 
 //TODO i don't like this, clean up
-public class FreezeCommand implements UHCCommand {
+public class FreezeCommand {
 
     private static final AbstractList<PotionEffect> POTION_EFFECTS = new ArrayList<PotionEffect>();
     private boolean m_isActive;
@@ -78,7 +76,6 @@ public class FreezeCommand implements UHCCommand {
         }
     }
 
-    @Override
     public boolean onCommand(CommandSender sender, Command command, String label,
                              String[] args) {
         if ("freeze".equals(command.getName())) {
@@ -91,10 +88,5 @@ public class FreezeCommand implements UHCCommand {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return new ArrayList<String>();
     }
 }
