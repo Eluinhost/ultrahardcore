@@ -13,7 +13,6 @@ import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.types.Border;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import uk.co.eluinhost.configuration.ConfigManager;
 

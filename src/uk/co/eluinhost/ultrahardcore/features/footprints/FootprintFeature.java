@@ -20,7 +20,6 @@ import com.comphenix.protocol.events.PacketContainer;
 
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class FootprintFeature extends UHCFeature implements Runnable {

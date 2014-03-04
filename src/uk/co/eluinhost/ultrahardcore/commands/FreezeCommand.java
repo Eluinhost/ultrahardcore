@@ -14,7 +14,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 
 //TODO convert freezing mechanics to a feature and make the command use it
 public class FreezeCommand {

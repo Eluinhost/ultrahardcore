@@ -5,6 +5,7 @@ import uk.co.eluinhost.features.Feature;
 public class UHCFeature extends Feature {
 
     public static final String BASE_PERMISSION = "UHC.";
+    public static final String BASE_CONFIG = "features.";
 
     /**
      * Construct a new feature
@@ -14,5 +15,12 @@ public class UHCFeature extends Feature {
      */
     protected UHCFeature(String featureID, String description) {
         super(featureID, description);
+    }
+
+    /**
+     * @return base config node for this feature with trailing .
+     */
+    public String getBaseConfig(){
+        return BASE_CONFIG+getFeatureID()+".";
     }
 }

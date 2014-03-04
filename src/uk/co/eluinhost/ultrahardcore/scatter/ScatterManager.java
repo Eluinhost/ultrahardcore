@@ -10,7 +10,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.configuration.ConfigManager;

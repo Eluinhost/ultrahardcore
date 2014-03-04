@@ -14,7 +14,6 @@ import uk.co.eluinhost.ultrahardcore.borders.types.RoofBorder;
 import uk.co.eluinhost.ultrahardcore.borders.types.SquareBorder;
 import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
 import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;

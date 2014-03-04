@@ -2,7 +2,6 @@ package uk.co.eluinhost.ultrahardcore.features.deathdrops;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
@@ -13,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
