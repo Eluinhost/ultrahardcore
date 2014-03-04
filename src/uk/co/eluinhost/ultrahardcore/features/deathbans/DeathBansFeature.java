@@ -27,7 +27,8 @@ public class DeathBansFeature extends UHCFeature {
     public static final String DEATH_BAN_IMMUNE = BASE_DEATH_BAN + "immune";
     public static final String BASE_GROUP = BASE_DEATH_BAN + "group.";
 
-    public static final String DELAY_NODE = "delay";
+    private final long m_banDelay;
+
     public static final String CLASSES_NODE = "classes";
 
     /**
@@ -48,6 +49,8 @@ public class DeathBansFeature extends UHCFeature {
             }
         }
         m_deathBans = banList;
+
+        m_banDelay = ConfigManager.getInstance().getConfig().getLong(getBaseConfig()+"delay");
     }
 
     /**
@@ -121,7 +124,7 @@ public class DeathBansFeature extends UHCFeature {
         Bukkit.getScheduler().scheduleSyncDelayedTask(
                 UltraHardcore.getInstance(),
                 new PlayerBanner(playerName, message, unbanTime),
-                ConfigManager.getInstance().getConfig().getLong(getBaseConfig()+DELAY_NODE)
+                m_banDelay
         );
         saveBans();
         UltraHardcore.getInstance().getLogger().info("Added " + offlinePlayer.getName() + " to temp ban list");
