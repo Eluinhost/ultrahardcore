@@ -11,7 +11,7 @@ public class WitchSpawnsFeature extends UHCFeature {
      * Feature allows witches to spawn when enabled, disables it when disabled
      */
     public WitchSpawnsFeature() {
-        super("WitchSpawnsFeature","Allows natural witch spawns");
+        super("WitchSpawns","Allows natural witch spawns");
     }
 
     /**
