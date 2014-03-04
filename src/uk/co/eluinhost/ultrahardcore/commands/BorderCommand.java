@@ -48,8 +48,8 @@ public class BorderCommand {
         FileConfiguration config = ConfigManager.getInstance().getConfig();
 
         String borderName = request.getArg(2);
-        int blockID = config.getInt(ConfigNodes.BORDER_BLOCK);
-        int metaID = config.getInt(ConfigNodes.BORDER_BLOCK_META);
+        int blockID = config.getInt("border.id");
+        int metaID = config.getInt("border.meta");
         if(borderName.contains(":")){
             String[] parts = borderName.split(":");
             borderName = parts[0];
