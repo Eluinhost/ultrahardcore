@@ -10,6 +10,9 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class PortalsFeature extends UHCFeature {
 
+    public static final String FROM_NETHER_NODE = "from_nether.";
+    public static final String TO_NETHER_NODE = "to_nether.";
+
     /**
      * Changes the radius portals will connect, normal when disabled
      */
@@ -35,15 +38,15 @@ public class PortalsFeature extends UHCFeature {
             if (entityPortalEvent.getPlayer().getWorld().getEnvironment() == World.Environment.NETHER) {
 
                 //set data from the nether
-                ta.setCanCreatePortal(config.getBoolean(ConfigNodes.PORTAL_RANGES_FROM_NETHER_ALLOWED));
-                ta.setCreationRadius(config.getInt(ConfigNodes.PORTAL_RANGES_FROM_NETHER_CREATION));
-                ta.setSearchRadius(config.getInt(ConfigNodes.PORTAL_RANGES_FROM_NETHER_SEARCH));
+                ta.setCanCreatePortal(config.getBoolean(getBaseConfig()+FROM_NETHER_NODE+"allowed"));
+                ta.setCreationRadius(config.getInt(getBaseConfig()+FROM_NETHER_NODE+"creation_range"));
+                ta.setSearchRadius(config.getInt(getBaseConfig()+FROM_NETHER_NODE+"search_range"));
             } else {
 
                 //set the data to the nether
-                ta.setCanCreatePortal(config.getBoolean(ConfigNodes.PORTAL_RANGES_TO_NETHER_ALLOWED));
-                ta.setCreationRadius(config.getInt(ConfigNodes.PORTAL_RANGES_TO_NETHER_CREATION));
-                ta.setSearchRadius(config.getInt(ConfigNodes.PORTAL_RANGES_TO_NETHER_SEARCH));
+                ta.setCanCreatePortal(config.getBoolean(getBaseConfig()+TO_NETHER_NODE+"allowed"));
+                ta.setCreationRadius(config.getInt(getBaseConfig()+TO_NETHER_NODE+"creation_range"));
+                ta.setSearchRadius(config.getInt(getBaseConfig()+TO_NETHER_NODE+"search_range"));
             }
         }
     }
