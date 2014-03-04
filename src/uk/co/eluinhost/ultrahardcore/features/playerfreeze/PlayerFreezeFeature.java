@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.playerfreeze;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 import java.util.HashSet;
@@ -38,5 +40,30 @@ public class PlayerFreezeFeature extends UHCFeature {
     public void unfreezeAll(){
         //TODO allow movement for all
         m_players.clear();
+    }
+
+    /**
+     * Whenever a player joins
+     * @param pje the player join event
+     */
+    @EventHandler
+    public void onPlayerJoinEvent(PlayerJoinEvent pje){
+        //TODO check whether to reapply freeze
+    }
+
+    /**
+     * Called when the feature is being enabled
+     */
+    @Override
+    protected void enableCallback(){
+        //TODO reapply freezes?
+    }
+
+    /**
+     * Called when the feature is being disabled
+     */
+    @Override
+    protected void disableCallback(){
+        //TODO remove freezes
     }
 }
