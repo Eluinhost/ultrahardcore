@@ -30,12 +30,9 @@ public class FootprintFeature extends UHCFeature implements Runnable {
 
     public static final int REPEAT_INTERVAL = 40;
 
-    public static final String MAX_RENDER_NODE = "maxdistance";
-    public static final String MIN_RENDER_NODE = "mindistance";
-    public static final String TIME_NODE = "time";
-
     private final int m_maxRenderSquared;
     private final int m_minRenderSquared;
+    private final int m_timeToLast;
 
     private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
@@ -52,10 +49,11 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     public FootprintFeature() {
         super("Footprints","Leave footprints behind you...");
         FileConfiguration config = ConfigManager.getInstance().getConfig();
-        int maxRender = config.getInt(getBaseConfig()+MAX_RENDER_NODE);
-        int minRender = config.getInt(getBaseConfig()+MIN_RENDER_NODE);
+        int maxRender = config.getInt(getBaseConfig()+"maxdistance");
+        int minRender = config.getInt(getBaseConfig()+"mindistance");
         m_maxRenderSquared = maxRender * maxRender;
         m_minRenderSquared = minRender * minRender;
+        m_timeToLast = ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+"time");
     }
 
     @Override
@@ -89,7 +87,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
                 loc.setY(block.getLocation().getY() + offset);
                 Footstep newFootstep = new Footstep(
                     loc,
-                    ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+TIME_NODE) / 2,
+                    m_timeToLast / 2,
                     p.getName()
                 );
                 sendFootstep(newFootstep);
