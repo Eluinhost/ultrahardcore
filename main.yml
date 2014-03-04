@@ -89,15 +89,6 @@ features:
         actions:
         - "serverkick"
         serverkick_message: "You were kicked for dying!"
-freeze:
-  delay: 40
-  time: 160
-  effects:
-  - "11:5"
-  - "4:5"
-  - "2:5"
-  - "14:1"
-  - "15:5"
 scatter:
   maxtries: 250
   maxattempts: 3
