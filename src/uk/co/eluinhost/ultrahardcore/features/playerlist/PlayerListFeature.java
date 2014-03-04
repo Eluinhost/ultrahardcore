@@ -50,6 +50,7 @@ public class PlayerListFeature extends UHCFeature {
     private final long m_delay;
     private final boolean m_underName;
     private final String m_displayName;
+    private final boolean m_useDisplayNames;
 
     /**
      * Handles the player list health better than base mc, normal behaviour when disabled
@@ -63,6 +64,7 @@ public class PlayerListFeature extends UHCFeature {
         m_delay = config.getLong(getBaseConfig()+"delay");
         m_underName = config.getBoolean(getBaseConfig()+"belowName");
         m_displayName = config.getString(getBaseConfig()+"belowNameUnit");
+        m_useDisplayNames = config.getBoolean(getBaseConfig()+"displayNames");
     }
 
     /**
@@ -71,9 +73,9 @@ public class PlayerListFeature extends UHCFeature {
      * @param health the health value to update to
      */
     public void updatePlayerListHealth(Player player, double health) {
-        //TODO add config toggle for using names/display names
+        String playerName = m_useDisplayNames ? player.getDisplayName() : player.getName();
         //get the players display name and strip the colour codes from it
-        String newName = ChatColor.stripColor(player.getDisplayName());
+        String newName = ChatColor.stripColor(playerName);
 
         //cut the name down to the right length
         newName = newName.substring(0,Math.min(newName.length(),m_playerListColours ? MAX_LENGTH_COLOURS : MAX_LENGTH_NO_COLOURS));
@@ -106,7 +108,7 @@ public class PlayerListFeature extends UHCFeature {
         //set the score for both the player and their display name
         //this allows the score to show under the head of players with a changed name
         m_objectivePlayerList.getScore(Bukkit.getOfflinePlayer(newName)).setScore((int) (showHealth * m_healthScaling));
-        m_objectiveUnderName.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(player.getDisplayName()))).setScore((int) (showHealth * m_healthScaling));
+        m_objectiveUnderName.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(playerName))).setScore((int) (showHealth * m_healthScaling));
     }
 
     /**
@@ -156,10 +158,9 @@ public class PlayerListFeature extends UHCFeature {
             //clear the slots we use
             MAIN_SCOREBOARD.clearSlot(DisplaySlot.PLAYER_LIST);
             MAIN_SCOREBOARD.clearSlot(DisplaySlot.BELOW_NAME);
-            //reset the player list name for all online players to just the display name
-            //TODO this should be getName()?
+            //reset the player list name for all online players to their name
             for (Player p : Bukkit.getOnlinePlayers()) {
-                p.setPlayerListName(p.getDisplayName());
+                p.setPlayerListName(p.getName());
             }
         }
     }

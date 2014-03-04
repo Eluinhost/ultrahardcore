@@ -25,6 +25,7 @@ features:
     scaling: 5
     roundHealth: false
     belowNameUnit: "&4&h"
+    displayNames: true
   PlayerHeads:
     pvponly: false
     nonteamonly: true
