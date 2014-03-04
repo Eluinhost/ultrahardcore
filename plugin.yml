@@ -24,9 +24,13 @@ commands:
       usage: /<command> toggle featureID OR /<command> list
       aliases: [uhcfeature]
     freeze:
-      description: Freezes all players without permissions using potion effects
-      usage: /<command>
+      description: Freezes players
+      usage: /<command> player/*
       aliases: [uhcfreeze]
+    unfreeze:
+      description: Unfreezes players
+      usage: /<command> player/*
+      aliases: [uhcunfreeze]
     scatter:
       description: Scatters players within a world within set borders
       usage: /<command> typeID true/false radius[:mindist] world[:0,0] */player1 player2 player3
