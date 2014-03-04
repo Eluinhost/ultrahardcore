@@ -181,26 +181,26 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         FeatureManager featureManager = FeatureManager.getInstance();
         FileConfiguration config = ConfigManager.getInstance().getConfig();
         try {
-            featureManager.addFeature(new DeathLightningFeature(), config.getBoolean(ConfigNodes.DEATH_LIGHTNING));
-            featureManager.addFeature(new EnderpearlsFeature(), config.getBoolean(ConfigNodes.NO_ENDERPEARL_DAMAGE));
-            featureManager.addFeature(new GhastDropsFeature(), config.getBoolean(ConfigNodes.GHAST_DROP_CHANGES));
-            featureManager.addFeature(new PlayerHeadsFeature(), config.getBoolean(ConfigNodes.DROP_PLAYER_HEAD));
-            featureManager.addFeature(new PlayerListFeature(), config.getBoolean(ConfigNodes.PLAYER_LIST_HEALTH));
-            featureManager.addFeature(new RecipeFeature(), config.getBoolean(ConfigNodes.RECIPE_CHANGES));
-            featureManager.addFeature(new RegenFeature(), config.getBoolean(ConfigNodes.NO_HEALTH_REGEN));
-            featureManager.addFeature(new DeathMessagesFeature(), config.getBoolean(ConfigNodes.DEATH_MESSAGES_ENABLED));
-            featureManager.addFeature(new DeathDropsFeature(), config.getBoolean(ConfigNodes.DEATH_DROPS_ENABLED));
-            featureManager.addFeature(new AnonChatFeature(), config.getBoolean(ConfigNodes.ANON_CHAT_ENABLED));
-            featureManager.addFeature(new GoldenHeadsFeature(), config.getBoolean(ConfigNodes.GOLDEN_HEADS_ENABLED));
-            featureManager.addFeature(new DeathBansFeature(), config.getBoolean(ConfigNodes.DEATH_BANS_ENABLED));
-            featureManager.addFeature(new PotionNerfsFeature(), config.getBoolean(ConfigNodes.POTION_NERFS_ENABLED));
-            featureManager.addFeature(new NetherFeature(), config.getBoolean(ConfigNodes.NETHER_DISABLE_ENABELD));
-            featureManager.addFeature(new WitchSpawnsFeature(), config.getBoolean(ConfigNodes.WITCH_SPAWNS_ENABLED));
-            featureManager.addFeature(new PortalsFeature(), config.getBoolean(ConfigNodes.PORTAL_RANGES_ENABLED));
+            featureManager.addFeature(new DeathLightningFeature());
+            featureManager.addFeature(new EnderpearlsFeature());
+            featureManager.addFeature(new GhastDropsFeature());
+            featureManager.addFeature(new PlayerHeadsFeature());
+            featureManager.addFeature(new PlayerListFeature());
+            featureManager.addFeature(new RecipeFeature());
+            featureManager.addFeature(new RegenFeature());
+            featureManager.addFeature(new DeathMessagesFeature());
+            featureManager.addFeature(new DeathDropsFeature());
+            featureManager.addFeature(new AnonChatFeature());
+            featureManager.addFeature(new GoldenHeadsFeature());
+            featureManager.addFeature(new DeathBansFeature());
+            featureManager.addFeature(new PotionNerfsFeature());
+            featureManager.addFeature(new NetherFeature());
+            featureManager.addFeature(new WitchSpawnsFeature());
+            featureManager.addFeature(new PortalsFeature());
 
             //load the protocollib features last
-            featureManager.addFeature(new HardcoreHeartsFeature(), config.getBoolean(ConfigNodes.HARDCORE_HEARTS_ENABLED));
-            featureManager.addFeature(new FootprintFeature(), config.getBoolean(ConfigNodes.FOOTPRINTS_ENABLED));
+            featureManager.addFeature(new HardcoreHeartsFeature());
+            featureManager.addFeature(new FootprintFeature());
         } catch (FeatureIDConflictException ignored) {
             log.severe("A default UHC Feature ID is conflicting, this should never happen!");
         } catch (InvalidFeatureIDException ignored) {

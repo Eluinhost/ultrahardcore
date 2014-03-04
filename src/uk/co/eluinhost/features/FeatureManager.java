@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.events.FeatureInitEvent;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
@@ -49,13 +51,13 @@ public class FeatureManager {
 
     /**
      * Add a UHC feature to the manager
+     * counts as enabled if the feature name is in the config list
      *
      * @param feature Feature the feature to be added
-     * @param enabled Whether the feature should be enabled or not after init
      * @throws FeatureIDConflictException when feature with the same ID already exists
      * @throws InvalidFeatureIDException  when the feature has an invalid ID name
      */
-    public void addFeature(Feature feature, boolean enabled) throws FeatureIDConflictException, InvalidFeatureIDException {
+    public void addFeature(Feature feature) throws FeatureIDConflictException, InvalidFeatureIDException {
         String featureID = feature.getFeatureID();
 
         //check for right pattern
@@ -87,7 +89,8 @@ public class FeatureManager {
         m_uhcFeatureList.add(feature);
         Bukkit.getLogger().log(Level.INFO,"Loaded feature module "+featureID);
 
-        if(enabled){
+        List<String> config = ConfigManager.getInstance().getConfig().getStringList("enabledFeatures");
+        if(config.contains(featureID)){
             feature.enableFeature();
         }else{
             feature.disableFeature();
