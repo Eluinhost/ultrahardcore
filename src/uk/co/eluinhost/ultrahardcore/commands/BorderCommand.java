@@ -1,7 +1,9 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.sun.javafx.image.IntPixelGetter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -16,8 +18,10 @@ import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import uk.co.eluinhost.configuration.ConfigManager;
+import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.Collection;
+import java.util.List;
 
 //TODO finish convert
 public class BorderCommand {
@@ -27,14 +31,66 @@ public class BorderCommand {
 
 
     /**
-     * Ran on /genborder
+     * Ran on /genborder {worldname} {radius} {typeID}[:blockID][:meta] [x,z]
      * @param request request params
      */
     @Command(trigger = "genborder",
             identifier = "BorderCommand",
-            permission = GENERATE_BORDER)
+            permission = GENERATE_BORDER,
+            minArgs = 3,
+            maxArgs = 4)
     public void onBorderCommand(CommandRequest request){
-        //TODO this
+        World world = request.getWorld(0);
+        if(world == null){
+            request.sendMessage(ChatColor.RED+"Invalid world supplied: "+request.getFirstArg());
+            return;
+        }
+        if(!request.isArgInt(1)){
+            request.sendMessage(ChatColor.RED+"Invalid radius supplied: "+request.getArg(1));
+            return;
+        }
+        int radius = request.getInt(1);
+
+        //TODO parse typeID/blockID/meta
+        BorderTypeManager manager = BorderTypeManager.getInstance();
+        Border borderType = manager.getBorderByID("");
+        int blockID = 0;
+        int metaID = 0;
+
+        Location center = world.getSpawnLocation();
+
+        if(request.isArgPresent(3)){
+            String coords = request.getArg(3);
+            String[] parts = coords.split(",");
+            if(parts.length != 2){
+                request.sendMessage(ChatColor.RED+"Invalid coordinates given: "+request.getArg(3));
+                return;
+            }
+            try{
+                double x = Double.parseDouble(parts[0]);
+                double z = Double.parseDouble(parts[1]);
+                center.setX(x);
+                center.setZ(z);
+            }catch(NumberFormatException ignored){
+                request.sendMessage(ChatColor.RED+"Invalid coordinates given: "+request.getArg(3));
+                return;
+            }
+        }
+
+        BorderCreator creator = new BorderCreator(borderType);
+        creator.setBlockID(blockID);
+        creator.setBlockMeta(metaID);
+        creator.setCenter(center);
+        creator.setRadius(radius);
+
+        try {
+            creator.createBorder();
+        } catch (TooManyBlocksException ignored) {
+            request.sendMessage(ChatColor.RED + "Error, hit max changable blocks");
+            return;
+        }
+
+        request.sendMessage(ChatColor.GOLD + "World border created successfully");
     }
 
     /**
@@ -88,104 +144,5 @@ public class BorderCommand {
         for(Border border : types){
             sender.sendMessage(ChatColor.GOLD+border.getID()+" - "+border.getDescription());
         }
-    }
-
-    public boolean onCommand(CommandSender sender, Command command, String label,
-                             String[] args) {
-        if ("generateborder".isEmpty()) {
-            if (args.length != 3) {
-                sender.sendMessage(ChatColor.RED + "Invalid syntax: " + SYNTAX);
-                return true;
-            }
-            int radius;
-            try {
-                radius = Integer.parseInt(args[0]);
-            } catch (NumberFormatException ignored) {
-                sender.sendMessage(ChatColor.RED + "Unknown radius size: " + args[0]);
-                return true;
-            }
-            int x;
-            int z;
-            World w;
-            if (args[1].contains(":")) {
-                String[] parts = args[1].split(":");
-                if (parts.length != 2) {
-                    sender.sendMessage(ChatColor.RED + "Invalid world name/coordinates, syntax for world is worldname:x,z");
-                    return true;
-                }
-                String[] parts2 = parts[1].split(",");
-                if (parts2.length != 2) {
-                    sender.sendMessage(ChatColor.RED + "Invalid world name/coordinates, syntax for world is worldname:x,z");
-                    return true;
-                }
-                try {
-                    x = Integer.parseInt(parts2[0]);
-                    z = Integer.parseInt(parts2[1]);
-                    args[1] = parts[0];
-                } catch (NumberFormatException ignored) {
-                    sender.sendMessage(ChatColor.RED + "One or more world coordinates not a number, world syntax is worldname:x,z");
-                    return true;
-                }
-                w = Bukkit.getWorld(args[1]);
-                if (w == null) {
-                    sender.sendMessage(ChatColor.RED + "World " + args[1] + " not found!");
-                    return true;
-                }
-            } else {
-                w = Bukkit.getWorld(args[1]);
-                if (w == null) {
-                    sender.sendMessage(ChatColor.RED + "World " + args[1] + " not found!");
-                    return true;
-                }
-                x = w.getSpawnLocation().getBlockX();
-                z = w.getSpawnLocation().getBlockZ();
-            }
-            String[] blockinfo;
-            if (args[2].contains(":")) {
-                String[] blockinfos = args[2].split(":");
-                if (blockinfos.length != 3) {
-                    sender.sendMessage(ChatColor.RED + "Unknown block ID and meta, syntax: " + SYNTAX);
-                    return true;
-                }
-                blockinfo = blockinfos;
-            } else {
-                blockinfo = new String[]{
-                        args[2],
-                        ConfigManager.getInstance().getConfig().getString(ConfigNodes.BORDER_BLOCK),
-                        ConfigManager.getInstance().getConfig().getString(ConfigNodes.BORDER_BLOCK_META)
-                };
-            }
-            int borderID;
-            try {
-                borderID = Integer.parseInt(blockinfo[1]);
-            } catch (NumberFormatException ignored) {
-                sender.sendMessage(ChatColor.RED + "Unknown number " + blockinfo[1] + " for block ID");
-                return true;
-            }
-            int metaID;
-            try {
-                metaID = Integer.parseInt(blockinfo[2]);
-            } catch (NumberFormatException ignored) {
-                sender.sendMessage(ChatColor.RED + "Unknown number " + blockinfo[2] + " for block meta");
-                return true;
-            }
-
-            BorderCreator creator = new BorderCreator(BorderTypeManager.getInstance().getBorderByID(blockinfo[0]));
-            creator.setBlockID(borderID);
-            creator.setBlockMeta(metaID);
-            creator.setCenter(null); //TODO generate the location
-            creator.setRadius(radius);
-
-            try {
-                creator.createBorder();
-            } catch (TooManyBlocksException ignored) {
-                sender.sendMessage(ChatColor.RED + "Error, hit max changable blocks");
-                return true;
-            }
-
-            sender.sendMessage(ChatColor.GOLD + "World border created successfully");
-            return true;
-        }
-        return false;
     }
 }
