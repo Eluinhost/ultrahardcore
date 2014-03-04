@@ -15,28 +15,15 @@ import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
+import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DeathBansFeature extends UHCFeature {
 
     private List<DeathBan> m_deathBans = new ArrayList<DeathBan>();
-
-    private static final Pattern BAN_LENGTH_PATTERN = Pattern.compile(
-            "(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?(?:([0-9]+)\\s*(?:s[a-z]*)?)?",
-            Pattern.CASE_INSENSITIVE);
-
-    private static final long MILLIS_PER_SECOND = 1000;
-    private static final long MILLIS_PER_MINUTE = MILLIS_PER_SECOND * 60;
-    private static final long MILLIS_PER_HOUR   = MILLIS_PER_MINUTE * 60;
-    private static final long MILLIS_PER_DAY    = MILLIS_PER_HOUR * 24;
-    private static final long MILLIS_PER_WEEK   = MILLIS_PER_DAY * 7;
-    private static final long MILLIS_PER_MONTH  = MILLIS_PER_DAY * 30;
-    private static final long MILLIS_PER_YEAR   = MILLIS_PER_DAY * 365;
 
     public static final String BASE_DEATH_BAN = BASE_PERMISSION + "deathban.";
     public static final String DEATH_BAN_IMMUNE = BASE_DEATH_BAN + "immune";
@@ -151,55 +138,6 @@ public class DeathBansFeature extends UHCFeature {
     }
 
     /**
-     * Turns human readable config times into milliseconds
-     * @param banTime the string
-     * @return the amount of millis
-     */
-    public static long parseBanTime(String banTime) {
-        if("infinite".equalsIgnoreCase(banTime)){
-            return Long.MAX_VALUE/2;
-        }
-        long duration = 0;
-        boolean match = false;
-        Matcher mat = BAN_LENGTH_PATTERN.matcher(banTime);
-        while (mat.find())    {
-            if (mat.group() != null && !mat.group().isEmpty()) {
-                for (int i = 0; i < mat.groupCount(); i++) {
-                    if (mat.group(i) != null && !mat.group(i).isEmpty()) {
-                        match = true;
-                        break;
-                    }
-                }
-                if (match){
-                    if (mat.group(1) != null && !mat.group(1).isEmpty()){
-                        duration += MILLIS_PER_YEAR * Integer.parseInt(mat.group(1));
-                    }
-                    if (mat.group(2) != null && !mat.group(2).isEmpty()){
-                        duration += MILLIS_PER_MONTH * Integer.parseInt(mat.group(2));
-                    }
-                    if (mat.group(3) != null && !mat.group(3).isEmpty()){
-                        duration += MILLIS_PER_WEEK * Integer.parseInt(mat.group(3));
-                    }
-                    if (mat.group(4) != null && !mat.group(4).isEmpty()){
-                        duration += MILLIS_PER_DAY * Integer.parseInt(mat.group(4));
-                    }
-                    if (mat.group(5) != null && !mat.group(5).isEmpty()){
-                        duration += MILLIS_PER_HOUR * Integer.parseInt(mat.group(5));
-                    }
-                    if (mat.group(6) != null && !mat.group(6).isEmpty()){
-                        duration += MILLIS_PER_MINUTE * Integer.parseInt(mat.group(6));
-                    }
-                    if (mat.group(7) != null && !mat.group(7).isEmpty()){
-                         duration+= MILLIS_PER_SECOND * Integer.parseInt(mat.group(7));
-                    }
-                    break;
-                }
-            }
-        }
-        return duration;
-    }
-
-    /**
      * Ban the player
      * @param offlinePlayer the player to ban
      * @param message the message to ban them with
@@ -242,7 +180,7 @@ public class DeathBansFeature extends UHCFeature {
                 }else if("serverban".equalsIgnoreCase(action)) {
                     String length = type.getString("serverban_duration","1s");
                     String message = type.getString("serverban_message","NO BAN MESSAGE SET IN CONFIG FILE");
-                    long duration = parseBanTime(length);
+                    long duration = WordsUtil.parseTime(length);
                     banPlayer(p,message,duration);
                 }else if("worldkick".equalsIgnoreCase(action)){
                     String world = type.getString("worldkick_world","NO WORLD IN CONFIG");
