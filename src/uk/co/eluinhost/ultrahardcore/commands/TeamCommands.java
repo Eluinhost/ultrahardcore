@@ -50,7 +50,7 @@ public class TeamCommands {
                 return;
             }
             thisteam = m_teamsUtil.registerNewTeam(request.getFirstArg());
-            thisteam.setDisplayName(WordsUtil.getRandomTeamName());
+            thisteam.setDisplayName(WordsUtil.getInstance().getRandomTeamName());
         } else {
             thisteam = m_teamsUtil.getNextAvailableTeam(true);
         }
