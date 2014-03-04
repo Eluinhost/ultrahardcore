@@ -115,4 +115,11 @@ public class CommandRequest {
     public World getWorld(int index){
         return Bukkit.getWorld(m_args.get(index));
     }
+
+    /**
+     * @param message message to pass on to the sender
+     */
+    public void sendMessage(String message){
+        m_sender.sendMessage(message);
+    }
 }
