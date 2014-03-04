@@ -26,13 +26,15 @@ public class DeathDropsFeature extends UHCFeature {
     private final Collection<ItemDrop> m_drops = new ArrayList<ItemDrop>();
     private static final Random RANDOM = new Random();
 
+    public static final String ITEMS_NODE = "items";
+
     /**
      * Add drops to a player when they die
      * TODO simplify
      */
     public DeathDropsFeature() {
         super("DeathDrops", "Adds extra loot to players on death");
-        ConfigurationSection items = ConfigManager.getInstance().getConfig().getConfigurationSection(ConfigNodes.DEATH_DROPS_ITEMS);
+        ConfigurationSection items = ConfigManager.getInstance().getConfig().getConfigurationSection(getBaseConfig()+ITEMS_NODE);
         for (String item : items.getKeys(false)) {
             ConfigurationSection itemSection = items.getConfigurationSection(item);
 
