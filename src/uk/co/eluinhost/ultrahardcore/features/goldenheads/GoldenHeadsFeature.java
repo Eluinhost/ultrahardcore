@@ -27,6 +27,8 @@ public class GoldenHeadsFeature extends UHCFeature {
     public static final int POTION_TICK_MULTIPLIER = 25;
     public static final String HEAD_NAME = ChatColor.GOLD+"Golden Head";
 
+    public static final String HEAD_RATIO_NODE = "amountExtra";
+
     private ShapedRecipe m_headRecipe;
 
     /**
@@ -41,7 +43,7 @@ public class GoldenHeadsFeature extends UHCFeature {
      * @param pee the eat event
      */
     @EventHandler
-    public static void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
+    public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
         //if they ate a golden apple
         ItemStack is = pee.getItem();
         if (is.getType() == Material.GOLDEN_APPLE) {
@@ -49,7 +51,7 @@ public class GoldenHeadsFeature extends UHCFeature {
             ItemMeta im = is.getItemMeta();
             if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
                 //get the factor of healing it's supposed to do
-                int factor = ConfigManager.getInstance().getConfig().getInt(ConfigNodes.GOLDEN_HEADS_HEAL_FACTOR);
+                int factor = ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+HEAD_RATIO_NODE);
                 //add tge new potion effect
                 pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + factor * POTION_TICK_MULTIPLIER, 1));
             }
