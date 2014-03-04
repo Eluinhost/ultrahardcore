@@ -3,6 +3,7 @@ package uk.co.eluinhost.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -137,5 +138,13 @@ public class CommandRequest {
      */
     public boolean isArgPresent(int index){
         return index > -1 && index < m_args.size();
+    }
+
+    /**
+     * @param index the index to look for
+     * @return the duration in millis
+     */
+    public long parseDuration(int index){
+        return WordsUtil.parseTime(m_args.get(index));
     }
 }
