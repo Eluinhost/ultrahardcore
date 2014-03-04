@@ -18,7 +18,6 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class DeathBansFeature extends UHCFeature {
@@ -41,44 +40,11 @@ public class DeathBansFeature extends UHCFeature {
         for(DeathBan deathBan : banList){
             for(Player player : Bukkit.getOnlinePlayers()){
                 if(player.getName().equalsIgnoreCase(deathBan.getPlayerName())){
-                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", formatTimeLeft(deathBan.getUnbanTime())));
+                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", WordsUtil.formatTimeLeft(deathBan.getUnbanTime())));
                 }
             }
         }
         m_deathBans = banList;
-    }
-
-    /**
-     * Format into human readable time left
-     * @param timeUnban the unban time unix timestamp
-     * @return human readable string on how long is left
-     */
-    public static String formatTimeLeft(long timeUnban){
-        long duration = timeUnban - System.currentTimeMillis();
-        long days = TimeUnit.MILLISECONDS.toDays(duration);
-        if(days > Short.MAX_VALUE){
-            return " forever";
-        }
-        duration -= TimeUnit.DAYS.toMillis(days);
-        long hours = TimeUnit.MILLISECONDS.toHours(duration);
-        duration -= TimeUnit.HOURS.toMillis(hours);
-        long mins = TimeUnit.MILLISECONDS.toMinutes(duration);
-        duration -= TimeUnit.MINUTES.toMillis(mins);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
-        StringBuilder sb = new StringBuilder();
-        if(days > 0L){
-            sb.append(" ").append(days).append(days == 1 ? " day" : " days");
-        }
-        if(hours > 0L){
-            sb.append(" ").append(hours).append(hours == 1 ? " hour" : " hours");
-        }
-        if(mins > 0L){
-            sb.append(" ").append(mins).append(mins == 1 ? " min" : " mins");
-        }
-        if(seconds > 0L){
-            sb.append(" ").append(seconds).append(seconds == 1 ? " second" : " seconds");
-        }
-        return sb.toString();
     }
 
     /**
@@ -221,7 +187,7 @@ public class DeathBansFeature extends UHCFeature {
             OfflinePlayer op = Bukkit.getOfflinePlayer(m_playerName);
             Player p = op.getPlayer();
             if (p != null) {
-                p.kickPlayer(m_message.replaceAll("%timeleft", formatTimeLeft(m_unbanTime)));
+                p.kickPlayer(m_message.replaceAll("%timeleft", WordsUtil.formatTimeLeft(m_unbanTime)));
             }
         }
     }

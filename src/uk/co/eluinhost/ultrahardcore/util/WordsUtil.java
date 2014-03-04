@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.util;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -327,5 +328,38 @@ public class WordsUtil extends JavaPlugin {
             }
         }
         return duration;
+    }
+
+    /**
+     * Format into human readable time left
+     * @param timeUnban the unban time unix timestamp
+     * @return human readable string on how long is left
+     */
+    public static String formatTimeLeft(long timeUnban){
+        long duration = timeUnban - System.currentTimeMillis();
+        long days = TimeUnit.MILLISECONDS.toDays(duration);
+        if(days > Short.MAX_VALUE){
+            return " forever";
+        }
+        duration -= TimeUnit.DAYS.toMillis(days);
+        long hours = TimeUnit.MILLISECONDS.toHours(duration);
+        duration -= TimeUnit.HOURS.toMillis(hours);
+        long mins = TimeUnit.MILLISECONDS.toMinutes(duration);
+        duration -= TimeUnit.MINUTES.toMillis(mins);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
+        StringBuilder sb = new StringBuilder();
+        if(days > 0L){
+            sb.append(" ").append(days).append(days == 1 ? " day" : " days");
+        }
+        if(hours > 0L){
+            sb.append(" ").append(hours).append(hours == 1 ? " hour" : " hours");
+        }
+        if(mins > 0L){
+            sb.append(" ").append(mins).append(mins == 1 ? " min" : " mins");
+        }
+        if(seconds > 0L){
+            sb.append(" ").append(seconds).append(seconds == 1 ? " second" : " seconds");
+        }
+        return sb.toString();
     }
 }

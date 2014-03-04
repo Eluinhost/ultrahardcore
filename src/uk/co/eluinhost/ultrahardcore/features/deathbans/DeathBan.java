@@ -2,6 +2,7 @@ package uk.co.eluinhost.ultrahardcore.features.deathbans;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.player.PlayerLoginEvent;
+import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +75,7 @@ public class DeathBan implements ConfigurationSerializable {
             if(System.currentTimeMillis() >= getUnbanTime()){
                 return true;
             }
-            ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, getGroupName().replaceAll("%timeleft", DeathBansFeature.formatTimeLeft(getUnbanTime())));
+            ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, getGroupName().replaceAll("%timeleft", WordsUtil.formatTimeLeft(getUnbanTime())));
         }
         return false;
     }
