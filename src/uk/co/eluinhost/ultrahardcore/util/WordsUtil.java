@@ -1,266 +1,21 @@
 package uk.co.eluinhost.ultrahardcore.util;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import uk.co.eluinhost.configuration.ConfigManager;
+
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.plugin.java.JavaPlugin;
+public class WordsUtil {
 
-//TODO use a config file instead
-public class WordsUtil extends JavaPlugin {
+    private final List<String> m_adjectives;
 
-    private static final String[] ADJECTIVES = {
-            "Fast",
-            "Quick",
-            "Speedy",
-            "Swift",
-            "Hasty",
-            "Zippy",
-            "Rapid",
-            "Slow",
-            "Sluggish",
-            "Creeping",
-            "Dawdling",
-            "Meandering",
-            "Crawling",
-            "Beautiful",
-            "Striking",
-            "Stunning",
-            "Gorgeous",
-            "Picturesque",
-            "Lovely",
-            "Charming",
-            "Enchanting",
-            "Exquisite",
-            "Delicate",
-            "Ugly",
-            "Hideous",
-            "Horrid",
-            "Dreadful",
-            "Obnoxious",
-            "Nasty",
-            "Ghastly",
-            "Cruel",
-            "Revolting",
-            "Intimidating",
-            "Menacing",
-            "Miserable",
-            "Dangerous",
-            "Rude",
-            "Spoiled",
-            "Wild",
-            "Lazy",
-            "Selfish",
-            "Delinquent",
-            "Greedy",
-            "Vile",
-            "Ridiculous",
-            "Kind",
-            "Gentle",
-            "Quiet",
-            "Caring",
-            "Fair",
-            "Compassionate",
-            "Benevolent",
-            "Polite",
-            "Amusing",
-            "Generous",
-            "Entertaining",
-            "Hopeful",
-            "Lively",
-            "Creative",
-            "Brave",
-            "Good",
-            "Fantastic",
-            "Marvelous",
-            "Fabulous",
-            "Splendid",
-            "Brilliant",
-            "Superb",
-            "Dynamite",
-            "Bad",
-            "Dreadful",
-            "Terrible",
-            "Ghastly",
-            "Filthy",
-            "Repulsive",
-            "Awful",
-            "Happy",
-            "Joyful",
-            "Ecstatic",
-            "Cheerful",
-            "Delighted",
-            "Blithe",
-            "Carefree",
-            "Bored",
-            "Hardworking",
-            "Mysterious",
-            "Verbose",
-            "Laconic",
-            "Curious",
-            "Bucolic",
-            "Silly",
-            "Contrary",
-            "Shocking",
-            "Wild",
-            "Rambunctious",
-            "Courageous",
-            "Cowardly",
-            "Ornery",
-            "Gullible",
-            "Thrifty",
-            "Famous",
-            "Infamous",
-            "Brazen",
-            "Cold",
-            "Hard",
-            "Subtle",
-            "Gullible",
-            "Hungry",
-            "Anxious",
-            "Nervous",
-            "Antsy",
-            "Impatient",
-            "Shining",
-            "Crispy",
-            "Soaring",
-            "Endless",
-            "Sparkling",
-            "Fluttering",
-            "Spiky",
-            "Scrumptious",
-            "Eternal",
-            "Slimy",
-            "Slick",
-            "Gilded",
-            "Ancient",
-            "Smelly",
-            "Glowing",
-            "Rotten",
-            "Decrepit",
-            "Lousy",
-            "Grimy",
-            "Rusty",
-            "Sloppy",
-            "Muffled",
-            "Foul",
-            "Rancid",
-            "Fetid",
-            "Small",
-            "Itty-bitty",
-            "Tiny",
-            "Puny",
-            "Miniscule",
-            "Minute",
-            "Diminutive",
-            "Petite",
-            "Slight",
-            "Big",
-            "Huge",
-            "Gigantic",
-            "Monstrous",
-            "Immense",
-            "Great",
-            "Tremendous",
-            "Enormous",
-            "Massive",
-            "Whopping",
-            "Vast",
-            "Brawny",
-            "Hulking",
-            "Bulky",
-            "Towering",
-            "Hot",
-            "Steaming",
-            "Sweltering",
-            "Scorching",
-            "Blistering",
-            "Sizzling",
-            "Muggy",
-            "Stifling",
-            "Sultry",
-            "Oppressive",
-            "Cold",
-            "Chilly",
-            "Freezing",
-            "Icy",
-            "Frosty",
-            "Bitter",
-            "Arctic",
-            "Difficult",
-            "Demanding",
-            "Trying",
-            "Challenging",
-            "Easy",
-            "Simple",
-            "Effortless",
-            "Relaxed",
-            "Calm",
-            "Tranquil",
-            "Heavy",
-            "Serious",
-            "Grave",
-            "Profound",
-            "Intense",
-            "Severe"
-    };
+    private final List<String> m_nouns;
 
-    private static final String[] NOUNS = {
-            "Alumni",
-            "Analysers",
-            "Aquarist",
-            "Archnemeses",
-            "Atlasians",
-            "Axe Dogers",
-            "Babies",
-            "Badgers",
-            "Beach Whales",
-            "Calves",
-            "Children",
-            "Churchgoers",
-            "Circus Freaks",
-            "Citydwellers",
-            "COD Fanboys",
-            "Copyists",
-            "Dominos",
-            "Dwarves",
-            "Echos",
-            "Elves",
-            "Family",
-            "Fliers",
-            "Fungii",
-            "Heros",
-            "Hippopotamii",
-            "Hoaxes",
-            "Hooves",
-            "Kisses",
-            "Ladies",
-            "Lives",
-            "Men",
-            "Messes",
-            "Moose",
-            "Mice",
-            "Nannies",
-            "Octopii",
-            "Party",
-            "People",
-            "Potatoes",
-            "Runners-up",
-            "Scratchers",
-            "Sheep",
-            "Species",
-            "Splashers",
-            "Spies",
-            "Stitchers",
-            "Stories",
-            "Thieves",
-            "Waltzers",
-            "Watchers",
-            "Wives",
-            "Women"};
-
-    private static final Random RANDOM = new Random();
+    private final Random m_random = new Random();
 
     private static final Pattern LENGTH_PATTERN = Pattern.compile(
             "(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?(?:([0-9]+)\\s*(?:s[a-z]*)?)?",
@@ -275,10 +30,30 @@ public class WordsUtil extends JavaPlugin {
     private static final long MILLIS_PER_YEAR   = MILLIS_PER_DAY * 365;
 
     /**
+     * things
+     */
+    private WordsUtil(){
+        FileConfiguration config = ConfigManager.getInstance().getConfig("words");
+        m_adjectives = config.getStringList("adjectives");
+        m_nouns = config.getStringList("nouns");
+    }
+
+    private static final class WordsUtilHolder {
+        private static final WordsUtil WORDS_UTIL = new WordsUtil();
+    }
+
+    /**
+     * @return the instance
+     */
+    public static WordsUtil getInstance(){
+        return WordsUtilHolder.WORDS_UTIL;
+    }
+
+    /**
      * @return a random team name
      */
-    public static String getRandomTeamName() {
-        return "The " + ADJECTIVES[RANDOM.nextInt(ADJECTIVES.length)] + " " + NOUNS[RANDOM.nextInt(NOUNS.length)];
+    public String getRandomTeamName() {
+        return "The " + m_adjectives.get(m_random.nextInt(m_adjectives.size())) + " " + m_nouns.get(m_random.nextInt(m_nouns.size()));
     }
 
     /**

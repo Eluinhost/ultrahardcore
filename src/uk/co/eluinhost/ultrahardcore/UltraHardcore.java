@@ -215,6 +215,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         ConfigManager configManager = ConfigManager.getInstance();
         configManager.addConfiguration("main", ConfigManager.getFromFile("main.yml", true));
         configManager.addConfiguration("bans", ConfigManager.getFromFile("bans.yml", true));
+        configManager.addConfiguration("words", ConfigManager.getFromFile("words.yml", true));
     }
 
     /**
