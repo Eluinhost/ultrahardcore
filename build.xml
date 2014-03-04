@@ -22,6 +22,5 @@
             <zipfileset dir="" includes="changelog.yml"/>
             <zipfileset dir="" includes="LICENSE"/>
         </jar>
-        <echo message="BUILD-LABELS:EXAMPLE1,EXAMPLE2"/>
     </target>
 </project>
