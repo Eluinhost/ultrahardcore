@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.ProtocolLibrary;
@@ -29,10 +30,12 @@ public class FootprintFeature extends UHCFeature implements Runnable {
 
     public static final int REPEAT_INTERVAL = 40;
 
-    private static final int MAX_RENDER_DISTANCE = ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FOOTPRINTS_RENDER_DISTANCE);
-    private static final int MAX_RENDER_DISTANCE_SQUARED = MAX_RENDER_DISTANCE * MAX_RENDER_DISTANCE;
-    private static final int MIN_RENDER_DISTANCE = ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FOOTPRINTS_MIN_DISTANCE);
-    private static final int MIN_DISTANCE_SQUARED = MIN_RENDER_DISTANCE * MIN_RENDER_DISTANCE;
+    public static final String MAX_RENDER_NODE = "maxdistance";
+    public static final String MIN_RENDER_NODE = "mindistance";
+    public static final String TIME_NODE = "time";
+
+    private final int m_maxRenderSquared;
+    private final int m_minRenderSquared;
 
     private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
@@ -48,6 +51,11 @@ public class FootprintFeature extends UHCFeature implements Runnable {
      */
     public FootprintFeature() {
         super("Footprints","Leave footprints behind you...");
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        int maxRender = config.getInt(getBaseConfig()+MAX_RENDER_NODE);
+        int minRender = config.getInt(getBaseConfig()+MIN_RENDER_NODE);
+        m_maxRenderSquared = maxRender * maxRender;
+        m_minRenderSquared = minRender * minRender;
     }
 
     @Override
@@ -73,7 +81,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
                 block = block.getRelative(BlockFace.DOWN);
             }
             Location loc = p.getLocation();
-            if (block.getType() != Material.AIR && block.getType() != Material.WATER && isClearOfFootprints(loc, MIN_DISTANCE_SQUARED, p.getName())) {
+            if (block.getType() != Material.AIR && block.getType() != Material.WATER && isClearOfFootprints(loc, m_minRenderSquared, p.getName())) {
                 float offset = REGULAR_OFFSET;
                 if (block.getType() == Material.SNOW) {
                     offset = SNOW_OFFSET;
@@ -81,7 +89,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
                 loc.setY(block.getLocation().getY() + offset);
                 Footstep newFootstep = new Footstep(
                     loc,
-                    ConfigManager.getInstance().getConfig().getInt(ConfigNodes.FOOTPRINTS_TIME_TO_LAST) / 2,
+                    ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+TIME_NODE) / 2,
                     p.getName()
                 );
                 sendFootstep(newFootstep);
@@ -138,7 +146,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
         m_defaultPacket.getIntegers().write(0, 1);
         for (Player p : Bukkit.getOnlinePlayers()) {
             try {
-                if (p.getLocation().distanceSquared(loc) < MAX_RENDER_DISTANCE_SQUARED) {
+                if (p.getLocation().distanceSquared(loc) < m_maxRenderSquared) {
                     PROTOCOL_MANAGER.sendServerPacket(p, m_defaultPacket);
                 }
             } catch (IllegalArgumentException ignored) {

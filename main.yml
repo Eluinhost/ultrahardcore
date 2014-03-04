@@ -49,7 +49,7 @@ features:
   GoldenHeads:
     amountExtra: 4
   Footprints:
-    renderdistance: 60
+    maxdistance: 60
     mindistance: 2
     time: 120
   PotionNerfs:
