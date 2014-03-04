@@ -78,4 +78,31 @@ public class CommandRequest {
     public SenderType getSenderType(){
         return SenderType.getFromCommandSender(m_sender);
     }
+
+    /**
+     * @param index the index to look for
+     * @return true if arg is an int, false otherwise
+     */
+    public boolean isArgInt(int index){
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            Integer.parseInt(m_args.get(index));
+            return true;
+        } catch (NumberFormatException ignored) {
+            return false;
+        }
+    }
+
+    /**
+     * Get the int at the specified index
+     * @param index the index to look for
+     * @return -1 if not an int, int value otherwise
+     */
+    public int getInt(int index){
+        int returnValue = -1;
+        try{
+            returnValue = Integer.parseInt(m_args.get(index));
+        }catch (NumberFormatException ignored){}
+        return returnValue;
+    }
 }
