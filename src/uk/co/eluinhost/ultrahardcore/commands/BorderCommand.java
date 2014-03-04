@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
@@ -51,11 +52,35 @@ public class BorderCommand {
         }
         int radius = request.getInt(1);
 
-        //TODO parse typeID/blockID/meta
         BorderTypeManager manager = BorderTypeManager.getInstance();
-        Border borderType = manager.getBorderByID("");
-        int blockID = 0;
-        int metaID = 0;
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+
+        String borderName = request.getArg(2);
+        int blockID = config.getInt(ConfigNodes.BORDER_BLOCK);
+        int metaID = config.getInt(ConfigNodes.BORDER_BLOCK_META);
+        if(borderName.contains(":")){
+            String[] parts = borderName.split(":");
+            borderName = parts[0];
+            try{
+                blockID = Integer.parseInt(parts[1]);
+            }catch (NumberFormatException ignored){
+                request.sendMessage(ChatColor.RED+"Invalid block ID "+parts[1]);
+                return;
+            }
+            if(parts.length > 2){
+                try{
+                    metaID = Integer.parseInt(parts[2]);
+                }catch (NumberFormatException ignored){
+                    request.sendMessage(ChatColor.RED+"Invalid meta ID "+parts[2]);
+                    return;
+                }
+            }
+        }
+        Border borderType = manager.getBorderByID(borderName);
+        if(borderType == null){
+            request.sendMessage(ChatColor.RED+"Invalid border ID "+borderName);
+            return;
+        }
 
         Location center = world.getSpawnLocation();
 
