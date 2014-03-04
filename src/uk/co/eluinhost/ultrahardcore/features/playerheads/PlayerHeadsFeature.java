@@ -35,16 +35,20 @@ public class PlayerHeadsFeature extends UHCFeature {
 
     private static final Random RANDOM = new Random();
 
-    public static final String DROP_CHANCE_NODE = "percentChance";
-    public static final String PVP_ONLY_NODE = "pvponly";
-    public static final String PVP_TEAM_NODE = "nonteamonly";
-    public static final String STAKE_NODE = "onStake";
+    private final int m_chance;
+    private final boolean m_pvpOnly;
+    private final boolean m_nonTeamOnly;
+    private final boolean m_onStake;
 
     /**
      * Player heads drop on death, normal behaviour when disabled
      */
     public PlayerHeadsFeature() {
         super("PlayerHeads","Players can drop their heads on death");
+        m_chance = ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+"percentChance");
+        m_pvpOnly = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+"pvponly");
+        m_nonTeamOnly = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+"nonteamonly");
+        m_onStake = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+"onStake");
     }
 
     /**
@@ -64,7 +68,7 @@ public class PlayerHeadsFeature extends UHCFeature {
                 return;
             }
             //do a random chance based on the config options
-            if (RANDOM.nextInt(100) >= 100 - ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+DROP_CHANCE_NODE)) {
+            if (RANDOM.nextInt(100) >= 100 - m_chance) {
                 //drop the head with the loot if no stake was made
                 if (!putHeadOnStake(pde.getEntity())) {
                     pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
@@ -79,14 +83,14 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @return boolean
      */
     private boolean isValidKill(Player deadPlayer){
-        if (ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+PVP_ONLY_NODE)) {
+        if (m_pvpOnly) {
             //get the killer and if there isn't one it wasn't a PVP kill
             Player killer = deadPlayer.getKiller();
             if (killer == null) {
                 return false;
             }
             //if we're checking that teammember kills don't count
-            if (ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+PVP_TEAM_NODE)) {
+            if (m_nonTeamOnly) {
                 //get the scoreboard and get the teams of both players
                 Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
                 Team team1 = sb.getPlayerTeam(deadPlayer);
@@ -106,7 +110,7 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @return true if placed, false otherwise
      */
     private boolean putHeadOnStake(Player p) {
-        if(!ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+STAKE_NODE)){
+        if(!m_onStake){
             return false;
         }
         //head location
