@@ -2,6 +2,7 @@ package uk.co.eluinhost.ultrahardcore.features.deathmessages;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -29,8 +30,9 @@ public class DeathMessagesFeature extends UHCFeature {
      */
     public DeathMessagesFeature() {
         super("DeathMessages","Adds a prefix/suffix to all player deaths");
-        m_message = ConfigManager.getInstance().getConfig().getString(getBaseConfig()+"message");
-        m_suppressed = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+"remove");
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        m_message = config.getString(getBaseConfig()+"message");
+        m_suppressed = config.getBoolean(getBaseConfig()+"remove");
     }
 
     /**

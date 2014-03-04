@@ -9,6 +9,7 @@ import org.bukkit.SkullType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Skull;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -45,10 +46,11 @@ public class PlayerHeadsFeature extends UHCFeature {
      */
     public PlayerHeadsFeature() {
         super("PlayerHeads","Players can drop their heads on death");
-        m_chance = ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+"percentChance");
-        m_pvpOnly = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+"pvponly");
-        m_nonTeamOnly = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+"nonteamonly");
-        m_onStake = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+"onStake");
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        m_chance = config.getInt(getBaseConfig()+"percentChance");
+        m_pvpOnly = config.getBoolean(getBaseConfig()+"pvponly");
+        m_nonTeamOnly = config.getBoolean(getBaseConfig()+"nonteamonly");
+        m_onStake = config.getBoolean(getBaseConfig()+"onStake");
     }
 
     /**
