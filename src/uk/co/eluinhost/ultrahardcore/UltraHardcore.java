@@ -15,6 +15,7 @@ import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
 import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
+import uk.co.eluinhost.ultrahardcore.features.playerfreeze.PlayerFreezeFeature;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
@@ -195,6 +196,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
             featureManager.addFeature(new NetherFeature());
             featureManager.addFeature(new WitchSpawnsFeature());
             featureManager.addFeature(new PortalsFeature());
+            featureManager.addFeature(new PlayerFreezeFeature());
 
             //load the protocollib features last
             featureManager.addFeature(new HardcoreHeartsFeature());

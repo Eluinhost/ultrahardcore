@@ -12,6 +12,7 @@ enabledFeatures:
 - "Footprints"
 - "PotionNerfs"
 - "WitchSpawns"
+- "PlayerFreeze"
 features:
   GhastDrops:
     whitelist: false
