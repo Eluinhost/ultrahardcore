@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,15 +24,19 @@ public class PotionNerfsFeature extends UHCFeature {
     public static final String DENY_SPLASH = POTION_BASE + "disableSplash";
     public static final String DENY_IMPROVED = POTION_BASE + "disableImproved";
 
-    public static final String DISABLE_SPLASH_NODE = "disableSplash";
-    public static final String DISABLE_ABSORB_NODE = "disableAbsorb";
-    public static final String DISABLE_GLOWSTONE_NODE = "disableGlowstone";
+    private final boolean m_disableSplash;
+    private final boolean m_disableAbsorb;
+    private final boolean m_disableGlowstone;
 
     /**
      * Disallows tier 2 + splash when enabled, normal when disabled
      */
     public PotionNerfsFeature() {
         super("PotionNerfs","Applies nerfs to potions");
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        m_disableSplash = config.getBoolean(getBaseConfig()+"disableSplash");
+        m_disableAbsorb = config.getBoolean(getBaseConfig()+"disableAbsorb");
+        m_disableGlowstone = config.getBoolean(getBaseConfig()+"disableGlowstone");
     }
 
     /**
@@ -46,8 +51,6 @@ public class PotionNerfsFeature extends UHCFeature {
             if (ice.getInventory().getType() != InventoryType.BREWING) {
                 return;
             }
-            boolean cancelSulphur = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+DISABLE_SPLASH_NODE);
-            boolean cancelGlowstone = ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+DISABLE_GLOWSTONE_NODE);
 
             InventoryView iv = ice.getView();
             boolean cancel = false;
@@ -55,11 +58,11 @@ public class PotionNerfsFeature extends UHCFeature {
             //if the player is shift clicking
             if (ice.isShiftClick()) {
                 //if splash disabled and they're clicking sulphur and don't have permission
-                if (cancelSulphur && ice.getCurrentItem().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
+                if (m_disableSplash && ice.getCurrentItem().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
                     cancel = true;
                 }
                 //if tier 2 is disabled and they're clicking glowstone and don't have permission
-                if (cancelGlowstone && ice.getCurrentItem().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
+                if (m_disableGlowstone && ice.getCurrentItem().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
                     cancel = true;
                 }
             }
@@ -67,11 +70,11 @@ public class PotionNerfsFeature extends UHCFeature {
             //if its the fuel slot that was clicked
             if (ice.getSlotType() == InventoryType.SlotType.FUEL) {
                 //if splash disabled and sulphur is on the cursor and no permission
-                if (cancelSulphur && iv.getCursor().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
+                if (m_disableSplash && iv.getCursor().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
                     cancel = true;
                 }
                 //if tier 2 disabled and glowstone is on the cursor and no permission
-                if (cancelGlowstone && iv.getCursor().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
+                if (m_disableGlowstone && iv.getCursor().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
                     cancel = true;
                 }
             }
@@ -95,7 +98,7 @@ public class PotionNerfsFeature extends UHCFeature {
     @EventHandler
     public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
         //if we're enabled and absorbtion is disabled
-        if (isEnabled() && ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+DISABLE_ABSORB_NODE)) {
+        if (isEnabled() && m_disableAbsorb) {
             //if they ate a golden apple
             ItemStack is = pee.getItem();
             if (is.getType() == Material.GOLDEN_APPLE) {
@@ -116,11 +119,11 @@ public class PotionNerfsFeature extends UHCFeature {
             //if the item is being moved into a brewing stand
             if (imie.getDestination().getType() == InventoryType.BREWING) {
                 //cancel sulpher if no permission
-                if (imie.getItem().getType() == Material.SULPHUR && ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+DISABLE_SPLASH_NODE)) {
+                if (imie.getItem().getType() == Material.SULPHUR && m_disableSplash) {
                     imie.setCancelled(true);
                 }
                 //cancel glowstone if no permission
-                if (imie.getItem().getType() == Material.GLOWSTONE_DUST && ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+DISABLE_GLOWSTONE_NODE)) {
+                if (imie.getItem().getType() == Material.GLOWSTONE_DUST && m_disableGlowstone) {
                     imie.setCancelled(true);
                 }
             }
