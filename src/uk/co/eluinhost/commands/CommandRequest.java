@@ -3,6 +3,7 @@ package uk.co.eluinhost.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
 import java.util.Collections;
@@ -146,5 +147,13 @@ public class CommandRequest {
      */
     public long parseDuration(int index){
         return WordsUtil.parseTime(m_args.get(index));
+    }
+
+    /**
+     * @param index the index to look for
+     * @return player or null of not exists
+     */
+    public Player getPlayer(int index){
+        return Bukkit.getPlayer(m_args.get(index));
     }
 }
