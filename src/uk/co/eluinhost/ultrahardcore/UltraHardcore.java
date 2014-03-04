@@ -179,7 +179,6 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         log.info("Loading UHC feature modules...");
         //Load the default features with settings in config
         FeatureManager featureManager = FeatureManager.getInstance();
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
         try {
             featureManager.addFeature(new DeathLightningFeature());
             featureManager.addFeature(new EnderpearlsFeature());
