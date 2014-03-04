@@ -15,7 +15,8 @@ enabledFeatures:
 features:
   GhastDrops:
     whitelist: false
-    worlds: world_names_to_drop_tears_in
+    worlds:
+    - world_names_to_drop_tears_in
   PlayerList:
     colours: true
     delay: 10
