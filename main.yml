@@ -25,9 +25,8 @@ features:
     roundHealth: false
     belowNameUnit: "&4&h"
   PlayerHeads:
-    pvp:
-      pvponly: false
-      nonteamonly: true
+    pvponly: false
+    nonteamonly: true
     percentChance: 100
     onStake: true
   DeathMessages:
