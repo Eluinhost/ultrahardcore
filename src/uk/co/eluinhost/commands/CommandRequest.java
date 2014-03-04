@@ -122,4 +122,12 @@ public class CommandRequest {
     public void sendMessage(String message){
         m_sender.sendMessage(message);
     }
+
+    /**
+     * @param index the index to look for
+     * @return the argument
+     */
+    public String getArg(int index){
+        return m_args.get(index);
+    }
 }
