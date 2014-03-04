@@ -5,6 +5,8 @@ import uk.co.eluinhost.ultrahardcore.borders.types.Border;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class BorderTypeManager {
 
@@ -49,5 +51,12 @@ public class BorderTypeManager {
             throw new BorderIDConflictException();
         }
         m_borders.add(border);
+    }
+
+    /**
+     * @return unmodifiable collection of border types
+     */
+    public Collection<Border> getTypes(){
+        return Collections.unmodifiableCollection(m_borders);
     }
 }

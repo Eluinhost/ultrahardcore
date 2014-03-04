@@ -11,10 +11,13 @@ import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
+import uk.co.eluinhost.ultrahardcore.borders.types.Border;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import uk.co.eluinhost.configuration.ConfigManager;
+
+import java.util.Collection;
 
 //TODO finish convert
 public class BorderCommand {
@@ -75,7 +78,16 @@ public class BorderCommand {
             permission = GENERATE_BORDER,
             parentID = "BorderCommand")
     public void onBorderTypesCommand(CommandRequest request){
-        //TODO this
+        Collection<Border> types = BorderTypeManager.getInstance().getTypes();
+        CommandSender sender = request.getSender();
+        if(types.isEmpty()){
+            request.getSender().sendMessage(ChatColor.RED+"There are no border types loaded");
+            return;
+        }
+        sender.sendMessage(ChatColor.GOLD+"Loaded border types ("+types.size()+"):");
+        for(Border border : types){
+            sender.sendMessage(ChatColor.GOLD+border.getID()+" - "+border.getDescription());
+        }
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label,
