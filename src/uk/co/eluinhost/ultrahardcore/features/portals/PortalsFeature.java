@@ -10,14 +10,26 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class PortalsFeature extends UHCFeature {
 
-    public static final String FROM_NETHER_NODE = "from_nether.";
-    public static final String TO_NETHER_NODE = "to_nether.";
+    private final boolean m_fromAllowed;
+    private final int m_fromCreation;
+    private final int m_fromSearch;
+
+    private final boolean m_toAllowed;
+    private final int m_toCreation;
+    private final int m_toSearch;
 
     /**
      * Changes the radius portals will connect, normal when disabled
      */
     public PortalsFeature() {
         super("PortalRanges","Change the radius portals can spawn in");
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        m_fromAllowed = config.getBoolean(getBaseConfig()+"from_nether.allowed");
+        m_fromSearch = config.getInt(getBaseConfig()+"from_nether.search_radius");
+        m_fromCreation = config.getInt(getBaseConfig()+"from_nether.creation_radius");
+        m_toAllowed = config.getBoolean(getBaseConfig()+"to_nether.allowed");
+        m_toSearch = config.getInt(getBaseConfig()+"to_nether.search_radius");
+        m_toCreation = config.getInt(getBaseConfig()+"to_nether.creation_radius");
     }
 
     /**
@@ -28,25 +40,19 @@ public class PortalsFeature extends UHCFeature {
     public void onPortalEvent(PlayerPortalEvent entityPortalEvent) {
         //if we're enabled
         if (isEnabled()) {
-            //get the config
-            FileConfiguration config = ConfigManager.getInstance().getConfig();
-
             //create a travel agent for the portal
             TravelAgent ta = entityPortalEvent.getPortalTravelAgent();
-
             //if they're in the nether
             if (entityPortalEvent.getPlayer().getWorld().getEnvironment() == World.Environment.NETHER) {
-
                 //set data from the nether
-                ta.setCanCreatePortal(config.getBoolean(getBaseConfig()+FROM_NETHER_NODE+"allowed"));
-                ta.setCreationRadius(config.getInt(getBaseConfig()+FROM_NETHER_NODE+"creation_range"));
-                ta.setSearchRadius(config.getInt(getBaseConfig()+FROM_NETHER_NODE+"search_range"));
+                ta.setCanCreatePortal(m_fromAllowed);
+                ta.setCreationRadius(m_fromCreation);
+                ta.setSearchRadius(m_fromSearch);
             } else {
-
                 //set the data to the nether
-                ta.setCanCreatePortal(config.getBoolean(getBaseConfig()+TO_NETHER_NODE+"allowed"));
-                ta.setCreationRadius(config.getInt(getBaseConfig()+TO_NETHER_NODE+"creation_range"));
-                ta.setSearchRadius(config.getInt(getBaseConfig()+TO_NETHER_NODE+"search_range"));
+                ta.setCanCreatePortal(m_toAllowed);
+                ta.setCreationRadius(m_toCreation);
+                ta.setSearchRadius(m_toSearch);
             }
         }
     }
