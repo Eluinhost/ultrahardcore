@@ -16,7 +16,7 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 
-//TODO i don't like this, clean up
+//TODO convert freezing mechanics to a feature and make the command use it
 public class FreezeCommand {
 
     private static final AbstractList<PotionEffect> POTION_EFFECTS = new ArrayList<PotionEffect>();
