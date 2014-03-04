@@ -1,5 +1,7 @@
 package uk.co.eluinhost.commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -104,5 +106,13 @@ public class CommandRequest {
             returnValue = Integer.parseInt(m_args.get(index));
         }catch (NumberFormatException ignored){}
         return returnValue;
+    }
+
+    /**
+     * @param index the index to look for
+     * @return null if not valid, world if valid
+     */
+    public World getWorld(int index){
+        return Bukkit.getWorld(m_args.get(index));
     }
 }
