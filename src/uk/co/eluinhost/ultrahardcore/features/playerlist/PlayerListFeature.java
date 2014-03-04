@@ -5,6 +5,7 @@ import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -23,22 +24,11 @@ public class PlayerListFeature extends UHCFeature {
 
     public static final String PLAYER_LIST_HEALTH = BASE_PERMISSION + "playerListHealth";
 
-    /**
-     * Handles the player list health better than base mc, normal behaviour when disabled
-     */
-    public PlayerListFeature() {
-        super("PlayerList","Player's health shown in player list and under their name");
-    }
-
     //the internal bukkit id for the task
     private int m_taskID = -1;
 
     //the list of players and their health that we are handling
     private static final Map<Player, Double> HANDLED_PLAYERS = new WeakHashMap<Player, Double>();
-
-    private static final double HEALTH_SCALING = ConfigManager.getInstance().getConfig().getDouble(ConfigNodes.PLAYER_LIST_SCALING);
-    private static final boolean ROUND_HEALTH = ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_LIST_ROUND_HEALTH);
-    private static final boolean PLAYER_LIST_COLOURS = ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_LIST_COLOURS);
 
     private static final Scoreboard MAIN_SCOREBOARD = Bukkit.getScoreboardManager().getMainScoreboard();
 
@@ -54,6 +44,26 @@ public class PlayerListFeature extends UHCFeature {
 
     private Objective m_objectivePlayerList;
     private Objective m_objectiveUnderName;
+    private final double m_healthScaling;
+    private final boolean m_roundHealth;
+    private final boolean m_playerListColours;
+    private final long m_delay;
+    private final boolean m_underName;
+    private final String m_displayName;
+
+    /**
+     * Handles the player list health better than base mc, normal behaviour when disabled
+     */
+    public PlayerListFeature() {
+        super("PlayerList","Player's health shown in player list and under their name");
+        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        m_healthScaling = config.getDouble(getBaseConfig()+"scaling");
+        m_roundHealth = config.getBoolean(getBaseConfig()+"roundHealth");
+        m_playerListColours = config.getBoolean(getBaseConfig()+"colours");
+        m_delay = config.getLong(getBaseConfig()+"delay");
+        m_underName = config.getBoolean(getBaseConfig()+"belowName");
+        m_displayName = config.getString(getBaseConfig()+"belowNameUnit");
+    }
 
     /**
      * update the players name in the list with the following health number
@@ -66,11 +76,11 @@ public class PlayerListFeature extends UHCFeature {
         String newName = ChatColor.stripColor(player.getDisplayName());
 
         //cut the name down to the right length
-        newName = newName.substring(0,Math.min(newName.length(),PLAYER_LIST_COLOURS ? MAX_LENGTH_COLOURS : MAX_LENGTH_NO_COLOURS));
+        newName = newName.substring(0,Math.min(newName.length(),m_playerListColours ? MAX_LENGTH_COLOURS : MAX_LENGTH_NO_COLOURS));
 
         double showHealth = health;
 
-        if (PLAYER_LIST_COLOURS) {
+        if (m_playerListColours) {
             ChatColor prefix = ChatColor.GREEN;
             if (health <= YELLOW_BOUNDARY) {
                 prefix = ChatColor.YELLOW;
@@ -89,14 +99,14 @@ public class PlayerListFeature extends UHCFeature {
         player.setPlayerListName(newName);
 
         //if we're rounding health
-        if (ROUND_HEALTH) {
+        if (m_roundHealth) {
             showHealth = Math.ceil(showHealth);
         }
 
         //set the score for both the player and their display name
         //this allows the score to show under the head of players with a changed name
-        m_objectivePlayerList.getScore(Bukkit.getOfflinePlayer(newName)).setScore((int) (showHealth * HEALTH_SCALING));
-        m_objectiveUnderName.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(player.getDisplayName()))).setScore((int) (showHealth * HEALTH_SCALING));
+        m_objectivePlayerList.getScore(Bukkit.getOfflinePlayer(newName)).setScore((int) (showHealth * m_healthScaling));
+        m_objectiveUnderName.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(player.getDisplayName()))).setScore((int) (showHealth * m_healthScaling));
     }
 
     /**
@@ -128,7 +138,7 @@ public class PlayerListFeature extends UHCFeature {
                 UltraHardcore.getInstance(),
                 new PlayerListUpdater(),
                 1L,
-                ConfigManager.getInstance().getConfig().getLong(ConfigNodes.PLAYER_LIST_DELAY)
+                m_delay
         );
         //intialize the scoreboard
         initializeScoreboard();
@@ -171,13 +181,13 @@ public class PlayerListFeature extends UHCFeature {
         m_objectiveUnderName = MAIN_SCOREBOARD.getObjective(OBJECTIVE_UNDER_NAME_NAME);
 
         //set the display name of the under name objective
-        m_objectiveUnderName.setDisplayName(ChatColor.translateAlternateColorCodes('&', ConfigManager.getInstance().getConfig().getString(ConfigNodes.PLAYER_LIST_HEALTH_NAME)).replaceAll("&h", "\u2665"));
+        m_objectiveUnderName.setDisplayName(ChatColor.translateAlternateColorCodes('&', m_displayName).replaceAll("&h", "\u2665"));
 
         //set the slot for player list health
         m_objectivePlayerList.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
         //if under name is enabled
-        if (ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.PLAYER_LIST_UNDER_NAME)) {
+        if (m_underName) {
             //set it's slot
             m_objectiveUnderName.setDisplaySlot(DisplaySlot.BELOW_NAME);
         } else {
