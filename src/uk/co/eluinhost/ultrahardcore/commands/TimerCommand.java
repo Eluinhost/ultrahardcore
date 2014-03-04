@@ -15,7 +15,7 @@ import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 
 import java.lang.reflect.InvocationTargetException;
 
-//TODO complete, more refactor
+//TODO convert to feature and make command interact with it
 public class TimerCommand {
 
     public static final long SECONDS_PER_HOUR = 3600;
