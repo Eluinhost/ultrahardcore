@@ -25,6 +25,10 @@ public class DeathBansFeature extends UHCFeature {
 
     public static final String BASE_DEATH_BAN = BASE_PERMISSION + "deathban.";
     public static final String DEATH_BAN_IMMUNE = BASE_DEATH_BAN + "immune";
+    public static final String BASE_GROUP = BASE_DEATH_BAN + "group.";
+
+    public static final String DELAY_NODE = "delay";
+    public static final String CLASSES_NODE = "classes";
 
     /**
      * Bans players on death
@@ -117,7 +121,7 @@ public class DeathBansFeature extends UHCFeature {
         Bukkit.getScheduler().scheduleSyncDelayedTask(
                 UltraHardcore.getInstance(),
                 new PlayerBanner(playerName, message, unbanTime),
-                ConfigManager.getInstance().getConfig().getLong(ConfigNodes.DEATH_BANS_DELAY)
+                ConfigManager.getInstance().getConfig().getLong(getBaseConfig()+DELAY_NODE)
         );
         saveBans();
         UltraHardcore.getInstance().getLogger().info("Added " + offlinePlayer.getName() + " to temp ban list");
@@ -128,11 +132,11 @@ public class DeathBansFeature extends UHCFeature {
      * @param p the player to ban
      */
     public void processBansForPlayer(Player p){
-        ConfigurationSection banTypes = ConfigManager.getInstance().getConfig().getConfigurationSection(ConfigNodes.DEATH_BANS_CLASSES);
+        ConfigurationSection banTypes = ConfigManager.getInstance().getConfig().getConfigurationSection(getBaseConfig()+CLASSES_NODE);
         Set<String> permissionNames = banTypes.getKeys(false);
         Logger logger = UltraHardcore.getInstance().getLogger();
         for(String permission : permissionNames){
-            if(!p.hasPermission("UHC.deathban.group."+permission)){
+            if(!p.hasPermission(BASE_GROUP+permission)){
                 continue;
             }
             List<String> actions = banTypes.getStringList(permission + ".actions");

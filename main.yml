@@ -67,7 +67,7 @@ features:
       search_range: 50
   DeathBans:
     delay: 10
-    bans:
+    classes:
       just_server_ban:
         actions:
         - "serverban"
