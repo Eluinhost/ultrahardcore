@@ -1,7 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
-import com.sun.javafx.image.IntPixelGetter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,20 +13,15 @@ import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.types.Border;
-import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.config.ConfigNodes;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 import java.util.Collection;
-import java.util.List;
 
-//TODO finish convert
 public class BorderCommand {
 
     public static final String GENERATE_BORDER = "UHC.generateborder";
-    private static final String SYNTAX = "/generateborder radius world[:x,z] typeID[:blockid:meta] OR /generateborder undo/types [world]";
 
 
     /**

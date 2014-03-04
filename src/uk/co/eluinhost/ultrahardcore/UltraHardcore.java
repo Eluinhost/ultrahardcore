@@ -116,7 +116,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 TPCommand.class,
                 FeatureCommand.class,
                 TeamCommands.class,
-                FeedCommand.class
+                FeedCommand.class,
+                BorderCommand.class
         };
         for(Class clazz : classes){
             try {
@@ -145,7 +146,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 "scatter",
                 "freeze",
                 "feature",
-                "generateborder",
+                "genborder",
                 "givedrops",
                 "timer"
         };
