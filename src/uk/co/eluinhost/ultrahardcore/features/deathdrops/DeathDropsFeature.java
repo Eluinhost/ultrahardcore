@@ -112,12 +112,7 @@ public class DeathDropsFeature extends UHCFeature {
                 continue;
             }
 
-            String group = itemSection.getString("group");
-            if (group == null) {
-                group = "N/A";
-            }
-
-            ItemDrop id = new ItemDrop(group);
+            ItemDrop id = new ItemDrop();
             id.setItem(mat);
             id.setMeta(metaID);
             id.setChance(chance);
@@ -144,33 +139,5 @@ public class DeathDropsFeature extends UHCFeature {
                 }
             }
         }
-    }
-
-    /**
-     * get the item drops from the group name
-     * @param name the group name
-     * @return the list of item drops
-     */
-    public List<ItemDrop> getItemDropForGroup(String name) {
-        List<ItemDrop> ids = new ArrayList<ItemDrop>();
-        for (ItemDrop id : m_drops) {
-            if (id.getGroupName().equalsIgnoreCase(name)) {
-                ids.add(id);
-            }
-        }
-        return ids;
-    }
-
-    /**
-     * @return list of all the groups
-     */
-    public List<String> getItemDropGroups() {
-        List<String> list = new ArrayList<String>();
-        for (ItemDrop id : m_drops) {
-            if(!list.contains(id.getGroupName())){
-                list.add(id.getGroupName());
-            }
-        }
-        return list;
     }
 }

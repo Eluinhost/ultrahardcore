@@ -148,7 +148,6 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 "freeze",
                 "feature",
                 "genborder",
-                "givedrops",
                 "timer"
         };
         for(String com : baseCommands){

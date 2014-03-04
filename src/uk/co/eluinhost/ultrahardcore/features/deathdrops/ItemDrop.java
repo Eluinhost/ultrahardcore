@@ -11,17 +11,8 @@ public class ItemDrop {
     private int m_dropChance;
     private Material m_material;
     private int m_meta;
-    private final String m_groupName;
 
     private static final Random RANDOM = new Random();
-
-    /**
-     * A new item drop
-     * @param groupName group to be a part of
-     */
-    public ItemDrop(String groupName) {
-        m_groupName = groupName;
-    }
 
     /**
      * @return minimum amount to drop
@@ -91,13 +82,6 @@ public class ItemDrop {
      */
     public void setMeta(int meta) {
         m_meta = meta;
-    }
-
-    /**
-     * @return the name of the group it belongs to
-     */
-    public String getGroupName() {
-        return m_groupName;
     }
 
     /**

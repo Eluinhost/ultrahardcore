@@ -31,17 +31,14 @@ features:
     enabled: false
     items:
       template1:
-        group: group1
         id: 3
         amount: 1-3
         chance: 0
       template2:
-        group: group1
         id: "35:7"
         amount: 1-64
         chance: 0
       template3:
-        group: group2
         id: 48
         amount: 20-30
         chance: 0

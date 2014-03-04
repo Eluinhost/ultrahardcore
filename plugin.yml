@@ -262,9 +262,6 @@ permissions:
     UHC.deathban.group.default:
         description: Bans for the group default
         default: true
-    UHC.givedrops:
-        description: Allows use of the givedrops command
-        default: op
     UHC.timer:
         description: Allows use of the timer command
         default: op
