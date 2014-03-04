@@ -21,6 +21,9 @@ public class DeathMessagesFeature extends UHCFeature {
     public static final String DEATH_MESSAGE_SUPPRESSED = BASE_MESSAGES + "remove";
     public static final String DEATH_MESSAGE_AFFIXES = BASE_MESSAGES + "affixes";
 
+    public static final String SUPRESSED_NODE = "remove";
+    public static final String FORMAT_NODE = "message";
+
     /**
      * Change the format of death messages
      */
@@ -36,7 +39,7 @@ public class DeathMessagesFeature extends UHCFeature {
     public void onPlayerDeath(PlayerDeathEvent pde) {
         if (isEnabled()) {
             //if death message suppression is on
-            if (ConfigManager.getInstance().getConfig().getBoolean(ConfigNodes.DEATH_MESSAGES_SUPPRESSED)) {
+            if (ConfigManager.getInstance().getConfig().getBoolean(getBaseConfig()+SUPRESSED_NODE)) {
                 //and the players death messages are suppressed
                 if (pde.getEntity().hasPermission(DEATH_MESSAGE_SUPPRESSED)) {
                     //set to nothing
@@ -47,7 +50,7 @@ public class DeathMessagesFeature extends UHCFeature {
             //if there is an affix for the player
             if (pde.getEntity().hasPermission(DEATH_MESSAGE_AFFIXES)) {
                 //grab format from config file
-                String format = ChatColor.translateAlternateColorCodes('&', ConfigManager.getInstance().getConfig().getString(ConfigNodes.DEATH_MESSAGES_FORMAT));
+                String format = ChatColor.translateAlternateColorCodes('&', ConfigManager.getInstance().getConfig().getString(getBaseConfig()+FORMAT_NODE));
 
                 //replace vars
                 format = format.replaceAll("%message", pde.getDeathMessage());
