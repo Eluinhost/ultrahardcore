@@ -1,34 +1,38 @@
+enabledFeatures:
+- "AnonChat"
+- "DeathBans"
+- "GhastDrops"
+- "DisableRegen"
+- "PlayerList"
+- "HardRecipes"
+- "Enderpearls"
+- "PlayerHeads"
+- "GoldenHeads"
+- "HardcoreHearts"
+- "Footprints"
+- "PotionNerfs"
+- "WitchSpawns"
 features:
-  ghastDropChanges:
-    enabled: true
+  GhastDrops:
     whitelist: false
     worlds: world_names_to_drop_tears_in
-  regenChanges: true
-  playerListHealth:
+  PlayerList:
     colours: true
-    enabled: true
     delay: 10
     belowName: true
     scaling: 5
     roundHealth: false
     belowNameUnit: "&4&h"
-  recipeChanges:
-    enabled: true
-  noEnderpearlDamage: true
-  headDrop:
-    enabled: true
+  PlayerHeads:
     pvp:
       pvponly: false
       nonteamonly: true
     percentChance: 100
     onStake: true
-  deathLightning: false
-  deathMessages:
-    enabled: false
+  DeathMessages:
     message: "&c%message at %coords"
     remove: false
-  deathDrops:
-    enabled: false
+  DeathDrops:
     items:
       template1:
         id: 3
@@ -42,28 +46,17 @@ features:
         id: 48
         amount: 20-30
         chance: 0
-  anonChat:
-    enabled: true
-  goldenHeads:
-    enabled: true
+  GoldenHeads:
     amountExtra: 4
-  hardcoreHearts:
-    enabled: true
-  footprints:
-    enabled: true
+  Footprints:
     renderdistance: 60
     mindistance: 2
     time: 120
-  potionNerfs:
+  PotionNerfs:
     disableSplash: true
     disableAbsorb: true
     disableGlowstone: true
-  nether_disable:
-    enabled: false
-  witch_spawns:
-    enabled: true
-  portal_ranges:
-    enabled: false
+  PortalRanges:
     to_nether:
       allowed: true
       creation_range: 50
@@ -72,8 +65,7 @@ features:
       allowed: true
       creation_range: 50
       search_range: 50
-  deathbans:
-    enabled: true
+  DeathBans:
     delay: 10
     bans:
       just_server_ban:
