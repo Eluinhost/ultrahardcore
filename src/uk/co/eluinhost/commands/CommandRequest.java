@@ -130,4 +130,12 @@ public class CommandRequest {
     public String getArg(int index){
         return m_args.get(index);
     }
+
+    /**
+     * @param index the index to look for
+     * @return true if within list bounds, false otherwise
+     */
+    public boolean isArgPresent(int index){
+        return index > -1 && index < m_args.size();
+    }
 }
