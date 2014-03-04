@@ -1,11 +1,8 @@
 package uk.co.eluinhost.ultrahardcore.features.playerfreeze;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 public class PlayerFreezeFeature extends UHCFeature {
@@ -39,6 +36,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      * Remove all from the frozen list
      */
     public void unfreezeAll(){
+        //TODO allow movement for all
         m_players.clear();
     }
 }
