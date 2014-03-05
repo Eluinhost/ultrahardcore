@@ -10,7 +10,8 @@ public enum SenderType {
     COMMAND_BLOCK(BlockCommandSender.class),
     REMOTE_CONSOLE(RemoteConsoleCommandSender.class),
     CONSOLE(ConsoleCommandSender.class),
-    PLAYER(Player.class);
+    PLAYER(Player.class),
+    OTHER(null);
 
     private final Class m_clazz;
 
@@ -28,11 +29,11 @@ public enum SenderType {
      */
     public static SenderType getFromCommandSender(CommandSender sender){
         for(SenderType type : SenderType.values()){
-            if(type.getClassType().equals(sender.getClass())){
+            if(type.m_clazz.equals(sender.getClass())){
                 return type;
             }
         }
-        return null;
+        return OTHER;
     }
 
     /**
