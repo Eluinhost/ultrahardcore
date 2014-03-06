@@ -11,7 +11,7 @@ public abstract class WorldNamePrompt extends ValidatingPrompt {
     @Override
     protected boolean isInputValid(ConversationContext conversationContext, String s) {
         World world = Bukkit.getWorld(s);
-        return world != null;
+        return world != null && isWorldValid(world);
     }
 
     @Override
@@ -25,4 +25,12 @@ public abstract class WorldNamePrompt extends ValidatingPrompt {
      * @return the next prompt
      */
     protected abstract Prompt acceptValidatedInput(ConversationContext conversationContext, World world);
+
+    /**
+     * @param world the world to check
+     * @return true if world valid, false if not
+     */
+    protected boolean isWorldValid(World world){
+        return true;
+    }
 }
