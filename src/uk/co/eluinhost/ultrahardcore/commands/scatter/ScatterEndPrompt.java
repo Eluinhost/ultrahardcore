@@ -8,6 +8,7 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
@@ -40,7 +41,11 @@ public class ScatterEndPrompt extends MessagePrompt {
         params.setMinimumDistance(minDist);
         params.setRadius(radius);
 
-        manager.scatter(type, params ,players, conversationContext.getForWhom());
-        return "Starting scatter";
+        try {
+            manager.scatter(type, params ,players, conversationContext.getForWhom());
+            return "Starting to scatter players";
+        } catch (MaxAttemptsReachedException ignored) {
+            return "Hit max attempts at finding enough scatter locations, please try another scatter type and/or parameters";
+        }
     }
 }
