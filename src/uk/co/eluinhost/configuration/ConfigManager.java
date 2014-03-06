@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,13 +79,17 @@ public class ConfigManager {
     }
 
     /**
-     * Saves the config
+     * Saves the config to a file with the same name + .yml
      * @param name the config to save
      */
     public void saveConfig(String name) {
         FileConfiguration config = m_configurations.get(name);
         if(config != null){
-            //TODO thingy to save and stuff
+            try {
+                config.save(name+".yml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
