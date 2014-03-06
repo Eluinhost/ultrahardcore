@@ -12,6 +12,10 @@ import java.util.Map;
 
 public class ConfigManager {
 
+    private final Map<String, FileConfiguration> m_configurations = new HashMap<String, FileConfiguration>();
+
+    private final FileConfiguration m_translation;
+
     private static final class LazyConfigManagerHolder {
         private static final ConfigManager INSTANCE = new ConfigManager();
     }
@@ -26,9 +30,20 @@ public class ConfigManager {
     /**
      * Makes a config manager
      */
-    private ConfigManager(){}
+    private ConfigManager(){
+        FileConfiguration transConfig = getFromFile("translate.yml",true);
+        String language = transConfig.getString("language");
+        m_translation = getFromFile("translations/"+language+".yml",true);
+    }
 
-    private final Map<String, FileConfiguration> m_configurations = new HashMap<String, FileConfiguration>();
+    /**
+     * Get the message
+     * @param key the key to look for
+     * @return the translated message
+     */
+    public String getMessage(String key){
+        return m_translation.getString(key);
+    }
 
     /**
      * Only allows 1 config per configtype
