@@ -1,7 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.nether;
 
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.permissions.Permissible;
