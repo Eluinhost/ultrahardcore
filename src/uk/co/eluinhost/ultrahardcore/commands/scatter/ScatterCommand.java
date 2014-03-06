@@ -7,7 +7,6 @@ import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.commands.CommandCancelHandler;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 
 import java.util.List;
