@@ -276,3 +276,6 @@ permissions:
     UHC.tpall:
         description: TP player to a player/location
         default: op
+    UHC.nether.allow:
+        description: Allows travel to the nether when feature is enabled
+        default: op
