@@ -3,8 +3,8 @@ package uk.co.eluinhost.ultrahardcore.scatter;
 import java.util.*;
 
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.conversations.Conversable;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -14,15 +14,21 @@ import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictExcep
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.configuration.ConfigManager;
 
-//TODO more option parameters
-public class ScatterManager {
+public class ScatterManager implements Runnable {
 
-    //todo max tris and attemtps somewher
-    private int m_maxTries;
-    private int m_maxAttemtps;
-    private int m_scatterDelay;
+    private final int m_maxTries;
+    private final int m_scatterDelay;
 
-    @SuppressWarnings("UtilityClass")
+    private final List<AbstractScatterType> m_scatterTypes = new ArrayList<AbstractScatterType>();
+
+    private final Protector m_protector = new Protector();
+
+    private final LinkedList<Teleporter> m_remainingTeleports = new LinkedList<Teleporter>();
+
+    private int m_jobID = -1;
+
+    private Conversable m_commandSender;
+
     private static final class LazyScatterManagerHolder {
         private static final ScatterManager INSTANCE = new ScatterManager();
     }
@@ -42,22 +48,13 @@ public class ScatterManager {
 
         //set up default config
         FileConfiguration config = ConfigManager.getInstance().getConfig();
-        m_maxTries = config.getInt(ConfigNodes.SCATTER_MAX_TRIES);
-        m_maxAttemtps = config.getInt(ConfigNodes.SCATTER_MAX_ATTEMPTS);
-        m_scatterDelay = config.getInt(ConfigNodes.SCATTER_DELAY);
+        m_maxTries = config.getInt("scatter.maxtries");
+        m_scatterDelay = config.getInt("scatter.delay");
 
         //register ourselves for events
         Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
     }
 
-    private final List<AbstractScatterType> m_scatterTypes = new ArrayList<AbstractScatterType>();
-
-    private final Protector m_protector = new Protector();
-
-    private final LinkedList<Teleporter> m_remainingTeleports = new LinkedList<Teleporter>();
-
-    private int m_jobID = -1;
-    private CommandSender m_commandSender;
 
     /**
      * @return true if currently busy, false otherwise
@@ -126,19 +123,13 @@ public class ScatterManager {
      * Add a collection of teleports to be queued
      * @param ptm the colelction of teleports
      * @param sender the sender who issued the command to be kept updated
-     *               TODO don't want to keep sender here like this
      */
-    public void addTeleportMappings(Collection<Teleporter> ptm, CommandSender sender) {
+    private void addTeleportMappings(Collection<Teleporter> ptm, Conversable sender) {
         if (m_jobID == -1) {
             m_remainingTeleports.addAll(ptm);
-            m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), new ScatterRunable(), 0, m_scatterDelay);
-            if (m_jobID == -1) {
-                sender.sendMessage(ChatColor.RED + "Error scheduling scatter");
-                m_remainingTeleports.clear();
-            } else {
-                m_commandSender = sender;
-                sender.sendMessage("Starting to scatter all players, teleports are " + m_scatterDelay + " ticks apart");
-            }
+            m_jobID = Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(), this);
+            m_commandSender = sender;
+            sender.sendRawMessage("Starting to scatter all players, teleports are " + m_scatterDelay + " ticks apart");
         }
     }
 
@@ -157,13 +148,6 @@ public class ScatterManager {
     }
 
     /**
-     * @param maxTries the max amount of tries to scatter
-     */
-    public void setMaxTries(int maxTries) {
-        m_maxTries = maxTries;
-    }
-
-    /**
      * Scatter the players
      * @param type the scatter logic to use
      * @param params the parameters to scatter with
@@ -171,7 +155,7 @@ public class ScatterManager {
      * @param sender the sender who issued the command to be kept updated
      * @throws MaxAttemptsReachedException if scatter couldn't complete
      */
-    public void scatter(AbstractScatterType type, Parameters params, Iterable<Player> players, CommandSender sender) throws MaxAttemptsReachedException {
+    public void scatter(AbstractScatterType type, Parameters params, Iterable<Player> players, Conversable sender) throws MaxAttemptsReachedException {
          /*
          * get the right amount of people to scatter
          */
@@ -233,27 +217,20 @@ public class ScatterManager {
         addTeleportMappings(teleporters, sender);
     }
 
-    //TODO move out
-    private class ScatterRunable implements Runnable {
-        @Override
-        public void run() {
-            Teleporter ptm = m_remainingTeleports.pollFirst();
-            if (ptm == null) {
-                try {
-                    if (m_commandSender != null) {
-                        m_commandSender.sendMessage(ChatColor.GOLD + "All players now scattered!");
-                    }
-                } catch (RuntimeException ignored) {}
-                m_commandSender = null;
-                Bukkit.getScheduler().cancelTask(m_jobID);
-                m_jobID = -1;
-                return;
-            }
-            if (!ptm.teleport()) {
+    @Override
+    public void run() {
+        if(m_remainingTeleports.isEmpty()){
+            try {
                 if (m_commandSender != null) {
-                    m_commandSender.sendMessage(ChatColor.RED + "Failed to scatter a player, did they go offline?");
+                    m_commandSender.sendRawMessage(ChatColor.GOLD + "All players now scattered!");
                 }
-            }
+            } catch (RuntimeException ignored) {}
+            m_commandSender = null;
+            m_jobID = -1;
+            return;
         }
+        Teleporter ptm = m_remainingTeleports.pollFirst();
+        ptm.teleport();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),this,m_scatterDelay);
     }
 }
