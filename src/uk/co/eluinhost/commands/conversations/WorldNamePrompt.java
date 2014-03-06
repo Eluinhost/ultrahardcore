@@ -3,14 +3,14 @@ package uk.co.eluinhost.commands.conversations;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.ValidatingPrompt;
 
-public abstract class WorldNamePrompt extends ValidatingPrompt {
+public abstract class WorldNamePrompt extends FixedSetPrompt {
 
     @Override
-    protected boolean isInputValid(ConversationContext conversationContext, String s) {
-        World world = Bukkit.getWorld(s);
+    protected boolean isInputValid(ConversationContext context, String input) {
+        World world = Bukkit.getWorld(input);
         return world != null && isWorldValid(world);
     }
 
