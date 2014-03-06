@@ -4,10 +4,19 @@ import org.bukkit.World;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import uk.co.eluinhost.commands.conversations.WorldNamePrompt;
+import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class ScatterWorldPrompt extends WorldNamePrompt {
 
     public static final String WORLD_DATA = "world";
+
+    /**
+     * Allow any loaded world
+     */
+    public ScatterWorldPrompt(){
+        //noinspection AssignmentToSuperclassField
+        fixedSet = ServerUtil.getWorldNames();
+    }
 
     @Override
     public String getPromptText(ConversationContext conversationContext) {
