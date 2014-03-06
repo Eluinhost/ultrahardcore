@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands.scatter;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

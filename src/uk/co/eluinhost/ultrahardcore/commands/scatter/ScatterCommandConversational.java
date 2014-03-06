@@ -1,4 +1,4 @@
-package uk.co.eluinhost.ultrahardcore.commands;
+package uk.co.eluinhost.ultrahardcore.commands.scatter;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -10,6 +10,7 @@ import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
+import uk.co.eluinhost.ultrahardcore.commands.CommandCancelHandler;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
