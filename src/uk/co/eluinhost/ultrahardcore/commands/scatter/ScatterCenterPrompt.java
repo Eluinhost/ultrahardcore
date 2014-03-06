@@ -7,15 +7,16 @@ import uk.co.eluinhost.ultrahardcore.util.SimplePair;
 
 public class ScatterCenterPrompt extends XZCoordinatePrompt {
 
-    private static final String PROMPT_TEXT = "Enter center coords: x,z";
+    public static final String CENTER_DATA = "center";
 
     @Override
     public String getPromptText(ConversationContext conversationContext) {
-        return null;
+        return "Enter center coords: x,z";
     }
 
     @Override
     protected Prompt acceptValidatedInput(ConversationContext conversationContext, SimplePair<Double, Double> coords) {
-        return null;
+        conversationContext.setSessionData(CENTER_DATA,coords);
+        return new ScatterRadiusPrompt();
     }
 }

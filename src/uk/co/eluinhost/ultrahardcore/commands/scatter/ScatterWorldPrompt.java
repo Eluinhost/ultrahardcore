@@ -7,13 +7,16 @@ import uk.co.eluinhost.commands.conversations.WorldNamePrompt;
 
 public class ScatterWorldPrompt extends WorldNamePrompt {
 
+    public static final String WORLD_DATA = "world";
+
     @Override
     public String getPromptText(ConversationContext conversationContext) {
-        return null;
+        return "Enter the name of the world to scatter into: ";
     }
 
     @Override
     protected Prompt acceptValidatedInput(ConversationContext conversationContext, World world) {
-        return null;
+        conversationContext.setSessionData(WORLD_DATA,world);
+        return new ScatterCenterPrompt();
     }
 }

@@ -6,6 +6,8 @@ import org.bukkit.conversations.Prompt;
 
 public class ScatterTypePrompt extends FixedSetPrompt {
 
+    public static final String TYPE_DATA = "scatter_type";
+
     public ScatterTypePrompt(){
         super(/*TODO types*/);
     }
