@@ -15,6 +15,7 @@ import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
 import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
+import uk.co.eluinhost.ultrahardcore.commands.scatter.ScatterCommand;
 import uk.co.eluinhost.ultrahardcore.features.playerfreeze.PlayerFreezeFeature;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import uk.co.eluinhost.features.FeatureManager;
@@ -117,7 +118,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 TeamCommands.class,
                 FeedCommand.class,
                 BorderCommand.class,
-                DeathBanCommand.class
+                DeathBanCommand.class,
+                ScatterCommand.class
         };
         for(Class clazz : classes){
             try {
@@ -144,6 +146,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 "leaveteam",
                 "emptyteams",
                 "scatter",
+                "iscatter",
                 "freeze",
                 "feature",
                 "genborder",
