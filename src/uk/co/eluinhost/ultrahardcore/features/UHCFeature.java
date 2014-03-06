@@ -1,11 +1,14 @@
 package uk.co.eluinhost.ultrahardcore.features;
 
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.Feature;
 
 public class UHCFeature extends Feature {
 
     public static final String BASE_PERMISSION = "UHC.";
     public static final String BASE_CONFIG = "features.";
+
+    private ConfigManager m_manager = ConfigManager.getInstance();
 
     /**
      * Construct a new feature
@@ -22,5 +25,13 @@ public class UHCFeature extends Feature {
      */
     public String getBaseConfig(){
         return BASE_CONFIG+getFeatureID()+".";
+    }
+
+    /**
+     * @param key the key to search for
+     * @return the translated message
+     */
+    public String translate(String key){
+        return m_manager.getMessage(key);
     }
 }
