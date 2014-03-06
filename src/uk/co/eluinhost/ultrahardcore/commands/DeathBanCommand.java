@@ -44,10 +44,10 @@ public class DeathBanCommand {
     }
 
     /**
-     * Ran on /deathban unban {player} {time}
+     * Ran on /deathban ban {player} {time}
      * @param request the request params
      */
-    @Command(trigger = "unban",
+    @Command(trigger = "ban",
             identifier = "DeathBanBanCommand",
             minArgs = 2,
             maxArgs = 2,
