@@ -181,7 +181,7 @@ public class CommandRequest {
      * @param index the index to look for
      * @return true if boolean false otherwise
      */
-    public boolean isBoolean(int index){
+    public boolean isArgBoolean(int index){
         return BooleanUtils.toBooleanObject(m_args.get(index)) != null;
     }
 
