@@ -1,5 +1,6 @@
 package uk.co.eluinhost.commands;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -173,5 +174,22 @@ public class CommandRequest {
      * */
     public Number getNumber(int index){
         return NumberUtils.createNumber(m_args.get(index));
+    }
+
+    /**
+     * Is the index a boolean value, 'true', 'on' or 'yes' count as true and 'false', 'off' or 'no' count as false, case insensitive
+     * @param index the index to look for
+     * @return true if boolean false otherwise
+     */
+    public boolean isBoolean(int index){
+        return BooleanUtils.toBooleanObject(m_args.get(index)) != null;
+    }
+
+    /**
+     * @param index the index to look for
+     * @return the boolean value at that index
+     */
+    public boolean getBoolean(int index){
+        return BooleanUtils.toBoolean(m_args.get(index));
     }
 }
