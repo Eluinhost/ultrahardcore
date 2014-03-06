@@ -24,7 +24,6 @@ public class BorderCreator {
      * Create the actual border
      * @throws TooManyBlocksException when too many blocks would be changed
      */
-    //TODO validate not null location, not negative radius and valid blocks
     public void createBorder() throws TooManyBlocksException {
         m_border.build(m_center, m_radius, m_blockID, m_blockMeta);
     }
