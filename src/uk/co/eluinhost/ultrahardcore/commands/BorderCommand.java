@@ -1,6 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -22,6 +21,41 @@ public class BorderCommand {
 
     public static final String GENERATE_BORDER = "UHC.generateborder";
 
+    private final String m_invalidWorldMessage;
+    private final String m_invalidRadiusMessage;
+    private final String m_invalidBlockIDMessage;
+    private final String m_invalidMetaMessage;
+    private final String m_invalidBorderIDMessage;
+    private final String m_invalidCoordinatesMessage;
+    private final String m_maxChangedBlocks;
+    private final String m_borderCreated;
+    private final String m_worldNonPlayer;
+    private final String m_undone;
+    private final String m_nothingToUndo;
+    private final String m_loadedBorderTypes;
+    private final String m_noBordersLoaded;
+    private final String m_typeFormat;
+
+    /**
+     * set up the messages
+     */
+    public BorderCommand(){
+        ConfigManager config = ConfigManager.getInstance();
+        m_invalidWorldMessage = config.getMessage("INVALID_WORLD");
+        m_invalidRadiusMessage = config.getMessage("INVALID_RADIUS");
+        m_invalidBlockIDMessage = config.getMessage("INVALID_BLOCK_ID");
+        m_invalidMetaMessage = config.getMessage("INVALID_META_ID");
+        m_invalidBorderIDMessage = config.getMessage("INVALID_BORDER_ID");
+        m_invalidCoordinatesMessage = config.getMessage("INVALID_COORDINATES");
+        m_maxChangedBlocks = config.getMessage("MAX_CHANGED_BLOCKS");
+        m_borderCreated = config.getMessage("BORDER_CREATED");
+        m_worldNonPlayer = config.getMessage("WORLD_NON_PLAYER");
+        m_undone = config.getMessage("UNDONE");
+        m_nothingToUndo = config.getMessage("NOTHING_TO_UNDO");
+        m_noBordersLoaded = config.getMessage("NO_BORDERS_LOADED");
+        m_loadedBorderTypes = config.getMessage("LOADED_BORDER_TYPES");
+        m_typeFormat = config.getMessage("BORDER_TYPE_FORMAT");
+    }
 
     /**
      * Ran on /genborder {worldname} {radius} {typeID}[:blockID][:meta] [x,z]
@@ -35,11 +69,11 @@ public class BorderCommand {
     public void onBorderCommand(CommandRequest request){
         World world = request.getWorld(0);
         if(world == null){
-            request.sendMessage(ChatColor.RED+"Invalid world supplied: "+request.getFirstArg());
+            request.sendMessage(m_invalidWorldMessage.replaceAll("%world%",request.getFirstArg()));
             return;
         }
         if(!request.isArgInt(1)){
-            request.sendMessage(ChatColor.RED+"Invalid radius supplied: "+request.getArg(1));
+            request.sendMessage(m_invalidRadiusMessage.replaceAll("%radius%",request.getArg(1)));
             return;
         }
         int radius = request.getInt(1);
@@ -56,21 +90,21 @@ public class BorderCommand {
             try{
                 blockID = Integer.parseInt(parts[1]);
             }catch (NumberFormatException ignored){
-                request.sendMessage(ChatColor.RED+"Invalid block ID "+parts[1]);
+                request.sendMessage(m_invalidBlockIDMessage.replaceAll("%blockID%",parts[1]));
                 return;
             }
             if(parts.length > 2){
                 try{
                     metaID = Integer.parseInt(parts[2]);
                 }catch (NumberFormatException ignored){
-                    request.sendMessage(ChatColor.RED+"Invalid meta ID "+parts[2]);
+                    request.sendMessage(m_invalidMetaMessage.replaceAll("%meta%",parts[2]));
                     return;
                 }
             }
         }
         Border borderType = manager.getBorderByID(borderName);
         if(borderType == null){
-            request.sendMessage(ChatColor.RED+"Invalid border ID "+borderName);
+            request.sendMessage(m_invalidBorderIDMessage.replaceAll("%borderID%",borderName));
             return;
         }
 
@@ -80,7 +114,7 @@ public class BorderCommand {
             String coords = request.getArg(3);
             String[] parts = coords.split(",");
             if(parts.length != 2){
-                request.sendMessage(ChatColor.RED+"Invalid coordinates given: "+request.getArg(3));
+                request.sendMessage(m_invalidCoordinatesMessage.replaceAll("%coords%",request.getArg(3)));
                 return;
             }
             try{
@@ -89,7 +123,7 @@ public class BorderCommand {
                 center.setX(x);
                 center.setZ(z);
             }catch(NumberFormatException ignored){
-                request.sendMessage(ChatColor.RED+"Invalid coordinates given: "+request.getArg(3));
+                request.sendMessage(m_invalidCoordinatesMessage.replaceAll("%coords%",request.getArg(3)));
                 return;
             }
         }
@@ -103,11 +137,11 @@ public class BorderCommand {
         try {
             creator.createBorder();
         } catch (TooManyBlocksException ignored) {
-            request.sendMessage(ChatColor.RED + "Error, hit max changable blocks");
+            request.sendMessage(m_maxChangedBlocks);
             return;
         }
 
-        request.sendMessage(ChatColor.GOLD + "World border created successfully");
+        request.sendMessage(m_borderCreated);
     }
 
     /**
@@ -125,7 +159,7 @@ public class BorderCommand {
         String world;
         if (request.getArgs().size() == 1) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage("You need to specify a world to undo when not ran as a player");
+                sender.sendMessage(m_worldNonPlayer);
                 return;
             }
             world = ((Entity) sender).getWorld().getName();
@@ -134,9 +168,9 @@ public class BorderCommand {
         }
         SessionManager sessionManager = SessionManager.getInstance();
         if (sessionManager.undoLastSession(world)) {
-            sender.sendMessage(ChatColor.GOLD + "Undone successfully!");
+            sender.sendMessage(m_undone);
         } else {
-            sender.sendMessage(ChatColor.GOLD + "Nothing left to undo!");
+            sender.sendMessage(m_nothingToUndo);
         }
     }
 
@@ -154,12 +188,12 @@ public class BorderCommand {
         Collection<Border> types = BorderTypeManager.getInstance().getTypes();
         CommandSender sender = request.getSender();
         if(types.isEmpty()){
-            request.getSender().sendMessage(ChatColor.RED+"There are no border types loaded");
+            request.getSender().sendMessage(m_noBordersLoaded);
             return;
         }
-        sender.sendMessage(ChatColor.GOLD+"Loaded border types ("+types.size()+"):");
+        sender.sendMessage(m_loadedBorderTypes.replaceAll("%count%",String.valueOf(types.size())));
         for(Border border : types){
-            sender.sendMessage(ChatColor.GOLD+border.getID()+" - "+border.getDescription());
+            sender.sendMessage(m_typeFormat.replaceAll("%featureID%",border.getID()).replaceAll("%desc%",border.getDescription()));
         }
     }
 }
