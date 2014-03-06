@@ -1,5 +1,6 @@
 package uk.co.eluinhost.commands;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -155,5 +156,22 @@ public class CommandRequest {
      */
     public Player getPlayer(int index){
         return Bukkit.getPlayer(m_args.get(index));
+    }
+
+    /**
+     * @param index the index to look for
+     * @return true if arg is an number, false otherwise
+     */
+    public boolean isArgNumber(int index){
+        return NumberUtils.isNumber(m_args.get(index));
+    }
+
+    /**
+     * Get the Number at the specified index
+     * @param index the index to look for
+     * @return number
+     * */
+    public Number getNumber(int index){
+        return NumberUtils.createNumber(m_args.get(index));
     }
 }
