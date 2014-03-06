@@ -17,45 +17,9 @@ import uk.co.eluinhost.configuration.ConfigManager;
 
 import java.util.Collection;
 
-public class BorderCommand {
+public class BorderCommand extends SimpleCommand {
 
     public static final String GENERATE_BORDER = "UHC.generateborder";
-
-    private final String m_invalidWorldMessage;
-    private final String m_invalidRadiusMessage;
-    private final String m_invalidBlockIDMessage;
-    private final String m_invalidMetaMessage;
-    private final String m_invalidBorderIDMessage;
-    private final String m_invalidCoordinatesMessage;
-    private final String m_maxChangedBlocks;
-    private final String m_borderCreated;
-    private final String m_worldNonPlayer;
-    private final String m_undone;
-    private final String m_nothingToUndo;
-    private final String m_loadedBorderTypes;
-    private final String m_noBordersLoaded;
-    private final String m_typeFormat;
-
-    /**
-     * set up the messages
-     */
-    public BorderCommand(){
-        ConfigManager config = ConfigManager.getInstance();
-        m_invalidWorldMessage = config.getMessage("INVALID_WORLD");
-        m_invalidRadiusMessage = config.getMessage("INVALID_RADIUS");
-        m_invalidBlockIDMessage = config.getMessage("INVALID_BLOCK_ID");
-        m_invalidMetaMessage = config.getMessage("INVALID_META_ID");
-        m_invalidBorderIDMessage = config.getMessage("INVALID_BORDER_ID");
-        m_invalidCoordinatesMessage = config.getMessage("INVALID_COORDINATES");
-        m_maxChangedBlocks = config.getMessage("MAX_CHANGED_BLOCKS");
-        m_borderCreated = config.getMessage("BORDER_CREATED");
-        m_worldNonPlayer = config.getMessage("WORLD_NON_PLAYER");
-        m_undone = config.getMessage("UNDONE");
-        m_nothingToUndo = config.getMessage("NOTHING_TO_UNDO");
-        m_noBordersLoaded = config.getMessage("NO_BORDERS_LOADED");
-        m_loadedBorderTypes = config.getMessage("LOADED_BORDER_TYPES");
-        m_typeFormat = config.getMessage("BORDER_TYPE_FORMAT");
-    }
 
     /**
      * Ran on /genborder {worldname} {radius} {typeID}[:blockID][:meta] [x,z]
@@ -69,11 +33,11 @@ public class BorderCommand {
     public void onBorderCommand(CommandRequest request){
         World world = request.getWorld(0);
         if(world == null){
-            request.sendMessage(m_invalidWorldMessage.replaceAll("%world%",request.getFirstArg()));
+            request.sendMessage(translate("INVALID_WORLD").replaceAll("%world%",request.getFirstArg()));
             return;
         }
         if(!request.isArgInt(1)){
-            request.sendMessage(m_invalidRadiusMessage.replaceAll("%radius%",request.getArg(1)));
+            request.sendMessage(translate("INVALID_RADIUS").replaceAll("%radius%",request.getArg(1)));
             return;
         }
         int radius = request.getInt(1);
@@ -90,21 +54,21 @@ public class BorderCommand {
             try{
                 blockID = Integer.parseInt(parts[1]);
             }catch (NumberFormatException ignored){
-                request.sendMessage(m_invalidBlockIDMessage.replaceAll("%blockID%",parts[1]));
+                request.sendMessage(translate("INVALID_BLOCK_ID").replaceAll("%blockID%",parts[1]));
                 return;
             }
             if(parts.length > 2){
                 try{
                     metaID = Integer.parseInt(parts[2]);
                 }catch (NumberFormatException ignored){
-                    request.sendMessage(m_invalidMetaMessage.replaceAll("%meta%",parts[2]));
+                    request.sendMessage(translate("INVALID_META_ID").replaceAll("%meta%",parts[2]));
                     return;
                 }
             }
         }
         Border borderType = manager.getBorderByID(borderName);
         if(borderType == null){
-            request.sendMessage(m_invalidBorderIDMessage.replaceAll("%borderID%",borderName));
+            request.sendMessage(translate("INVALID_BORDER_ID").replaceAll("%borderID%",borderName));
             return;
         }
 
@@ -114,7 +78,7 @@ public class BorderCommand {
             String coords = request.getArg(3);
             String[] parts = coords.split(",");
             if(parts.length != 2){
-                request.sendMessage(m_invalidCoordinatesMessage.replaceAll("%coords%",request.getArg(3)));
+                request.sendMessage(translate("INVALID_COORDINATES").replaceAll("%coords%",request.getArg(3)));
                 return;
             }
             try{
@@ -123,7 +87,7 @@ public class BorderCommand {
                 center.setX(x);
                 center.setZ(z);
             }catch(NumberFormatException ignored){
-                request.sendMessage(m_invalidCoordinatesMessage.replaceAll("%coords%",request.getArg(3)));
+                request.sendMessage(translate("INVALID_COORDINATES").replaceAll("%coords%",request.getArg(3)));
                 return;
             }
         }
@@ -137,11 +101,11 @@ public class BorderCommand {
         try {
             creator.createBorder();
         } catch (TooManyBlocksException ignored) {
-            request.sendMessage(m_maxChangedBlocks);
+            request.sendMessage(translate("MAX_CHANGED_BLOCKS"));
             return;
         }
 
-        request.sendMessage(m_borderCreated);
+        request.sendMessage(translate("BORDER_CREATED"));
     }
 
     /**
@@ -159,7 +123,7 @@ public class BorderCommand {
         String world;
         if (request.getArgs().size() == 1) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(m_worldNonPlayer);
+                sender.sendMessage(translate("WORLD_NON_PLAYER"));
                 return;
             }
             world = ((Entity) sender).getWorld().getName();
@@ -168,9 +132,9 @@ public class BorderCommand {
         }
         SessionManager sessionManager = SessionManager.getInstance();
         if (sessionManager.undoLastSession(world)) {
-            sender.sendMessage(m_undone);
+            sender.sendMessage(translate("UNDONE"));
         } else {
-            sender.sendMessage(m_nothingToUndo);
+            sender.sendMessage(translate("NOTHING_TO_UNDO"));
         }
     }
 
@@ -188,12 +152,12 @@ public class BorderCommand {
         Collection<Border> types = BorderTypeManager.getInstance().getTypes();
         CommandSender sender = request.getSender();
         if(types.isEmpty()){
-            request.getSender().sendMessage(m_noBordersLoaded);
+            request.getSender().sendMessage(translate("NO_BORDERS_LOADED"));
             return;
         }
-        sender.sendMessage(m_loadedBorderTypes.replaceAll("%count%",String.valueOf(types.size())));
+        sender.sendMessage(translate("LOADED_BORDER_TYPES").replaceAll("%count%",String.valueOf(types.size())));
         for(Border border : types){
-            sender.sendMessage(m_typeFormat.replaceAll("%featureID%",border.getID()).replaceAll("%desc%",border.getDescription()));
+            sender.sendMessage(translate("BORDER_TYPE_FORMAT").replaceAll("%featureID%",border.getID()).replaceAll("%desc%",border.getDescription()));
         }
     }
 }
