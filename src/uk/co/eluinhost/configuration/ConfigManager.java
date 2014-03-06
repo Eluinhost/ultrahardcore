@@ -1,5 +1,6 @@
 package uk.co.eluinhost.configuration;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
@@ -37,12 +38,12 @@ public class ConfigManager {
     }
 
     /**
-     * Get the message
+     * Get the message, replaces colour codes
      * @param key the key to look for
      * @return the translated message
      */
     public String getMessage(String key){
-        return m_translation.getString(key);
+        return ChatColor.translateAlternateColorCodes('&',m_translation.getString(key));
     }
 
     /**
