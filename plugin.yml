@@ -38,7 +38,7 @@ commands:
     iscatter:
       description: Interactive scattering
       usage: /<command>
-      aliases [uhciscatter]
+      aliases: [uhciscatter]
     genborder:
       description: Generates a border in the world
       usage: /<command> radius world[:x,z] [blockid:meta]
