@@ -117,6 +117,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 FeatureCommand.class,
                 TeamCommands.class,
                 FeedCommand.class,
+                FreezeCommand.class,
                 BorderCommand.class,
                 DeathBanCommand.class,
                 ScatterCommand.class
