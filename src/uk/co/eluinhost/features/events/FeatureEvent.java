@@ -9,7 +9,7 @@ public class FeatureEvent extends Event implements Cancellable{
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final IFeature m_feature;
-    private boolean m_cancelled = true;
+    private boolean m_cancelled;
 
     /**
      * Generic feature event

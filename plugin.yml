@@ -16,9 +16,11 @@ commands:
       usage: /<command>
       aliases: [uhchealself]
     feed:
-      description: Feed a player/yourself
+      description: Feed yourself
       usage: /<command> [player/*]
       aliases: [uhcfeed]
+    feedself:
+      description: Feed yourself
     feature:
       description: Allows turning on/off of features and seeing the feature list
       usage: /<command> toggle featureID OR /<command> list
