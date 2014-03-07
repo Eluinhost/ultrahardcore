@@ -1,5 +1,6 @@
 package uk.co.eluinhost.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -11,7 +12,7 @@ public enum SenderType {
     REMOTE_CONSOLE(RemoteConsoleCommandSender.class),
     CONSOLE(ConsoleCommandSender.class),
     PLAYER(Player.class),
-    OTHER(null);
+    OTHER(Void.class);
 
     private final Class m_clazz;
 
