@@ -148,6 +148,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 "scatter",
                 "iscatter",
                 "freeze",
+                "unfreeze",
                 "feature",
                 "genborder",
                 "timer"
