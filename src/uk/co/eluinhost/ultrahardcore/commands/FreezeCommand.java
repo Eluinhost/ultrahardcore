@@ -89,6 +89,7 @@ public class FreezeCommand {
      */
     @Command(trigger = "*",
             identifier = "UnfreezeAllCommand",
+            parentID = "UnfreezeCommand",
             minArgs = 0,
             maxArgs = 0,
             permission = FREEZE_PERMISSION)
