@@ -222,6 +222,10 @@ public class TeamCommands {
             permission = LIST_TEAMS_PERMISSION)
     public void onListTeamsAllCommand(CommandRequest request){
         Set<Team> teams = m_teamsUtil.getAllTeams();
+        if(teams.isEmpty()){
+            request.sendMessage(ChatColor.RED+"There are no defined teams!");
+            return;
+        }
         for(Team team : teams){
             request.getSender().sendMessage(TeamsUtil.teamToString(team));
         }
