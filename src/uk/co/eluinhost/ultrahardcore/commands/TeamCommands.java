@@ -193,10 +193,10 @@ public class TeamCommands {
     }
 
     /**
-     * Ran on /listteam {name}
+     * Ran on /listteams {name}
      * @param request request params
      */
-    @Command(trigger = "listteam",
+    @Command(trigger = "listteams",
             identifier = "ListTeamCommand",
             minArgs = 1,
             maxArgs = 1,
