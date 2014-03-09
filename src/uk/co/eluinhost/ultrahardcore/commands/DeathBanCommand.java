@@ -32,6 +32,7 @@ public class DeathBanCommand {
             identifier = "DeathBanUnbanCommand",
             minArgs = 1,
             maxArgs = 1,
+            parentID = "DeathBanCommand",
             permission = DEATH_BAN_UNBAN)
     public void onDeathBanUnbanCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("DeathBans");
@@ -51,6 +52,7 @@ public class DeathBanCommand {
             identifier = "DeathBanBanCommand",
             minArgs = 2,
             maxArgs = 2,
+            parentID = "DeathBanCommand",
             permission = DEATH_BAN_BAN)
     public void onDeathBanBanCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("DeathBans");
