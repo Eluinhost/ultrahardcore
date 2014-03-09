@@ -198,10 +198,14 @@ public class TeamCommands {
      */
     @Command(trigger = "listteams",
             identifier = "ListTeamCommand",
-            minArgs = 1,
+            minArgs = 0,
             maxArgs = 1,
             permission = LIST_TEAMS_PERMISSION)
     public void onListTeamsCommand(CommandRequest request){
+        if(request.getArgs().isEmpty()){
+            onListTeamsAllCommand(request);
+            return;
+        }
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if(team == null){
             request.getSender().sendMessage(ChatColor.RED+"Team not found!");
