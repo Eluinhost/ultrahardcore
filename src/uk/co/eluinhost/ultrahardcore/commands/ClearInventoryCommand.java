@@ -17,7 +17,7 @@ import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
 
-public class ClearInventoryCommand {
+public class ClearInventoryCommand extends SimpleCommand {
 
     public static final String CLEAR_SELF_PERMISSION = "UHC.ci.self";
     public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";
@@ -36,7 +36,7 @@ public class ClearInventoryCommand {
     public void onClearInventorySelf(CommandRequest request){
         Player player = (Player) request.getSender();
         clearInventory(player);
-        player.sendMessage(ChatColor.GOLD + "Inventory cleared successfully");
+        player.sendMessage(translate("ci.cleared"));
     }
 
     /**
@@ -58,20 +58,19 @@ public class ClearInventoryCommand {
                 continue;
             }
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                sender.sendMessage(ChatColor.RED + "Player " + p.getName() + " is immune to inventory clears");
+                sender.sendMessage(translate("ci.immune").replaceAll("%name%",p.getName()));
             } else {
                 clearInventory(p);
-                p.sendMessage(ChatColor.GOLD + "Your inventory was cleared by " + sender.getName());
+                p.sendMessage(translate("ci.tell").replaceAll("%name%",sender.getName()));
             }
         }
-        sender.sendMessage(ChatColor.GOLD + "All inventories cleared successfully");
+        sender.sendMessage("ci.cleared");
         if (!namesNotFound.isEmpty()) {
             StringBuilder message = new StringBuilder();
-            message.append(ChatColor.GOLD).append("Players not found to clear:");
             for (String s : namesNotFound) {
                 message.append(' ').append(s);
             }
-            sender.sendMessage(message.toString());
+            sender.sendMessage(translate("ci.not_found").replaceAll("%list%",message.toString()));
         }
     }
 
@@ -91,7 +90,7 @@ public class ClearInventoryCommand {
                 clearInventory(p);
             }
         }
-        Bukkit.broadcastMessage(ChatColor.GOLD + "All player inventories cleared by " + request.getSender().getName());
+        Bukkit.broadcastMessage(translate("ci.announce_all").replaceAll("%name%",request.getSender().getName()));
     }
 
 
