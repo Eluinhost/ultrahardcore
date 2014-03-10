@@ -14,6 +14,8 @@ import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictExcep
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.configuration.ConfigManager;
 
+import javax.annotation.Nullable;
+
 public class ScatterManager implements Runnable {
 
     private final int m_maxTries;
@@ -27,6 +29,7 @@ public class ScatterManager implements Runnable {
 
     private int m_jobID = -1;
 
+    @Nullable
     private Conversable m_commandSender;
 
     private static final class LazyScatterManagerHolder {
