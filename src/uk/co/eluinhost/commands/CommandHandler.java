@@ -1,5 +1,6 @@
 package uk.co.eluinhost.commands;
 
+import com.google.common.collect.MutableClassToInstanceMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +17,7 @@ public class CommandHandler implements TabExecutor {
     /**
      * Stores a list of class
      */
-    private final Map<String,Object> m_instances = new HashMap<String,Object>();
+    private final MutableClassToInstanceMap m_instances = MutableClassToInstanceMap.create();
 
     private static final String COMMAND_NOT_FOUND = ChatColor.RED + "Couldn't find the command requested";
 
@@ -46,10 +47,10 @@ public class CommandHandler implements TabExecutor {
      * @throws CommandCreateException won't happen as object is already created
      */
     public void registerCommandsInstance(Object object) throws ClassAlreadyExistsException, CommandIDConflictException, InvalidMethodParametersException, CommandParentNotFoundException, CommandCreateException {
-        if(getClassInstance(object.getClass().getName()) != null){
+        if(getClassInstance(object.getClass()) != null){
             throw new ClassAlreadyExistsException();
         }
-        m_instances.put(object.getClass().getName(),object);
+        m_instances.putInstance(object.getClass(),object);
         registerCommands(object.getClass());
     }
 
@@ -62,12 +63,12 @@ public class CommandHandler implements TabExecutor {
      * @throws InvalidMethodParametersException when method doesn't have a single CommandRequest param
      */
     public void registerCommands(Class clazz) throws CommandCreateException, CommandIDConflictException, CommandParentNotFoundException, InvalidMethodParametersException {
-        Object instance = getClassInstance(clazz.getName());
+        Object instance = getClassInstance(clazz);
         if(instance == null){
             //noinspection OverlyBroadCatchBlock
             try {
                 instance = clazz.getConstructor().newInstance();
-                m_instances.put(clazz.getName(),instance);
+                m_instances.putInstance(clazz,instance);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 throw new CommandCreateException();
@@ -158,8 +159,8 @@ public class CommandHandler implements TabExecutor {
      * @param className the class name to check for
      * @return the class if exists or null otherwise
      */
-    public Object getClassInstance(String className) {
-        return m_instances.get(className);
+    public Object getClassInstance(Class className) {
+        return m_instances.getInstance(className);
     }
 
     /**
