@@ -38,3 +38,9 @@ features:
   disabled_cancelled: "&4Failed to disable feature, plugin cancelled event"
   enabled: "&6Feature enabled"
   disabled: "&6Feature disabled"
+feed:
+  announce: "&7&o[UHC] %name% used a feed command to feed %fed%"
+  invalid_player: "&4Invalid player name %name%"
+  tell: "&6You were fed to full hunger"
+  fed_all: "&6Fed all players"
+  fed_all_announce: "&7&o[UHC] %name% fed all players"

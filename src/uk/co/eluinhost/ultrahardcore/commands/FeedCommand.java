@@ -9,7 +9,7 @@ import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class FeedCommand {
+public class FeedCommand extends SimpleCommand {
 
     public static final float MAX_SATURATION = 5.0F;
     public static final int MAX_FOOD_LEVEL = 20;
@@ -41,8 +41,8 @@ public class FeedCommand {
     public void onFeedCommand(CommandRequest request){
         Player player = (Player) request.getSender();
             feedPlayer(player);
-            player.sendMessage(ChatColor.GOLD + "You fed yourself to full hunger");
-            ServerUtil.broadcastForPermission(String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] Player " + player.getName() + " used a feed command to feed themselves", FEED_ANNOUNCE_PERMISSION);
+            player.sendMessage(translate("feed.tell"));
+            ServerUtil.broadcastForPermission(translate("feed.announce").replaceAll("%name%",player.getName()).replaceAll("%fed%",player.getName()), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -57,14 +57,12 @@ public class FeedCommand {
     public void onFeedOtherCommand(CommandRequest request){
         Player player = Bukkit.getPlayer(request.getFirstArg());
         if (player == null) {
-            request.getSender().sendMessage(ChatColor.RED + "Invalid player name " + request.getFirstArg());
+            request.getSender().sendMessage(translate("feed.invalid_player").replaceAll("%name%",request.getFirstArg()));
             return;
         }
         feedPlayer(player);
-        player.sendMessage(ChatColor.GOLD + "You were fed to full hunger");
-        ServerUtil.broadcastForPermission(String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
-                (request.getSender() instanceof Player ? "Player " + request.getSender().getName() : "Console") + " fed player " + player.getName()
-                , FEED_ANNOUNCE_PERMISSION);
+        player.sendMessage(translate("feed.tell"));
+        ServerUtil.broadcastForPermission(translate("feed.announce").replaceAll("%name%",request.getSender().getName()).replaceAll("%fed%",player.getName()), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -80,11 +78,9 @@ public class FeedCommand {
     public void onFeedAllCommand(CommandRequest request){
         for(Player player : Bukkit.getOnlinePlayers()){
             feedPlayer(player);
-            player.sendMessage(ChatColor.GOLD + "You were fed to full hunger");
+            player.sendMessage(translate("feed.tell"));
         }
-        request.getSender().sendMessage(ChatColor.GOLD+"Fed all players.");
-        ServerUtil.broadcastForPermission(String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
-                (request.getSender() instanceof Player ? "Player " + request.getSender().getName() : "Console") + " fed all players"
-                , FEED_ANNOUNCE_PERMISSION);
+        request.getSender().sendMessage(translate("feed.fed_all"));
+        ServerUtil.broadcastForPermission(translate("feed.fed_all_announce").replaceAll("%name%",request.getSender().getName()), FEED_ANNOUNCE_PERMISSION);
     }
 }
