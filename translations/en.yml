@@ -44,3 +44,11 @@ feed:
   tell: "&6You were fed to full hunger"
   fed_all: "&6Fed all players"
   fed_all_announce: "&7&o[UHC] %name% fed all players"
+freeze:
+  not_loaded: "&4The freeze feature is not loaded!"
+  invalid_player: "&4Invalid player name %name%"
+  immune: "&4Player is immune to freezing"
+  player_froze: "&6Player frozen"
+  froze_all: "&6All players frozen"
+  player_unfroze: "&6Player unfrozen"
+  unfroze_all: "&6All players unfrozen"

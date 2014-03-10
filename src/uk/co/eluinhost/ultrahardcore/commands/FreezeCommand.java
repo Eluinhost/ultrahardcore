@@ -1,7 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
@@ -9,7 +8,7 @@ import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.ultrahardcore.features.playerfreeze.PlayerFreezeFeature;
 
-public class FreezeCommand {
+public class FreezeCommand extends SimpleCommand {
 
     public static final String FREEZE_PERMISSION = "UHC.freeze.command";
     public static final String ANTIFREEZE_PERMISSION = "UHC.freeze.antifreeze";
@@ -26,20 +25,20 @@ public class FreezeCommand {
     public void onFreezeCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(ChatColor.RED+"The freeze feature is not loaded!");
+            request.sendMessage(translate("freeze.not_loaded"));
             return;
         }
         Player player = request.getPlayer(0);
         if(player == null){
-            request.sendMessage(ChatColor.RED+"Invalid player name "+request.getFirstArg());
+            request.sendMessage(translate("freeze.invalid_player").replaceAll("%name%",request.getFirstArg()));
             return;
         }
         if(player.hasPermission(ANTIFREEZE_PERMISSION)){
-            request.sendMessage(ChatColor.RED+"Player is immune to freezing");
+            request.sendMessage(translate("freeze.immune"));
             return;
         }
         ((PlayerFreezeFeature)feature).addPlayer(player.getName());
-        request.sendMessage(ChatColor.GOLD+"Player frozen");
+        request.sendMessage(translate("freeze.player_froze"));
     }
 
     /**
@@ -55,13 +54,13 @@ public class FreezeCommand {
     public void onFreezeAllCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(ChatColor.RED+"The freeze feature is not loaded!");
+            request.sendMessage(translate("freeze.not_loaded"));
             return;
         }
         for(Player player : Bukkit.getOnlinePlayers()){
             ((PlayerFreezeFeature)feature).addPlayer(player.getName());
         }
-        request.sendMessage(ChatColor.GOLD+"Froze all online players");
+        request.sendMessage(translate("freeze.froze_all"));
     }
 
     /**
@@ -76,11 +75,11 @@ public class FreezeCommand {
     public void onUnfreezeCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(ChatColor.RED+"The freeze feature is not loaded!");
+            request.sendMessage(translate("freeze.not_loaded"));
             return;
         }
         ((PlayerFreezeFeature)feature).removePlayer(request.getFirstArg());
-        request.sendMessage(ChatColor.GOLD+"Player unfrozen");
+        request.sendMessage(translate("freeze.player_unfroze"));
     }
 
     /**
@@ -96,10 +95,10 @@ public class FreezeCommand {
     public void onUnfreezeAllCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(ChatColor.RED+"The freeze feature is not loaded!");
+            request.sendMessage(translate("freeze.not_loaded"));
             return;
         }
         ((PlayerFreezeFeature)feature).unfreezeAll();
-        request.sendMessage(ChatColor.GOLD+"Unfroze all players");
+        request.sendMessage(translate("freeze.unfroze_all"));
     }
 }
