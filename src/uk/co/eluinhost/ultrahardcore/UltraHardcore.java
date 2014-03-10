@@ -129,34 +129,6 @@ public class UltraHardcore extends JavaPlugin implements Listener {
                 e.printStackTrace();
             }
         }
-        String[] baseCommands = {
-                "heal",
-                "healself",
-                "feed",
-                "feedself",
-                "tpp",
-                "ci",
-                "ciself",
-                "deathban",
-                "randomteams",
-                "clearteams",
-                "listteams",
-                "createteam",
-                "removeteam",
-                "jointeam",
-                "leaveteam",
-                "emptyteams",
-                "scatter",
-                "iscatter",
-                "freeze",
-                "unfreeze",
-                "feature",
-                "genborder",
-                "timer"
-        };
-        for(String com : baseCommands){
-            setExecutor(com);
-        }
     }
 
     /**
