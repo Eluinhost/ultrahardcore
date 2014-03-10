@@ -193,7 +193,7 @@ public class DeathBansFeature extends UHCFeature {
             OfflinePlayer op = Bukkit.getOfflinePlayer(m_playerName);
             Player p = op.getPlayer();
             if (p != null) {
-                p.kickPlayer(m_message.replaceAll("%timeleft", WordsUtil.formatTimeLeft(m_unbanTime)));
+                p.kickPlayer(m_message.replaceAll("%timeleft%", WordsUtil.formatTimeLeft(m_unbanTime)));
             }
         }
     }

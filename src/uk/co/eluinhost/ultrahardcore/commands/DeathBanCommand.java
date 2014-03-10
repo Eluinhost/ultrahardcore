@@ -9,7 +9,7 @@ import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
-public class DeathBanCommand {
+public class DeathBanCommand extends SimpleCommand {
 
     public static final String DEATH_BAN_BAN = "UHC.deathban.unban";
     public static final String DEATH_BAN_UNBAN = "UHC.deathban.ban";
@@ -37,11 +37,11 @@ public class DeathBanCommand {
     public void onDeathBanUnbanCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("DeathBans");
         if(feature == null){
-            request.sendMessage(ChatColor.RED+"The deathbans feature isn't loaded!");
+            request.sendMessage(translate("deathbans.not_loaded"));
             return;
         }
         int amount = ((DeathBansFeature)feature).removeBan(request.getFirstArg());
-        request.sendMessage(ChatColor.GOLD + "Removed " + amount + " bans for player " + request.getFirstArg());
+        request.sendMessage(translate("deathbans.removed").replaceAll("%amount%", String.valueOf(amount)).replaceAll("%name%", request.getFirstArg()));
     }
 
     /**
@@ -57,12 +57,12 @@ public class DeathBanCommand {
     public void onDeathBanBanCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID("DeathBans");
         if(feature == null){
-            request.sendMessage(ChatColor.RED+"The deathbans feature isn't loaded!");
+            request.sendMessage(translate("deathbans.not_loaded"));
             return;
         }
         String playername = request.getFirstArg();
         long duration = request.parseDuration(1);
-        ((DeathBansFeature)feature).banPlayer(Bukkit.getOfflinePlayer(playername), "You are under a death ban, you will be unbanned in %timeleft", duration);
-        request.sendMessage(ChatColor.GOLD + "Banned player " + playername + " for " + WordsUtil.formatTimeLeft(System.currentTimeMillis() + duration));
+        ((DeathBansFeature)feature).banPlayer(Bukkit.getOfflinePlayer(playername), translate("deathbans.ban_message"), duration);
+        request.sendMessage(translate("deathbans.banned").replaceAll("%name%",playername).replaceAll("%time%",WordsUtil.formatTimeLeft(System.currentTimeMillis() + duration)));
     }
 }

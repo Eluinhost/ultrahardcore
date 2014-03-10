@@ -20,3 +20,8 @@ ci:
   tell: "&7Your inventory was cleared by %name%"
   not_found: "&4Players not found to clear: %list%"
   announce_all: "&6All player inventories cleared by %name%"
+deathbans:
+  not_loaded: "&4The deathbans feature isn't loaded!"
+  removed: "&6Removed %amount% bans for player %name%"
+  banned: "&6Banned player %name% for %time%"
+  ban_message: "You are under a death ban, you will be unbanned in %timeleft%"
