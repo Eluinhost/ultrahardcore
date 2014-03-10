@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 
+import java.util.Objects;
+
 public abstract class WorldEditBorder implements Border {
 
     private final String m_borderID;
@@ -63,6 +65,6 @@ public abstract class WorldEditBorder implements Border {
 
     @Override
     public int hashCode(){
-        return new HashCodeBuilder(17, 31).append(getID()).toHashCode();
+        return Objects.hashCode(getID());
     }
 }

@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -95,5 +96,9 @@ public abstract class AbstractScatterType {
     @Override
     public boolean equals(Object obj){
         return obj instanceof AbstractScatterType && ((AbstractScatterType) obj).getScatterID().equals(getScatterID());
+    }
+
+    public int hashCode(){
+        return Objects.hashCode(getScatterID());
     }
 }
