@@ -17,7 +17,7 @@ import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.TeamsUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
-public class TeamCommands {
+public class TeamCommands extends SimpleCommand {
 
     private final TeamsUtil m_teamsUtil = new TeamsUtil();
 
@@ -46,7 +46,7 @@ public class TeamCommands {
         if (request.getArgs().size() == 1) {
             thisteam = m_teamsUtil.getTeam(request.getFirstArg());
             if (thisteam != null) {
-                request.getSender().sendMessage(ChatColor.RED + "Team " + thisteam.getName() + " already exists!");
+                request.sendMessage(translate("teams.already_exists").replaceAll("%name%",thisteam.getName()));
                 return;
             }
             thisteam = m_teamsUtil.registerNewTeam(request.getFirstArg());
@@ -54,7 +54,7 @@ public class TeamCommands {
         } else {
             thisteam = m_teamsUtil.getNextAvailableTeam(true);
         }
-        request.getSender().sendMessage(ChatColor.GOLD + "Team '" + thisteam.getDisplayName() + "' (" + thisteam.getName() + ") created!");
+        request.sendMessage(translate("teams.created").replaceAll("%display%",thisteam.getDisplayName()).replaceAll("%name%",thisteam.getName()));
     }
 
     /**
@@ -67,20 +67,19 @@ public class TeamCommands {
             maxArgs = 1,
             permission = TEAM_REMOVE_PERMISSION)
     public void onRemoveTeamCommand(CommandRequest request){
-        CommandSender sender = request.getSender();
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
-            sender.sendMessage(ChatColor.RED + "That team doesn't exist");
+            request.sendMessage(translate("teams.not_exist"));
             return;
         }
         for (OfflinePlayer p : team.getPlayers()) {
             Player p1 = p.getPlayer();
             if (p1 != null) {
-                p1.sendMessage(ChatColor.GOLD + "Your team was disbanded");
+                p1.sendMessage(translate("teams.disbanded"));
             }
         }
         m_teamsUtil.removeTeam(request.getFirstArg());
-        sender.sendMessage(ChatColor.GOLD + "Team removed!");
+        request.sendMessage(translate("teams.removed"));
     }
 
     /**
@@ -94,10 +93,9 @@ public class TeamCommands {
             permission = TEAM_LEAVE_PERMISSION,
             senders = {SenderType.PLAYER})
     public void onLeaveTeamCommand(CommandRequest request){
-        CommandSender sender = request.getSender();
-        boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam((OfflinePlayer) sender, true, true);
+        boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam((OfflinePlayer) request.getSender(), true, true);
         if (stillOnTeam) {
-            sender.sendMessage(ChatColor.RED + "You are not in a team!");
+            request.sendMessage(translate("teams.not_in_team"));
         }
     }
 
@@ -114,7 +112,7 @@ public class TeamCommands {
     public void onLeaveTeamForce(CommandRequest request){
         boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam(Bukkit.getOfflinePlayer(request.getFirstArg()), true, true);
         if (stillOnTeam) {
-            request.getSender().sendMessage(ChatColor.RED + "Player "+request.getSender()+" is not on a team!");
+            request.getSender().sendMessage(translate("teams.player_not_in_team").replaceAll("%name%",request.getFirstArg()));
         }
     }
 
@@ -132,13 +130,13 @@ public class TeamCommands {
         OfflinePlayer sender = (OfflinePlayer) request.getSender();
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
-            request.getSender().sendMessage(ChatColor.RED + "That team doesn't exist");
+            request.sendMessage(translate("teams.not_exist"));
             return;
         }
         if(m_teamsUtil.getPlayersTeam(sender) != null){
             m_teamsUtil.removePlayerFromTeam(sender,true,true);
         }
-        TeamsUtil.playerJoinTeam((OfflinePlayer) request.getSender(), team, true, true);
+        TeamsUtil.playerJoinTeam(sender, team, true, true);
     }
 
     /**
@@ -154,7 +152,7 @@ public class TeamCommands {
     public void onJoinTeamOtherCommand(CommandRequest request){
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
-            request.getSender().sendMessage(ChatColor.RED + "That team doesn't exist");
+            request.sendMessage(translate("teams.not_exist"));
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(request.getLastArg());
@@ -175,7 +173,7 @@ public class TeamCommands {
             permission = CLEAR_TEAMS_PERMISSION)
     public void onClearTeamsCommand(CommandRequest request){
         m_teamsUtil.clearTeams(true);
-        request.getSender().sendMessage(ChatColor.GOLD + "All teams cleared");
+        request.sendMessage(translate("teams.cleared"));
     }
 
     /**
@@ -189,7 +187,7 @@ public class TeamCommands {
             permission = EMPTY_TEAMS_PERMISSION)
     public void onEmptyTeamsCommand(CommandRequest request){
         m_teamsUtil.emptyTeams(true);
-        request.getSender().sendMessage(ChatColor.GOLD + "All teams emptied");
+        request.sendMessage(translate("teams.emptied"));
     }
 
     /**
@@ -208,10 +206,10 @@ public class TeamCommands {
         }
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if(team == null){
-            request.getSender().sendMessage(ChatColor.RED+"Team not found!");
+            request.sendMessage(translate("teams.not_exist"));
             return;
         }
-        request.getSender().sendMessage(TeamsUtil.teamToString(team));
+        request.sendMessage(TeamsUtil.teamToString(team));
     }
 
     /**
@@ -227,11 +225,11 @@ public class TeamCommands {
     public void onListTeamsAllCommand(CommandRequest request){
         Set<Team> teams = m_teamsUtil.getAllTeams();
         if(teams.isEmpty()){
-            request.sendMessage(ChatColor.RED+"There are no defined teams!");
+            request.sendMessage(translate("teams.no_teams"));
             return;
         }
         for(Team team : teams){
-            request.getSender().sendMessage(TeamsUtil.teamToString(team));
+            request.sendMessage(TeamsUtil.teamToString(team));
         }
     }
 
@@ -249,7 +247,7 @@ public class TeamCommands {
         if(request.getArgs().size() == 2){
             World world = Bukkit.getWorld(request.getLastArg());
             if(world == null){
-                request.getSender().sendMessage(ChatColor.RED+"World not found!");
+                request.sendMessage(translate("teams.invalid_world"));
                 return;
             }
             players.addAll(world.getPlayers());
@@ -263,17 +261,17 @@ public class TeamCommands {
         try {
             teamsToMake = Integer.parseInt(request.getFirstArg());
         } catch (NumberFormatException ignored) {
-            request.getSender().sendMessage(ChatColor.RED + request.getFirstArg() + " is not a number!");
+            request.sendMessage(translate("teams.invalid_number_teams"));
             return;
         }
 
         if (teamsToMake > players.size()) {
-            request.getSender().sendMessage(ChatColor.RED + "Teams to create is greater than the number of people without a team!");
+            request.sendMessage(translate("teams.too_many_teams"));
             return;
         }
 
         if (teamsToMake <= 0) {
-            request.getSender().sendMessage(ChatColor.RED + "Teams to create can not be zero or less!");
+            request.sendMessage("teams.greater_zero");
             return;
         }
 
@@ -293,6 +291,7 @@ public class TeamCommands {
         }
         for (Team t : finalTeams) {
             Set<OfflinePlayer> teamPlayers = t.getPlayers();
+            //TODO translatable
             StringBuilder buffer = new StringBuilder(String.valueOf(ChatColor.GOLD))
                     .append("Your Team (")
                     .append(t.getName())
@@ -311,6 +310,6 @@ public class TeamCommands {
                 }
             }
         }
-        request.getSender().sendMessage(ChatColor.GOLD + "Made " + teamsToMake + " random teams");
+        request.sendMessage(translate("teams.created_teams").replaceAll("%amount%", String.valueOf(teamsToMake)));
     }
 }
