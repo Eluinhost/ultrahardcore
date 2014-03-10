@@ -33,9 +33,8 @@ public class ClearInventoryCommand extends SimpleCommand {
             senders = {SenderType.PLAYER},
             permission = CLEAR_SELF_PERMISSION)
     public void onClearInventorySelf(CommandRequest request){
-        Player player = (Player) request.getSender();
-        clearInventory(player);
-        player.sendMessage(translate("ci.cleared"));
+        clearInventory((HumanEntity) request.getSender());
+        request.sendMessage(translate("ci.cleared"));
     }
 
     /**
@@ -48,7 +47,6 @@ public class ClearInventoryCommand extends SimpleCommand {
             permission = CLEAR_OTHER_PERMISSION)
     public void onClearInventoryCommand(CommandRequest request){
         List<String> arguments = request.getArgs();
-        CommandSender sender = request.getSender();
         AbstractList<String> namesNotFound = new ArrayList<String>();
         for (String pname : arguments) {
             Player p = Bukkit.getPlayer(pname);
@@ -57,19 +55,19 @@ public class ClearInventoryCommand extends SimpleCommand {
                 continue;
             }
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                sender.sendMessage(translate("ci.immune").replaceAll("%name%",p.getName()));
+                request.sendMessage(translate("ci.immune").replaceAll("%name%",p.getName()));
             } else {
                 clearInventory(p);
-                p.sendMessage(translate("ci.tell").replaceAll("%name%",sender.getName()));
+                p.sendMessage(translate("ci.tell").replaceAll("%name%",request.getSender().getName()));
             }
         }
-        sender.sendMessage("ci.cleared");
+        request.sendMessage("ci.cleared");
         if (!namesNotFound.isEmpty()) {
             StringBuilder message = new StringBuilder();
             for (String s : namesNotFound) {
                 message.append(' ').append(s);
             }
-            sender.sendMessage(translate("ci.not_found").replaceAll("%list%",message.toString()));
+            request.sendMessage(translate("ci.not_found").replaceAll("%list%",message.toString()));
         }
     }
 

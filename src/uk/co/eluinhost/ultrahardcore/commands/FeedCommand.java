@@ -39,9 +39,9 @@ public class FeedCommand extends SimpleCommand {
             senders = {SenderType.PLAYER})
     public void onFeedCommand(CommandRequest request){
         Player player = (Player) request.getSender();
-            feedPlayer(player);
-            player.sendMessage(translate("feed.tell"));
-            ServerUtil.broadcastForPermission(translate("feed.announce").replaceAll("%name%",player.getName()).replaceAll("%fed%",player.getName()), FEED_ANNOUNCE_PERMISSION);
+        feedPlayer(player);
+        player.sendMessage(translate("feed.tell"));
+        ServerUtil.broadcastForPermission(translate("feed.announce").replaceAll("%name%",player.getName()).replaceAll("%fed%",player.getName()), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**

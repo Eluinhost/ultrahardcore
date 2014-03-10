@@ -42,10 +42,9 @@ public class HealCommand extends SimpleCommand {
             maxArgs = 1,
             permission = HEAL_OTHER_PERMISSION)
     public void onHealCommand(CommandRequest request){
-        CommandSender sender = request.getSender();
-        Player p = sender.getServer().getPlayer(request.getFirstArg());
+        Player p = Bukkit.getPlayer(request.getFirstArg());
         if (p == null) {
-            sender.sendMessage(translate("heal.invalid_player").replaceAll("%name%",request.getFirstArg()));
+            request.sendMessage(translate("heal.invalid_player").replaceAll("%name%",request.getFirstArg()));
             return;
         }
         p.setHealth(p.getMaxHealth());

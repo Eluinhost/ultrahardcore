@@ -123,7 +123,7 @@ public class BorderCommand extends SimpleCommand {
         String world;
         if (request.getArgs().size() == 1) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(translate("border.non_player_world"));
+                request.sendMessage(translate("border.non_player_world"));
                 return;
             }
             world = ((Entity) sender).getWorld().getName();
@@ -132,9 +132,9 @@ public class BorderCommand extends SimpleCommand {
         }
         SessionManager sessionManager = SessionManager.getInstance();
         if (sessionManager.undoLastSession(world)) {
-            sender.sendMessage(translate("border.undone"));
+            request.sendMessage(translate("border.undone"));
         } else {
-            sender.sendMessage(translate("border.no_undo"));
+            request.sendMessage(translate("border.no_undo"));
         }
     }
 
@@ -150,14 +150,13 @@ public class BorderCommand extends SimpleCommand {
             parentID = "BorderCommand")
     public void onBorderTypesCommand(CommandRequest request){
         Collection<Border> types = BorderTypeManager.getInstance().getTypes();
-        CommandSender sender = request.getSender();
         if(types.isEmpty()){
-            request.getSender().sendMessage(translate("border.no_borders"));
+            request.sendMessage(translate("border.no_borders"));
             return;
         }
-        sender.sendMessage(translate("border.border_types").replaceAll("%count%",String.valueOf(types.size())));
+        request.sendMessage(translate("border.border_types").replaceAll("%count%",String.valueOf(types.size())));
         for(Border border : types){
-            sender.sendMessage(translate("border.type_format").replaceAll("%featureID%",border.getID()).replaceAll("%desc%",border.getDescription()));
+            request.sendMessage(translate("border.type_format").replaceAll("%featureID%",border.getID()).replaceAll("%desc%",border.getDescription()));
         }
     }
 }
