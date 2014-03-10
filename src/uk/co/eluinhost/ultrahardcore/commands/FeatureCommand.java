@@ -34,15 +34,14 @@ public class FeatureCommand extends SimpleCommand {
             permission = FEATURE_LIST_PERMISSION,
             parentID = "FeatureCommand")
     public void onFeatureListCommand(CommandRequest request){
-        CommandSender sender = request.getSender();
         List<IFeature> features = FeatureManager.getInstance().getFeatures();
-        sender.sendMessage(translate("features.loaded.header").replaceAll("%amount%",String.valueOf(features.size())));
+        request.sendMessage(translate("features.loaded.header").replaceAll("%amount%",String.valueOf(features.size())));
         if (features.isEmpty()) {
-            sender.sendMessage(translate("features.loaded.none"));
+            request.sendMessage(translate("features.loaded.none"));
         }
         for (IFeature feature : features) {
             String message = translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off");
-            sender.sendMessage(message.replaceAll("%id%",feature.getFeatureID()).replaceAll("%desc%",feature.getDescription()));
+            request.sendMessage(message.replaceAll("%id%",feature.getFeatureID()).replaceAll("%desc%",feature.getDescription()));
         }
     }
 
@@ -59,18 +58,18 @@ public class FeatureCommand extends SimpleCommand {
     public void onFeatureOnCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.getSender().sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
+            request.sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
             return;
         }
         if(feature.isEnabled()){
-            request.getSender().sendMessage(translate("features.already_enabled"));
+            request.sendMessage(translate("features.already_enabled"));
             return;
         }
         if(!feature.enableFeature()){
-            request.getSender().sendMessage(translate("features.enabled_cancelled"));
+            request.sendMessage(translate("features.enabled_cancelled"));
             return;
         }
-        request.getSender().sendMessage(translate("features.enabled"));
+        request.sendMessage(translate("features.enabled"));
     }
 
     /**
@@ -86,17 +85,17 @@ public class FeatureCommand extends SimpleCommand {
     public void onFeatureOffCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.getSender().sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
+            request.sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
             return;
         }
         if(!feature.isEnabled()){
-            request.getSender().sendMessage(translate("features.already_disabled"));
+            request.sendMessage(translate("features.already_disabled"));
             return;
         }
         if(!feature.disableFeature()){
-            request.getSender().sendMessage(translate("features.disabled_cancelled"));
+            request.sendMessage(translate("features.disabled_cancelled"));
             return;
         }
-        request.getSender().sendMessage(translate("features.disabled"));
+        request.sendMessage(translate("features.disabled"));
     }
 }
