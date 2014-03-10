@@ -3,6 +3,8 @@ package uk.co.eluinhost.ultrahardcore.features.playerlist;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import com.google.common.collect.Range;
+import com.google.common.collect.Ranges;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,8 +41,10 @@ public class PlayerListFeature extends UHCFeature {
     private static final String OBJECTIVE_UNDER_NAME_NAME = "UHCHealthName";
     private static final String OBJECTIVE_TYPE = "dummy";
 
-    private static final double RED_BOUNDARY = 6.0;
-    private static final double YELLOW_BOUNDARY = 12.0;
+    private static final Range<Double> DEAD_HEALTH = Ranges.closed(0.0D,0.0D);
+    private static final Range<Double> LOW_HEALTH = Ranges.openClosed(0.0D,6.0D);
+    private static final Range<Double> MIDDLE_HEALTH = Ranges.openClosed(6.0D,12.0D);
+    private static final Range<Double> HIGH_HEALTH = Ranges.greaterThan(12.0D);
 
     private Objective m_objectivePlayerList;
     private Objective m_objectiveUnderName;
@@ -84,11 +88,14 @@ public class PlayerListFeature extends UHCFeature {
 
         if (m_playerListColours) {
             ChatColor prefix = ChatColor.GREEN;
-            if (health <= YELLOW_BOUNDARY) {
+            if(HIGH_HEALTH.contains(health)){
+                prefix = ChatColor.GREEN;
+            }else if(MIDDLE_HEALTH.contains(health)){
                 prefix = ChatColor.YELLOW;
-            }
-            if (health <= RED_BOUNDARY) {
+            }else if(LOW_HEALTH.contains(health)){
                 prefix = ChatColor.RED;
+            }else if(DEAD_HEALTH.contains(health)){
+                prefix = ChatColor.GRAY;
             }
             if (!player.hasPermission(PLAYER_LIST_HEALTH)) {
                 prefix = ChatColor.BLUE;
