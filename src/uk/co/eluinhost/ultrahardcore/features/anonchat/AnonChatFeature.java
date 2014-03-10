@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -75,7 +76,7 @@ public class AnonChatFeature extends UHCFeature {
             }
             //check the permissions
             if (!p.hasPermission(ANON_CHAT_CHAT)) {
-                p.sendMessage(ChatColor.RED + "You don't have the permissions to use annonymous chat");
+                p.sendMessage(ConfigManager.getInstance().getMessage("anon_chat.no_perms"));
                 return;
             }
 
