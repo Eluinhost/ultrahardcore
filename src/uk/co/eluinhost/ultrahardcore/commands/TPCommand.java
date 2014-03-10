@@ -13,7 +13,7 @@ import uk.co.eluinhost.commands.CommandRequest;
 
 import java.util.List;
 
-public class TPCommand {
+public class TPCommand extends SimpleCommand {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 
@@ -35,18 +35,18 @@ public class TPCommand {
             World w;
             if (coords.length == 3) {
                 if (!(request.getSender() instanceof Player)) {
-                    request.sendMessage(ChatColor.RED + "You need to specfiy a world when not a player to teleport");
+                    request.sendMessage(translate("teleport.non_player_world"));
                     return;
                 }
                 w = ((Entity) request.getSender()).getWorld();
             } else if (coords.length == 4) {
                 w = Bukkit.getWorld(coords[3]);
                 if (w == null) {
-                    request.sendMessage(ChatColor.RED + "World " + coords[3] + " not found!");
+                    request.sendMessage(translate("teleport.invalid.world"));
                     return;
                 }
             } else {
-                request.sendMessage(ChatColor.RED + "Invalid coordinate syntax, try x,y,z[,worldname]");
+                request.sendMessage(translate("teleport.invalid.coords"));
                 return;
             }
             int x;
@@ -57,14 +57,14 @@ public class TPCommand {
                 y = Integer.parseInt(coords[1]);
                 z = Integer.parseInt(coords[2]);
             } catch (NumberFormatException ignored) {
-                request.sendMessage(ChatColor.RED + "Invalid numbers used for coordinates: " + coords[0] + "," + coords[1] + "," + coords[2]);
+                request.sendMessage(translate("teleport.invalid.coords"));
                 return;
             }
             location = new Location(w, x, y, z);
         } else {
             Player p = Bukkit.getPlayer(lastArg);
             if (p == null) {
-                request.sendMessage(ChatColor.RED + "Player " + lastArg + " not found!");
+                request.sendMessage(translate("teleport.invalid.player").replaceAll("%name%",lastArg));
                 return;
             }
             location = p.getLocation();
@@ -77,12 +77,11 @@ public class TPCommand {
             for (int i = 0; i < arguments.size() - 1; i++) {
                 Player p = Bukkit.getPlayer(arguments.get(i));
                 if (p == null) {
-                    request.sendMessage(ChatColor.RED + "Player " + arguments.get(i) + " not found");
+                    request.sendMessage(translate("teleport.invalid.player").replaceAll("%name%",arguments.get(i)));
                     continue;
                 }
                 p.teleport(location);
             }
         }
-        Bukkit.broadcastMessage(ChatColor.GOLD + request.getSender().getName() + " teleported all players to " + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + location.getWorld().getName());
     }
 }

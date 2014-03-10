@@ -76,3 +76,9 @@ teams:
   too_many_teams: "&4Teams to create is greater than the number of people without a team!"
   greater_zero: "&4Teams to create can not be zero or less!"
   created_teams: "&6Made %amount% random teams"
+teleport:
+  non_player_world: "&4You need to specify a world when not running the command as a player"
+  invalid:
+    world: "&4Invalid world supplied"
+    coords: "&4Invalid coordinate syntax, try x,y,z[,worldname]"
+    player: "&4Player %name% not found!
