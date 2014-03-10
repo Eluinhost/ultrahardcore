@@ -127,7 +127,6 @@ public class DeathBansFeature extends UHCFeature {
                 m_banDelay
         );
         saveBans();
-        UltraHardcore.getInstance().getLogger().info("Added " + offlinePlayer.getName() + " to temp ban list");
     }
 
     /**
