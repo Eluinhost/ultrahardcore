@@ -9,7 +9,7 @@ import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.features.FeatureManager;
 
-public class FeatureCommand {
+public class FeatureCommand extends SimpleCommand {
 
     public static final String FEATURE_LIST_PERMISSION = "UHC.feature.list";
     public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";
@@ -37,12 +37,13 @@ public class FeatureCommand {
     public void onFeatureListCommand(CommandRequest request){
         CommandSender sender = request.getSender();
         List<IFeature> features = FeatureManager.getInstance().getFeatures();
-        sender.sendMessage(ChatColor.GOLD + "Currently loaded features (" + features.size() + "):");
+        sender.sendMessage(translate("features.loaded.header").replaceAll("%amount%",String.valueOf(features.size())));
         if (features.isEmpty()) {
-            sender.sendMessage(ChatColor.GRAY + "No features loaded!");
+            sender.sendMessage(translate("features.loaded.none"));
         }
         for (IFeature feature : features) {
-            sender.sendMessage((feature.isEnabled() ? ChatColor.GREEN + "ON " : ChatColor.RED + "OFF ") + feature.getFeatureID() + ChatColor.GRAY + " - " + feature.getDescription());
+            String message = translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off");
+            sender.sendMessage(message.replaceAll("%id%",feature.getFeatureID()).replaceAll("%desc%",feature.getDescription()));
         }
     }
 
@@ -59,18 +60,18 @@ public class FeatureCommand {
     public void onFeatureOnCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " was not found, use /feature list to see a list of available features");
+            request.getSender().sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
             return;
         }
         if(feature.isEnabled()){
-            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " is already enabled!");
+            request.getSender().sendMessage(translate("features.already_enabled"));
             return;
         }
         if(!feature.enableFeature()){
-            request.getSender().sendMessage(ChatColor.RED+"Failed to enable the feature, event was cancelled");
+            request.getSender().sendMessage(translate("features.enabled_cancelled"));
             return;
         }
-        request.getSender().sendMessage(ChatColor.GOLD+"Feature enabled");
+        request.getSender().sendMessage(translate("features.enabled"));
     }
 
     /**
@@ -86,17 +87,17 @@ public class FeatureCommand {
     public void onFeatureOffCommand(CommandRequest request){
         IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " was not found, use /feature list to see a list of available features");
+            request.getSender().sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
             return;
         }
         if(!feature.isEnabled()){
-            request.getSender().sendMessage(ChatColor.RED + "The feature \"" + request.getFirstArg() + " is already disabled!");
+            request.getSender().sendMessage(translate("features.already_disabled"));
             return;
         }
         if(!feature.disableFeature()){
-            request.getSender().sendMessage(ChatColor.RED+"Failed to disable the feature, event was cancelled");
+            request.getSender().sendMessage(translate("features.disabled_cancelled"));
             return;
         }
-        request.getSender().sendMessage(ChatColor.GOLD+"Feature disabled");
+        request.getSender().sendMessage(translate("features.disabled"));
     }
 }
