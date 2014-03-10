@@ -42,8 +42,16 @@ feed:
   announce: "&7&o[UHC] %name% used a feed command to feed %fed%"
   invalid_player: "&4Invalid player name %name%"
   tell: "&6You were fed to full hunger"
+  fed: "&6Player fed"
   fed_all: "&6Fed all players"
   fed_all_announce: "&7&o[UHC] %name% fed all players"
+heal:
+  announce: "&7&o[UHC] %healer% used a heal command to heal %name%"
+  invalid_player: "&4Invalid player name %name%"
+  tell: "&6You were healed to full health"
+  healed: "&6Player healed"
+  heal_all: "&6Healed all players"
+  heal_all_announce: "&7&o[UHC] %name% healed all players"
 freeze:
   not_loaded: "&4The freeze feature is not loaded!"
   invalid_player: "&4Invalid player name %name%"
