@@ -9,7 +9,7 @@ import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
-public class HealCommand {
+public class HealCommand extends SimpleCommand {
 
     public static final String HEAL_SELF_PERMISSION = "UHC.heal.self";
     public static final String HEAL_OTHER_PERMISSION = "UHC.heal.other";
@@ -28,11 +28,8 @@ public class HealCommand {
     public void onHealSelfCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         player.setHealth(player.getMaxHealth());
-        player.sendMessage(ChatColor.GOLD + "You healed yourself to full health");
-        ServerUtil.broadcastForPermission(
-                String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] Player " + player.getName() + " used a heal command to heal themselves to " + player.getMaxHealth() + " health"
-                ,HEAL_ANNOUNCE_PERMISSION
-        );
+        player.sendMessage(translate("heal.tell"));
+        ServerUtil.broadcastForPermission(translate("heal.announce").replaceAll("%healer%",player.getName()).replaceAll("%name%",player.getName()),HEAL_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -48,16 +45,13 @@ public class HealCommand {
         CommandSender sender = request.getSender();
         Player p = sender.getServer().getPlayer(request.getFirstArg());
         if (p == null) {
-            sender.sendMessage(ChatColor.RED + "Invalid player name " + request.getFirstArg());
+            sender.sendMessage(translate("heal.invalid_player").replaceAll("%name%",request.getFirstArg()));
             return;
         }
         p.setHealth(p.getMaxHealth());
-        p.sendMessage(ChatColor.GOLD + "You were healed to full health");
-        ServerUtil.broadcastForPermission(
-                String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
-                        (sender instanceof Player ? "Player " + sender.getName() : "Console") + " healed player " + p.getName()
-                , HEAL_ANNOUNCE_PERMISSION
-        );
+        p.sendMessage(translate("heal.tell"));
+        request.sendMessage(translate("heal.healed"));
+        ServerUtil.broadcastForPermission(translate("heal.announce").replaceAll("%healer%",request.getSender().getName()).replaceAll("%name%",p.getName()), HEAL_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -71,15 +65,11 @@ public class HealCommand {
             minArgs = 0,
             maxArgs = 0)
     public void onHealAllCommand(CommandRequest request){
-        CommandSender sender = request.getSender();
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setHealth(p.getMaxHealth());
-            p.sendMessage(ChatColor.GOLD + "You were healed to full health");
+            p.sendMessage(translate("heal.tell"));
         }
-        ServerUtil.broadcastForPermission(
-                String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + "[UHC] " +
-                        (sender instanceof Player ? "Player " + sender.getName() : "Console") + " healed all players"
-                , HEAL_ANNOUNCE_PERMISSION
-        );
+        request.sendMessage(translate("heal.heal_all"));
+        ServerUtil.broadcastForPermission(translate("heal.heal_all_announce").replaceAll("%name%",request.getSender().getName()), HEAL_ANNOUNCE_PERMISSION);
     }
 }
