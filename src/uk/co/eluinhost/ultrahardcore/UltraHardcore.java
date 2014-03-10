@@ -160,22 +160,6 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     }
 
     /**
-     * Set the command name given's executor to our command handler
-     * @param commandName the command name
-     *                    TODO this should be in the command framework
-     */
-    private void setExecutor(String commandName) {
-        CommandHandler handler = CommandHandler.getInstance();
-        PluginCommand pc = getCommand(commandName);
-        if (pc == null) {
-            getLogger().warning("Plugin failed to register the command " + commandName + ", is the command already taken?");
-        } else {
-            pc.setExecutor(handler);
-            pc.setTabCompleter(handler);
-        }
-    }
-
-    /**
      * Load all the default features into the feature manager
      */
     @SuppressWarnings("OverlyCoupledMethod")
