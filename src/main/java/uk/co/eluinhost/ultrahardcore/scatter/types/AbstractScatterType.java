@@ -1,9 +1,9 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -99,6 +99,6 @@ public abstract class AbstractScatterType {
     }
 
     public int hashCode(){
-        return Objects.hashCode(getScatterID());
+        return new HashCodeBuilder(17, 31).append(getScatterID()).toHashCode();
     }
 }
