@@ -103,12 +103,12 @@ public class ScatterManager implements Runnable {
     /**
      * @return a list of all the scatterIDs
      */
-    public List<String> getScatterTypeNames() {
+    public String[] getScatterTypeNames() {
         List<String> r = new ArrayList<String>();
         for (AbstractScatterType st : m_scatterTypes) {
             r.add(st.getScatterID());
         }
-        return r;
+        return r.toArray(new String[r.size()]);
     }
 
     /**

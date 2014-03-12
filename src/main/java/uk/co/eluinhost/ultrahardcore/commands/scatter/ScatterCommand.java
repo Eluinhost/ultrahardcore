@@ -132,7 +132,7 @@ public class ScatterCommand {
             permission = SCATTER_COMMAND)
     public void onScatterTypesCommand(CommandRequest request){
         ScatterManager manager = ScatterManager.getInstance();
-        List<String> types = manager.getScatterTypeNames();
+        String[] types = manager.getScatterTypeNames();
         for(String type : types){
             request.sendMessage(ChatColor.GRAY+type);
         }

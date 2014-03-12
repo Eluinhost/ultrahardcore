@@ -14,8 +14,7 @@ public class ScatterWorldPrompt extends WorldNamePrompt {
      * Allow any loaded world
      */
     public ScatterWorldPrompt(){
-        //noinspection AssignmentToSuperclassField
-        fixedSet = ServerUtil.getWorldNames();
+        super(ServerUtil.getWorldNames());
     }
 
     @Override

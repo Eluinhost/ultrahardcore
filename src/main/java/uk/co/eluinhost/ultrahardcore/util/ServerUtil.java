@@ -72,12 +72,12 @@ public final class ServerUtil {
     /**
      * @return a list of all the world names
      */
-    public static List<String> getWorldNames() {
+    public static String[] getWorldNames() {
         List<String> p = new ArrayList<String>();
         for (World w : Bukkit.getWorlds()) {
             p.add(w.getName());
         }
-        return p;
+        return p.toArray(new String[p.size()]);
     }
 
     /**

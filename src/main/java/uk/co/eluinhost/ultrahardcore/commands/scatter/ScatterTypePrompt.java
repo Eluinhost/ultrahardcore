@@ -13,8 +13,7 @@ public class ScatterTypePrompt extends FixedSetPrompt {
      * Allows any of the loaded scatter type names
      */
     public ScatterTypePrompt(){
-        //noinspection AssignmentToSuperclassField
-        fixedSet = ScatterManager.getInstance().getScatterTypeNames();
+        super(ScatterManager.getInstance().getScatterTypeNames());
     }
 
     @Override

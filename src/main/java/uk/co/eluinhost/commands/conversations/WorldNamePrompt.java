@@ -20,6 +20,13 @@ public abstract class WorldNamePrompt extends FixedSetPrompt {
     }
 
     /**
+     * @param worlds the worlds to allow
+     */
+    protected WorldNamePrompt(String... worlds){
+        super(worlds);
+    }
+
+    /**
      * @param conversationContext the context
      * @param world the accepted world
      * @return the next prompt
