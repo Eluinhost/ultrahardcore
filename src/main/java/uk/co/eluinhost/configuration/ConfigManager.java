@@ -3,7 +3,7 @@ package uk.co.eluinhost.configuration;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,22 +16,10 @@ public class ConfigManager {
     private final Map<String, FileConfiguration> m_configurations = new HashMap<String, FileConfiguration>();
 
     private final FileConfiguration m_translation;
+    private final Plugin m_plugin;
 
-    private static final class LazyConfigManagerHolder {
-        private static final ConfigManager INSTANCE = new ConfigManager();
-    }
-
-    /**
-     * @return config manager instance
-     */
-    public static ConfigManager getInstance(){
-        return LazyConfigManagerHolder.INSTANCE;
-    }
-
-    /**
-     * Makes a config manager
-     */
-    private ConfigManager(){
+    public ConfigManager(Plugin plugin){
+        m_plugin = plugin;
         FileConfiguration transConfig = getFromFile("translate.yml",true);
         String language = transConfig.getString("language");
         m_translation = getFromFile("translations/"+language+".yml",true);
@@ -61,16 +49,15 @@ public class ConfigManager {
      * @param setDefaults whether to set the defaults from the same file in the jar
      * @return the config file
      */
-    public static FileConfiguration getFromFile(String path, boolean setDefaults){
-        UltraHardcore plugin = UltraHardcore.getInstance();
-        File configFile = new File(plugin.getDataFolder(), path);
+    public FileConfiguration getFromFile(String path, boolean setDefaults){
+        File configFile = new File(m_plugin.getDataFolder(), path);
         if (!configFile.exists()) {
-            plugin.saveResource(path, false);
+            m_plugin.saveResource(path, false);
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         if(setDefaults){
             // Look for defaults in the jar
-            InputStream defConfigStream = plugin.getResource(path);
+            InputStream defConfigStream = m_plugin.getResource(path);
             if (defConfigStream != null) {
                 YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
                 config.setDefaults(defConfig);
