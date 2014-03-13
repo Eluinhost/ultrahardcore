@@ -32,21 +32,10 @@ public class WordsUtil {
     /**
      * things
      */
-    private WordsUtil(){
-        FileConfiguration config = ConfigManager.getInstance().getConfig("words");
+    public WordsUtil(ConfigManager manager){
+        FileConfiguration config = manager.getConfig("words");
         m_adjectives = config.getStringList("adjectives");
         m_nouns = config.getStringList("nouns");
-    }
-
-    private static final class WordsUtilHolder {
-        private static final WordsUtil WORDS_UTIL = new WordsUtil();
-    }
-
-    /**
-     * @return the instance
-     */
-    public static WordsUtil getInstance(){
-        return WordsUtilHolder.WORDS_UTIL;
     }
 
     /**
@@ -61,7 +50,7 @@ public class WordsUtil {
      * @param time the string
      * @return the amount of millis
      */
-    public static long parseTime(String time) {
+    public long parseTime(String time) {
         if("infinite".equalsIgnoreCase(time)){
             return Long.MAX_VALUE/2;
         }
@@ -110,7 +99,7 @@ public class WordsUtil {
      * @param timeUnban the unban time unix timestamp
      * @return human readable string on how long is left
      */
-    public static String formatTimeLeft(long timeUnban){
+    public String formatTimeLeft(long timeUnban){
         long duration = timeUnban - System.currentTimeMillis();
         long days = TimeUnit.MILLISECONDS.toDays(duration);
         if(days > Short.MAX_VALUE){

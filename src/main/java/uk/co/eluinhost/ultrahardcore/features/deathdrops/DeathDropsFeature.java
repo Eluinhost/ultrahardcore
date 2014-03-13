@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -32,35 +32,35 @@ public class DeathDropsFeature extends UHCFeature {
      * Add drops to a player when they die
      * TODO simplify
      */
-    public DeathDropsFeature() {
-        super("DeathDrops", "Adds extra loot to players on death");
-        ConfigurationSection items = ConfigManager.getInstance().getConfig().getConfigurationSection(getBaseConfig()+ITEMS_NODE);
+    public DeathDropsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "DeathDrops", "Adds extra loot to players on death", configManager);
+        ConfigurationSection items = configManager.getConfig().getConfigurationSection(getBaseConfig()+ITEMS_NODE);
         for (String item : items.getKeys(false)) {
             ConfigurationSection itemSection = items.getConfigurationSection(item);
 
             String itemIDString = itemSection.getString("id");
             if (itemIDString == null) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'id'");
+                plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'id'");
                 continue;
             }
 
             String amountString = itemSection.getString("amount");
             if (amountString == null) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'amount'");
+                plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'amount'");
                 continue;
             }
             int minAmount = -1;
             if (amountString.contains("-")) {
                 String[] amountParts = amountString.split("-");
                 if (amountParts.length != 2) {
-                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid amount. Syntax 'amount' or 'amount_min-amount_max'");
+                    plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid amount. Syntax 'amount' or 'amount_min-amount_max'");
                     continue;
                 }
                 try {
                     minAmount = Integer.parseInt(amountParts[0]);
                     amountString = amountParts[1];
                 } catch (NumberFormatException ignored) {
-                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" has an invalid minimum amount " + amountParts[0]);
+                    plugin.getLogger().severe("Death drop item section \"" + item + "\" has an invalid minimum amount " + amountParts[0]);
                     continue;
                 }
             }
@@ -71,13 +71,13 @@ public class DeathDropsFeature extends UHCFeature {
                     minAmount = maxAmount;
                 }
             } catch (NumberFormatException ignored) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid amount " + amountString);
+                plugin.getLogger().severe("Death drop item section \"" + item + "\" contains invalid amount " + amountString);
                 continue;
             }
 
             int chance = itemSection.getInt("chance",-1);
             if (chance < 0) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid chance value, assuming 100%");
+                plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid chance value, assuming 100%");
                 chance = 100;
             }
 
@@ -85,14 +85,14 @@ public class DeathDropsFeature extends UHCFeature {
             if (itemIDString.contains(":")) {
                 String[] itemParts = itemIDString.split(":");
                 if (itemParts.length != 2) {
-                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid item id. Syntax 'item_id' or 'item_id:meta'");
+                    plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid item id. Syntax 'item_id' or 'item_id:meta'");
                     continue;
                 }
                 try {
                     metaID = Integer.parseInt(itemParts[1]);
                     itemIDString = itemParts[0];
                 } catch (NumberFormatException ignored) {
-                    UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" has an invalid metadata value " + itemParts[1]);
+                    plugin.getLogger().severe("Death drop item section \"" + item + "\" has an invalid metadata value " + itemParts[1]);
                     continue;
                 }
             }
@@ -101,14 +101,14 @@ public class DeathDropsFeature extends UHCFeature {
             try {
                 itemID = Integer.parseInt(itemIDString);
             } catch (NumberFormatException ignored) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid id " + itemIDString);
+                plugin.getLogger().severe("Death drop item section \"" + item + "\" contains invalid id " + itemIDString);
                 continue;
             }
 
             //noinspection deprecation
             Material mat = Material.getMaterial(itemID);      //TODO change feature to use names in config file instead of IDs and use getByName
             if (mat == null) {
-                UltraHardcore.getInstance().getLogger().severe("Death drop item section \"" + item + "\" contains invalid item id " + itemID + ": item for id not found");
+                plugin.getLogger().severe("Death drop item section \"" + item + "\" contains invalid item id " + itemID + ": item for id not found");
                 continue;
             }
 

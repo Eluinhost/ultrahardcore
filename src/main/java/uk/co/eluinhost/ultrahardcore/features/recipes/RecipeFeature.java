@@ -13,6 +13,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
 import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
@@ -34,8 +36,8 @@ public class RecipeFeature extends UHCFeature {
     /**
      * Harder recipes when enabled, normal when disabled
      */
-    public RecipeFeature() {
-        super("HardRecipes","Handles changed recipes");
+    public RecipeFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "HardRecipes","Handles changed recipes", configManager);
     }
 
     /**

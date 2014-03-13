@@ -4,6 +4,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
@@ -20,8 +22,8 @@ public class EnderpearlsFeature extends UHCFeature {
     /**
      * Enderpearls cause no damage
      */
-    public EnderpearlsFeature() {
-        super("Enderpearls","Enderpearls cause no teleport damage");
+    public EnderpearlsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "Enderpearls","Enderpearls cause no teleport damage", configManager);
     }
 
     /**

@@ -19,7 +19,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -46,19 +46,19 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     /**
      * Leave 'footprints' behind you, requires protocollib
      */
-    public FootprintFeature() {
-        super("Footprints","Leave footprints behind you...");
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+    public FootprintFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "Footprints","Leave footprints behind you...", configManager);
+        FileConfiguration config = configManager.getConfig();
         int maxRender = config.getInt(getBaseConfig()+"maxdistance");
         int minRender = config.getInt(getBaseConfig()+"mindistance");
         m_maxRenderSquared = maxRender * maxRender;
         m_minRenderSquared = minRender * minRender;
-        m_timeToLast = ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+"time");
+        m_timeToLast = config.getInt(getBaseConfig()+"time");
     }
 
     @Override
     protected void enableCallback() {
-        m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(), this, 1, REPEAT_INTERVAL);
+        m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(getPlugin(), this, 1, REPEAT_INTERVAL);
     }
 
     @Override

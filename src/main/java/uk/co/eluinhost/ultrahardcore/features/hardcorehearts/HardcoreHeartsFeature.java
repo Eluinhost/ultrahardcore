@@ -7,19 +7,21 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.events.PacketListener;
 import com.comphenix.protocol.events.PacketAdapter;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class HardcoreHeartsFeature extends UHCFeature {
 
     private final ProtocolManager m_manager = ProtocolLibrary.getProtocolManager();
-    private final PacketListener m_listner = new HardcoreHeartsListener();
+    private final PacketListener m_listner;
 
     /**
      * Shows hardcore hearts in non hardcore worlds when enabled, requires protcollib
      */
-    public HardcoreHeartsFeature() {
-        super("HardcoreHearts", "Shows the hardcore hearts instead");
+    public HardcoreHeartsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "HardcoreHearts", "Shows the hardcore hearts instead", configManager);
+        m_listner = new HardcoreHeartsListener(plugin);
     }
 
     @Override
@@ -37,9 +39,9 @@ public class HardcoreHeartsFeature extends UHCFeature {
         /**
          * listens for login packets to edit
          */
-        HardcoreHeartsListener(){
+        HardcoreHeartsListener(Plugin bukkitPlugin){
             //listen for login packets on the normal priority
-            super(UltraHardcore.getInstance(),ListenerPriority.NORMAL,PacketType.Play.Server.LOGIN);
+            super(bukkitPlugin,ListenerPriority.NORMAL,PacketType.Play.Server.LOGIN);
         }
 
         @Override

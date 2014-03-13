@@ -9,10 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -59,9 +59,9 @@ public class PlayerListFeature extends UHCFeature {
     /**
      * Handles the player list health better than base mc, normal behaviour when disabled
      */
-    public PlayerListFeature() {
-        super("PlayerList","Player's health shown in player list and under their name");
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+    public PlayerListFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "PlayerList","Player's health shown in player list and under their name", configManager);
+        FileConfiguration config = configManager.getConfig();
         m_healthScaling = config.getDouble(getBaseConfig()+"scaling");
         m_roundHealth = config.getBoolean(getBaseConfig()+"roundHealth");
         m_playerListColours = config.getBoolean(getBaseConfig()+"colours");
@@ -144,7 +144,7 @@ public class PlayerListFeature extends UHCFeature {
     protected void enableCallback() {
         //set up the timer that runs
         m_taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
-                UltraHardcore.getInstance(),
+                getPlugin(),
                 new PlayerListUpdater(),
                 1L,
                 m_delay

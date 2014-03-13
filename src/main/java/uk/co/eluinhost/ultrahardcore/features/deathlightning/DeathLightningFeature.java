@@ -3,6 +3,8 @@ package uk.co.eluinhost.ultrahardcore.features.deathlightning;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
@@ -20,8 +22,8 @@ public class DeathLightningFeature extends UHCFeature {
     /**
      * Strikes lightning on a player death
      */
-    public DeathLightningFeature() {
-        super("DeathLightning","Fake lightning on a player's corpse");
+    public DeathLightningFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin,"DeathLightning","Fake lightning on a player's corpse",configManager);
     }
 
     /**

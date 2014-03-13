@@ -13,8 +13,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -31,9 +31,9 @@ public class PotionNerfsFeature extends UHCFeature {
     /**
      * Disallows tier 2 + splash when enabled, normal when disabled
      */
-    public PotionNerfsFeature() {
-        super("PotionNerfs","Applies nerfs to potions");
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+    public PotionNerfsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "PotionNerfs","Applies nerfs to potions", configManager);
+        FileConfiguration config = configManager.getConfig();
         m_disableSplash = config.getBoolean(getBaseConfig()+"disableSplash");
         m_disableAbsorb = config.getBoolean(getBaseConfig()+"disableAbsorb");
         m_disableGlowstone = config.getBoolean(getBaseConfig()+"disableGlowstone");
@@ -103,7 +103,7 @@ public class PotionNerfsFeature extends UHCFeature {
             ItemStack is = pee.getItem();
             if (is.getType() == Material.GOLDEN_APPLE) {
                 //remove the absorption effect for the player on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),new RemoveAbsoptionRunnable(pee.getPlayer().getName()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(),new RemoveAbsoptionRunnable(pee.getPlayer().getName()));
             }
         }
     }

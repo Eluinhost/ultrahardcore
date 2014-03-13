@@ -4,6 +4,8 @@ import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
@@ -19,8 +21,8 @@ public class NetherFeature extends UHCFeature {
     /**
      * Stops travelling to the nether when enabled
      */
-    public NetherFeature() {
-        super("NetherFeature","Disables the use of nether portals");
+    public NetherFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin,"NetherFeature","Disables the use of nether portals", configManager);
     }
 
     /**

@@ -2,6 +2,8 @@ package uk.co.eluinhost.ultrahardcore.features.playerfreeze;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 import java.util.HashSet;
@@ -14,8 +16,8 @@ public class PlayerFreezeFeature extends UHCFeature {
     /**
      * handles frozen players
      */
-    public PlayerFreezeFeature() {
-        super("PlayerFreeze", "Allows for freezing players in place");
+    public PlayerFreezeFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "PlayerFreeze", "Allows for freezing players in place", configManager);
     }
 
     /**

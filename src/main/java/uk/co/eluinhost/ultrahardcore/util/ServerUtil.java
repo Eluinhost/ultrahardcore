@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 
@@ -41,10 +42,11 @@ public final class ServerUtil {
 
     /**
      * Sends a player to another bungee server
+     * @param plugin the plugin to send using
      * @param recipient the player
      * @param serverName the server name to send them to
      */
-    public static void sendPlayerToServer(PluginMessageRecipient recipient, String serverName) {
+    public static void sendPlayerToServer(Plugin plugin, PluginMessageRecipient recipient, String serverName) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         DataOutput out = new DataOutputStream(outputStream);
 
@@ -52,10 +54,10 @@ public final class ServerUtil {
             out.writeUTF("Connect");
             out.writeUTF(serverName);
         } catch (IOException ignored) {
-            Bukkit.getLogger().log(Level.SEVERE,"Error writing to plugin output stream");
+            plugin.getLogger().log(Level.SEVERE,"Error writing to plugin output stream");
         }
 
-        recipient.sendPluginMessage(UltraHardcore.getInstance(), "BungeeCord", outputStream.toByteArray());
+        recipient.sendPluginMessage(plugin, "BungeeCord", outputStream.toByteArray());
     }
 
     /**

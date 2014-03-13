@@ -140,7 +140,7 @@ public class TeamsUtil {
                 count++;
             } else {
                 Team newTeam = m_mainScoreboard.registerNewTeam("UHC" + count);
-                newTeam.setDisplayName(WordsUtil.getInstance().getRandomTeamName());
+                newTeam.setDisplayName(new WordsUtil().getRandomTeamName());
                 return newTeam;
             }
         }

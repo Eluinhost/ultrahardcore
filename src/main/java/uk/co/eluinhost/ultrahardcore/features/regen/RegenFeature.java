@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 
@@ -25,8 +27,8 @@ public class RegenFeature extends UHCFeature {
     /**
      * Disables natural regen when enabled, normal when disabled
      */
-    public RegenFeature() {
-        super("DisableRegen","Cancels a player's passive health regeneration");
+    public RegenFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "DisableRegen","Cancels a player's passive health regeneration", configManager);
     }
 
     /**

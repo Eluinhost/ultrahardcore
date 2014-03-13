@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -27,8 +28,8 @@ public class GhastDropsFeature extends UHCFeature {
     /**
      * Stops ghasts dropping tears to get rid of regen potions
      */
-    public GhastDropsFeature() {
-        super("GhastDrops","Ghasts drop golden ingots instead of tears");
+    public GhastDropsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "GhastDrops","Ghasts drop golden ingots instead of tears", configManager);
     }
 
     /**
@@ -67,8 +68,8 @@ public class GhastDropsFeature extends UHCFeature {
      * @param worldName the world
      * @return true if allowed, false otherwise
      */
-    public static boolean featureEnabledForWorld(String featureNode, String worldName) {
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+    public boolean featureEnabledForWorld(String featureNode, String worldName) {
+        FileConfiguration config = getConfigManager().getConfig();
         //w&&f = enabled
         //w&&!f = disabled
         //!w&&f = disabled

@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -21,9 +22,9 @@ public class PortalsFeature extends UHCFeature {
     /**
      * Changes the radius portals will connect, normal when disabled
      */
-    public PortalsFeature() {
-        super("PortalRanges","Change the radius portals can spawn in");
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+    public PortalsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "PortalRanges","Change the radius portals can spawn in", configManager);
+        FileConfiguration config = configManager.getConfig();
         m_fromAllowed = config.getBoolean(getBaseConfig()+"from_nether.allowed");
         m_fromSearch = config.getInt(getBaseConfig()+"from_nether.search_radius");
         m_fromCreation = config.getInt(getBaseConfig()+"from_nether.creation_radius");

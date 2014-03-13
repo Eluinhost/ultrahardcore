@@ -16,6 +16,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.configuration.ConfigManager;
@@ -44,9 +45,9 @@ public class PlayerHeadsFeature extends UHCFeature {
     /**
      * Player heads drop on death, normal behaviour when disabled
      */
-    public PlayerHeadsFeature() {
-        super("PlayerHeads","Players can drop their heads on death");
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+    public PlayerHeadsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "PlayerHeads","Players can drop their heads on death", configManager);
+        FileConfiguration config = configManager.getConfig();
         m_chance = config.getInt(getBaseConfig()+"percentChance");
         m_pvpOnly = config.getBoolean(getBaseConfig()+"pvponly");
         m_nonTeamOnly = config.getBoolean(getBaseConfig()+"nonteamonly");

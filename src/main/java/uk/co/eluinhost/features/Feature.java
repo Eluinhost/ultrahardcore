@@ -4,6 +4,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
+import org.bukkit.plugin.Plugin;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.events.FeatureDisableEvent;
 import uk.co.eluinhost.features.events.FeatureEnableEvent;
 import uk.co.eluinhost.features.events.FeatureEvent;
@@ -22,6 +24,9 @@ public class Feature implements Listener, IFeature {
      * The description of the current feature
      */
     private final String m_description;
+
+    private final ConfigManager m_configManager;
+    private final Plugin m_plugin;
 
     @Override
     public boolean enableFeature(){
@@ -76,10 +81,13 @@ public class Feature implements Listener, IFeature {
      * Construct a new feature
      * @param featureID the feature ID to use
      * @param description the description for the feature
+     * @param configManager the config manager to use
      */
-    protected Feature(String featureID, String description) {
+    protected Feature(Plugin plugin, String featureID, String description, ConfigManager configManager) {
         m_featureID = featureID;
         m_description = description;
+        m_configManager = configManager;
+        m_plugin = plugin;
     }
 
     /**
@@ -90,6 +98,14 @@ public class Feature implements Listener, IFeature {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof IFeature && ((IFeature) obj).getFeatureID().equals(getFeatureID());
+    }
+
+    protected ConfigManager getConfigManager(){
+        return m_configManager;
+    }
+
+    protected Plugin getPlugin(){
+        return m_plugin;
     }
 
     /**

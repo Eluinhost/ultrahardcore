@@ -5,8 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
 public class AnonChatFeature extends UHCFeature {
@@ -20,11 +20,12 @@ public class AnonChatFeature extends UHCFeature {
      */
     private static final String PREFIX = ChatColor.RESET + "<" + ChatColor.MAGIC + "SECRET" + ChatColor.RESET + ">";
 
+
     /**
      * Construct an anonchat feature
      */
-    public AnonChatFeature() {
-        super("AnonChat","Allows players to chat without revealing their name");
+    public AnonChatFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin,"AnonChat","Allows players to chat without revealing their name", configManager);
     }
 
     /**
@@ -41,7 +42,7 @@ public class AnonChatFeature extends UHCFeature {
                 String playerName = apce.getPlayer().getName();
                 apce.setCancelled(true);
                 //schedule the new message to be send on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(), new ChatRunnable(playerName, apce.getMessage()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(playerName, apce.getMessage(), translate("anon_chat.no_perms")));
             }
         }
     }
@@ -57,14 +58,17 @@ public class AnonChatFeature extends UHCFeature {
          */
         private final String m_message;
 
+        private final String m_noPermsMessage;
+
         /**
          * Sends the message when ran
          * @param playerName the player to run for
          * @param message the message to send
          */
-        ChatRunnable(String playerName, String message) {
+        ChatRunnable(String playerName, String message, String noPermsMessage) {
             m_playerName = playerName;
             m_message = message;
+            m_noPermsMessage = noPermsMessage;
         }
 
         @Override
@@ -76,7 +80,7 @@ public class AnonChatFeature extends UHCFeature {
             }
             //check the permissions
             if (!p.hasPermission(ANON_CHAT_CHAT)) {
-                p.sendMessage(ConfigManager.getInstance().getMessage("anon_chat.no_perms"));
+                p.sendMessage(m_noPermsMessage);
                 return;
             }
 

@@ -15,6 +15,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -34,9 +35,9 @@ public class GoldenHeadsFeature extends UHCFeature {
     /**
      * Adds a recipe to make golden heads
      */
-    public GoldenHeadsFeature() {
-        super("GoldenHeads","New and improved golden apples!");
-        m_factor = ConfigManager.getInstance().getConfig().getInt(getBaseConfig()+"amountExtra");
+    public GoldenHeadsFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "GoldenHeads","New and improved golden apples!", configManager);
+        m_factor = configManager.getConfig().getInt(getBaseConfig()+"amountExtra");
     }
 
     /**

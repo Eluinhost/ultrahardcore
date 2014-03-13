@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
@@ -34,23 +35,23 @@ public class DeathBansFeature extends UHCFeature {
     /**
      * Bans players on death
      */
-    public DeathBansFeature() {
-        super("DeathBans", "Bans a player on death for a specified amount of time");
+    public DeathBansFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "DeathBans", "Bans a player on death for a specified amount of time", configManager);
 
-        FileConfiguration banConfig = ConfigManager.getInstance().getConfig();
+        FileConfiguration banConfig = configManager.getConfig();
 
         @SuppressWarnings("unchecked")
         List<DeathBan> banList = (List<DeathBan>) banConfig.getList("bans",new ArrayList<Object>());
         for(DeathBan deathBan : banList){
             for(Player player : Bukkit.getOnlinePlayers()){
                 if(player.getName().equalsIgnoreCase(deathBan.getPlayerName())){
-                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", WordsUtil.formatTimeLeft(deathBan.getUnbanTime())));
+                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", new WordsUtil(configManager).formatTimeLeft(deathBan.getUnbanTime())));
                 }
             }
         }
         m_deathBans = banList;
 
-        m_banDelay = ConfigManager.getInstance().getConfig().getLong(getBaseConfig()+"delay");
+        m_banDelay = configManager.getConfig().getLong(getBaseConfig()+"delay");
     }
 
     /**
@@ -90,8 +91,8 @@ public class DeathBansFeature extends UHCFeature {
      * Save all the bans to file
      */
     private void saveBans(){
-        ConfigManager.getInstance().getConfig("bans").set("bans", m_deathBans);
-        ConfigManager.getInstance().saveConfig("bans");
+        getConfigManager().getConfig("bans").set("bans", m_deathBans);
+        getConfigManager().saveConfig("bans");
     }
 
     /**
@@ -122,7 +123,7 @@ public class DeathBansFeature extends UHCFeature {
         m_deathBans.add(db);
         String playerName = offlinePlayer.getName();
         Bukkit.getScheduler().scheduleSyncDelayedTask(
-                UltraHardcore.getInstance(),
+                getPlugin(),
                 new PlayerBanner(playerName, message, unbanTime),
                 m_banDelay
         );
@@ -134,9 +135,9 @@ public class DeathBansFeature extends UHCFeature {
      * @param p the player to ban
      */
     public void processBansForPlayer(Player p){
-        ConfigurationSection banTypes = ConfigManager.getInstance().getConfig().getConfigurationSection(getBaseConfig()+CLASSES_NODE);
+        ConfigurationSection banTypes = getConfigManager().getConfig().getConfigurationSection(getBaseConfig()+CLASSES_NODE);
         Set<String> permissionNames = banTypes.getKeys(false);
-        Logger logger = UltraHardcore.getInstance().getLogger();
+        Logger logger = getPlugin().getLogger();
         for(String permission : permissionNames){
             if(!p.hasPermission(BASE_GROUP+permission)){
                 continue;
@@ -151,7 +152,7 @@ public class DeathBansFeature extends UHCFeature {
                 }else if("serverban".equalsIgnoreCase(action)) {
                     String length = type.getString("serverban_duration","1s");
                     String message = type.getString("serverban_message","NO BAN MESSAGE SET IN CONFIG FILE");
-                    long duration = WordsUtil.parseTime(length);
+                    long duration = new WordsUtil(getConfigManager()).parseTime(length);
                     banPlayer(p,message,duration);
                 }else if("worldkick".equalsIgnoreCase(action)){
                     String world = type.getString("worldkick_world","NO WORLD IN CONFIG");
@@ -161,7 +162,7 @@ public class DeathBansFeature extends UHCFeature {
                     }
                 }else if("bungeekick".equalsIgnoreCase(action)){
                     String server =type.getString("bungeekick_server","NO SERVER SET");
-                    ServerUtil.sendPlayerToServer(p,server);
+                    ServerUtil.sendPlayerToServer(getPlugin(),p,server);
                 }else{
                     logger.severe("Error in deathbans config, action '"+action+"' unknown");
                 }

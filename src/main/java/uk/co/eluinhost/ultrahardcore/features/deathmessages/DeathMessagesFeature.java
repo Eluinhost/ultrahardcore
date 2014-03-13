@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
@@ -28,9 +29,9 @@ public class DeathMessagesFeature extends UHCFeature {
     /**
      * Change the format of death messages
      */
-    public DeathMessagesFeature() {
-        super("DeathMessages","Adds a prefix/suffix to all player deaths");
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+    public DeathMessagesFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, "DeathMessages","Adds a prefix/suffix to all player deaths", configManager);
+        FileConfiguration config = configManager.getConfig();
         m_message = config.getString(getBaseConfig()+"message");
         m_suppressed = config.getBoolean(getBaseConfig()+"remove");
     }

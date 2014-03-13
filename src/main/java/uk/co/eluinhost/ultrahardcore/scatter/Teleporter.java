@@ -10,7 +10,7 @@ public abstract class Teleporter {
 
     private final WeakReference<Player> m_player;
     private Location m_location;
-    private String m_team = null;
+    private String m_team;
 
     private static final Vector Y_OFFSET = new Vector(0,2,0);
 

@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features;
 
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.Feature;
 
@@ -8,16 +9,15 @@ public class UHCFeature extends Feature {
     public static final String BASE_PERMISSION = "UHC.";
     public static final String BASE_CONFIG = "features.";
 
-    private ConfigManager m_manager = ConfigManager.getInstance();
-
     /**
      * Construct a new feature
      *
      * @param featureID   the feature ID to use
      * @param description the description for the feature
+     * @param configManager the config manager to use
      */
-    protected UHCFeature(String featureID, String description) {
-        super(featureID, description);
+    protected UHCFeature(Plugin plugin, String featureID, String description, ConfigManager configManager) {
+        super(plugin, featureID, description, configManager);
     }
 
     /**
@@ -32,6 +32,6 @@ public class UHCFeature extends Feature {
      * @return the translated message
      */
     public String translate(String key){
-        return m_manager.getMessage(key);
+        return getConfigManager().getMessage(key);
     }
 }
