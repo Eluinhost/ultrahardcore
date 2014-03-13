@@ -1,15 +1,14 @@
 package uk.co.eluinhost.commands;
 
 import com.google.common.collect.MutableClassToInstanceMap;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.eluinhost.commands.exceptions.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class CommandHandler implements TabExecutor {
 
@@ -22,21 +21,15 @@ public class CommandHandler implements TabExecutor {
 
     private static final String COMMAND_NOT_FOUND = ChatColor.RED + "Couldn't find the command requested";
 
-    private static final class CommandHandlerHolder {
-        private static final CommandHandler COMMAND_HANDLER = new CommandHandler();
-    }
-
-    /**
-     * @return instance of the bukkit command handler
-     */
-    public static final CommandHandler getInstance(){
-        return CommandHandlerHolder.COMMAND_HANDLER;
-    }
+    private final Logger m_logger;
 
     /**
      * Create the bukkit command handler
+     * @param logger the logger to use
      */
-    private CommandHandler() {}
+    public CommandHandler(Logger logger) {
+        m_logger = logger;
+    }
 
     /**
      * Register the specific object given
@@ -85,7 +78,7 @@ public class CommandHandler implements TabExecutor {
             if(methodAnnotation != null){
                 //check if ID already exists
                 if(m_commandMap.getCommandByIdentifier(methodAnnotation.identifier())!=null){
-                    Bukkit.getLogger().severe("Tried to reregister the command with the identifier "+methodAnnotation.identifier());
+                    m_logger.severe("Tried to reregister the command with the identifier " + methodAnnotation.identifier());
                     throw new CommandIDConflictException();
                 }
 
@@ -145,11 +138,11 @@ public class CommandHandler implements TabExecutor {
                 for (String child : children) {
                     try {
                         m_commandMap.addCommand(allCommands.get(child), entry.getKey());
-                        Bukkit.getLogger().info("Added command "+child+" with trigger "+allCommands.get(child).getTrigger()+" to map");
+                        m_logger.info("Added command " + child + " with trigger " + allCommands.get(child).getTrigger() + " to map");
                     } catch (CommandNotFoundException e) {
                         e.printStackTrace();
                         //this should never happen if logic is correct
-                        Bukkit.getLogger().severe("Error adding command to map, parent ID "+parentID+" not valid.");
+                        m_logger.severe("Error adding command to map, parent ID " + parentID + " not valid.");
                     }
                 }
             }

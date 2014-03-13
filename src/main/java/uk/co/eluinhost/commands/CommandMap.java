@@ -11,6 +11,12 @@ public class CommandMap {
 
     private final Collection<ICommandProxy> m_children = new ArrayList<ICommandProxy>();
 
+    private final CommandHandler m_commandHandler;
+
+    public CommandMap(CommandHandler commandHandler){
+        m_commandHandler = commandHandler;
+    }
+
     /**
      * Start the command request chain
      * @param request the request to use
@@ -57,14 +63,13 @@ public class CommandMap {
      * Set the command name given's executor to our command handler
      * @param commandName the command name
      */
-    private static void setExecutor(String commandName) {
-        CommandHandler handler = CommandHandler.getInstance();
+    private void setExecutor(String commandName) {
         PluginCommand pc = Bukkit.getPluginCommand(commandName);
         if (pc == null) {
             Bukkit.getLogger().warning("Plugin failed to register the command " + commandName + ", is the command already taken?");
         } else {
-            pc.setExecutor(handler);
-            pc.setTabCompleter(handler);
+            pc.setExecutor(m_commandHandler);
+            pc.setTabCompleter(m_commandHandler);
         }
     }
 
