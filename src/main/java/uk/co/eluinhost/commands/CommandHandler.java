@@ -85,6 +85,7 @@ public class CommandHandler implements TabExecutor {
             if(methodAnnotation != null){
                 //check if ID already exists
                 if(m_commandMap.getCommandByIdentifier(methodAnnotation.identifier())!=null){
+                    Bukkit.getLogger().severe("Tried to reregister the command with the identifier "+methodAnnotation.identifier());
                     throw new CommandIDConflictException();
                 }
 
