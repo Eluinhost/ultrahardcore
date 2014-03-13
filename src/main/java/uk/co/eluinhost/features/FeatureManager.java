@@ -9,10 +9,9 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.events.FeatureInitEvent;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
 import uk.co.eluinhost.features.exceptions.FeatureIDNotFoundException;
 import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
@@ -22,27 +21,18 @@ import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
  */
 public class FeatureManager {
 
-    @SuppressWarnings("UtilityClass")
-    private static final class LazyFeatureManagerHolder {
-        private static final FeatureManager INSTANCE = new FeatureManager();
+    private final ConfigManager m_configManager;
+    private final Plugin m_plugin;
+
+    public FeatureManager(ConfigManager configManager, Plugin plugin){
+        m_configManager = configManager;
+        m_plugin = plugin;
     }
 
     /**
-     * @return feature manager instance
+     * Stores a list of all the features loaded on the server
      */
-    public static FeatureManager getInstance(){
-        return LazyFeatureManagerHolder.INSTANCE;
-    }
-
-    /**
-     * Feature manager
-     */
-    private FeatureManager(){}
-
-    /**
-     * Stores a list of all the uhcFeatures loaded on the server
-     */
-    private final List<IFeature> m_uhcFeatureList = new ArrayList<IFeature>();
+    private final List<IFeature> m_featureList = new ArrayList<IFeature>();
 
     /**
      * Only allow uhcFeatures with this pattern as an ID
@@ -67,7 +57,7 @@ public class FeatureManager {
         }
 
         //check for existing feature of the same name
-        for (IFeature uhcFeature : m_uhcFeatureList) {
+        for (IFeature uhcFeature : m_featureList) {
             if (uhcFeature.equals(feature)) {
                 throw new FeatureIDConflictException();
             }
@@ -86,10 +76,10 @@ public class FeatureManager {
         }
 
         //add the feature
-        m_uhcFeatureList.add(feature);
+        m_featureList.add(feature);
         Bukkit.getLogger().log(Level.INFO,"Loaded feature module "+featureID);
 
-        List<String> config = ConfigManager.getInstance().getConfig().getStringList("enabledFeatures");
+        List<String> config = m_configManager.getConfig().getStringList("enabledFeatures");
         if(config.contains(featureID)){
             feature.enableFeature();
         }else{
@@ -97,7 +87,7 @@ public class FeatureManager {
         }
 
         //Register the feature for plugin events
-        Bukkit.getPluginManager().registerEvents(feature, UltraHardcore.getInstance());
+        Bukkit.getPluginManager().registerEvents(feature, m_plugin);
     }
 
     /**
@@ -108,7 +98,7 @@ public class FeatureManager {
      * @throws FeatureIDNotFoundException when feature not found
      */
     public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException {
-        for (IFeature feature : m_uhcFeatureList) {
+        for (IFeature feature : m_featureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
@@ -123,7 +113,7 @@ public class FeatureManager {
      * @return Feature the returned feature, or null if not found
      */
     public IFeature getFeatureByID(String featureID) {
-        for (IFeature feature : m_uhcFeatureList) {
+        for (IFeature feature : m_featureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
@@ -137,7 +127,7 @@ public class FeatureManager {
      * @return List
      */
     public List<IFeature> getFeatures() {
-        return Collections.unmodifiableList(m_uhcFeatureList);
+        return Collections.unmodifiableList(m_featureList);
     }
 
     /**
@@ -147,8 +137,8 @@ public class FeatureManager {
      */
     public List<String> getFeatureNames() {
         List<String> features = new ArrayList<String>();
-        for (IFeature uhc : m_uhcFeatureList) {
-            features.add(uhc.getFeatureID());
+        for (IFeature feature : m_featureList) {
+            features.add(feature.getFeatureID());
         }
         return features;
     }

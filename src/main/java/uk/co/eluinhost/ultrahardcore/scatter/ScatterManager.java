@@ -6,9 +6,9 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
@@ -29,28 +29,12 @@ public class ScatterManager implements Runnable {
 
     private int m_jobID = -1;
 
-    @Nullable
-    private Conversable m_commandSender;
+    private final Plugin m_plugin;
 
-    private static final class LazyScatterManagerHolder {
-        private static final ScatterManager INSTANCE = new ScatterManager();
-    }
-
-    /**
-     * @return scatter manager class
-     */
-    public static ScatterManager getInstance(){
-        return LazyScatterManagerHolder.INSTANCE;
-    }
-
-    /**
-     * Manages the scattering of players
-     */
-    private ScatterManager(){
-        UltraHardcore plugin = UltraHardcore.getInstance();
-
+    public ScatterManager(Plugin plugin, ConfigManager configManager){
+        m_plugin = plugin;
         //set up default config
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        FileConfiguration config = configManager.getConfig();
         m_maxTries = config.getInt("scatter.maxtries");
         m_scatterDelay = config.getInt("scatter.delay");
 
@@ -58,6 +42,8 @@ public class ScatterManager implements Runnable {
         Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
     }
 
+    @Nullable
+    private Conversable m_commandSender;
 
     /**
      * @return true if currently busy, false otherwise
@@ -130,7 +116,7 @@ public class ScatterManager implements Runnable {
     private void addTeleportMappings(Collection<Teleporter> ptm, Conversable sender) {
         if (m_jobID == -1) {
             m_remainingTeleports.addAll(ptm);
-            m_jobID = Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(), this);
+            m_jobID = Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin, this);
             m_commandSender = sender;
             sender.sendRawMessage("Starting to scatter all players, teleports are " + m_scatterDelay + " ticks apart");
         }
@@ -234,6 +220,6 @@ public class ScatterManager implements Runnable {
         }
         Teleporter ptm = m_remainingTeleports.pollFirst();
         ptm.teleport();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),this,m_scatterDelay);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin,this,m_scatterDelay);
     }
 }
