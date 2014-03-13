@@ -1,8 +1,8 @@
 package uk.co.eluinhost.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import uk.co.eluinhost.commands.exceptions.CommandNotFoundException;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,10 +59,9 @@ public class CommandMap {
      */
     private static void setExecutor(String commandName) {
         CommandHandler handler = CommandHandler.getInstance();
-        UltraHardcore uhc = UltraHardcore.getInstance();
-        PluginCommand pc = uhc.getCommand(commandName);
+        PluginCommand pc = Bukkit.getPluginCommand(commandName);
         if (pc == null) {
-            uhc.getLogger().warning("Plugin failed to register the command " + commandName + ", is the command already taken?");
+            Bukkit.getLogger().warning("Plugin failed to register the command " + commandName + ", is the command already taken?");
         } else {
             pc.setExecutor(handler);
             pc.setTabCompleter(handler);
