@@ -105,4 +105,11 @@
             </plugin>
         </plugins>
     </reporting>
+
+    <distributionManagement>
+        <repository>
+            <id>publicuhc</id>
+            <url>http://publicuhc.com/artifactory/libs-snapshot-local/</url>
+        </repository>
+    </distributionManagement>
 </project>
