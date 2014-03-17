@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.nether;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPortalEvent;
@@ -14,15 +16,19 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  *
  * @author ghowden
  */
+@Singleton
 public class NetherFeature extends UHCFeature {
 
     public static final String ALLOW_NETHER = BASE_PERMISSION+"nether.allow";
 
     /**
      * Stops travelling to the nether when enabled
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public NetherFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin,"NetherFeature","Disables the use of nether portals", configManager);
+        super(plugin, configManager);
     }
 
     /**
@@ -41,5 +47,15 @@ public class NetherFeature extends UHCFeature {
                 epe.setCancelled(true);
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "NetherFeature";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Disables the use of nether portals";
     }
 }
