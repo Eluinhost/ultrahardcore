@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.deathlightning;
 
+import com.google.inject.Inject;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.Plugin;
@@ -23,6 +24,7 @@ public class DeathLightningFeature extends UHCFeature {
      * @param configManager the config manager
      * @param plugin the plugin
      */
+    @Inject
     public DeathLightningFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin,configManager);
     }
