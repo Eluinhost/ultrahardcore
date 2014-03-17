@@ -12,7 +12,6 @@ import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.UltraHardcoreMain;
 import uk.co.eluinhost.ultrahardcore.commands.SimpleCommand;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
@@ -21,7 +20,6 @@ import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class ScatterCommand extends SimpleCommand {
@@ -38,7 +36,7 @@ public class ScatterCommand extends SimpleCommand {
         m_scatterManager = scatterManager;
         Map<Object,Object> init = new HashMap<Object, Object>();
         init.put(ScatterEndPrompt.MANAGER,scatterManager);
-        m_conversationFactory = new ConversationFactory(UltraHardcoreMain.getInstance())
+        m_conversationFactory = new ConversationFactory(UltraHardcore.getInstance())
                 .withEscapeSequence("cancel")
                 .withPrefix(new ScatterPrefix())
                 .withTimeout(CONVERSATION_TIMEOUT)

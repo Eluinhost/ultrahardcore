@@ -1,13 +1,14 @@
 package uk.co.eluinhost.ultrahardcore.util;
 
-import java.util.*;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
+import java.util.Iterator;
+import java.util.Set;
 
 public class TeamsUtil {
 

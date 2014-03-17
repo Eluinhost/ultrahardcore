@@ -1,8 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.features.playerlist;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import com.google.common.collect.Range;
 import com.google.common.collect.Ranges;
 import org.bukkit.Bukkit;
@@ -15,6 +12,9 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * PlayerListHandler

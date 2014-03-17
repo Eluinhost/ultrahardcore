@@ -29,7 +29,7 @@ public enum SenderType {
      */
     public static SenderType getFromCommandSender(CommandSender sender){
         for(SenderType type : SenderType.values()){
-            if(type.m_clazz.isAssignableFrom(sender.getClass())){
+            if(type.getClassType().isAssignableFrom(sender.getClass())){
                 return type;
             }
         }

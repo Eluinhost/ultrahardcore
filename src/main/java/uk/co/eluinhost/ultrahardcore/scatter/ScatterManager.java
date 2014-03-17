@@ -1,21 +1,24 @@
 package uk.co.eluinhost.ultrahardcore.scatter;
 
-import java.util.*;
-
-import org.bukkit.*;
+import com.google.inject.Singleton;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
-import uk.co.eluinhost.configuration.ConfigManager;
 
 import javax.annotation.Nullable;
+import java.util.*;
 
+@Singleton
 public class ScatterManager implements Runnable {
 
     private final int m_maxTries;

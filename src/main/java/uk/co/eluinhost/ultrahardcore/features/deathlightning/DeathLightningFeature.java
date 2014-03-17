@@ -2,7 +2,6 @@ package uk.co.eluinhost.ultrahardcore.features.deathlightning;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
-
 import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;

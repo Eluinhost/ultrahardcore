@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.UltraHardcore;
-import uk.co.eluinhost.ultrahardcore.UltraHardcoreMain;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -104,7 +103,7 @@ public class TimerCommand {
      * TODO use a class for the runnable
      */
     private void startTimer(final int ticks, final String message) {
-        m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcoreMain.getInstance(),
+        m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(UltraHardcore.getInstance(),
                 new Runnable() {
 
                     private int m_ticksLeft = ticks;

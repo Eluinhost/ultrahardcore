@@ -1,14 +1,14 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
-import java.util.List;
-import java.util.Random;
-
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
+
+import java.util.List;
+import java.util.Random;
 
 public abstract class AbstractScatterType {
 

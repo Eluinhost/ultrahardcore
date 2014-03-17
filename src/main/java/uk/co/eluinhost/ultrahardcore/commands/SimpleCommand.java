@@ -1,15 +1,23 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import uk.co.eluinhost.configuration.ConfigManager;
 
 public class SimpleCommand {
 
     private final ConfigManager m_configManager;
 
-    public SimpleCommand(ConfigManager configManager){
+    /**
+     * @param configManager the config manager
+     */
+    @Inject
+    protected SimpleCommand(ConfigManager configManager){
         m_configManager = configManager;
     }
 
+    /**
+     * @return the config manager
+     */
     public ConfigManager getConfigManager(){
         return m_configManager;
     }

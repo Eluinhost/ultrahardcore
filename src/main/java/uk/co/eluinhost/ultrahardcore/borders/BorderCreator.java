@@ -1,8 +1,8 @@
 package uk.co.eluinhost.ultrahardcore.borders;
 
 import org.bukkit.Location;
-import uk.co.eluinhost.ultrahardcore.borders.types.Border;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
+import uk.co.eluinhost.ultrahardcore.borders.types.Border;
 
 public class BorderCreator {
 

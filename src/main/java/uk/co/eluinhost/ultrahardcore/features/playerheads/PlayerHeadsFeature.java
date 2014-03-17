@@ -1,7 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.features.playerheads;
 
-import java.util.Random;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,13 +13,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
+
+import java.util.Random;
 
 
 /**

@@ -1,13 +1,10 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.configuration.ConfigManager;

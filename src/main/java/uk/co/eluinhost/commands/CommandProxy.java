@@ -1,153 +1,56 @@
 package uk.co.eluinhost.commands;
 
-import org.bukkit.ChatColor;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-
-public class CommandProxy implements ICommandProxy {
-
-    private final Method m_method;
-    private final Object m_instance;
-    private ICommandProxy m_parent;
-    private final Collection<ICommandProxy> m_children = new ArrayList<ICommandProxy>();
-    private final Command m_command;
+public interface CommandProxy {
 
     /**
-     * Create a new commandproxy
-     * @param method the method to call
-     * @param instance the instance to call the method on
-     * @param command the command annotation
+     * Calls the command
+     * @param request the request parameters
      */
-    public CommandProxy(Method method, Object instance, Command command) {
-        m_method = method;
-        m_instance = instance;
-        m_command = command;
-    }
+    void callCommand(CommandRequest request);
 
-    @Override
-    public void callCommand(CommandRequest request) {
-        //get the first argument
-        String arg = request.getFirstArg();
+    /**
+     * @return the trigger to match
+     */
+    String getTrigger();
 
-        //check for child commands with the given name of the next argument given
-        ICommandProxy commandToRun = getChild(arg);
+    /**
+     * Add a child to this command
+     * @param child the child to add
+     */
+    void addChild(CommandProxy child);
 
-        //if there is a child make them handle it
-        if(commandToRun != null){
-            //remove the argument and pass on to child to handle
-            request.removeFirstArg();
-            commandToRun.callCommand(request);
-            return;
-        }
+    /**
+     * Remove a child with the trigger name
+     * @param name the name to remove
+     */
+    void removeChild(String name);
 
-        if(!Arrays.asList(m_command.senders()).contains(request.getSenderType())){
-            request.getSender().sendMessage(ChatColor.RED+"That command can't be ran from here!");
-            return;
-        }
+    /**
+     * Set the parent object
+     * @param parent the parent to set to
+     */
+    void setParent(CommandProxy parent);
 
-        if(!m_command.permission().isEmpty() && !request.getSender().hasPermission(m_command.permission())){
-            request.getSender().sendMessage(ChatColor.RED+"You don't have permission to use that. ("+m_command.permission()+")");
-            return;
-        }
+    /**
+     * @return the full trigger name for the command
+     */
+    String getFullTrigger();
 
-        //check arguments length
-        if(request.getArgs().size() < m_command.minArgs()){
-            //TODO find usage for the command
-            request.getSender().sendMessage(ChatColor.RED+"Not enough arguments supplied.");
-            return;
-        }
-        if(m_command.maxArgs() != -1 && request.getArgs().size() > m_command.maxArgs()){
-            //TODO find usage for the command
-            request.getSender().sendMessage(ChatColor.RED+"Too many arguments supplied.");
-            return;
-        }
+    /**
+     * @param name the name to search for
+     * @return object if found, null otherwise, returns null if name is null
+     */
+    CommandProxy getChild(String name);
 
-        //noinspection OverlyBroadCatchBlock
-        try {
-            m_method.invoke(m_instance,request);
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.getSender().sendMessage(ChatColor.RED+"Exception running command, please check the console for more information");
-        }
-    }
+    /**
+     * @return the ID for this command
+     */
+    String getIdentifier();
 
-    @Override
-    public String getTrigger() {
-        return m_command.trigger();
-    }
-
-    @Override
-    public void addChild(ICommandProxy child) {
-        m_children.add(child);
-        child.setParent(this);
-    }
-
-    @Override
-    public void removeChild(String name) {
-        Iterator<ICommandProxy> childIterator = m_children.iterator();
-        while(childIterator.hasNext()){
-            ICommandProxy child = childIterator.next();
-            if(child.getTrigger().equalsIgnoreCase(name)){
-                childIterator.remove();
-            }
-        }
-    }
-
-    @Override
-    public void setParent(ICommandProxy parent) {
-        //remove ourselves from the parent if we're getting a new one
-        if(m_parent != null){
-            m_parent.removeChild(m_command.trigger());
-        }
-        //set out parent
-        m_parent = parent;
-        //if it's not null add ourselves as a child
-        if(parent != null && parent.getChild(m_command.trigger()) == null){
-            parent.addChild(this);
-        }
-    }
-
-    @Override
-    public String getFullTrigger() {
-        if(m_parent == null){
-            return m_command.trigger();
-        }
-        return m_parent.getFullTrigger()+" "+m_command.trigger();
-    }
-
-    @Override
-    public ICommandProxy getChild(String name) {
-        if(name == null){
-            return null;
-        }
-        for(ICommandProxy command : m_children){
-            if(command.getTrigger().equalsIgnoreCase(name)){
-                return command;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return m_command.identifier();
-    }
-
-    @Override
-    public ICommandProxy findIdentifier(String id) {
-        if(m_command.identifier().equals(id)){
-            return this;
-        }
-        for(ICommandProxy command : m_children){
-            ICommandProxy found = command.findIdentifier(id);
-            if(found != null){
-                return found;
-            }
-        }
-        return null;
-    }
+    /**
+     * Attempt to find the proxy with the given ID, checks down the tree
+     * @param id the id to search for
+     * @return the commandproxy if found or null otherwise
+     */
+    CommandProxy findIdentifier(String id);
 }

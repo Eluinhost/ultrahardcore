@@ -1,56 +1,58 @@
 package uk.co.eluinhost.ultrahardcore;
 
-import org.bukkit.plugin.Plugin;
-import uk.co.eluinhost.commands.CommandHandler;
-import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+import uk.co.eluinhost.metrics.MetricsLite;
+import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBan;
 
-public class UltraHardcore {
+import java.io.IOException;
 
-    private final ConfigManager m_configManager;
-    private final FeatureManager m_featureManager;
-    private final CommandHandler m_commandHandler;
-    private final BorderTypeManager m_borderTypeManager;
-    private final ScatterManager m_scatterManager;
-    private final Plugin m_plugin;
+/**
+ * UltraHardcore
+ * <p/>
+ * Main plugin class, init
+ *
+ * @author ghowden
+ */
+public class UltraHardcore extends JavaPlugin implements Listener {
 
     /**
-     * Actual UHC stuff
-     * @param plugin the plugin to run for
-     * @param configManager the config manager to use
-     * @param featureManager the feature manager to use
-     * @param commandHandler the command handler to use
-     * @param borderTypeManager the border manager to use
-     * @param scatterManager the scatter manager to use
+     * @return the current instance of the plugin
      */
-    public UltraHardcore(Plugin plugin, ConfigManager configManager, FeatureManager featureManager, CommandHandler commandHandler, BorderTypeManager borderTypeManager, ScatterManager scatterManager){
-        m_configManager = configManager;
-        m_featureManager = featureManager;
-        m_commandHandler = commandHandler;
-        m_borderTypeManager = borderTypeManager;
-        m_scatterManager = scatterManager;
-        m_plugin = plugin;
+    public static UltraHardcore getInstance() {
+        return (UltraHardcore) Bukkit.getPluginManager().getPlugin("UltraHardcore");
     }
 
-    public FeatureManager getFeatureManager(){
-        return m_featureManager;
-    }
+    //When the plugin gets started
+    @Override
+    public void onEnable() {
+        //register deathbans for serilization
+        ConfigurationSerialization.registerClass(DeathBan.class);
+        //register the bungeecord plugin channel
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
-    public ConfigManager getConfigManager(){
-        return m_configManager;
-    }
+        Injector injector = Guice.createInjector(new UHCModule(this));
 
-    public CommandHandler getCommandHandler(){
-        return m_commandHandler;
-    }
+        //load all the configs
+        loadDefaultConfigurations();
+        //load all the features
+        loadDefaultFeatures();
+        //load all the scatter types
+        loadDefaultScatterTypes();
+        //load all the commands
+        loadDefaultCommands();
+        //load the default border types
+        loadDefaultBorders();
 
-    public ScatterManager getScatterManager() {
-        return m_scatterManager;
-    }
-
-    public BorderTypeManager getBorderTypeManager() {
-        return m_borderTypeManager;
+        //Load all the metric infos
+        try {
+            MetricsLite met = new MetricsLite(this);
+            met.start();
+        } catch (IOException ignored) {
+        }
     }
 }

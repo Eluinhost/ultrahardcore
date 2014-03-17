@@ -1,12 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -17,13 +12,20 @@ import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
 import uk.co.eluinhost.configuration.ConfigManager;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClearInventoryCommand extends SimpleCommand {
 
     public static final String CLEAR_SELF_PERMISSION = "UHC.ci.self";
     public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";
     public static final String CLEAR_IMMUNE_PERMISSION = "UHC.ci.immune";
 
-    public ClearInventoryCommand(ConfigManager configManager) {
+    /**
+     * @param configManager the config manager
+     */
+    protected ClearInventoryCommand(ConfigManager configManager) {
         super(configManager);
     }
 

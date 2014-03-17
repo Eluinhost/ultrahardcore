@@ -1,12 +1,13 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.configuration.ConfigManager;
+import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
-import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
 public class DeathBanCommand extends SimpleCommand {
@@ -16,6 +17,11 @@ public class DeathBanCommand extends SimpleCommand {
 
     private FeatureManager m_features;
 
+    /**
+     * @param configManager the config manager
+     * @param features the feature manager
+     */
+    @Inject
     public DeathBanCommand(ConfigManager configManager, FeatureManager features) {
         super(configManager);
         m_features = features;

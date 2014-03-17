@@ -1,9 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.features.goldenheads;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,10 +14,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 import uk.co.eluinhost.ultrahardcore.util.RecipeUtil;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class GoldenHeadsFeature extends UHCFeature {
 

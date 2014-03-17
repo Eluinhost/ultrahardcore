@@ -11,13 +11,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
-import uk.co.eluinhost.ultrahardcore.UltraHardcore;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class DeathBansFeature extends UHCFeature {

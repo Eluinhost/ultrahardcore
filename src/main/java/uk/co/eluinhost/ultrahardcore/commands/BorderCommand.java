@@ -8,12 +8,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
 import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
-import uk.co.eluinhost.ultrahardcore.borders.types.Border;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
-import uk.co.eluinhost.configuration.ConfigManager;
+import uk.co.eluinhost.ultrahardcore.borders.types.Border;
 
 import java.util.Collection;
 

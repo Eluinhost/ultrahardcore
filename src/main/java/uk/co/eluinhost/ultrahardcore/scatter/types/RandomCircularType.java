@@ -1,14 +1,13 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Location;
-
-import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RandomCircularType extends AbstractScatterType {
 

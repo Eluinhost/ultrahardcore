@@ -7,7 +7,9 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 public class ScatterPlayerPrompt extends StringPrompt {
 

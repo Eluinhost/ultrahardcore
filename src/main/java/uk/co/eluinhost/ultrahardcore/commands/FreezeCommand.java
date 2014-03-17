@@ -16,6 +16,11 @@ public class FreezeCommand extends SimpleCommand {
 
     private final FeatureManager m_features;
 
+    /**
+     * The freeze command
+     * @param features the feature manager
+     * @param configManager the config manager
+     */
     public FreezeCommand(FeatureManager features, ConfigManager configManager) {
         super(configManager);
         m_features = features;

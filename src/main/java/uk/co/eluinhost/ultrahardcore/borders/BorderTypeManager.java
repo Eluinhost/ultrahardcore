@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.borders;
 
+import com.google.inject.Singleton;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.BorderIDConflictException;
 import uk.co.eluinhost.ultrahardcore.borders.types.Border;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+@Singleton
 public class BorderTypeManager {
 
     private final Collection<Border> m_borders = new ArrayList<Border>();

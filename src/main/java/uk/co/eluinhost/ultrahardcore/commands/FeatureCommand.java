@@ -1,12 +1,12 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
-import java.util.List;
-
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.configuration.ConfigManager;
-import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.features.FeatureManager;
+import uk.co.eluinhost.features.IFeature;
+
+import java.util.List;
 
 public class FeatureCommand extends SimpleCommand {
 
@@ -15,6 +15,11 @@ public class FeatureCommand extends SimpleCommand {
 
     private final FeatureManager m_featureManager;
 
+    /**
+     * feature commands
+     * @param configManager the config manager
+     * @param featureManager the feature manager
+     */
     public FeatureCommand(ConfigManager configManager, FeatureManager featureManager){
         super(configManager);
         m_featureManager = featureManager;

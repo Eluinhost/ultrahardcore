@@ -1,14 +1,11 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
-import java.util.*;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
-
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
@@ -16,6 +13,8 @@ import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.TeamsUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
+
+import java.util.*;
 
 public class TeamCommands extends SimpleCommand {
 

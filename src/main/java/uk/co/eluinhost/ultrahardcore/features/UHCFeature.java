@@ -1,23 +1,24 @@
 package uk.co.eluinhost.ultrahardcore.features;
 
+import com.google.inject.Inject;
 import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.Feature;
 
-public class UHCFeature extends Feature {
+public abstract class UHCFeature extends Feature {
 
-    public static final String BASE_PERMISSION = "UHC.";
-    public static final String BASE_CONFIG = "features.";
+    protected static final String BASE_PERMISSION = "UHC.";
+    protected static final String BASE_CONFIG = "features.";
 
     /**
      * Construct a new feature
      *
-     * @param featureID   the feature ID to use
-     * @param description the description for the feature
+     * @param plugin the plugin to use
      * @param configManager the config manager to use
      */
-    protected UHCFeature(Plugin plugin, String featureID, String description, ConfigManager configManager) {
-        super(plugin, featureID, description, configManager);
+    @Inject
+    protected UHCFeature(Plugin plugin, ConfigManager configManager) {
+        super(plugin, configManager);
     }
 
     /**

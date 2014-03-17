@@ -5,7 +5,6 @@ import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.patterns.SingleBlockPattern;
-
 import org.bukkit.Location;
 
 public class RoofBorder extends WorldEditBorder {

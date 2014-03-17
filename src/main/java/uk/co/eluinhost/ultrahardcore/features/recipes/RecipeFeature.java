@@ -1,8 +1,5 @@
 package uk.co.eluinhost.ultrahardcore.features.recipes;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -11,11 +8,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
-
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
