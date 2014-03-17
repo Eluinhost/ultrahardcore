@@ -2,7 +2,6 @@ package uk.co.eluinhost.ultrahardcore.features.deathmessages;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.Plugin;
@@ -22,17 +21,13 @@ public class DeathMessagesFeature extends UHCFeature {
     public static final String DEATH_MESSAGE_SUPPRESSED = BASE_MESSAGES + "remove";
     public static final String DEATH_MESSAGE_AFFIXES = BASE_MESSAGES + "affixes";
 
-    private final boolean m_suppressed;
-    private final String m_message;
-
     /**
      * Change the format of death messages
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
     public DeathMessagesFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "DeathMessages","Adds a prefix/suffix to all player deaths", configManager);
-        FileConfiguration config = configManager.getConfig();
-        m_message = config.getString(getBaseConfig()+"message");
-        m_suppressed = config.getBoolean(getBaseConfig()+"remove");
+        super(plugin, configManager);
     }
 
     /**
@@ -43,7 +38,7 @@ public class DeathMessagesFeature extends UHCFeature {
     public void onPlayerDeath(PlayerDeathEvent pde) {
         if (isEnabled()) {
             //if death message suppression is on
-            if (m_suppressed) {
+            if (getConfigManager().getConfig().getBoolean(getBaseConfig() + "remove")) {
                 //and the players death messages are suppressed
                 if (pde.getEntity().hasPermission(DEATH_MESSAGE_SUPPRESSED)) {
                     //set to nothing
@@ -54,7 +49,7 @@ public class DeathMessagesFeature extends UHCFeature {
             //if there is an affix for the player
             if (pde.getEntity().hasPermission(DEATH_MESSAGE_AFFIXES)) {
                 //grab format from config file
-                String format = ChatColor.translateAlternateColorCodes('&', m_message);
+                String format = ChatColor.translateAlternateColorCodes('&', getConfigManager().getConfig().getString(getBaseConfig() + "message"));
 
                 //replace vars
                 format = format.replaceAll("%message", pde.getDeathMessage());
@@ -75,5 +70,15 @@ public class DeathMessagesFeature extends UHCFeature {
      */
     private static String locationString(Location loc) {
         return "x:" + loc.getBlockX() + " y:" + loc.getBlockY() + " z:" + loc.getBlockZ();
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "DeathMessages";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Adds a prefix/suffix to all player deaths";
     }
 }
