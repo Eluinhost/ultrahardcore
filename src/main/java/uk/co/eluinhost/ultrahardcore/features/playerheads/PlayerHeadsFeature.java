@@ -45,7 +45,7 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public PlayerHeadsFeature(Plugin plugin, ConfigManager configManager) {
+    private PlayerHeadsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

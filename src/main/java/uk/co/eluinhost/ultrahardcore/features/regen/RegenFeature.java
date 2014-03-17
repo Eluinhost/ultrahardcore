@@ -32,7 +32,7 @@ public class RegenFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public RegenFeature(Plugin plugin, ConfigManager configManager) {
+    private RegenFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

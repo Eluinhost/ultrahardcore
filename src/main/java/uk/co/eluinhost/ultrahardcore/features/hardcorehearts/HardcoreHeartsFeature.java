@@ -25,7 +25,7 @@ public class HardcoreHeartsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public HardcoreHeartsFeature(Plugin plugin, ConfigManager configManager) {
+    private HardcoreHeartsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
         m_listner = new HardcoreHeartsListener(plugin);
     }

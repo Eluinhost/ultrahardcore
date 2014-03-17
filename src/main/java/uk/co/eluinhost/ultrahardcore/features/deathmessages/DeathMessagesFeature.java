@@ -30,7 +30,7 @@ public class DeathMessagesFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public DeathMessagesFeature(Plugin plugin, ConfigManager configManager) {
+    private DeathMessagesFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

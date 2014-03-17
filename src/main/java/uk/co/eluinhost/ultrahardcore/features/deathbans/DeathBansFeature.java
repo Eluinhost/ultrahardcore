@@ -43,7 +43,7 @@ public class DeathBansFeature extends UHCFeature {
      * @param plugin the plugin
      */
     @Inject
-    public DeathBansFeature(Plugin plugin, ConfigManager configManager) {
+    private DeathBansFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
 
         FileConfiguration banConfig = configManager.getConfig();

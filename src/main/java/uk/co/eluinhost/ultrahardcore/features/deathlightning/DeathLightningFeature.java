@@ -27,7 +27,7 @@ public class DeathLightningFeature extends UHCFeature {
      * @param plugin the plugin
      */
     @Inject
-    public DeathLightningFeature(Plugin plugin, ConfigManager configManager) {
+    private DeathLightningFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin,configManager);
     }
 

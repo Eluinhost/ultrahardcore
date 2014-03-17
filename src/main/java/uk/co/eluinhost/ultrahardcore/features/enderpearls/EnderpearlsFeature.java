@@ -28,7 +28,7 @@ public class EnderpearlsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public EnderpearlsFeature(Plugin plugin, ConfigManager configManager) {
+    private EnderpearlsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

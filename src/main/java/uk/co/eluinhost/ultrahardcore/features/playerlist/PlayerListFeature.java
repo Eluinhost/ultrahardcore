@@ -58,7 +58,7 @@ public class PlayerListFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public PlayerListFeature(Plugin plugin, ConfigManager configManager) {
+    private PlayerListFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

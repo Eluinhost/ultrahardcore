@@ -20,7 +20,7 @@ public class PortalsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public PortalsFeature(Plugin plugin, ConfigManager configManager) {
+    private PortalsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

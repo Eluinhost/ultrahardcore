@@ -33,7 +33,7 @@ public class GhastDropsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public GhastDropsFeature(Plugin plugin, ConfigManager configManager) {
+    private GhastDropsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

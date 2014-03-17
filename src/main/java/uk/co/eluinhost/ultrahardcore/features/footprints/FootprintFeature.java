@@ -46,7 +46,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
      * @param configManager the config manager
      */
     @Inject
-    public FootprintFeature(Plugin plugin, ConfigManager configManager) {
+    private FootprintFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

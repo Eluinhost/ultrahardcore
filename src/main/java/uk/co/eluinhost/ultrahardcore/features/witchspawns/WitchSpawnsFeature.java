@@ -18,7 +18,7 @@ public class WitchSpawnsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public WitchSpawnsFeature(Plugin plugin, ConfigManager configManager) {
+    private WitchSpawnsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

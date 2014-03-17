@@ -33,7 +33,7 @@ public class PotionNerfsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public PotionNerfsFeature(Plugin plugin, ConfigManager configManager) {
+    private PotionNerfsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

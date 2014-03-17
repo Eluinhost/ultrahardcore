@@ -29,7 +29,7 @@ public class AnonChatFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public AnonChatFeature(Plugin plugin, ConfigManager configManager) {
+    private AnonChatFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

@@ -38,7 +38,7 @@ public class GoldenHeadsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public GoldenHeadsFeature(Plugin plugin, ConfigManager configManager) {
+    private GoldenHeadsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

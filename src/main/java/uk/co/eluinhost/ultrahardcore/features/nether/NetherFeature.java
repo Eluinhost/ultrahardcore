@@ -27,7 +27,7 @@ public class NetherFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public NetherFeature(Plugin plugin, ConfigManager configManager) {
+    private NetherFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

@@ -41,7 +41,7 @@ public class RecipeFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public RecipeFeature(Plugin plugin, ConfigManager configManager) {
+    private RecipeFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 

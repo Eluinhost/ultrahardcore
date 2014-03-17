@@ -37,7 +37,7 @@ public class DeathDropsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public DeathDropsFeature(Plugin plugin, ConfigManager configManager) {
+    private DeathDropsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
         ConfigurationSection items = configManager.getConfig().getConfigurationSection(getBaseConfig()+ITEMS_NODE);
         for (String item : items.getKeys(false)) {

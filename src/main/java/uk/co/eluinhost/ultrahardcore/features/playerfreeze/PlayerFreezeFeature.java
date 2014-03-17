@@ -22,7 +22,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    public PlayerFreezeFeature(Plugin plugin, ConfigManager configManager) {
+    private PlayerFreezeFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
 
