@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.enderpearls;
 
+import com.google.inject.Inject;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -21,9 +22,12 @@ public class EnderpearlsFeature extends UHCFeature {
 
     /**
      * Enderpearls cause no damage
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public EnderpearlsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "Enderpearls","Enderpearls cause no teleport damage", configManager);
+        super(plugin, configManager);
     }
 
     /**
@@ -39,5 +43,15 @@ public class EnderpearlsFeature extends UHCFeature {
                 }
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "Enderpearls";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Enderpearls cause no teleport damage";
     }
 }

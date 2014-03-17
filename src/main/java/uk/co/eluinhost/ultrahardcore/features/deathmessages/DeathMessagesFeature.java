@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.deathmessages;
 
+import com.google.inject.Inject;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,7 @@ public class DeathMessagesFeature extends UHCFeature {
      * @param plugin the plugin
      * @param configManager the config manager
      */
+    @Inject
     public DeathMessagesFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
