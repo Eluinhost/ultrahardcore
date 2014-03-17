@@ -2,6 +2,7 @@ package uk.co.eluinhost.ultrahardcore.scatter.types;
 
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
@@ -15,12 +16,23 @@ public class EvenCircumferenceType extends AbstractScatterType {
     private static final String DESCRIPTION = "Puts players at even distances distance from each other along the circumference";
 
     /**
-     * Scatter players evenly along the outside of the defined circle
+     * Represents scatter logic
+     *
+     * @param scatterManager the scatter manager
      */
-    public EvenCircumferenceType(){
-        super(SCATTER_NAME,DESCRIPTION);
+    protected EvenCircumferenceType(ScatterManager scatterManager) {
+        super(scatterManager);
     }
 
+    @Override
+    public String getScatterID() {
+        return SCATTER_NAME;
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
 
     @Override
     public List<Location> getScatterLocations(Parameters params, int amount) throws MaxAttemptsReachedException {

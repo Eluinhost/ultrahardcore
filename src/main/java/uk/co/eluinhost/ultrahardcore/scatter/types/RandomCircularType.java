@@ -2,6 +2,7 @@ package uk.co.eluinhost.ultrahardcore.scatter.types;
 
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
@@ -17,8 +18,18 @@ public class RandomCircularType extends AbstractScatterType {
     /**
      * Scatters within a circle randomly
      */
-    public RandomCircularType(){
-        super(SCATTER_NAME,DESCRIPTION);
+    public RandomCircularType(ScatterManager scatterManager){
+        super(scatterManager);
+    }
+
+    @Override
+    public String getScatterID() {
+        return SCATTER_NAME;
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 
     @Override

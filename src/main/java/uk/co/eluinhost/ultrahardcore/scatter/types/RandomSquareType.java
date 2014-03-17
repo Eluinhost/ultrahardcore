@@ -2,6 +2,7 @@ package uk.co.eluinhost.ultrahardcore.scatter.types;
 
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
@@ -16,8 +17,18 @@ public class RandomSquareType extends AbstractScatterType {
     /**
      * Scatter randomly within a square
      */
-    public RandomSquareType(){
-        super(SCATTER_ID,DESCRIPTION);
+    public RandomSquareType(ScatterManager scatterManager){
+        super(scatterManager);
+    }
+
+    @Override
+    public String getScatterID() {
+        return SCATTER_ID;
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 
     @Override
