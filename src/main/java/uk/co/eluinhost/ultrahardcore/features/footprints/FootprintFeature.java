@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -42,6 +43,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
      * @param plugin the plugin
      * @param configManager the config manager
      */
+    @Inject
     public FootprintFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
     }
