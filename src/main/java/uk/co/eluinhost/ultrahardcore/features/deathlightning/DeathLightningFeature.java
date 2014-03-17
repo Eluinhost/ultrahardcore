@@ -20,9 +20,11 @@ public class DeathLightningFeature extends UHCFeature {
 
     /**
      * Strikes lightning on a player death
+     * @param configManager the config manager
+     * @param plugin the plugin
      */
     public DeathLightningFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin,"DeathLightning","Fake lightning on a player's corpse",configManager);
+        super(plugin,configManager);
     }
 
     /**
@@ -36,5 +38,15 @@ public class DeathLightningFeature extends UHCFeature {
                 pde.getEntity().getWorld().strikeLightningEffect(pde.getEntity().getLocation());
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "DeathLightning";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Fake lightning on a player's corpse";
     }
 }

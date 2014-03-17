@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.eluinhost.metrics.MetricsLite;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBan;
@@ -23,8 +24,8 @@ public class UltraHardcore extends JavaPlugin implements Listener {
     /**
      * @return the current instance of the plugin
      */
-    public static UltraHardcore getInstance() {
-        return (UltraHardcore) Bukkit.getPluginManager().getPlugin("UltraHardcore");
+    public static Plugin getInstance() {
+        return Bukkit.getPluginManager().getPlugin("UltraHardcore");
     }
 
     //When the plugin gets started
@@ -37,16 +38,18 @@ public class UltraHardcore extends JavaPlugin implements Listener {
 
         Injector injector = Guice.createInjector(new UHCModule(this));
 
+        DefaultClasses defaults = injector.getInstance(DefaultClasses.class);
+
         //load all the configs
-        loadDefaultConfigurations();
+        defaults.loadDefaultConfigurations();
         //load all the features
-        loadDefaultFeatures();
+        defaults.loadDefaultFeatures();
         //load all the scatter types
-        loadDefaultScatterTypes();
+        defaults.loadDefaultScatterTypes();
         //load all the commands
-        loadDefaultCommands();
+        defaults.loadDefaultCommands();
         //load the default border types
-        loadDefaultBorders();
+        defaults.loadDefaultBorders();
 
         //Load all the metric infos
         try {

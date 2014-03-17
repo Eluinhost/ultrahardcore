@@ -10,7 +10,10 @@ import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.configuration.RealConfigManager;
 import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.features.RealFeatureManager;
-import uk.co.eluinhost.ultrahardcore.commands.FeatureCommand;
+import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
+import uk.co.eluinhost.ultrahardcore.borders.RealBorderTypeManager;
+import uk.co.eluinhost.ultrahardcore.scatter.FallProtector;
+import uk.co.eluinhost.ultrahardcore.scatter.Protector;
 
 import java.util.logging.Logger;
 
@@ -26,6 +29,7 @@ public class UHCModule extends AbstractModule {
         m_plugin = plugin;
     }
 
+    @SuppressWarnings("OverlyCoupledMethod")
     @Override
     protected void configure() {
         bind(Plugin.class).toInstance(m_plugin);
@@ -34,5 +38,7 @@ public class UHCModule extends AbstractModule {
         bind(CommandMap.class).to(RealCommandMap.class);
         bind(ConfigManager.class).to(RealConfigManager.class);
         bind(FeatureManager.class).to(RealFeatureManager.class);
+        bind(BorderTypeManager.class).to(RealBorderTypeManager.class);
+        bind(Protector.class).to(FallProtector.class);
     }
 }

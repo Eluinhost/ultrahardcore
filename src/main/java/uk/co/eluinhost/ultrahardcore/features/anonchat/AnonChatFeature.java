@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.anonchat;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -22,10 +23,12 @@ public class AnonChatFeature extends UHCFeature {
 
 
     /**
-     * Construct an anonchat feature
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public AnonChatFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin,"AnonChat","Allows players to chat without revealing their name", configManager);
+        super(plugin, configManager);
     }
 
     /**
@@ -47,6 +50,16 @@ public class AnonChatFeature extends UHCFeature {
         }
     }
 
+    @Override
+    public String getFeatureID() {
+        return "AnonChat";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Allows players to chat without revealing their name";
+    }
+
     private static class ChatRunnable implements Runnable {
 
         /**
@@ -64,6 +77,7 @@ public class AnonChatFeature extends UHCFeature {
          * Sends the message when ran
          * @param playerName the player to run for
          * @param message the message to send
+         * @param noPermsMessage the message to say for no permissions
          */
         ChatRunnable(String playerName, String message, String noPermsMessage) {
             m_playerName = playerName;

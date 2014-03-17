@@ -11,6 +11,7 @@ public class SafeTeleporter extends Teleporter {
     /**
      * @param player   the player to teleport
      * @param loc      the location to teleport to (2 is added to the Y coordinate)
+     * @param manager the scatter manager
      */
     public SafeTeleporter(Player player, Location loc, ScatterManager manager) {
         super(player, loc);

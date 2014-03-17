@@ -10,7 +10,7 @@ import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.borders.BorderCreator;
-import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
+import uk.co.eluinhost.ultrahardcore.borders.RealBorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.SessionManager;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import uk.co.eluinhost.ultrahardcore.borders.types.Border;
@@ -21,9 +21,9 @@ public class BorderCommand extends SimpleCommand {
 
     public static final String GENERATE_BORDER = "UHC.generateborder";
 
-    private BorderTypeManager m_borderTypes;
+    private RealBorderTypeManager m_borderTypes;
 
-    public BorderCommand(BorderTypeManager border, ConfigManager config){
+    public BorderCommand(RealBorderTypeManager border, ConfigManager config){
         super(config);
         m_borderTypes = border;
     }

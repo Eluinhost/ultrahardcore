@@ -21,7 +21,7 @@ public abstract class Feature implements Listener, IFeature {
     private final Plugin m_plugin;
 
     @Override
-    public boolean enableFeature(){
+    public final boolean enableFeature(){
         if(isEnabled()){
             return false;
         }
@@ -35,7 +35,7 @@ public abstract class Feature implements Listener, IFeature {
     }
 
     @Override
-    public boolean disableFeature(){
+    public final boolean disableFeature(){
         if(!isEnabled()){
             return false;
         }

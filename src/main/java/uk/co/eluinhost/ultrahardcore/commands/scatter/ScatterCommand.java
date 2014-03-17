@@ -31,6 +31,10 @@ public class ScatterCommand extends SimpleCommand {
 
     private final ScatterManager m_scatterManager;
 
+    /**
+     * @param configManager the config manager
+     * @param scatterManager the scatter manager
+     */
     public ScatterCommand(ConfigManager configManager, ScatterManager scatterManager) {
         super(configManager);
         m_scatterManager = scatterManager;

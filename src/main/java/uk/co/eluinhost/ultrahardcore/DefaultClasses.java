@@ -6,27 +6,52 @@ import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.commands.CommandHandler;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.FeatureManager;
-import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
+import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
+import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
+import uk.co.eluinhost.ultrahardcore.borders.RealBorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.BorderIDConflictException;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.borders.types.RoofBorder;
 import uk.co.eluinhost.ultrahardcore.borders.types.SquareBorder;
 import uk.co.eluinhost.ultrahardcore.commands.*;
 import uk.co.eluinhost.ultrahardcore.commands.scatter.ScatterCommand;
+import uk.co.eluinhost.ultrahardcore.features.anonchat.AnonChatFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathdrops.DeathDropsFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathlightning.DeathLightningFeature;
+import uk.co.eluinhost.ultrahardcore.features.deathmessages.DeathMessagesFeature;
+import uk.co.eluinhost.ultrahardcore.features.enderpearls.EnderpearlsFeature;
+import uk.co.eluinhost.ultrahardcore.features.footprints.FootprintFeature;
+import uk.co.eluinhost.ultrahardcore.features.ghastdrops.GhastDropsFeature;
+import uk.co.eluinhost.ultrahardcore.features.goldenheads.GoldenHeadsFeature;
+import uk.co.eluinhost.ultrahardcore.features.hardcorehearts.HardcoreHeartsFeature;
+import uk.co.eluinhost.ultrahardcore.features.nether.NetherFeature;
+import uk.co.eluinhost.ultrahardcore.features.playerfreeze.PlayerFreezeFeature;
+import uk.co.eluinhost.ultrahardcore.features.playerheads.PlayerHeadsFeature;
+import uk.co.eluinhost.ultrahardcore.features.playerlist.PlayerListFeature;
+import uk.co.eluinhost.ultrahardcore.features.portals.PortalsFeature;
+import uk.co.eluinhost.ultrahardcore.features.potionnerfs.PotionNerfsFeature;
+import uk.co.eluinhost.ultrahardcore.features.recipes.RecipeFeature;
+import uk.co.eluinhost.ultrahardcore.features.regen.RegenFeature;
+import uk.co.eluinhost.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
 
+import java.util.logging.Logger;
+
+@SuppressWarnings("OverlyCoupledClass")
 public class DefaultClasses {
 
     private final Plugin m_uhc;
     private final ConfigManager m_configManager;
     private final FeatureManager m_featureManager;
-    private final BorderTypeManager m_borderTypes;
+    private final RealBorderTypeManager m_borderTypes;
     private final CommandHandler m_commandHandler;
     private final ScatterManager m_scatterManager;
+    private final Logger m_logger;
 
     /**
      * @param plugin
@@ -35,11 +60,14 @@ public class DefaultClasses {
      * @param borders
      * @param commandHandler
      * @param scatterManager
+     * @param logger
      */
     @Inject
     public DefaultClasses(Plugin plugin, ConfigManager conifgManager, FeatureManager featureManager,
-                          BorderTypeManager borders, CommandHandler commandHandler, ScatterManager scatterManager){
+                          RealBorderTypeManager borders, CommandHandler commandHandler, ScatterManager scatterManager,
+                          Logger logger){
         m_uhc = plugin;
+        m_logger = logger;
         m_configManager = conifgManager;
         m_featureManager = featureManager;
         m_borderTypes = borders;
@@ -50,7 +78,7 @@ public class DefaultClasses {
     /**
      * Load the default border types
      */
-    private void loadDefaultBorders() {
+    public void loadDefaultBorders() {
         try{
             m_borderTypes.addBorder(new CylinderBorder());
             m_borderTypes.addBorder(new RoofBorder());
@@ -63,7 +91,7 @@ public class DefaultClasses {
     /**
      * Load all the default commands
      */
-    private void loadDefaultCommands() {
+    public void loadDefaultCommands() {
         Class[] classes = {
                 HealCommand.class,
                 ClearInventoryCommand.class,
@@ -88,41 +116,39 @@ public class DefaultClasses {
     /**
      * Load all the default features into the feature manager
      */
+    @SuppressWarnings("OverlyCoupledMethod")
     public void loadDefaultFeatures() {
-        /**TODO need to inject something somehow here
-        Logger log = Bukkit.getLogger();
-        log.info("Loading UHC feature modules...");
+        m_logger.info("Loading UHC feature modules...");
         //Load the default features with settings in config
         try {
-            m_featureManager.addFeature(new DeathLightningFeature(this,m_configManager));
-            m_featureManager.addFeature(new EnderpearlsFeature(this,m_configManager));
-            m_featureManager.addFeature(new GhastDropsFeature(this,m_configManager));
-            m_featureManager.addFeature(new PlayerHeadsFeature(this,m_configManager));
-            m_featureManager.addFeature(new PlayerListFeature(this,m_configManager));
-            m_featureManager.addFeature(new RecipeFeature(this,m_configManager));
-            m_featureManager.addFeature(new RegenFeature(this,m_configManager));
-            m_featureManager.addFeature(new DeathMessagesFeature(this,m_configManager));
-            m_featureManager.addFeature(new DeathDropsFeature(this,m_configManager));
-            m_featureManager.addFeature(new AnonChatFeature(this,m_configManager));
-            m_featureManager.addFeature(new GoldenHeadsFeature(this,m_configManager));
-            m_featureManager.addFeature(new DeathBansFeature(this,m_configManager));
-            m_featureManager.addFeature(new PotionNerfsFeature(this,m_configManager));
-            m_featureManager.addFeature(new NetherFeature(this,m_configManager));
-            m_featureManager.addFeature(new WitchSpawnsFeature(this,m_configManager));
-            m_featureManager.addFeature(new PortalsFeature(this,m_configManager));
-            m_featureManager.addFeature(new PlayerFreezeFeature(this,m_configManager));
+            m_featureManager.addFeature(new DeathLightningFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new EnderpearlsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new GhastDropsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new PlayerHeadsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new PlayerListFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new RecipeFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new RegenFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new DeathMessagesFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new DeathDropsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new AnonChatFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new GoldenHeadsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new DeathBansFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new PotionNerfsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new NetherFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new WitchSpawnsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new PortalsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new PlayerFreezeFeature(m_uhc,m_configManager));
 
             //load the protocollib features last
-            featureManager.addFeature(new HardcoreHeartsFeature(this,m_configManager));
-            featureManager.addFeature(new FootprintFeature(this,m_configManager));
+            m_featureManager.addFeature(new HardcoreHeartsFeature(m_uhc,m_configManager));
+            m_featureManager.addFeature(new FootprintFeature(m_uhc,m_configManager));
         } catch (FeatureIDConflictException ignored) {
-            log.severe("A default UHC Feature ID is conflicting, this should never happen!");
+            m_logger.severe("A default UHC Feature ID is conflicting, this should never happen!");
         } catch (InvalidFeatureIDException ignored) {
-            log.severe("A default UHC feature ID is invalid, this should never happen!");
+            m_logger.severe("A default UHC feature ID is invalid, this should never happen!");
         } catch (NoClassDefFoundError ignored) {
-            log.severe("Couldn't find protocollib for related features, skipping them all.");
+            m_logger.severe("Couldn't find protocollib for related features, skipping them all.");
         }
-         */
     }
 
     /**
@@ -140,8 +166,8 @@ public class DefaultClasses {
     public void loadDefaultScatterTypes(){
         try {
             m_scatterManager.addScatterType(new EvenCircumferenceType());
-            scatterManager.addScatterType(new RandomCircularType());
-            scatterManager.addScatterType(new RandomSquareType());
+            m_scatterManager.addScatterType(new RandomCircularType());
+            m_scatterManager.addScatterType(new RandomSquareType());
         } catch (ScatterTypeConflictException ignored) {
             Bukkit.getLogger().severe("Conflict error when loading default scatter types!");
         }
