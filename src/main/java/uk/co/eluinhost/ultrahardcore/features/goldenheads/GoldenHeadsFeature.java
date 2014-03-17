@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.goldenheads;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,21 +24,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Singleton
 public class GoldenHeadsFeature extends UHCFeature {
 
     public static final int POTION_TICK_MULTIPLIER = 25;
     public static final String HEAD_NAME = ChatColor.GOLD+"Golden Head";
 
-    private final int m_factor;
-
     private ShapedRecipe m_headRecipe;
 
     /**
      * Adds a recipe to make golden heads
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public GoldenHeadsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "GoldenHeads","New and improved golden apples!", configManager);
-        m_factor = configManager.getConfig().getInt(getBaseConfig()+"amountExtra");
+        super(plugin, configManager);
     }
 
     /**
@@ -52,7 +55,7 @@ public class GoldenHeadsFeature extends UHCFeature {
             ItemMeta im = is.getItemMeta();
             if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
                 //add tge new potion effect
-                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + m_factor * POTION_TICK_MULTIPLIER, 1));
+                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + getConfigManager().getConfig().getInt(getBaseConfig()+"amountExtra") * POTION_TICK_MULTIPLIER, 1));
             }
         }
     }
@@ -132,5 +135,15 @@ public class GoldenHeadsFeature extends UHCFeature {
                 }
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "GoldenHeads";
+    }
+
+    @Override
+    public String getDescription() {
+        return "New and improved golden apples!";
     }
 }
