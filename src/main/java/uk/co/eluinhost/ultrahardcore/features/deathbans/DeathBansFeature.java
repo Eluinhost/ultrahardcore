@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.deathbans;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -36,9 +37,12 @@ public class DeathBansFeature extends UHCFeature {
 
     /**
      * Bans players on death
+     * @param configManager the config manager
+     * @param plugin the plugin
      */
+    @Inject
     public DeathBansFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "DeathBans", "Bans a player on death for a specified amount of time", configManager);
+        super(plugin, configManager);
 
         FileConfiguration banConfig = configManager.getConfig();
 
@@ -47,7 +51,7 @@ public class DeathBansFeature extends UHCFeature {
         for(DeathBan deathBan : banList){
             for(Player player : Bukkit.getOnlinePlayers()){
                 if(player.getName().equalsIgnoreCase(deathBan.getPlayerName())){
-                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", new WordsUtil(configManager).formatTimeLeft(deathBan.getUnbanTime())));
+                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", WordsUtil.formatTimeLeft(deathBan.getUnbanTime())));
                 }
             }
         }
@@ -154,7 +158,7 @@ public class DeathBansFeature extends UHCFeature {
                 }else if("serverban".equalsIgnoreCase(action)) {
                     String length = type.getString("serverban_duration","1s");
                     String message = type.getString("serverban_message","NO BAN MESSAGE SET IN CONFIG FILE");
-                    long duration = new WordsUtil(getConfigManager()).parseTime(length);
+                    long duration = WordsUtil.parseTime(length);
                     banPlayer(p,message,duration);
                 }else if("worldkick".equalsIgnoreCase(action)){
                     String world = type.getString("worldkick_world","NO WORLD IN CONFIG");
@@ -171,6 +175,16 @@ public class DeathBansFeature extends UHCFeature {
             }
             return;
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "DeathBans";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Bans a player on death for a specified amount of time";
     }
 
     private static class PlayerBanner implements Runnable {
