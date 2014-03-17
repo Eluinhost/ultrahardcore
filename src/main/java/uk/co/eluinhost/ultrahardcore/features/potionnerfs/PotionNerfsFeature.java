@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.potionnerfs;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,25 +20,21 @@ import org.bukkit.potion.PotionEffectType;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
+@Singleton
 public class PotionNerfsFeature extends UHCFeature {
 
     public static final String POTION_BASE = BASE_PERMISSION + "potions.";
     public static final String DENY_SPLASH = POTION_BASE + "disableSplash";
     public static final String DENY_IMPROVED = POTION_BASE + "disableImproved";
 
-    private final boolean m_disableSplash;
-    private final boolean m_disableAbsorb;
-    private final boolean m_disableGlowstone;
-
     /**
      * Disallows tier 2 + splash when enabled, normal when disabled
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public PotionNerfsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "PotionNerfs","Applies nerfs to potions", configManager);
-        FileConfiguration config = configManager.getConfig();
-        m_disableSplash = config.getBoolean(getBaseConfig()+"disableSplash");
-        m_disableAbsorb = config.getBoolean(getBaseConfig()+"disableAbsorb");
-        m_disableGlowstone = config.getBoolean(getBaseConfig()+"disableGlowstone");
+        super(plugin, configManager);
     }
 
     /**
@@ -47,6 +45,8 @@ public class PotionNerfsFeature extends UHCFeature {
     public void onInventoryClickEvent(InventoryClickEvent ice) {
         //if we're enabled
         if (isEnabled()) {
+            FileConfiguration config = getConfigManager().getConfig();
+
             //if it's not a brewing stand skip
             if (ice.getInventory().getType() != InventoryType.BREWING) {
                 return;
@@ -55,14 +55,17 @@ public class PotionNerfsFeature extends UHCFeature {
             InventoryView iv = ice.getView();
             boolean cancel = false;
 
+            boolean disableSplash = config.getBoolean(getBaseConfig()+"disableSplash");
+            boolean disableGlowstone = config.getBoolean(getBaseConfig()+"disableGlowstone");
+
             //if the player is shift clicking
             if (ice.isShiftClick()) {
                 //if splash disabled and they're clicking sulphur and don't have permission
-                if (m_disableSplash && ice.getCurrentItem().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
+                if (disableSplash && ice.getCurrentItem().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
                     cancel = true;
                 }
                 //if tier 2 is disabled and they're clicking glowstone and don't have permission
-                if (m_disableGlowstone && ice.getCurrentItem().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
+                if (disableGlowstone && ice.getCurrentItem().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
                     cancel = true;
                 }
             }
@@ -70,11 +73,11 @@ public class PotionNerfsFeature extends UHCFeature {
             //if its the fuel slot that was clicked
             if (ice.getSlotType() == InventoryType.SlotType.FUEL) {
                 //if splash disabled and sulphur is on the cursor and no permission
-                if (m_disableSplash && iv.getCursor().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
+                if (disableSplash && iv.getCursor().getType() == Material.SULPHUR && ice.getWhoClicked().hasPermission(DENY_SPLASH)) {
                     cancel = true;
                 }
                 //if tier 2 disabled and glowstone is on the cursor and no permission
-                if (m_disableGlowstone && iv.getCursor().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
+                if (disableGlowstone && iv.getCursor().getType() == Material.GLOWSTONE_DUST && ice.getWhoClicked().hasPermission(DENY_IMPROVED)) {
                     cancel = true;
                 }
             }
@@ -98,7 +101,7 @@ public class PotionNerfsFeature extends UHCFeature {
     @EventHandler
     public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
         //if we're enabled and absorbtion is disabled
-        if (isEnabled() && m_disableAbsorb) {
+        if (isEnabled() && getConfigManager().getConfig().getBoolean(getBaseConfig() + "disableAbsorb")) {
             //if they ate a golden apple
             ItemStack is = pee.getItem();
             if (is.getType() == Material.GOLDEN_APPLE) {
@@ -116,18 +119,29 @@ public class PotionNerfsFeature extends UHCFeature {
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent imie) {
         //if we're enabled
         if (isEnabled()) {
+            FileConfiguration config = getConfigManager().getConfig();
             //if the item is being moved into a brewing stand
             if (imie.getDestination().getType() == InventoryType.BREWING) {
                 //cancel sulpher if no permission
-                if (imie.getItem().getType() == Material.SULPHUR && m_disableSplash) {
+                if (imie.getItem().getType() == Material.SULPHUR && config.getBoolean(getBaseConfig()+"disableSplash")) {
                     imie.setCancelled(true);
                 }
                 //cancel glowstone if no permission
-                if (imie.getItem().getType() == Material.GLOWSTONE_DUST && m_disableGlowstone) {
+                if (imie.getItem().getType() == Material.GLOWSTONE_DUST && config.getBoolean(getBaseConfig()+"disableGlowstone")) {
                     imie.setCancelled(true);
                 }
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "PotionNerfs";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Applies nerfs to potions";
     }
 
     /**
