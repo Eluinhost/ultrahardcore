@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.recipes;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -23,6 +25,7 @@ import java.util.Iterator;
  *
  * @author ghowden
  */
+@Singleton
 public class RecipeFeature extends UHCFeature {
 
     public static final String RECIPE_BASE = BASE_PERMISSION + "recipies.";
@@ -34,9 +37,12 @@ public class RecipeFeature extends UHCFeature {
 
     /**
      * Harder recipes when enabled, normal when disabled
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public RecipeFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "HardRecipes","Handles changed recipes", configManager);
+        super(plugin, configManager);
     }
 
     /**
@@ -60,7 +66,6 @@ public class RecipeFeature extends UHCFeature {
      * @param permissible Permissible the permissible to check against
      * @param recipe the recipe to check
      * @return boolean true if allowed, false if not
-     * TODO abstract this into a config style instead of hardcode and loop
      */
     private static boolean isRecipeAllowedForPermissible(Permissible permissible, Recipe recipe){
         Material result = recipe.getResult().getType();
@@ -156,5 +161,15 @@ public class RecipeFeature extends UHCFeature {
                 recipeIterator.remove();
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "HardRecipes";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Handles changed recipes";
     }
 }
