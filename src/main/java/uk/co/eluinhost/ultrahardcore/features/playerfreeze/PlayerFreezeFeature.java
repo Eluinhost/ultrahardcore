@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.playerfreeze;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
@@ -9,15 +11,19 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 import java.util.HashSet;
 import java.util.Set;
 
+@Singleton
 public class PlayerFreezeFeature extends UHCFeature {
 
     private Set<String> m_players = new HashSet<String>();
 
     /**
      * handles frozen players
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public PlayerFreezeFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "PlayerFreeze", "Allows for freezing players in place", configManager);
+        super(plugin, configManager);
     }
 
     /**
@@ -67,5 +73,15 @@ public class PlayerFreezeFeature extends UHCFeature {
     @Override
     protected void disableCallback(){
         //TODO remove freezes
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "PlayerFreeze";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Allows for freezing players in place";
     }
 }
