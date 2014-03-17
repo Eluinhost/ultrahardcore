@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.regen;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +17,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  *
  * @author ghowden
  */
+@Singleton
 public class RegenFeature extends UHCFeature {
 
     private static final int FOOD_LEVEL = 18;
@@ -25,9 +28,12 @@ public class RegenFeature extends UHCFeature {
 
     /**
      * Disables natural regen when enabled, normal when disabled
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public RegenFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "DisableRegen","Cancels a player's passive health regeneration", configManager);
+        super(plugin, configManager);
     }
 
     /**
@@ -53,5 +59,15 @@ public class RegenFeature extends UHCFeature {
                 }
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "DisableRegen";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Cancels a player's passive health regeneration";
     }
 }
