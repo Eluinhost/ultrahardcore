@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.ghastdrops;
 
+import com.google.inject.Inject;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -26,9 +27,12 @@ public class GhastDropsFeature extends UHCFeature {
 
     /**
      * Stops ghasts dropping tears to get rid of regen potions
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public GhastDropsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "GhastDrops","Ghasts drop golden ingots instead of tears", configManager);
+        super(plugin, configManager);
     }
 
     /**
@@ -77,5 +81,15 @@ public class GhastDropsFeature extends UHCFeature {
         boolean whitelist = config.getBoolean(featureNode + ".whitelist");
         boolean found = config.getStringList(featureNode + ".worlds").contains(worldName);
         return !(whitelist ^ found);
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "GhastDrops";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Ghasts drop golden ingots instead of tears";
     }
 }
