@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.features.deathdrops;
 
+import com.google.inject.Inject;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -33,6 +34,7 @@ public class DeathDropsFeature extends UHCFeature {
      * @param plugin the plugin
      * @param configManager the config manager
      */
+    @Inject
     public DeathDropsFeature(Plugin plugin, ConfigManager configManager) {
         super(plugin, configManager);
         ConfigurationSection items = configManager.getConfig().getConfigurationSection(getBaseConfig()+ITEMS_NODE);
