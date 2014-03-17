@@ -1,14 +1,15 @@
 package uk.co.eluinhost.ultrahardcore;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.commands.CommandHandler;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.FeatureManager;
+import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.features.exceptions.FeatureIDConflictException;
 import uk.co.eluinhost.features.exceptions.InvalidFeatureIDException;
-import uk.co.eluinhost.ultrahardcore.borders.RealBorderTypeManager;
+import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.exceptions.BorderIDConflictException;
 import uk.co.eluinhost.ultrahardcore.borders.types.CylinderBorder;
 import uk.co.eluinhost.ultrahardcore.borders.types.RoofBorder;
@@ -45,28 +46,25 @@ import java.util.logging.Logger;
 @SuppressWarnings("OverlyCoupledClass")
 public class DefaultClasses {
 
-    private final Plugin m_uhc;
     private final ConfigManager m_configManager;
     private final FeatureManager m_featureManager;
-    private final RealBorderTypeManager m_borderTypes;
+    private final BorderTypeManager m_borderTypes;
     private final CommandHandler m_commandHandler;
     private final ScatterManager m_scatterManager;
     private final Logger m_logger;
 
     /**
-     * @param plugin
-     * @param conifgManager
-     * @param featureManager
-     * @param borders
-     * @param commandHandler
-     * @param scatterManager
-     * @param logger
+     * @param conifgManager the config manager
+     * @param featureManager the feature manager
+     * @param borders the border manager
+     * @param commandHandler the command handler
+     * @param scatterManager the scatter manager
+     * @param logger the logger
      */
     @Inject
-    public DefaultClasses(Plugin plugin, ConfigManager conifgManager, FeatureManager featureManager,
-                          RealBorderTypeManager borders, CommandHandler commandHandler, ScatterManager scatterManager,
+    public DefaultClasses(ConfigManager conifgManager, FeatureManager featureManager,
+                          BorderTypeManager borders, CommandHandler commandHandler, ScatterManager scatterManager,
                           Logger logger){
-        m_uhc = plugin;
         m_logger = logger;
         m_configManager = conifgManager;
         m_featureManager = featureManager;
@@ -115,39 +113,44 @@ public class DefaultClasses {
 
     /**
      * Load all the default features into the feature manager
+     * @param injector the injector
      */
     @SuppressWarnings("OverlyCoupledMethod")
-    public void loadDefaultFeatures() {
+    public void loadDefaultFeatures(Injector injector) {
         m_logger.info("Loading UHC feature modules...");
         //Load the default features with settings in config
-        try {
-            m_featureManager.addFeature(new DeathLightningFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new EnderpearlsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new GhastDropsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new PlayerHeadsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new PlayerListFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new RecipeFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new RegenFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new DeathMessagesFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new DeathDropsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new AnonChatFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new GoldenHeadsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new DeathBansFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new PotionNerfsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new NetherFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new WitchSpawnsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new PortalsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new PlayerFreezeFeature(m_uhc,m_configManager));
-
-            //load the protocollib features last
-            m_featureManager.addFeature(new HardcoreHeartsFeature(m_uhc,m_configManager));
-            m_featureManager.addFeature(new FootprintFeature(m_uhc,m_configManager));
-        } catch (FeatureIDConflictException ignored) {
-            m_logger.severe("A default UHC Feature ID is conflicting, this should never happen!");
-        } catch (InvalidFeatureIDException ignored) {
-            m_logger.severe("A default UHC feature ID is invalid, this should never happen!");
-        } catch (NoClassDefFoundError ignored) {
-            m_logger.severe("Couldn't find protocollib for related features, skipping them all.");
+        Class<? extends IFeature>[] classes = new Class[]{
+                DeathLightningFeature.class,
+                EnderpearlsFeature.class,
+                GhastDropsFeature.class,
+                PlayerHeadsFeature.class,
+                PlayerListFeature.class,
+                RecipeFeature.class,
+                RegenFeature.class,
+                DeathMessagesFeature.class,
+                DeathDropsFeature.class,
+                AnonChatFeature.class,
+                GoldenHeadsFeature.class,
+                DeathBansFeature.class,
+                PotionNerfsFeature.class,
+                NetherFeature.class,
+                WitchSpawnsFeature.class,
+                PortalsFeature.class,
+                PlayerFreezeFeature.class,
+                HardcoreHeartsFeature.class,
+                FootprintFeature.class
+        };
+        for(Class<? extends IFeature> clazz : classes){
+            try{
+                IFeature feature = injector.getInstance(clazz);
+                m_featureManager.addFeature(feature);
+            } catch (FeatureIDConflictException ignored) {
+                m_logger.severe("A default UHC Feature ID is conflicting, this should never happen!");
+            } catch (InvalidFeatureIDException ignored) {
+                m_logger.severe("A default UHC feature ID is invalid, this should never happen!");
+            } catch (NoClassDefFoundError ignored) {
+                m_logger.severe("Couldn't find protocollib for related feature, skipping...");
+            }
         }
     }
 
