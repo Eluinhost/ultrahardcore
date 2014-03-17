@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.deathlightning;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.Plugin;
@@ -15,6 +16,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  *
  * @author ghowden
  */
+@Singleton
 public class DeathLightningFeature extends UHCFeature {
 
     public static final String DEATH_LIGHTNING = BASE_PERMISSION + "deathLightning";

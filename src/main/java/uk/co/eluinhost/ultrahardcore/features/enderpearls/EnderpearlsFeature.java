@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.enderpearls;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -16,6 +17,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  *
  * @author ghowden
  */
+@Singleton
 public class EnderpearlsFeature extends UHCFeature {
 
     public static final String NO_ENDERPEARL_DAMAGE = BASE_PERMISSION + "noEnderpearlDamage";

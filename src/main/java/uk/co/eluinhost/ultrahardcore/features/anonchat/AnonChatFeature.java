@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.anonchat;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
 
+@Singleton
 public class AnonChatFeature extends UHCFeature {
 
     public static final String ANON_BASE = BASE_PERMISSION + "anon_chat.";

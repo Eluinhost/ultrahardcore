@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+@Singleton
 public class FootprintFeature extends UHCFeature implements Runnable {
 
     public static final float REGULAR_OFFSET = 1.05F;

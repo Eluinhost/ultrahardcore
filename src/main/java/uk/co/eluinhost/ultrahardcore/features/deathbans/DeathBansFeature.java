@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.deathbans;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+@Singleton
 public class DeathBansFeature extends UHCFeature {
 
     private List<DeathBan> m_deathBans = new ArrayList<DeathBan>();

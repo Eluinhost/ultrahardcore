@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.ghastdrops;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -23,6 +24,7 @@ import java.util.List;
  *
  * @author Graham
  */
+@Singleton
 public class GhastDropsFeature extends UHCFeature {
 
     /**

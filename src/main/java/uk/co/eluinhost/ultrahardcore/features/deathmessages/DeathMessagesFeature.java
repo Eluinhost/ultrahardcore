@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.deathmessages;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,7 @@ import uk.co.eluinhost.ultrahardcore.features.UHCFeature;
  *
  * @author ghowden
  */
+@Singleton
 public class DeathMessagesFeature extends UHCFeature {
 
     public static final String BASE_MESSAGES = BASE_PERMISSION + "death_messages.";

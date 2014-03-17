@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.deathdrops;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -21,6 +22,7 @@ import java.util.Random;
  *
  * @author ghowden
  */
+@Singleton
 public class DeathDropsFeature extends UHCFeature {
 
     private final Collection<ItemDrop> m_drops = new ArrayList<ItemDrop>();
