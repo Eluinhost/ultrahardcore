@@ -30,9 +30,11 @@ public class DeathDropsFeature extends UHCFeature {
     /**
      * Add drops to a player when they die
      * TODO simplify
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
     public DeathDropsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "DeathDrops", "Adds extra loot to players on death", configManager);
+        super(plugin, configManager);
         ConfigurationSection items = configManager.getConfig().getConfigurationSection(getBaseConfig()+ITEMS_NODE);
         for (String item : items.getKeys(false)) {
             ConfigurationSection itemSection = items.getConfigurationSection(item);
@@ -138,5 +140,15 @@ public class DeathDropsFeature extends UHCFeature {
                 }
             }
         }
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "DeathDrops";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Adds extra loot to players on death";
     }
 }
