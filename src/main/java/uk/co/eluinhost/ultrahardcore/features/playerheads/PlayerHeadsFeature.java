@@ -1,5 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.features.playerheads;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +31,7 @@ import java.util.Random;
  *
  * @author ghowden
  */
+@Singleton
 public class PlayerHeadsFeature extends UHCFeature {
 
     public static final String PLAYER_HEAD_STAKE = BASE_PERMISSION + "headStake";
@@ -36,21 +39,14 @@ public class PlayerHeadsFeature extends UHCFeature {
 
     private static final Random RANDOM = new Random();
 
-    private final int m_chance;
-    private final boolean m_pvpOnly;
-    private final boolean m_nonTeamOnly;
-    private final boolean m_onStake;
-
     /**
      * Player heads drop on death, normal behaviour when disabled
+     * @param plugin the plugin
+     * @param configManager the config manager
      */
+    @Inject
     public PlayerHeadsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, "PlayerHeads","Players can drop their heads on death", configManager);
-        FileConfiguration config = configManager.getConfig();
-        m_chance = config.getInt(getBaseConfig()+"percentChance");
-        m_pvpOnly = config.getBoolean(getBaseConfig()+"pvponly");
-        m_nonTeamOnly = config.getBoolean(getBaseConfig()+"nonteamonly");
-        m_onStake = config.getBoolean(getBaseConfig()+"onStake");
+        super(plugin, configManager);
     }
 
     /**
@@ -70,7 +66,7 @@ public class PlayerHeadsFeature extends UHCFeature {
                 return;
             }
             //do a random chance based on the config options
-            if (RANDOM.nextInt(100) >= 100 - m_chance) {
+            if (RANDOM.nextInt(100) >= 100 - getConfigManager().getConfig().getInt(getBaseConfig()+"percentChance")) {
                 //drop the head with the loot if no stake was made
                 if (!putHeadOnStake(pde.getEntity())) {
                     pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
@@ -85,14 +81,15 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @return boolean
      */
     private boolean isValidKill(Player deadPlayer){
-        if (m_pvpOnly) {
+        FileConfiguration config = getConfigManager().getConfig();
+        if (config.getBoolean(getBaseConfig()+"pvponly")) {
             //get the killer and if there isn't one it wasn't a PVP kill
             Player killer = deadPlayer.getKiller();
             if (killer == null) {
                 return false;
             }
             //if we're checking that teammember kills don't count
-            if (m_nonTeamOnly) {
+            if (config.getBoolean(getBaseConfig()+"nonteamonly")) {
                 //get the scoreboard and get the teams of both players
                 Scoreboard sb = Bukkit.getScoreboardManager().getMainScoreboard();
                 Team team1 = sb.getPlayerTeam(deadPlayer);
@@ -112,7 +109,7 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @return true if placed, false otherwise
      */
     private boolean putHeadOnStake(Player p) {
-        if(!m_onStake){
+        if(!getConfigManager().getConfig().getBoolean(getBaseConfig()+"onStake")){
             return false;
         }
         //head location
@@ -209,5 +206,15 @@ public class PlayerHeadsFeature extends UHCFeature {
         meta.setOwner(name);
         is.setItemMeta(meta);
         return is;
+    }
+
+    @Override
+    public String getFeatureID() {
+        return "PlayerHeads";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Players can drop their heads on death";
     }
 }
