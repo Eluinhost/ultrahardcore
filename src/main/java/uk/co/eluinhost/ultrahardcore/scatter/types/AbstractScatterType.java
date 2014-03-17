@@ -9,8 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
-import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 
 public abstract class AbstractScatterType {
 
@@ -21,6 +19,8 @@ public abstract class AbstractScatterType {
     protected static final double Z_OFFSET = 0.5d;
     protected static final double MATH_TAU = Math.PI * 2.0D;
     protected static final int WORLD_TOP_BLOCK = 255;
+
+    protected static final int MAX_TRIES = 250;
 
     private static final Random RANDOM = new Random();
 
@@ -78,11 +78,12 @@ public abstract class AbstractScatterType {
                 return true;
             }
         }
-        for (Teleporter ptm : ScatterManager.getInstance().getRemainingTeleports()) {
+        //TODO need to readd this section somewhere
+        /*for (Teleporter ptm : ScatterManager.getInstance().getRemainingTeleports()) {
             if (ptm.getLocation().distanceSquared(loc) < distanceSquared) {
                 return true;
             }
-        }
+        }*/
         return false;
     }
 

@@ -12,6 +12,11 @@ import org.bukkit.scoreboard.Team;
 public class TeamsUtil {
 
     private final Scoreboard m_mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    private final WordsUtil m_words;
+
+    public TeamsUtil(WordsUtil words){
+        m_words = words;
+    }
 
     /**
      * Empties all teams and removes the teams from the scoreboard
@@ -140,7 +145,7 @@ public class TeamsUtil {
                 count++;
             } else {
                 Team newTeam = m_mainScoreboard.registerNewTeam("UHC" + count);
-                newTeam.setDisplayName(new WordsUtil().getRandomTeamName());
+                newTeam.setDisplayName(m_words.getRandomTeamName());
                 return newTeam;
             }
         }

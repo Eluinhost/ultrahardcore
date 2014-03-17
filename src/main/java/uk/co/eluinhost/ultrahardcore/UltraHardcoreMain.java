@@ -57,11 +57,13 @@ public class UltraHardcoreMain extends JavaPlugin implements Listener {
 
     private UltraHardcore m_instance = null;
 
+    private ConfigManager m_configManager;
+
     /**
      * @return the current instance of the plugin
      */
-    public UltraHardcore getInstance() {
-        return m_instance;
+    public static UltraHardcoreMain getInstance() {
+        return (UltraHardcoreMain) Bukkit.getPluginManager().getPlugin("UltraHardcore");
     }
 
     //When the plugin gets started
@@ -71,6 +73,7 @@ public class UltraHardcoreMain extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(DeathBan.class);
 
         ConfigManager configManager = new ConfigManager(this);
+        m_configManager = configManager;
         FeatureManager featureManager = new FeatureManager(configManager,this);
         CommandHandler commandHandler = new CommandHandler(getLogger());
         BorderTypeManager borderTypeManager = new BorderTypeManager();
@@ -150,27 +153,27 @@ public class UltraHardcoreMain extends JavaPlugin implements Listener {
         //Load the default features with settings in config
         FeatureManager featureManager = m_instance.getFeatureManager();
         try {
-            featureManager.addFeature(new DeathLightningFeature());
-            featureManager.addFeature(new EnderpearlsFeature());
-            featureManager.addFeature(new GhastDropsFeature());
-            featureManager.addFeature(new PlayerHeadsFeature());
-            featureManager.addFeature(new PlayerListFeature());
-            featureManager.addFeature(new RecipeFeature());
-            featureManager.addFeature(new RegenFeature());
-            featureManager.addFeature(new DeathMessagesFeature());
-            featureManager.addFeature(new DeathDropsFeature());
-            featureManager.addFeature(new AnonChatFeature());
-            featureManager.addFeature(new GoldenHeadsFeature());
-            featureManager.addFeature(new DeathBansFeature());
-            featureManager.addFeature(new PotionNerfsFeature());
-            featureManager.addFeature(new NetherFeature());
-            featureManager.addFeature(new WitchSpawnsFeature());
-            featureManager.addFeature(new PortalsFeature());
-            featureManager.addFeature(new PlayerFreezeFeature());
+            featureManager.addFeature(new DeathLightningFeature(this,m_configManager));
+            featureManager.addFeature(new EnderpearlsFeature(this,m_configManager));
+            featureManager.addFeature(new GhastDropsFeature(this,m_configManager));
+            featureManager.addFeature(new PlayerHeadsFeature(this,m_configManager));
+            featureManager.addFeature(new PlayerListFeature(this,m_configManager));
+            featureManager.addFeature(new RecipeFeature(this,m_configManager));
+            featureManager.addFeature(new RegenFeature(this,m_configManager));
+            featureManager.addFeature(new DeathMessagesFeature(this,m_configManager));
+            featureManager.addFeature(new DeathDropsFeature(this,m_configManager));
+            featureManager.addFeature(new AnonChatFeature(this,m_configManager));
+            featureManager.addFeature(new GoldenHeadsFeature(this,m_configManager));
+            featureManager.addFeature(new DeathBansFeature(this,m_configManager));
+            featureManager.addFeature(new PotionNerfsFeature(this,m_configManager));
+            featureManager.addFeature(new NetherFeature(this,m_configManager));
+            featureManager.addFeature(new WitchSpawnsFeature(this,m_configManager));
+            featureManager.addFeature(new PortalsFeature(this,m_configManager));
+            featureManager.addFeature(new PlayerFreezeFeature(this,m_configManager));
 
             //load the protocollib features last
-            featureManager.addFeature(new HardcoreHeartsFeature());
-            featureManager.addFeature(new FootprintFeature());
+            featureManager.addFeature(new HardcoreHeartsFeature(this,m_configManager));
+            featureManager.addFeature(new FootprintFeature(this,m_configManager));
         } catch (FeatureIDConflictException ignored) {
             log.severe("A default UHC Feature ID is conflicting, this should never happen!");
         } catch (InvalidFeatureIDException ignored) {

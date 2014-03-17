@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class CommandHandler implements TabExecutor {
 
-    private final CommandMap m_commandMap = new CommandMap();
+    private final CommandMap m_commandMap = new CommandMap(this);
 
     /**
      * Stores a list of class

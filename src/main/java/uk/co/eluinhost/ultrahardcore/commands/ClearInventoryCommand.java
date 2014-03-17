@@ -15,12 +15,17 @@ import org.bukkit.inventory.ItemStack;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
+import uk.co.eluinhost.configuration.ConfigManager;
 
 public class ClearInventoryCommand extends SimpleCommand {
 
     public static final String CLEAR_SELF_PERMISSION = "UHC.ci.self";
     public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";
     public static final String CLEAR_IMMUNE_PERMISSION = "UHC.ci.immune";
+
+    public ClearInventoryCommand(ConfigManager configManager) {
+        super(configManager);
+    }
 
     /**
      * Ran on /ciself

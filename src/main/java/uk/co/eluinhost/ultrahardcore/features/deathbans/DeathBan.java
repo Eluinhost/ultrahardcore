@@ -75,7 +75,7 @@ public class DeathBan implements ConfigurationSerializable {
             if(System.currentTimeMillis() >= getUnbanTime()){
                 return true;
             }
-            ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, getGroupName().replaceAll("%timeleft", new WordsUtil().formatTimeLeft(getUnbanTime())));
+            ple.disallow(PlayerLoginEvent.Result.KICK_BANNED, getGroupName().replaceAll("%timeleft", WordsUtil.formatTimeLeft(getUnbanTime())));
         }
         return false;
     }

@@ -7,7 +7,6 @@ import org.bukkit.Location;
 
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
-import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class RandomSquareType extends AbstractScatterType {
@@ -32,7 +31,7 @@ public class RandomSquareType extends AbstractScatterType {
         for (int k = 0; k < amount; k++) {
             Location finalTeleport = new Location(center.getWorld(), 0, 0, 0);
             boolean invalid = true;
-            for (int i = 0; i < ScatterManager.getInstance().getMaxTries(); i++) {
+            for (int i = 0; i < MAX_TRIES; i++) {
                 //get a coords
                 double xcoord = getRandom().nextDouble() * radius * 2;
                 double zcoord = getRandom().nextDouble() * radius * 2;

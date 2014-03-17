@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class FeedCommand extends SimpleCommand {
@@ -16,6 +17,10 @@ public class FeedCommand extends SimpleCommand {
     public static final String FEED_SELF_PERMISSION = "UHC.feed.self";
     public static final String FEED_ANNOUNCE_PERMISSION = "UHC.feed.announce";
     public static final String FEED_OTHER_PERMISSION = "UHC.feed.other";
+
+    public FeedCommand(ConfigManager configManager) {
+        super(configManager);
+    }
 
     /**
      * Feeds a player to full hunger and saturation and resets exhaustion

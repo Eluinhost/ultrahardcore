@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 
 public class HealCommand extends SimpleCommand {
@@ -14,6 +15,10 @@ public class HealCommand extends SimpleCommand {
     public static final String HEAL_SELF_PERMISSION = "UHC.heal.self";
     public static final String HEAL_OTHER_PERMISSION = "UHC.heal.other";
     public static final String HEAL_ANNOUNCE_PERMISSION = "UHC.heal.announce";
+
+    public HealCommand(ConfigManager configManager) {
+        super(configManager);
+    }
 
     /**
      * Ran on /healself

@@ -193,12 +193,12 @@ public class ScatterManager implements Runnable {
 
         for (Player player : noteams) {
             Location next = teleportIterator.next();
-            teleporters.add(new SafeTeleporter(player, next));
+            teleporters.add(new SafeTeleporter(player, next, this));
         }
         for (Map.Entry<String, ArrayList<Player>> teamList : teams.entrySet()) {
             Location next = teleportIterator.next();
             for (Player player : teamList.getValue()) {
-                SafeTeleporter teleporter = new SafeTeleporter(player,next);
+                SafeTeleporter teleporter = new SafeTeleporter(player,next, this);
                 teleporter.setTeam(teamList.getKey());
                 teleporters.add(teleporter);
             }

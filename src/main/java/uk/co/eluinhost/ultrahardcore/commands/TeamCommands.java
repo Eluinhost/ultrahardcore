@@ -12,13 +12,14 @@ import org.bukkit.scoreboard.Team;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.commands.SenderType;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.ultrahardcore.util.MathsHelper;
 import uk.co.eluinhost.ultrahardcore.util.TeamsUtil;
 import uk.co.eluinhost.ultrahardcore.util.WordsUtil;
 
 public class TeamCommands extends SimpleCommand {
 
-    private final TeamsUtil m_teamsUtil = new TeamsUtil();
+    private final TeamsUtil m_teamsUtil;
 
     public static final String TEAM_CREATE_PERMISSION = "UHC.teams.create";
     public static final String TEAM_REMOVE_PERMISSION = "UHC.teams.remove";
@@ -30,6 +31,14 @@ public class TeamCommands extends SimpleCommand {
     public static final String EMPTY_TEAMS_PERMISSION = "UHC.teams.empty";
     public static final String LIST_TEAMS_PERMISSION = "UHC.teams.list";
     public static final String RANDOM_TEAMS_PERMISSION = "UHC.teams.random";
+
+    private final WordsUtil m_words;
+
+    public TeamCommands(ConfigManager configManager, WordsUtil words, TeamsUtil teamsUtil) {
+        super(configManager);
+        m_words = words;
+        m_teamsUtil = teamsUtil;
+    }
 
     /**
      * Ran on /createteam [name]
@@ -49,7 +58,7 @@ public class TeamCommands extends SimpleCommand {
                 return;
             }
             thisteam = m_teamsUtil.registerNewTeam(request.getFirstArg());
-            thisteam.setDisplayName(WordsUtil.getInstance().getRandomTeamName());
+            thisteam.setDisplayName(m_words.getRandomTeamName());
         } else {
             thisteam = m_teamsUtil.getNextAvailableTeam(true);
         }

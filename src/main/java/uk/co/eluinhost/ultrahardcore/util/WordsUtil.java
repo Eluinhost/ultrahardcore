@@ -50,7 +50,7 @@ public class WordsUtil {
      * @param time the string
      * @return the amount of millis
      */
-    public long parseTime(String time) {
+    public static long parseTime(String time) {
         if("infinite".equalsIgnoreCase(time)){
             return Long.MAX_VALUE/2;
         }
@@ -99,7 +99,7 @@ public class WordsUtil {
      * @param timeUnban the unban time unix timestamp
      * @return human readable string on how long is left
      */
-    public String formatTimeLeft(long timeUnban){
+    public static String formatTimeLeft(long timeUnban){
         long duration = timeUnban - System.currentTimeMillis();
         long days = TimeUnit.MILLISECONDS.toDays(duration);
         if(days > Short.MAX_VALUE){

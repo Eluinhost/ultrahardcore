@@ -25,7 +25,7 @@ public class CommandHandlerTest {
 
     @Test( expected = CommandIDConflictException.class)
     public void testCommandConflict() throws CommandIDConflictException, InvalidMethodParametersException, CommandParentNotFoundException, CommandCreateException {
-        CommandHandler handler = CommandHandler.getInstance();
+        CommandHandler handler = new CommandHandler(Logger.getAnonymousLogger());
 
         PluginCommand command = mock(PluginCommand.class);
         when(command.getName()).thenReturn("test");

@@ -16,6 +16,8 @@ import java.util.Set;
 
 public class ScatterEndPrompt extends MessagePrompt {
 
+    public static final String MANAGER = "SCATTER_MANAGER";
+
     @Override
     protected Prompt getNextPrompt(ConversationContext conversationContext) {
         return END_OF_CONVERSATION;
@@ -31,7 +33,8 @@ public class ScatterEndPrompt extends MessagePrompt {
         AbstractScatterType type = (AbstractScatterType) conversationContext.getSessionData(ScatterTypePrompt.TYPE_DATA);
         Boolean asTeam = (Boolean) conversationContext.getSessionData(ScatterUseTeamsPrompt.TEAMS_DATA);
 
-        ScatterManager manager = ScatterManager.getInstance();
+        ScatterManager manager = (ScatterManager) conversationContext.getSessionData(MANAGER);
+
         if(manager.isScatterInProgress()){
             return "Scatter failed, there is already a scatter in progress!";
         }
@@ -42,7 +45,7 @@ public class ScatterEndPrompt extends MessagePrompt {
         params.setRadius(radius);
 
         try {
-            manager.scatter(type, params ,players, conversationContext.getForWhom());
+            manager.scatter(type, params, players, conversationContext.getForWhom());
             return "Starting to scatter players";
         } catch (MaxAttemptsReachedException ignored) {
             return "Hit max attempts at finding enough scatter locations, please try another scatter type and/or parameters";

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.FeatureManager;
 import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.ultrahardcore.features.playerfreeze.PlayerFreezeFeature;
@@ -12,6 +13,13 @@ public class FreezeCommand extends SimpleCommand {
 
     public static final String FREEZE_PERMISSION = "UHC.freeze.command";
     public static final String ANTIFREEZE_PERMISSION = "UHC.freeze.antifreeze";
+
+    private final FeatureManager m_features;
+
+    public FreezeCommand(FeatureManager features, ConfigManager configManager) {
+        super(configManager);
+        m_features = features;
+    }
 
     /**
      * Ran on /freeze
@@ -23,7 +31,7 @@ public class FreezeCommand extends SimpleCommand {
             maxArgs = 1,
             permission = FREEZE_PERMISSION)
     public void onFreezeCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
+        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded"));
             return;
@@ -52,7 +60,7 @@ public class FreezeCommand extends SimpleCommand {
             parentID = "FreezeCommand",
             permission = FREEZE_PERMISSION)
     public void onFreezeAllCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
+        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded"));
             return;
@@ -73,7 +81,7 @@ public class FreezeCommand extends SimpleCommand {
             maxArgs = 1,
             permission = FREEZE_PERMISSION)
     public void onUnfreezeCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
+        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded"));
             return;
@@ -93,7 +101,7 @@ public class FreezeCommand extends SimpleCommand {
             maxArgs = 0,
             permission = FREEZE_PERMISSION)
     public void onUnfreezeAllCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID("PlayerFreeze");
+        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded"));
             return;

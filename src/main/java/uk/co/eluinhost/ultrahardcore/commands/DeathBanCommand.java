@@ -3,6 +3,7 @@ package uk.co.eluinhost.ultrahardcore.commands;
 import org.bukkit.Bukkit;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.ultrahardcore.features.deathbans.DeathBansFeature;
 import uk.co.eluinhost.features.FeatureManager;
@@ -12,6 +13,14 @@ public class DeathBanCommand extends SimpleCommand {
 
     public static final String DEATH_BAN_BAN = "UHC.deathban.unban";
     public static final String DEATH_BAN_UNBAN = "UHC.deathban.ban";
+
+    private FeatureManager m_features;
+
+    public DeathBanCommand(ConfigManager configManager, FeatureManager features) {
+        super(configManager);
+        m_features = features;
+    }
+
 
     /**
      * Ran on /deathban
@@ -34,7 +43,7 @@ public class DeathBanCommand extends SimpleCommand {
             parentID = "DeathBanCommand",
             permission = DEATH_BAN_UNBAN)
     public void onDeathBanUnbanCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID("DeathBans");
+        IFeature feature = m_features.getFeatureByID("DeathBans");
         if(feature == null){
             request.sendMessage(translate("deathbans.not_loaded"));
             return;
@@ -54,7 +63,7 @@ public class DeathBanCommand extends SimpleCommand {
             parentID = "DeathBanCommand",
             permission = DEATH_BAN_BAN)
     public void onDeathBanBanCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID("DeathBans");
+        IFeature feature = m_features.getFeatureByID("DeathBans");
         if(feature == null){
             request.sendMessage(translate("deathbans.not_loaded"));
             return;

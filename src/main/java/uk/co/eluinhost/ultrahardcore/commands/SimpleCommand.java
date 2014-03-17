@@ -4,7 +4,15 @@ import uk.co.eluinhost.configuration.ConfigManager;
 
 public class SimpleCommand {
 
-    private final ConfigManager m_configManager = ConfigManager.getInstance();
+    private final ConfigManager m_configManager;
+
+    public SimpleCommand(ConfigManager configManager){
+        m_configManager = configManager;
+    }
+
+    public ConfigManager getConfigManager(){
+        return m_configManager;
+    }
 
     /**
      * @param key the key to search for

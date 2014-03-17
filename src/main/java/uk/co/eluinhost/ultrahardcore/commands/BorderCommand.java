@@ -21,6 +21,13 @@ public class BorderCommand extends SimpleCommand {
 
     public static final String GENERATE_BORDER = "UHC.generateborder";
 
+    private BorderTypeManager m_borderTypes;
+
+    public BorderCommand(BorderTypeManager border, ConfigManager config){
+        super(config);
+        m_borderTypes = border;
+    }
+
     /**
      * Ran on /genborder {worldname} {radius} {typeID}[:blockID][:meta] [x,z]
      * @param request request params
@@ -42,8 +49,7 @@ public class BorderCommand extends SimpleCommand {
         }
         int radius = request.getInt(1);
 
-        BorderTypeManager manager = BorderTypeManager.getInstance();
-        FileConfiguration config = ConfigManager.getInstance().getConfig();
+        FileConfiguration config = getConfigManager().getConfig();
 
         String borderName = request.getArg(2);
         int blockID = config.getInt("border.id");
@@ -66,7 +72,7 @@ public class BorderCommand extends SimpleCommand {
                 }
             }
         }
-        Border borderType = manager.getBorderByID(borderName);
+        Border borderType = m_borderTypes.getBorderByID(borderName);
         if(borderType == null){
             request.sendMessage(translate("border.invalid.border_id").replaceAll("%borderID%",borderName));
             return;
@@ -149,7 +155,7 @@ public class BorderCommand extends SimpleCommand {
             permission = GENERATE_BORDER,
             parentID = "BorderCommand")
     public void onBorderTypesCommand(CommandRequest request){
-        Collection<Border> types = BorderTypeManager.getInstance().getTypes();
+        Collection<Border> types = m_borderTypes.getTypes();
         if(types.isEmpty()){
             request.sendMessage(translate("border.no_borders"));
             return;

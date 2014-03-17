@@ -4,6 +4,7 @@ import java.util.List;
 
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
+import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.IFeature;
 import uk.co.eluinhost.features.FeatureManager;
 
@@ -11,6 +12,13 @@ public class FeatureCommand extends SimpleCommand {
 
     public static final String FEATURE_LIST_PERMISSION = "UHC.feature.list";
     public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";
+
+    private final FeatureManager m_featureManager;
+
+    public FeatureCommand(ConfigManager configManager, FeatureManager featureManager){
+        super(configManager);
+        m_featureManager = featureManager;
+    }
 
     /**
      * Ran on /feature
@@ -33,7 +41,7 @@ public class FeatureCommand extends SimpleCommand {
             permission = FEATURE_LIST_PERMISSION,
             parentID = "FeatureCommand")
     public void onFeatureListCommand(CommandRequest request){
-        List<IFeature> features = FeatureManager.getInstance().getFeatures();
+        List<IFeature> features = m_featureManager.getFeatures();
         request.sendMessage(translate("features.loaded.header").replaceAll("%amount%",String.valueOf(features.size())));
         if (features.isEmpty()) {
             request.sendMessage(translate("features.loaded.none"));
@@ -55,7 +63,7 @@ public class FeatureCommand extends SimpleCommand {
             permission = FEATURE_TOGGLE_PERMISSION,
             parentID = "FeatureCommand")
     public void onFeatureOnCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
+        IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
             request.sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
             return;
@@ -82,7 +90,7 @@ public class FeatureCommand extends SimpleCommand {
             permission = FEATURE_TOGGLE_PERMISSION,
             parentID = "FeatureCommand")
     public void onFeatureOffCommand(CommandRequest request){
-        IFeature feature = FeatureManager.getInstance().getFeatureByID(request.getFirstArg());
+        IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
             request.sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
             return;

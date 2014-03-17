@@ -10,12 +10,17 @@ import org.bukkit.entity.Player;
 
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
+import uk.co.eluinhost.configuration.ConfigManager;
 
 import java.util.List;
 
 public class TPCommand extends SimpleCommand {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
+
+    public TPCommand(ConfigManager configManager) {
+        super(configManager);
+    }
 
     /**
      * Ran on /tpp {list of players} {player/location}
