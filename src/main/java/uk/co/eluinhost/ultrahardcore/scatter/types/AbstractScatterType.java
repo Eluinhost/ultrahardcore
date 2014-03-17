@@ -5,15 +5,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.Teleporter;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 
 import java.util.List;
 import java.util.Random;
 
 public abstract class AbstractScatterType {
-
-    private final String m_scatterID;
-    private final String m_description;
 
     protected static final double X_OFFSET = 0.5d;
     protected static final double Z_OFFSET = 0.5d;
@@ -24,29 +23,24 @@ public abstract class AbstractScatterType {
 
     private static final Random RANDOM = new Random();
 
+    private final ScatterManager m_scatterManager;
+
     /**
      * Represents scatter logic
-     * @param scatterID the ID for this type
-     * @param description a short description
      */
-    protected AbstractScatterType(String scatterID, String description){
-        m_scatterID = scatterID;
-        m_description = description;
+    protected AbstractScatterType(ScatterManager scatterManager){
+        m_scatterManager = scatterManager;
     }
 
     /**
      * @return the scatter ID
      */
-    public String getScatterID(){
-        return m_scatterID;
-    }
+    public abstract String getScatterID();
 
     /**
      * @return the description
      */
-    public String getDescription(){
-        return m_description;
-    }
+    public abstract String getDescription();
 
     /**
      * Get a list of scatter locations for the given parameters
@@ -64,7 +58,7 @@ public abstract class AbstractScatterType {
      * @param distance the allowed distnace between the 2
      * @return true if too close, false if none were within the distance
      */
-    protected static boolean isLocationTooClose(Location loc, Iterable<Location> existing, Double distance) {
+    protected boolean isLocationTooClose(Location loc, Iterable<Location> existing, Double distance) {
         Double distanceSquared = distance * distance;
         for (Player p : Bukkit.getOnlinePlayers()) {
             try {
@@ -78,12 +72,11 @@ public abstract class AbstractScatterType {
                 return true;
             }
         }
-        //TODO need to readd this section somewhere
-        /*for (Teleporter ptm : ScatterManager.getInstance().getRemainingTeleports()) {
+        for (Teleporter ptm : m_scatterManager.getRemainingTeleports()) {
             if (ptm.getLocation().distanceSquared(loc) < distanceSquared) {
                 return true;
             }
-        }*/
+        }
         return false;
     }
 
