@@ -3,14 +3,13 @@ package uk.co.eluinhost.features;
 import com.google.inject.Inject;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.events.FeatureDisableEvent;
 import uk.co.eluinhost.features.events.FeatureEnableEvent;
 import uk.co.eluinhost.features.events.FeatureEvent;
 
-public abstract class Feature implements Listener, IFeature {
+public abstract class Feature implements IFeature {
 
     /**
      * Is the feautre enabeld right now?

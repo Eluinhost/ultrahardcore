@@ -16,7 +16,7 @@ public interface FeatureManager {
      * @throws uk.co.eluinhost.features.exceptions.FeatureIDConflictException when feature with the same ID already exists
      * @throws uk.co.eluinhost.features.exceptions.InvalidFeatureIDException  when the feature has an invalid ID name
      */
-    void addFeature(Feature feature) throws FeatureIDConflictException, InvalidFeatureIDException;
+    void addFeature(IFeature feature) throws FeatureIDConflictException, InvalidFeatureIDException;
 
     /**
      * Check if a feature is enabled by it's ID

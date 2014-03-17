@@ -1,6 +1,8 @@
 package uk.co.eluinhost.features;
 
-public interface IFeature {
+import org.bukkit.event.Listener;
+
+public interface IFeature extends Listener {
 
     /**
     * Attempt to enable the feature

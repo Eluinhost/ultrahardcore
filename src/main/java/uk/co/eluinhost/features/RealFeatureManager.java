@@ -48,7 +48,7 @@ public class RealFeatureManager implements FeatureManager {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[\\w]++$");
 
     @Override
-    public void addFeature(Feature feature) throws FeatureIDConflictException, InvalidFeatureIDException {
+    public void addFeature(IFeature feature) throws FeatureIDConflictException, InvalidFeatureIDException {
         String featureID = feature.getFeatureID();
 
         //check for right pattern
