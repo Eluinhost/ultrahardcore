@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -22,9 +21,6 @@ import java.util.*;
 @Singleton
 public class RealScatterManager implements ScatterManager {
 
-    private final int m_maxTries;
-    private final int m_scatterDelay;
-
     private final List<AbstractScatterType> m_scatterTypes = new ArrayList<AbstractScatterType>();
 
     private final Protector m_protector;
@@ -34,6 +30,7 @@ public class RealScatterManager implements ScatterManager {
     private int m_jobID = -1;
 
     private final Plugin m_plugin;
+    private final ConfigManager m_configManager;
 
     /**
      * @param plugin the plugin
@@ -44,10 +41,7 @@ public class RealScatterManager implements ScatterManager {
     protected RealScatterManager(Plugin plugin, ConfigManager configManager, Protector protector){
         m_protector = protector;
         m_plugin = plugin;
-        //set up default config
-        FileConfiguration config = configManager.getConfig();
-        m_maxTries = config.getInt("scatter.maxtries");
-        m_scatterDelay = config.getInt("scatter.delay");
+        m_configManager = configManager;
 
         //register ourselves for events
         Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
@@ -112,7 +106,7 @@ public class RealScatterManager implements ScatterManager {
             m_remainingTeleports.addAll(ptm);
             m_jobID = Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin, this);
             m_commandSender = sender;
-            sender.sendRawMessage("Starting to scatter all players, teleports are " + m_scatterDelay + " ticks apart");
+            sender.sendRawMessage("Starting to scatter all players, teleports are " + m_configManager.getConfig().getInt("scatter.delay") + " ticks apart");
         }
     }
 
@@ -123,7 +117,7 @@ public class RealScatterManager implements ScatterManager {
 
     @Override
     public int getMaxTries() {
-        return m_maxTries;
+        return m_configManager.getConfig().getInt("scatter.maxtries");
     }
 
     @Override
@@ -203,6 +197,6 @@ public class RealScatterManager implements ScatterManager {
         }
         Teleporter ptm = m_remainingTeleports.pollFirst();
         ptm.teleport();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin,this,m_scatterDelay);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin,this,m_configManager.getConfig().getInt("scatter.delay"));
     }
 }
