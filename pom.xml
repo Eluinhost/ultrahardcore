@@ -112,6 +112,14 @@
                             <pattern>com.google.inject</pattern>
                             <shadedPattern>${project.groupId}.shade.guice</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>javax.inject</pattern>
+                            <shadedPattern>${project.groupId}.shade.guice</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.aopalliance</pattern>
+                            <shadedPattern>${project.groupId}.shade.guice</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
