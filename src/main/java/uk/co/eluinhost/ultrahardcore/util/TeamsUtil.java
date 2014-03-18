@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.util;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -15,7 +16,8 @@ public class TeamsUtil {
     private final Scoreboard m_mainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
     private final WordsUtil m_words;
 
-    public TeamsUtil(WordsUtil words){
+    @Inject
+    private TeamsUtil(WordsUtil words){
         m_words = words;
     }
 

@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.util;
 
+import com.google.inject.Inject;
 import org.bukkit.configuration.file.FileConfiguration;
 import uk.co.eluinhost.configuration.ConfigManager;
 
@@ -30,9 +31,10 @@ public class WordsUtil {
     private static final long MILLIS_PER_YEAR   = MILLIS_PER_DAY * 365;
 
     /**
-     * things
+     * @param manager the config manager
      */
-    public WordsUtil(ConfigManager manager){
+    @Inject
+    private WordsUtil(ConfigManager manager){
         FileConfiguration config = manager.getConfig("words");
         m_adjectives = config.getStringList("adjectives");
         m_nouns = config.getStringList("nouns");
