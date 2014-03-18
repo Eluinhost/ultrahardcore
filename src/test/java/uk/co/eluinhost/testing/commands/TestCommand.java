@@ -1,7 +1,7 @@
 package uk.co.eluinhost.testing.commands;
 
-import uk.co.eluinhost.commands.Command;
-import uk.co.eluinhost.commands.CommandRequest;
+import com.publicuhc.commands.Command;
+import com.publicuhc.commands.CommandRequest;
 
 public class TestCommand {
 

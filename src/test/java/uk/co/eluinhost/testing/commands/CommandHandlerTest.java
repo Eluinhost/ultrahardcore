@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import uk.co.eluinhost.commands.*;
-import uk.co.eluinhost.commands.exceptions.*;
+import com.publicuhc.commands.*;
+import com.publicuhc.commands.exceptions.*;
 
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
