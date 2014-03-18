@@ -15,8 +15,6 @@ import uk.co.eluinhost.ultrahardcore.borders.RealBorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.scatter.FallProtector;
 import uk.co.eluinhost.ultrahardcore.scatter.Protector;
 
-import java.util.logging.Logger;
-
 public class UHCModule extends AbstractModule {
 
     private final Plugin m_plugin;
@@ -33,7 +31,7 @@ public class UHCModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Plugin.class).toInstance(m_plugin);
-        bind(Logger.class).toInstance(m_plugin.getLogger());
+        //bind(Logger.class).toInstance(m_plugin.getLogger());
         bind(CommandHandler.class).to(RealCommandHandler.class);
         bind(CommandMap.class).to(RealCommandMap.class);
         bind(ConfigManager.class).to(RealConfigManager.class);
