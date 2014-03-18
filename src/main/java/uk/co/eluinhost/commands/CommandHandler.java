@@ -12,17 +12,6 @@ public interface CommandHandler extends TabExecutor{
     void setExecutor(String commandName);
 
     /**
-     * Register the specific object given
-     * @param object the instance to use
-     * @throws ClassAlreadyExistsException if object class is already being used
-     * @throws CommandIDConflictException if a command is already in use
-     * @throws InvalidMethodParametersException if a command has incorrect parameters
-     * @throws CommandParentNotFoundException if a command has an invalid parent ID
-     * @throws CommandCreateException won't happen as object is already created
-     */
-    void registerCommandsInstance(Object object) throws ClassAlreadyExistsException, CommandIDConflictException, InvalidMethodParametersException, CommandParentNotFoundException, CommandCreateException;
-
-    /**
      * Register the commands within the class
      * @param clazz the class to check
      * @throws uk.co.eluinhost.commands.exceptions.CommandCreateException if there is an error creating the instance for calling the commands

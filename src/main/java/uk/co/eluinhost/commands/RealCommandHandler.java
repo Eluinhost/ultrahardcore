@@ -2,6 +2,7 @@ package uk.co.eluinhost.commands;
 
 import com.google.common.collect.MutableClassToInstanceMap;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,16 +30,19 @@ public class RealCommandHandler implements CommandHandler {
     private static final String COMMAND_NOT_FOUND = ChatColor.RED + "Couldn't find the command requested";
 
     private final Logger m_logger;
+    private final Injector m_injector;
 
     /**
      * Create the bukkit command handler
      * @param logger the logger to use
      * @param map the map to use
+     * @param injector the injector
      */
     @Inject
-    private RealCommandHandler(Logger logger, CommandMap map) {
+    private RealCommandHandler(Logger logger, CommandMap map, Injector injector) {
         m_logger = logger;
         m_commandMap = map;
+        m_injector = injector;
     }
 
     @Override
@@ -53,21 +57,12 @@ public class RealCommandHandler implements CommandHandler {
     }
 
     @Override
-    public void registerCommandsInstance(Object object) throws ClassAlreadyExistsException, CommandIDConflictException, InvalidMethodParametersException, CommandParentNotFoundException, CommandCreateException {
-        if(getClassInstance(object.getClass()) != null){
-            throw new ClassAlreadyExistsException();
-        }
-        m_instances.putInstance(object.getClass(),object);
-        registerCommands(object.getClass());
-    }
-
-    @Override
     public void registerCommands(Class clazz) throws CommandCreateException, CommandIDConflictException, CommandParentNotFoundException, InvalidMethodParametersException {
         Object instance = getClassInstance(clazz);
         if(instance == null){
             //noinspection OverlyBroadCatchBlock
             try {
-                instance = clazz.getConstructor().newInstance();
+                instance = m_injector.getInstance(clazz);
                 m_instances.putInstance(clazz,instance);
             } catch (Exception ex) {
                 ex.printStackTrace();
