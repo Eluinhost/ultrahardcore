@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
@@ -17,7 +18,8 @@ public class FeedCommand extends SimpleCommand {
     public static final String FEED_ANNOUNCE_PERMISSION = "UHC.feed.announce";
     public static final String FEED_OTHER_PERMISSION = "UHC.feed.other";
 
-    public FeedCommand(ConfigManager configManager) {
+    @Inject
+    private FeedCommand(ConfigManager configManager) {
         super(configManager);
     }
 

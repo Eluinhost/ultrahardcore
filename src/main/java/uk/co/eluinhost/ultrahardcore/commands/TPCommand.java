@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,7 +16,8 @@ public class TPCommand extends SimpleCommand {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 
-    public TPCommand(ConfigManager configManager) {
+    @Inject
+    private TPCommand(ConfigManager configManager) {
         super(configManager);
     }
 

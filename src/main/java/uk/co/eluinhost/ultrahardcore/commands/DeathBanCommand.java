@@ -15,14 +15,14 @@ public class DeathBanCommand extends SimpleCommand {
     public static final String DEATH_BAN_BAN = "UHC.deathban.unban";
     public static final String DEATH_BAN_UNBAN = "UHC.deathban.ban";
 
-    private FeatureManager m_features;
+    private final FeatureManager m_features;
 
     /**
      * @param configManager the config manager
      * @param features the feature manager
      */
     @Inject
-    public DeathBanCommand(ConfigManager configManager, FeatureManager features) {
+    private DeathBanCommand(ConfigManager configManager, FeatureManager features) {
         super(configManager);
         m_features = features;
     }

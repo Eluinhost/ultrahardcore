@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import uk.co.eluinhost.commands.Command;
 import uk.co.eluinhost.commands.CommandRequest;
 import uk.co.eluinhost.configuration.ConfigManager;
@@ -20,7 +21,8 @@ public class FeatureCommand extends SimpleCommand {
      * @param configManager the config manager
      * @param featureManager the feature manager
      */
-    public FeatureCommand(ConfigManager configManager, FeatureManager featureManager){
+    @Inject
+    private FeatureCommand(ConfigManager configManager, FeatureManager featureManager){
         super(configManager);
         m_featureManager = featureManager;
     }

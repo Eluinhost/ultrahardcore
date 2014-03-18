@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -23,7 +24,8 @@ public class BorderCommand extends SimpleCommand {
 
     private final BorderTypeManager m_borderTypes;
 
-    public BorderCommand(BorderTypeManager border, ConfigManager config){
+    @Inject
+    private BorderCommand(BorderTypeManager border, ConfigManager config){
         super(config);
         m_borderTypes = border;
     }

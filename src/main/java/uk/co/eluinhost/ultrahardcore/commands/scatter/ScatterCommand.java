@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands.scatter;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -35,7 +36,8 @@ public class ScatterCommand extends SimpleCommand {
      * @param configManager the config manager
      * @param scatterManager the scatter manager
      */
-    public ScatterCommand(ConfigManager configManager, ScatterManager scatterManager) {
+    @Inject
+    private ScatterCommand(ConfigManager configManager, ScatterManager scatterManager) {
         super(configManager);
         m_scatterManager = scatterManager;
         Map<Object,Object> init = new HashMap<Object, Object>();

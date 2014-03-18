@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
@@ -21,7 +22,8 @@ public class FreezeCommand extends SimpleCommand {
      * @param features the feature manager
      * @param configManager the config manager
      */
-    public FreezeCommand(FeatureManager features, ConfigManager configManager) {
+    @Inject
+    private FreezeCommand(FeatureManager features, ConfigManager configManager) {
         super(configManager);
         m_features = features;
     }

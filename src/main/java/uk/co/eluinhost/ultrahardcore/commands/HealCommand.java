@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import uk.co.eluinhost.commands.Command;
@@ -14,7 +15,8 @@ public class HealCommand extends SimpleCommand {
     public static final String HEAL_OTHER_PERMISSION = "UHC.heal.other";
     public static final String HEAL_ANNOUNCE_PERMISSION = "UHC.heal.announce";
 
-    public HealCommand(ConfigManager configManager) {
+    @Inject
+    private HealCommand(ConfigManager configManager) {
         super(configManager);
     }
 

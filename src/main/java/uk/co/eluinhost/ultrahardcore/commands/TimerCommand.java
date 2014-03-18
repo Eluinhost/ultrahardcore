@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,7 +37,8 @@ public class TimerCommand {
     private final PacketContainer m_spawnPacket = m_protocolManager.createPacket(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
     private final PacketContainer m_destroyPacket = m_protocolManager.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
 
-    public TimerCommand() {
+    @Inject
+    private TimerCommand() {
         m_destroyPacket.getIntegerArrays().write(0, new int[]{ENTITY_ID});
         try {
             destroyTextBar();

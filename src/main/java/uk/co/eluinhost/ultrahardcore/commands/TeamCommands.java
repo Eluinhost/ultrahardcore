@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -33,7 +34,8 @@ public class TeamCommands extends SimpleCommand {
 
     private final WordsUtil m_words;
 
-    public TeamCommands(ConfigManager configManager, WordsUtil words, TeamsUtil teamsUtil) {
+    @Inject
+    private TeamCommands(ConfigManager configManager, WordsUtil words, TeamsUtil teamsUtil) {
         super(configManager);
         m_words = words;
         m_teamsUtil = teamsUtil;

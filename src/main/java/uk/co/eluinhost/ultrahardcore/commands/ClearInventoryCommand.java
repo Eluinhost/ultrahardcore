@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.commands;
 
+import com.google.inject.Inject;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -25,7 +26,8 @@ public class ClearInventoryCommand extends SimpleCommand {
     /**
      * @param configManager the config manager
      */
-    protected ClearInventoryCommand(ConfigManager configManager) {
+    @Inject
+    private ClearInventoryCommand(ConfigManager configManager) {
         super(configManager);
     }
 
