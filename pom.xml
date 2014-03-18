@@ -110,15 +110,15 @@
                     <relocations>
                         <relocation>
                             <pattern>com.google.inject</pattern>
-                            <shadedPattern>${project.groupId}.shade.guice</shadedPattern>
+                            <shadedPattern>${project.groupId}.shade.inject</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>javax.inject</pattern>
-                            <shadedPattern>${project.groupId}.shade.guice</shadedPattern>
+                            <shadedPattern>${project.groupId}.shade.inject</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.aopalliance</pattern>
-                            <shadedPattern>${project.groupId}.shade.guice</shadedPattern>
+                            <shadedPattern>${project.groupId}.shade.aopalliance</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
