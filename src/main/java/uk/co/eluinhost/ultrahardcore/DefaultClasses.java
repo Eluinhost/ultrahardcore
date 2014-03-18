@@ -2,7 +2,6 @@ package uk.co.eluinhost.ultrahardcore;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.bukkit.Bukkit;
 import uk.co.eluinhost.commands.CommandHandler;
 import uk.co.eluinhost.configuration.ConfigManager;
 import uk.co.eluinhost.features.FeatureManager;
