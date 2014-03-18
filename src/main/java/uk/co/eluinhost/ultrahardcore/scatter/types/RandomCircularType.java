@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
+import com.google.inject.Inject;
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
@@ -17,8 +18,10 @@ public class RandomCircularType extends AbstractScatterType {
 
     /**
      * Scatters within a circle randomly
+     * @param scatterManager the scatter manager
      */
-    public RandomCircularType(ScatterManager scatterManager){
+    @Inject
+    protected RandomCircularType(ScatterManager scatterManager){
         super(scatterManager);
     }
 

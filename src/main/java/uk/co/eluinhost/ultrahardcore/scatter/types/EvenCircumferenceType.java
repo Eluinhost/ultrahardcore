@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
+import com.google.inject.Inject;
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
@@ -20,6 +21,7 @@ public class EvenCircumferenceType extends AbstractScatterType {
      *
      * @param scatterManager the scatter manager
      */
+    @Inject
     protected EvenCircumferenceType(ScatterManager scatterManager) {
         super(scatterManager);
     }

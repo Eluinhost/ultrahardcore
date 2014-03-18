@@ -1,5 +1,6 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
+import com.google.inject.Inject;
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
@@ -16,8 +17,10 @@ public class RandomSquareType extends AbstractScatterType {
 
     /**
      * Scatter randomly within a square
+     * @param scatterManager the scatter manager
      */
-    public RandomSquareType(ScatterManager scatterManager){
+    @Inject
+    protected RandomSquareType(ScatterManager scatterManager){
         super(scatterManager);
     }
 

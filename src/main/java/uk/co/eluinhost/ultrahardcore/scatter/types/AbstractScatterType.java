@@ -27,6 +27,7 @@ public abstract class AbstractScatterType {
 
     /**
      * Represents scatter logic
+     * @param scatterManager the scatter manager
      */
     protected AbstractScatterType(ScatterManager scatterManager){
         m_scatterManager = scatterManager;
