@@ -70,9 +70,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>3.0</version>
+            <groupId>org.sonatype.sisu</groupId>
+            <artifactId>sisu-guice</artifactId>
+            <version>3.1.5</version>
         </dependency>
     </dependencies>
 
@@ -102,14 +102,15 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>com.google.inject:guice</include>
+                            <include>org.sonatype.sisu:sisu-guice</include>
+                            <include>javax.inject:javax.inject</include>
+                            <include>aopalliance:aopalliance</include>
                         </includes>
                     </artifactSet>
-                    <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
                             <pattern>com.google.inject</pattern>
-                            <shadedPattern>com.publicuhc.inject</shadedPattern>
+                            <shadedPattern>${project.groupId}.shade.guice</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
