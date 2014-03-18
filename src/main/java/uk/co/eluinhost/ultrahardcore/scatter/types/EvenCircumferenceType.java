@@ -1,6 +1,7 @@
 package uk.co.eluinhost.ultrahardcore.scatter.types;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.bukkit.Location;
 import uk.co.eluinhost.ultrahardcore.scatter.Parameters;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
@@ -11,6 +12,7 @@ import uk.co.eluinhost.ultrahardcore.util.ServerUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class EvenCircumferenceType extends AbstractScatterType {
 
     private static final String SCATTER_NAME = "EvenCircle";
