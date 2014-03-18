@@ -2,6 +2,7 @@ package uk.co.eluinhost.ultrahardcore;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ import java.io.IOException;
  *
  * @author ghowden
  */
+@Singleton
 public class UltraHardcore extends JavaPlugin implements Listener {
 
     /**
