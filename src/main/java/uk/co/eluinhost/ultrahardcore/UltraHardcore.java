@@ -45,7 +45,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         //load all the features
         defaults.loadDefaultFeatures(injector);
         //load all the scatter types
-        defaults.loadDefaultScatterTypes();
+        defaults.loadDefaultScatterTypes(injector);
         //load all the commands
         defaults.loadDefaultCommands();
         //load the default border types
