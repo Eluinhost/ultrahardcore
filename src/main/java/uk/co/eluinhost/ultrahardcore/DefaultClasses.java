@@ -37,6 +37,7 @@ import uk.co.eluinhost.ultrahardcore.features.regen.RegenFeature;
 import uk.co.eluinhost.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
 import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 import uk.co.eluinhost.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
+import uk.co.eluinhost.ultrahardcore.scatter.types.AbstractScatterType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.EvenCircumferenceType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomCircularType;
 import uk.co.eluinhost.ultrahardcore.scatter.types.RandomSquareType;
@@ -165,14 +166,21 @@ public class DefaultClasses {
 
     /**
      * Load the default scatter types
+     * @param injector the injector
      */
-    public void loadDefaultScatterTypes(){
-        try {
-            m_scatterManager.addScatterType(new EvenCircumferenceType());
-            m_scatterManager.addScatterType(new RandomCircularType());
-            m_scatterManager.addScatterType(new RandomSquareType());
-        } catch (ScatterTypeConflictException ignored) {
-            Bukkit.getLogger().severe("Conflict error when loading default scatter types!");
+    public void loadDefaultScatterTypes(Injector injector){
+        Class<? extends AbstractScatterType>[] types = new Class[]{
+                EvenCircumferenceType.class,
+                RandomCircularType.class,
+                RandomSquareType.class
+        };
+        for(Class<? extends AbstractScatterType> clazz : types){
+            try {
+                AbstractScatterType type = injector.getInstance(clazz);
+                m_scatterManager.addScatterType(type);
+            } catch (ScatterTypeConflictException ignored) {
+                m_logger.severe("Conflict error when loading default scatter types!");
+            }
         }
     }
 }
