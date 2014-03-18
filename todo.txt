@@ -3,3 +3,4 @@ TODO remove kick/ban messages from main config and move into the translations
 TODO change config checks to get only when made and not keep checking
 TODO timer command needs finishing
 TODO move time parsing stuff out of wordsutil
+TODO need to fix the attached logger
