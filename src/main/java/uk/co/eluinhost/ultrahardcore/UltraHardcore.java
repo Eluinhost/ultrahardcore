@@ -50,8 +50,11 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         defaults.loadDefaultScatterTypes(injector);
         //load all the commands
         defaults.loadDefaultCommands();
+
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null){
         //load the default border types
         defaults.loadDefaultBorders();
+        }
 
         //Load all the metric infos
         try {
