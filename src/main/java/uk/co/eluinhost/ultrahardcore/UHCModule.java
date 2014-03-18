@@ -14,6 +14,8 @@ import uk.co.eluinhost.ultrahardcore.borders.BorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.borders.RealBorderTypeManager;
 import uk.co.eluinhost.ultrahardcore.scatter.FallProtector;
 import uk.co.eluinhost.ultrahardcore.scatter.Protector;
+import uk.co.eluinhost.ultrahardcore.scatter.RealScatterManager;
+import uk.co.eluinhost.ultrahardcore.scatter.ScatterManager;
 
 public class UHCModule extends AbstractModule {
 
@@ -37,6 +39,7 @@ public class UHCModule extends AbstractModule {
         bind(ConfigManager.class).to(RealConfigManager.class);
         bind(FeatureManager.class).to(RealFeatureManager.class);
         bind(BorderTypeManager.class).to(RealBorderTypeManager.class);
+        bind(ScatterManager.class).to(RealScatterManager.class);
         bind(Protector.class).to(FallProtector.class);
     }
 }
