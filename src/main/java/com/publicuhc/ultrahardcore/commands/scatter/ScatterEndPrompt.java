@@ -1,7 +1,11 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
+import com.publicuhc.ultrahardcore.UltraHardcore;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
+import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.MessagePrompt;
 import org.bukkit.conversations.Prompt;
@@ -24,31 +28,39 @@ public class ScatterEndPrompt extends MessagePrompt {
     }
 
     @Override
-    public String getPromptText(ConversationContext conversationContext) {
+    public String getPromptText(final ConversationContext conversationContext) {
         World world = (World) conversationContext.getSessionData(ScatterWorldPrompt.WORLD_DATA);
         SimplePair<Double,Double> center = (SimplePair<Double, Double>) conversationContext.getSessionData(ScatterCenterPrompt.CENTER_DATA);
         Double radius = (Double) conversationContext.getSessionData(ScatterRadiusPrompt.RADIUS_DATA);
         Double minDist = (Double) conversationContext.getSessionData(ScatterMinDistancePrompt.MIN_DIST_DATA);
-        Set<Player> players = (Set<Player>) conversationContext.getSessionData(ScatterPlayerPrompt.PLAYERS_DATA);
-        AbstractScatterType type = (AbstractScatterType) conversationContext.getSessionData(ScatterTypePrompt.TYPE_DATA);
+        final Set<Player> players = (Set<Player>) conversationContext.getSessionData(ScatterPlayerPrompt.PLAYERS_DATA);
+        final AbstractScatterType type = (AbstractScatterType) conversationContext.getSessionData(ScatterTypePrompt.TYPE_DATA);
         Boolean asTeam = (Boolean) conversationContext.getSessionData(ScatterUseTeamsPrompt.TEAMS_DATA);
 
-        ScatterManager manager = (ScatterManager) conversationContext.getSessionData(MANAGER);
+        final ScatterManager manager = (ScatterManager) conversationContext.getSessionData(MANAGER);
 
         if(manager.isScatterInProgress()){
             return "Scatter failed, there is already a scatter in progress!";
         }
 
-        Parameters params = new Parameters(new Location(world,center.getKey(),0,center.getValue()));
+        final Parameters params = new Parameters(new Location(world,center.getKey(),0,center.getValue()));
         params.setAsTeam(asTeam);
         params.setMinimumDistance(minDist);
         params.setRadius(radius);
 
-        try {
-            manager.scatter(type, params, players, conversationContext.getForWhom());
-            return "Starting to scatter players";
-        } catch (MaxAttemptsReachedException ignored) {
-            return "Hit max attempts at finding enough scatter locations, please try another scatter type and/or parameters";
-        }
+        final Conversable sender = conversationContext.getForWhom();
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),new Runnable(){
+
+            @Override
+            public void run() {
+                try {
+                    manager.scatter(type, params, players, conversationContext.getForWhom());
+                } catch (MaxAttemptsReachedException ignored) {
+                    sender.sendRawMessage("Hit max attempts at finding enough scatter locations, please try another scatter type and/or parameters");
+                }
+            }
+        });
+        return "Starting to scatter players";
     }
 }
