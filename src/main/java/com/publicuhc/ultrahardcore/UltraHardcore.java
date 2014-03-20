@@ -11,8 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.publicuhc.ultrahardcore.features.deathbans.DeathBan;
 import org.mcstats.Metrics;
 
-import java.io.IOException;
-
 /**
  * UltraHardcore
  * <p/>
@@ -52,15 +50,12 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         defaults.loadDefaultCommands();
 
         if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null){
-        //load the default border types
-        defaults.loadDefaultBorders();
+            //load the default border types
+            defaults.loadDefaultBorders();
         }
 
-        //Load all the metric infos
-        try {
-            Metrics met = new Metrics(this);
-            met.start();
-        } catch (IOException ignored) {
-        }
+        Metrics metrics = injector.getInstance(Metrics.class);
+        metrics.start();
+
     }
 }
