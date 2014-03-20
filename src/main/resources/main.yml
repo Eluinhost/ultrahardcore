@@ -113,5 +113,5 @@ scatter:
     type: RandomCircle
     useteams: yes
 border:
-  id: 7
+  id: BEDROCK
   meta: 0

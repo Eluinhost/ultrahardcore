@@ -51,11 +51,11 @@ public class BorderCommand extends SimpleCommand {
             request.sendMessage(translate("border.invalid.world").replaceAll("%world%",request.getFirstArg()));
             return;
         }
-        if(!request.isArgInt(1)){
+        if(!request.isArgNumber(1)){
             request.sendMessage(translate("border.invalid.radius").replaceAll("%radius%",request.getArg(1)));
             return;
         }
-        int radius = request.getInt(1);
+        double radius = request.getNumber(1).doubleValue();
 
         FileConfiguration config = getConfigManager().getConfig();
 

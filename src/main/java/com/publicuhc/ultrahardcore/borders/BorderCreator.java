@@ -8,7 +8,7 @@ import org.bukkit.Material;
 public class BorderCreator {
 
     private Border m_border;
-    private int m_radius = 0;
+    private double m_radius = 0;
     private Location m_center = null;
     private int m_blockMeta = 0;
     private Material m_blockID;
@@ -46,14 +46,14 @@ public class BorderCreator {
     /**
      * @return the radius of the border
      */
-    public int getRadius() {
+    public double getRadius() {
         return m_radius;
     }
 
     /**
      * @param radius the radius of the border
      */
-    public void setRadius(int radius) {
+    public void setRadius(double radius) {
         m_radius = radius;
     }
 
