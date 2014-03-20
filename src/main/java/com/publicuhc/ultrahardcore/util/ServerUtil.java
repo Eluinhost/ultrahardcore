@@ -133,11 +133,11 @@ public final class ServerUtil {
         for (int y = loc.getBlockY(); y >= 0; y--) {
             loc.setY(y);
             if (loc.getBlock().getType() != Material.AIR) {
-                loc.getChunk().unload(false, true);
+                //loc.getChunk().unload(false, true);
                 return y;
             }
         }
-        loc.getChunk().unload(false, true);
+        //loc.getChunk().unload(false, true);
         return 0;
     }
 
