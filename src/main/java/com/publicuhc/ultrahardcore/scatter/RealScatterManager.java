@@ -47,6 +47,7 @@ public class RealScatterManager implements ScatterManager {
         Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
     }
 
+    //TODO do this better...
     @Nullable
     private Conversable m_commandSender;
 
