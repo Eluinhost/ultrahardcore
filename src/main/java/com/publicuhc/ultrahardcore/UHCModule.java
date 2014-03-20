@@ -1,6 +1,7 @@
 package com.publicuhc.ultrahardcore;
 
 import com.google.inject.AbstractModule;
+import com.publicuhc.metrics.UHCMetrics;
 import org.bukkit.plugin.Plugin;
 import com.publicuhc.commands.CommandHandler;
 import com.publicuhc.commands.CommandMap;
@@ -16,6 +17,7 @@ import com.publicuhc.ultrahardcore.scatter.FallProtector;
 import com.publicuhc.ultrahardcore.scatter.Protector;
 import com.publicuhc.ultrahardcore.scatter.RealScatterManager;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
+import org.mcstats.Metrics;
 
 public class UHCModule extends AbstractModule {
 
@@ -34,12 +36,13 @@ public class UHCModule extends AbstractModule {
     protected void configure() {
         bind(Plugin.class).toInstance(m_plugin);
         //bind(Logger.class).toInstance(m_plugin.getLogger());
-        bind(CommandHandler.class).to(RealCommandHandler.class);
         bind(CommandMap.class).to(RealCommandMap.class);
+        bind(CommandHandler.class).to(RealCommandHandler.class);
         bind(ConfigManager.class).to(RealConfigManager.class);
         bind(FeatureManager.class).to(RealFeatureManager.class);
         bind(BorderTypeManager.class).to(RealBorderTypeManager.class);
-        bind(ScatterManager.class).to(RealScatterManager.class);
         bind(Protector.class).to(FallProtector.class);
+        bind(ScatterManager.class).to(RealScatterManager.class);
+        bind(Metrics.class).to(UHCMetrics.class);
     }
 }
