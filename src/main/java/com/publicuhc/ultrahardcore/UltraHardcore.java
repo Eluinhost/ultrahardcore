@@ -8,8 +8,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.publicuhc.metrics.MetricsLite;
 import com.publicuhc.ultrahardcore.features.deathbans.DeathBan;
+import org.mcstats.Metrics;
 
 import java.io.IOException;
 
@@ -58,7 +58,7 @@ public class UltraHardcore extends JavaPlugin implements Listener {
 
         //Load all the metric infos
         try {
-            MetricsLite met = new MetricsLite(this);
+            Metrics met = new Metrics(this);
             met.start();
         } catch (IOException ignored) {
         }

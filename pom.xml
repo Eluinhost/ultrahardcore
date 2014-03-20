@@ -25,6 +25,10 @@
             <name>Comphenix Repository</name>
             <url>http://repo.comphenix.net/content/groups/public</url>
         </repository>
+        <repository>
+            <id>Plugin Metrics</id>
+            <url>http://repo.mcstats.org/content/repositories/public</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -74,6 +78,12 @@
             <artifactId>sisu-guice</artifactId>
             <version>3.1.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.mcstats.bukkit</groupId>
+            <artifactId>metrics</artifactId>
+            <version>R8-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -119,6 +129,10 @@
                         <relocation>
                             <pattern>org.aopalliance</pattern>
                             <shadedPattern>${project.groupId}.shade.aopalliance</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.mcstats</pattern>
+                            <shadedPattern>${project.groupId}.metrics</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
