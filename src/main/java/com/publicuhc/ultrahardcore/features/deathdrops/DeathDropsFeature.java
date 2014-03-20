@@ -2,6 +2,7 @@ package com.publicuhc.ultrahardcore.features.deathdrops;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.publicuhc.ultrahardcore.util.SimplePair;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -32,7 +33,6 @@ public class DeathDropsFeature extends UHCFeature {
 
     /**
      * Add drops to a player when they die
-     * TODO simplify
      * @param plugin the plugin
      * @param configManager the config manager
      */
@@ -43,86 +43,34 @@ public class DeathDropsFeature extends UHCFeature {
         for (String item : items.getKeys(false)) {
             ConfigurationSection itemSection = items.getConfigurationSection(item);
 
-            String itemIDString = itemSection.getString("id");
-            if (itemIDString == null) {
-                plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'id'");
+            Material mat = Material.matchMaterial(itemSection.getString("type"));
+            if (mat == null) {
+                plugin.getLogger().severe("Death drop item section '" + item + "' doesn't contain a valid material ("+itemSection.getString("type")+")");
                 continue;
             }
 
-            String amountString = itemSection.getString("amount");
-            if (amountString == null) {
-                plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain the subnode 'amount'");
-                continue;
-            }
-            int minAmount = -1;
-            if (amountString.contains("-")) {
-                String[] amountParts = amountString.split("-");
-                if (amountParts.length != 2) {
-                    plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid amount. Syntax 'amount' or 'amount_min-amount_max'");
-                    continue;
-                }
-                try {
-                    minAmount = Integer.parseInt(amountParts[0]);
-                    amountString = amountParts[1];
-                } catch (NumberFormatException ignored) {
-                    plugin.getLogger().severe("Death drop item section \"" + item + "\" has an invalid minimum amount " + amountParts[0]);
-                    continue;
-                }
-            }
-            int maxAmount;
+            SimplePair<Integer,Integer> minmax;
             try {
-                maxAmount = Integer.parseInt(amountString);
-                if (minAmount == -1) {
-                    minAmount = maxAmount;
-                }
-            } catch (NumberFormatException ignored) {
-                plugin.getLogger().severe("Death drop item section \"" + item + "\" contains invalid amount " + amountString);
+                 minmax = parseAmount(itemSection.getString("amount"));
+            } catch (InvalidAmountException ignored) {
+                plugin.getLogger().severe("Death drop item section '"+item+"' doesn't contain a valid amount node ("+itemSection.getString("amount")+"). Syntax: amount OR min-max");
                 continue;
             }
 
             int chance = itemSection.getInt("chance",-1);
             if (chance < 0) {
-                plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid chance value, assuming 100%");
+                plugin.getLogger().severe("Death drop item section '" + item + "' does not contain a valid chance value, assuming 100%");
                 chance = 100;
             }
 
-            int metaID = 0;
-            if (itemIDString.contains(":")) {
-                String[] itemParts = itemIDString.split(":");
-                if (itemParts.length != 2) {
-                    plugin.getLogger().severe("Death drop item section \"" + item + "\" does not contain a valid item id. Syntax 'item_id' or 'item_id:meta'");
-                    continue;
-                }
-                try {
-                    metaID = Integer.parseInt(itemParts[1]);
-                    itemIDString = itemParts[0];
-                } catch (NumberFormatException ignored) {
-                    plugin.getLogger().severe("Death drop item section \"" + item + "\" has an invalid metadata value " + itemParts[1]);
-                    continue;
-                }
-            }
-
-            int itemID;
-            try {
-                itemID = Integer.parseInt(itemIDString);
-            } catch (NumberFormatException ignored) {
-                plugin.getLogger().severe("Death drop item section \"" + item + "\" contains invalid id " + itemIDString);
-                continue;
-            }
-
-            //noinspection deprecation
-            Material mat = Material.getMaterial(itemID);      //TODO change feature to use names in config file instead of IDs and use getByName
-            if (mat == null) {
-                plugin.getLogger().severe("Death drop item section \"" + item + "\" contains invalid item id " + itemID + ": item for id not found");
-                continue;
-            }
+            int metaID = itemSection.getInt("data");
 
             ItemDrop id = new ItemDrop();
             id.setItem(mat);
             id.setMeta(metaID);
             id.setChance(chance);
-            id.setMaxAmount(maxAmount);
-            id.setMinAmount(minAmount);
+            id.setMaxAmount(minmax.getValue());
+            id.setMinAmount(minmax.getKey());
             m_drops.add(id);
         }
     }
@@ -154,5 +102,56 @@ public class DeathDropsFeature extends UHCFeature {
     @Override
     public String getDescription() {
         return "Adds extra loot to players on death";
+    }
+
+    /**
+     * Parses the amount string format: max or min-max
+     * if no min, min=max
+     * @param amountString the string to parse
+     * @return simple pair of min/max
+     * @throws InvalidAmountException if parse errors
+     */
+    private static SimplePair<Integer,Integer> parseAmount(String amountString) throws InvalidAmountException {
+        if(amountString == null){
+            throw new InvalidAmountException();
+        }
+
+        String maxAmountString = amountString;
+
+        int minAmount = 0;
+        boolean minProvided = false;
+        if (amountString.contains("-")) {
+            String[] amountParts = amountString.split("-");
+            if (amountParts.length != 2) {
+                throw new InvalidAmountException();
+            }
+            try {
+                minAmount = Integer.parseInt(amountParts[0]);
+                minProvided = true;
+                maxAmountString = amountParts[1];
+            } catch (NumberFormatException ignored) {
+                throw new InvalidAmountException();
+            }
+        }
+
+        if(minAmount < 0){
+            throw new InvalidAmountException();
+        }
+
+        int maxAmount;
+        try {
+            maxAmount = Integer.parseInt(maxAmountString);
+            if (!minProvided) {
+                minAmount = maxAmount;
+            }
+        } catch (NumberFormatException ignored) {
+            throw new InvalidAmountException();
+        }
+
+        if(maxAmount < 1){
+            throw new InvalidAmountException();
+        }
+
+        return new SimplePair<Integer, Integer>(minAmount,maxAmount);
     }
 }
