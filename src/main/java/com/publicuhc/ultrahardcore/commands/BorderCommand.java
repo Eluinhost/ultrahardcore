@@ -2,6 +2,7 @@ package com.publicuhc.ultrahardcore.commands;
 
 import com.google.inject.Inject;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,6 +25,11 @@ public class BorderCommand extends SimpleCommand {
 
     private final BorderTypeManager m_borderTypes;
 
+    /**
+     * Border commands
+     * @param border the border type manager
+     * @param config the config manager
+     */
     @Inject
     private BorderCommand(BorderTypeManager border, ConfigManager config){
         super(config);
@@ -54,17 +60,12 @@ public class BorderCommand extends SimpleCommand {
         FileConfiguration config = getConfigManager().getConfig();
 
         String borderName = request.getArg(2);
-        int blockID = config.getInt("border.id");
+        Material blockID = Material.matchMaterial(config.getString("border.id"));
         int metaID = config.getInt("border.meta");
         if(borderName.contains(":")){
             String[] parts = borderName.split(":");
             borderName = parts[0];
-            try{
-                blockID = Integer.parseInt(parts[1]);
-            }catch (NumberFormatException ignored){
-                request.sendMessage(translate("border.invalid.block_id").replaceAll("%blockID%",parts[1]));
-                return;
-            }
+            blockID = Material.matchMaterial(parts[1]);
             if(parts.length > 2){
                 try{
                     metaID = Integer.parseInt(parts[2]);
@@ -74,6 +75,15 @@ public class BorderCommand extends SimpleCommand {
                 }
             }
         }
+        if(blockID == null) {
+            request.sendMessage(translate("border.invalid.block_id"));
+            return;
+        }
+        if(!blockID.isBlock()){
+            request.sendMessage(translate("border.invalid.block_id_not_block"));
+            return;
+        }
+
         Border borderType = m_borderTypes.getBorderByID(borderName);
         if(borderType == null){
             request.sendMessage(translate("border.invalid.border_id").replaceAll("%borderID%",borderName));

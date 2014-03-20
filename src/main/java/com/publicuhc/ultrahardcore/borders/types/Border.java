@@ -2,6 +2,7 @@ package com.publicuhc.ultrahardcore.borders.types;
 
 import org.bukkit.Location;
 import com.publicuhc.ultrahardcore.borders.exceptions.TooManyBlocksException;
+import org.bukkit.Material;
 
 public interface Border {
     /**
@@ -23,5 +24,5 @@ public interface Border {
      * @param blockMeta the block data value
      * @throws com.publicuhc.ultrahardcore.borders.exceptions.TooManyBlocksException when too many blocks changed
      */
-    void build(Location center, int radius, int blockID, int blockMeta) throws TooManyBlocksException;
+    void build(Location center, double radius, Material blockID, int blockMeta) throws TooManyBlocksException;
 }

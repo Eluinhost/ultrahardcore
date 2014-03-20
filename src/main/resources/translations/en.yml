@@ -2,7 +2,8 @@ border:
   invalid:
     world: "&4Invalid world supplied. (%world%)"
     radius: "&4Invalid radius supplied. (%radius%)"
-    block_id: "&4Invalid block ID supplied. (%blockID%)"
+    block_id: "&4Invalid block ID"
+    block_id_not_block: "&4Must use a valid block"
     meta_id: "&4Invalid metadata ID supplied. (%meta%)"
     border_id: "&4Invalid border ID supplied. (%borderID%)"
     coordinates: "&4Invalid coordinates given. (%coords%)"

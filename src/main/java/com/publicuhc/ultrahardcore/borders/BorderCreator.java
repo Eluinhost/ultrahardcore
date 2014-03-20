@@ -3,6 +3,7 @@ package com.publicuhc.ultrahardcore.borders;
 import org.bukkit.Location;
 import com.publicuhc.ultrahardcore.borders.exceptions.TooManyBlocksException;
 import com.publicuhc.ultrahardcore.borders.types.Border;
+import org.bukkit.Material;
 
 public class BorderCreator {
 
@@ -10,7 +11,7 @@ public class BorderCreator {
     private int m_radius = 0;
     private Location m_center = null;
     private int m_blockMeta = 0;
-    private int m_blockID = 0;
+    private Material m_blockID;
 
     /**
      * Create a new creator for the given border type
@@ -87,14 +88,14 @@ public class BorderCreator {
     /**
      * @return the block ID
      */
-    public int getBlockID() {
+    public Material getBlockID() {
         return m_blockID;
     }
 
     /**
-     * @param blockID the block ID
+     * @param mat the material
      */
-    public void setBlockID(int blockID) {
-        m_blockID = blockID;
+    public void setBlockID(Material mat) {
+        m_blockID = mat;
     }
 }

@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Location;
 import com.publicuhc.ultrahardcore.borders.SessionManager;
 import com.publicuhc.ultrahardcore.borders.exceptions.TooManyBlocksException;
+import org.bukkit.Material;
 
 public abstract class WorldEditBorder implements Border {
 
@@ -45,10 +46,10 @@ public abstract class WorldEditBorder implements Border {
      * @param es the editsession to use
      * @throws com.sk89q.worldedit.MaxChangedBlocksException when worldedit complains
      */
-    protected abstract void createBorder(Location center, int radius, int blockID, int blockMeta, EditSession es) throws MaxChangedBlocksException;
+    protected abstract void createBorder(Location center, double radius, Material blockID, int blockMeta, EditSession es) throws MaxChangedBlocksException;
 
     @Override
-    public final void build(Location center, int radius, int blockID, int blockMeta) throws TooManyBlocksException {
+    public final void build(Location center, double radius, Material blockID, int blockMeta) throws TooManyBlocksException {
         try {
             createBorder(center,radius,blockID,blockMeta, SessionManager.getInstance().getNewEditSession(center.getWorld()));
         } catch (MaxChangedBlocksException ignored) {
