@@ -8,8 +8,8 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
 import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
@@ -38,19 +38,19 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param player the entity to freeze
      */
     public void addPlayer(Player player){
-        LivingEntity chicken = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.CHICKEN);
-        chicken.setPassenger(player);
-        chicken.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true));
-        chicken.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 5, true));
-        chicken.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 5, true));
-        m_entityMap.put(player.getName(),chicken);
+        LivingEntity pig = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
+        pig.setPassenger(player);
+        pig.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true));
+        pig.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 5, true));
+        pig.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 5, true));
+        m_entityMap.put(player.getName(), pig);
     }
 
     /**
      * @param name the player name
      */
     public void removePlayer(String name){
-        removeChicken(name);
+        removePig(name);
         m_entityMap.remove(name);
     }
 
@@ -58,12 +58,26 @@ public class PlayerFreezeFeature extends UHCFeature {
      * remove the chicken for the name
      * @param name the player name
      */
-    private void removeChicken(String name){
+    private void removePig(String name){
         if(m_entityMap.containsKey(name)){
-            Entity chicken = m_entityMap.get(name);
-            chicken.setPassenger(null);
-            chicken.remove();
+            Entity pig = m_entityMap.get(name);
+            pig.setPassenger(null);
+            pig.remove();
             m_entityMap.put(name,null);
+        }
+    }
+
+    /**
+     * Called when a living entity tries to exit a vehicle
+     * @param vee the vechile exit event
+     */
+    @EventHandler
+    public void onVehicleDismountEvent(VehicleExitEvent vee){
+        LivingEntity entity = vee.getExited();
+        if(entity instanceof Player){
+            if(m_entityMap.containsKey(((Player)entity).getName())){
+                vee.setCancelled(true);
+            }
         }
     }
 
@@ -108,7 +122,7 @@ public class PlayerFreezeFeature extends UHCFeature {
     @EventHandler
     public void onPlayerLogout(PlayerQuitEvent pqe){
         if(m_entityMap.containsKey(pqe.getPlayer().getName())){
-            removeChicken(pqe.getPlayer().getName());
+            removePig(pqe.getPlayer().getName());
         }
     }
 
