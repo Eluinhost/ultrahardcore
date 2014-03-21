@@ -1,7 +1,6 @@
 package com.publicuhc.ultrahardcore.commands;
 
 import com.google.inject.Inject;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import com.publicuhc.commands.Command;
 import com.publicuhc.commands.CommandRequest;
@@ -52,7 +51,7 @@ public class FreezeCommand extends SimpleCommand {
             request.sendMessage(translate("freeze.immune"));
             return;
         }
-        ((PlayerFreezeFeature)feature).addPlayer(player.getName());
+        ((PlayerFreezeFeature)feature).addPlayer(player);
         request.sendMessage(translate("freeze.player_froze"));
     }
 
@@ -72,9 +71,7 @@ public class FreezeCommand extends SimpleCommand {
             request.sendMessage(translate("freeze.not_loaded"));
             return;
         }
-        for(Player player : Bukkit.getOnlinePlayers()){
-            ((PlayerFreezeFeature)feature).addPlayer(player.getName());
-        }
+        ((PlayerFreezeFeature)feature).freezeAll();
         request.sendMessage(translate("freeze.froze_all"));
     }
 

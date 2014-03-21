@@ -2,19 +2,27 @@ package com.publicuhc.ultrahardcore.features.playerfreeze;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.publicuhc.ultrahardcore.commands.FreezeCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Singleton
 public class PlayerFreezeFeature extends UHCFeature {
 
-    private Set<String> m_players = new HashSet<String>();
+    private final Map<String, Entity> m_entityMap = new HashMap<String,Entity>();
+    private boolean m_globalMode = false;
 
     /**
      * handles frozen players
@@ -27,44 +35,81 @@ public class PlayerFreezeFeature extends UHCFeature {
     }
 
     /**
-     * @param playerName the player name to freeze
+     * @param player the entity to freeze
      */
-    public void addPlayer(String playerName){
-        m_players.add(playerName);
-        //TODO stop movement
+    public void addPlayer(Player player){
+        LivingEntity chicken = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.CHICKEN);
+        chicken.setPassenger(player);
+        chicken.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true));
+        chicken.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 5, true));
+        chicken.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 5, true));
+        m_entityMap.put(player.getName(),chicken);
     }
 
     /**
-     * @param playerName the player name
+     * @param name the player name
      */
-    public void removePlayer(String playerName){
-        m_players.remove(playerName);
-        //TODO allow movement
+    public void removePlayer(String name){
+        removeChicken(name);
+        m_entityMap.remove(name);
     }
 
     /**
-     * Remove all from the frozen list
+     * remove the chicken for the name
+     * @param name the player name
+     */
+    private void removeChicken(String name){
+        if(m_entityMap.containsKey(name)){
+            Entity chicken = m_entityMap.get(name);
+            chicken.setPassenger(null);
+            chicken.remove();
+            m_entityMap.put(name,null);
+        }
+    }
+
+    /**
+     * Remove all from the frozen list and sets global off
      */
     public void unfreezeAll(){
-        //TODO allow movement for all
-        m_players.clear();
+        m_globalMode = false;
+        for(String s : m_entityMap.keySet()){
+            removePlayer(s);
+        }
+    }
+
+    /**
+     * Adds all to the list and sets global on
+     */
+    public void freezeAll(){
+        m_globalMode = true;
+        for(Player p : Bukkit.getOnlinePlayers()){
+            addPlayer(p);
+        }
     }
 
     /**
      * Whenever a player joins
      * @param pje the player join event
      */
-    @EventHandler
+    @EventHandler( priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoinEvent(PlayerJoinEvent pje){
-        //TODO check whether to reapply freeze
+        if((m_globalMode || m_entityMap.keySet().contains(pje.getPlayer().getName()))
+             && !pje.getPlayer().hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)){
+            addPlayer(pje.getPlayer());
+        }else{
+            removePlayer(pje.getPlayer().getName());
+        }
     }
 
     /**
-     * Called when the feature is being enabled
+     * When a player logs out remove the chicken
+     * @param pqe the quit event
      */
-    @Override
-    protected void enableCallback(){
-        //TODO reapply freezes?
+    @EventHandler
+    public void onPlayerLogout(PlayerQuitEvent pqe){
+        if(m_entityMap.containsKey(pqe.getPlayer().getName())){
+            removeChicken(pqe.getPlayer().getName());
+        }
     }
 
     /**
@@ -72,7 +117,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     @Override
     protected void disableCallback(){
-        //TODO remove freezes
+        unfreezeAll();
     }
 
     @Override
