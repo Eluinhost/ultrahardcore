@@ -26,6 +26,12 @@ deathbans:
   removed: "&6Removed %amount% bans for player %name%"
   banned: "&6Banned player %name% for %time%"
   ban_message: "You are under a death ban, you will be unbanned in %timeleft%"
+timer:
+  feature_not_found: "&4Timer feature not found!"
+  cancelled: "&6Timer cancelled"
+  invalid_time: "&4Invalid time supplied, time is number of seconds"
+  running: "&6Timer started"
+  already_running: "&4Timer already running!"
 features:
   loaded:
     header: "&6Currently loaded features (%amount%):"

@@ -33,6 +33,7 @@ import com.publicuhc.ultrahardcore.features.portals.PortalsFeature;
 import com.publicuhc.ultrahardcore.features.potionnerfs.PotionNerfsFeature;
 import com.publicuhc.ultrahardcore.features.recipes.RecipeFeature;
 import com.publicuhc.ultrahardcore.features.regen.RegenFeature;
+import com.publicuhc.ultrahardcore.features.timer.TimerFeature;
 import com.publicuhc.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import com.publicuhc.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
@@ -89,6 +90,7 @@ public class DefaultClasses {
     /**
      * Load all the default commands
      */
+    @SuppressWarnings("OverlyCoupledMethod")
     public void loadDefaultCommands() {
         Class[] classes = {
                 HealCommand.class,
@@ -100,7 +102,8 @@ public class DefaultClasses {
                 FreezeCommand.class,
                 BorderCommand.class,
                 DeathBanCommand.class,
-                ScatterCommand.class
+                ScatterCommand.class,
+                TimerCommand.class
         };
         for(Class clazz : classes){
             try {
@@ -138,7 +141,8 @@ public class DefaultClasses {
                 PortalsFeature.class,
                 PlayerFreezeFeature.class,
                 HardcoreHeartsFeature.class,
-                FootprintFeature.class
+                FootprintFeature.class,
+                TimerFeature.class
         };
         for(Class<? extends IFeature> clazz : classes){
             try{
