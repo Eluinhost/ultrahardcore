@@ -26,7 +26,7 @@ public class TimerFeature extends UHCFeature {
      * @return true if running, false if one already running
      */
     public boolean startTimer(int ticks, String message) {
-        if(m_runnable != null && m_runnable.isRunning()){
+        if(!isEnabled() || m_runnable != null && m_runnable.isRunning()){
             return false;
         }
         m_runnable = new TimerRunnable(ticks, message, getPlugin());
@@ -41,6 +41,12 @@ public class TimerFeature extends UHCFeature {
         m_runnable.stopTimer();
         return true;
     }
+
+    @Override
+    public void disableCallback(){
+        stopTimer();
+    }
+
 
     @Override
     public String getFeatureID() {

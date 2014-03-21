@@ -32,6 +32,7 @@ timer:
   invalid_time: "&4Invalid time supplied, time is number of seconds"
   running: "&6Timer started"
   already_running: "&4Timer already running!"
+  not_enabled: "&4The timer feature is not enabled."
 features:
   loaded:
     header: "&6Currently loaded features (%amount%):"

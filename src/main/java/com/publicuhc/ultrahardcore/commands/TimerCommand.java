@@ -44,7 +44,10 @@ public class TimerCommand extends SimpleCommand {
             return;
         }
         TimerFeature timerFeature = (TimerFeature) feature;
-
+        if(!feature.isEnabled()){
+            request.sendMessage(translate("timer.not_enabled"));
+            return;
+        }
         if(!request.isArgInt(0)) {
             request.sendMessage(translate("timer.invalid_time"));
             return;
