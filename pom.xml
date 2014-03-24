@@ -10,6 +10,36 @@
 
     <name>UltraHardcore</name>
     <url>http://www.publicuhc.com</url>
+    <inceptionYear>2012</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License 3.0</name>
+            <url>src/main/resources/LICENSE</url>
+            <distribution>repo</distribution>
+            <comments>License for UltraHardcore</comments>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://jira.publicuhc.com/</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Bamboo</system>
+        <url>http://bamboo.publicuhc.com</url>
+    </ciManagement>
+
+    <scm>
+        <connection>http://stash.publicuhc.com/scm/uhc/uhc.git</connection>
+        <tag>HEAD</tag>
+        <url>http://stash.publicuhc.com/projects/UHC/repos/uhc/browse</url>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <repositories>
         <repository>
@@ -87,6 +117,8 @@
     </dependencies>
 
     <build>
+        <defaultGoal>install</defaultGoal>
+        <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
