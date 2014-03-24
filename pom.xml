@@ -196,8 +196,12 @@
 
     <distributionManagement>
         <repository>
-            <id>publicuhc</id>
-            <url>http://publicuhc.com/artifactory/libs-snapshot-local/</url>
+            <id>publicuhc.releases</id>
+            <url>http://nexus.publicuhc.com/content/repositories/releases</url>
         </repository>
+        <snapshotRepository>
+            <id>publicuhc.snapshots</id>
+            <url>http://nexus.publicuhc.com/content/repositories/snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>
