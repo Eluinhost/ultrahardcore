@@ -1,10 +1,8 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
 import com.google.inject.Inject;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
@@ -143,7 +141,17 @@ public class ScatterCommand extends SimpleCommand {
         params.setMinimumDistance(minDistance);
         params.setAsTeam(asTeam);
 
-        //TODO add allowed blocks somewhere
+        FileConfiguration config = getConfigManager().getConfig();
+        List<String> materials = config.getStringList("scatter.allowedBlocks");
+        Collection<Material> mats = new ArrayList<Material>();
+        for(String s : materials){
+            Material mat = Material.matchMaterial(s);
+            if(mat != null){
+                mats.add(mat);
+            }
+        }
+
+        params.addMaterials(mats);
 
         Conversable conversable = request.getSender() instanceof Conversable ? (Conversable) request.getSender() : Bukkit.getConsoleSender();
 
