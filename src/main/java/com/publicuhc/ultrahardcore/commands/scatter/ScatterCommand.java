@@ -19,9 +19,7 @@ import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class ScatterCommand extends SimpleCommand {
 
@@ -121,8 +119,24 @@ public class ScatterCommand extends SimpleCommand {
             return;
         }
         boolean asTeam = request.getBoolean(5);
-        Iterable<Player> scatterPlayers = new LinkedList<Player>();
-        //TODO parse list of players
+        Collection<Player> scatterPlayers = new LinkedList<Player>();
+
+        for(int i = 6; i < request.getArgs().size(); i++){
+            if("*".equals(request.getArg(i))){
+                scatterPlayers.addAll(Arrays.asList(Bukkit.getOnlinePlayers()));
+            }
+            Player p = request.getPlayer(i);
+            if(p == null){
+                request.sendMessage(ChatColor.RED+"Player "+request.getArg(i)+" not found");
+                continue;
+            }
+            scatterPlayers.add(p);
+        }
+
+        if(scatterPlayers.isEmpty()){
+            request.sendMessage(ChatColor.RED+"No players found to scatter");
+            return;
+        }
 
         Parameters params = new Parameters(new Location(world,x,0,z));
         params.setRadius(radius);
