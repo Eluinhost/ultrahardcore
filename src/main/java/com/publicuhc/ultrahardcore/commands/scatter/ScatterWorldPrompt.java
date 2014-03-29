@@ -19,7 +19,7 @@ public class ScatterWorldPrompt extends WorldNamePrompt {
 
     @Override
     public String getPromptText(ConversationContext conversationContext) {
-        return "Enter the name of the world to scatter into: ";
+        return "Enter the name of the world to scatter into: "+formatFixedSet();
     }
 
     @Override
