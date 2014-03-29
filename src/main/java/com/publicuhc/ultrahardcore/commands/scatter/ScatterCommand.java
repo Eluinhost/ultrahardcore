@@ -37,13 +37,14 @@ public class ScatterCommand extends SimpleCommand {
         super(configManager);
         m_scatterManager = scatterManager;
         Map<Object,Object> init = new HashMap<Object, Object>();
-        init.put(ScatterEndPrompt.MANAGER,scatterManager);
+        init.put(ScatterStartPrompt.SCATTER_MANAGER,scatterManager);
+        init.put(ScatterStartPrompt.CONFIG_MANAGER,configManager);
         m_conversationFactory = new ConversationFactory(UltraHardcore.getInstance())
                 .withEscapeSequence("cancel")
                 .withPrefix(new ScatterPrefix())
                 .withTimeout(CONVERSATION_TIMEOUT)
                 .withLocalEcho(false)
-                .withFirstPrompt(new ScatterTypePrompt(m_scatterManager))
+                .withFirstPrompt(new ScatterStartPrompt())
                 .withModality(false)
                 .addConversationAbandonedListener(new ScatterAbandonListener())
                 .withInitialSessionData(init);

@@ -1,9 +1,12 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
+import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.ultrahardcore.UltraHardcore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.MessagePrompt;
@@ -15,11 +18,12 @@ import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedExceptio
 import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
 import com.publicuhc.ultrahardcore.util.SimplePair;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public class ScatterEndPrompt extends MessagePrompt {
-
-    public static final String MANAGER = "SCATTER_MANAGER";
 
     @Override
     protected Prompt getNextPrompt(ConversationContext conversationContext) {
@@ -36,7 +40,7 @@ public class ScatterEndPrompt extends MessagePrompt {
         final AbstractScatterType type = (AbstractScatterType) conversationContext.getSessionData(ScatterTypePrompt.TYPE_DATA);
         Boolean asTeam = (Boolean) conversationContext.getSessionData(ScatterUseTeamsPrompt.TEAMS_DATA);
 
-        final ScatterManager manager = (ScatterManager) conversationContext.getSessionData(MANAGER);
+        final ScatterManager manager = (ScatterManager) conversationContext.getSessionData(ScatterStartPrompt.SCATTER_MANAGER);
 
         if(manager.isScatterInProgress()){
             return "Scatter failed, there is already a scatter in progress!";
@@ -46,6 +50,20 @@ public class ScatterEndPrompt extends MessagePrompt {
         params.setAsTeam(asTeam);
         params.setMinimumDistance(minDist);
         params.setRadius(radius);
+
+        ConfigManager configManager = (ConfigManager) conversationContext.getSessionData(ScatterStartPrompt.CONFIG_MANAGER);
+
+        FileConfiguration config = configManager.getConfig();
+        List<String> materials = config.getStringList("scatter.allowedBlocks");
+        Collection<Material> mats = new ArrayList<Material>();
+        for(String s : materials){
+            Material mat = Material.matchMaterial(s);
+            if(mat != null){
+                mats.add(mat);
+            }
+        }
+
+        params.addMaterials(mats);
 
         final Conversable sender = conversationContext.getForWhom();
 

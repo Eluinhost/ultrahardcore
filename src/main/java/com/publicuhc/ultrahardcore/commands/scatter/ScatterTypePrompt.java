@@ -8,7 +8,6 @@ import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 public class ScatterTypePrompt extends FixedSetPrompt {
 
     public static final String TYPE_DATA = "scatter_type";
-    private final ScatterManager m_manager;
 
     /**
      * Allows any of the loaded scatter type names
@@ -16,12 +15,12 @@ public class ScatterTypePrompt extends FixedSetPrompt {
      */
     public ScatterTypePrompt(ScatterManager manager){
         super(manager.getScatterTypeNames());
-        m_manager = manager;
     }
 
     @Override
     protected Prompt acceptValidatedInput(ConversationContext conversationContext, String s) {
-        conversationContext.setSessionData(TYPE_DATA,m_manager.getScatterType(s));
+        ScatterManager scatterManager = (ScatterManager) conversationContext.getSessionData(ScatterStartPrompt.SCATTER_MANAGER);
+        conversationContext.setSessionData(TYPE_DATA,scatterManager.getScatterType(s));
         return new ScatterWorldPrompt();
     }
 
