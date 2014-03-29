@@ -61,7 +61,7 @@ public class ScatterCommand extends SimpleCommand {
             permission = SCATTER_COMMAND,
             senders = {SenderType.PLAYER, SenderType.CONSOLE})
     public void onInteractiveScatterCommand(CommandRequest request){
-        m_conversationFactory.buildConversation((Conversable) request.getSender());
+        m_conversationFactory.buildConversation((Conversable) request.getSender()).begin();
     }
 
     /**
