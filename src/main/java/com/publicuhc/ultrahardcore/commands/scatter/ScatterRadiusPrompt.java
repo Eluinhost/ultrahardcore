@@ -15,7 +15,7 @@ public class ScatterRadiusPrompt extends NumericPrompt {
 
     @Override
     protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number) {
-        conversationContext.setSessionData(RADIUS_DATA, number);
+        conversationContext.setSessionData(RADIUS_DATA, number.doubleValue());
         return new ScatterMinDistancePrompt();
     }
 
