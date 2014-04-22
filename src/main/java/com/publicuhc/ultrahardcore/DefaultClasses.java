@@ -1,13 +1,13 @@
 package com.publicuhc.ultrahardcore;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.publicuhc.commands.CommandHandler;
 import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.IFeature;
 import com.publicuhc.features.exceptions.FeatureIDConflictException;
 import com.publicuhc.features.exceptions.InvalidFeatureIDException;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Injector;
 import com.publicuhc.ultrahardcore.borders.BorderTypeManager;
 import com.publicuhc.ultrahardcore.borders.exceptions.BorderIDConflictException;
 import com.publicuhc.ultrahardcore.borders.types.CylinderBorder;
@@ -44,7 +44,7 @@ import com.publicuhc.ultrahardcore.scatter.types.RandomSquareType;
 
 import java.util.logging.Logger;
 
-@SuppressWarnings("OverlyCoupledClass")
+@SuppressWarnings({"OverlyCoupledClass", "OverlyCoupledMethod"})
 public class DefaultClasses {
 
     private final ConfigManager m_configManager;
@@ -75,10 +75,10 @@ public class DefaultClasses {
     }
 
     /**
-     * Load the default border types
+     * Load the default border types, make sure worldedit exists first
      */
-    public void loadDefaultBorders() {
-        try{
+    public void loadBorders() {
+        try {
             m_borderTypes.addBorder(new CylinderBorder());
             m_borderTypes.addBorder(new RoofBorder());
             m_borderTypes.addBorder(new SquareBorder());
@@ -90,7 +90,6 @@ public class DefaultClasses {
     /**
      * Load all the default commands
      */
-    @SuppressWarnings("OverlyCoupledMethod")
     public void loadDefaultCommands() {
         Class[] classes = {
                 HealCommand.class,
@@ -118,31 +117,31 @@ public class DefaultClasses {
      * Load all the default features into the feature manager
      * @param injector the injector
      */
-    @SuppressWarnings("OverlyCoupledMethod")
+    @Inject
     public void loadDefaultFeatures(Injector injector) {
         m_logger.info("Loading UHC feature modules...");
         //Load the default features with settings in config
         Class<? extends IFeature>[] classes = new Class[]{
-                DeathLightningFeature.class,
-                EnderpearlsFeature.class,
-                GhastDropsFeature.class,
-                PlayerHeadsFeature.class,
-                PlayerListFeature.class,
-                RecipeFeature.class,
-                RegenFeature.class,
-                DeathMessagesFeature.class,
-                DeathDropsFeature.class,
-                AnonChatFeature.class,
-                GoldenHeadsFeature.class,
-                DeathBansFeature.class,
-                PotionNerfsFeature.class,
-                NetherFeature.class,
-                WitchSpawnsFeature.class,
-                PortalsFeature.class,
-                PlayerFreezeFeature.class,
-                HardcoreHeartsFeature.class,
-                FootprintFeature.class,
-                TimerFeature.class
+            DeathLightningFeature.class,
+            EnderpearlsFeature.class,
+            GhastDropsFeature.class,
+            PlayerHeadsFeature.class,
+            PlayerListFeature.class,
+            RecipeFeature.class,
+            RegenFeature.class,
+            DeathMessagesFeature.class,
+            DeathDropsFeature.class,
+            AnonChatFeature.class,
+            GoldenHeadsFeature.class,
+            DeathBansFeature.class,
+            PotionNerfsFeature.class,
+            NetherFeature.class,
+            WitchSpawnsFeature.class,
+            PortalsFeature.class,
+            PlayerFreezeFeature.class,
+            HardcoreHeartsFeature.class,
+            FootprintFeature.class,
+            TimerFeature.class
         };
         for(Class<? extends IFeature> clazz : classes){
             try{
