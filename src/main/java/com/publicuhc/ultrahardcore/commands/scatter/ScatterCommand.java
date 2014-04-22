@@ -1,8 +1,14 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.matchers.AnyRouteMatcher;
+import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
+import com.publicuhc.pluginframework.commands.matchers.SimpleRouteMatcher;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
+import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
+import com.publicuhc.pluginframework.commands.routing.MethodRoute;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -19,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class ScatterCommand extends SimpleCommand {
 
@@ -56,28 +63,38 @@ public class ScatterCommand extends SimpleCommand {
 
 
     /**
-     * Ran on /iscatter
+     * Interactive scatter
      * @param request the request params
      */
-    @Command(trigger = "iscatter",
-            identifier = "InteractiveScatterCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = SCATTER_COMMAND,
-            senders = {SenderType.PLAYER, SenderType.CONSOLE})
-    public void onInteractiveScatterCommand(CommandRequest request){
+    @CommandMethod
+    public void interactiveScatterCommand(CommandRequest request){
         m_conversationFactory.buildConversation((Conversable) request.getSender()).begin();
     }
 
     /**
-     * Ran on /scatter {type} {world} {center} {radius} {minDist} {useTeams} {players/*}*
+     * Run on /iscatter.*
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute interactiveScatterCommandDetails() {
+        return new DefaultMethodRoute(
+                new AnyRouteMatcher(),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.REMOTE_CONSOLE
+                },
+                SCATTER_COMMAND,
+                "iscatter"
+        );
+    }
+
+    /**
+     *
      * @param request the request params
      */
-    @Command(trigger = "scatter",
-            identifier = "ScatterCommand",
-            minArgs = 7,
-            permission = SCATTER_COMMAND)
-    public void onScatterCommand(CommandRequest request){
+    @CommandMethod
+    public void scatterCommand(CommandRequest request){
         if(m_scatterManager.isScatterInProgress()){
             request.sendMessage(ChatColor.RED+"There is already a scatter in progress, please wait and try again");
             return;
@@ -168,20 +185,53 @@ public class ScatterCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /scatter types
+     * Ran on /scatter {type} {world} {center} {radius} {minDist} {useTeams} {players/*}*
+     * Matches 7 parameters or more
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute scatterCommandDetails() {
+        return new DefaultMethodRoute(
+                new PatternRouteMatcher(Pattern.compile("([\\S]+ ){6}[\\S]+.*")),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                SCATTER_COMMAND,
+                "scatter"
+        );
+    }
+
+    /**
+     * List the types loaded
      * @param request the request params
      */
-    @Command(trigger = "types",
-            identifier = "ScatterTypesCommand",
-            parentID = "ScatterCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = SCATTER_COMMAND)
+    @CommandMethod
     public void onScatterTypesCommand(CommandRequest request){
         String[] types = m_scatterManager.getScatterTypeNames();
         for(String type : types){
             request.sendMessage(ChatColor.GRAY+type);
         }
+    }
+
+    /**
+     * Run on /scatter types only
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute scatterTypesCommand() {
+        return new DefaultMethodRoute(
+                new SimpleRouteMatcher("types"),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.REMOTE_CONSOLE
+                },
+                SCATTER_COMMAND,
+                "scatter"
+        );
     }
 
 }
