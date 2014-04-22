@@ -1,15 +1,16 @@
 package com.publicuhc.ultrahardcore.features.anonchat;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 @Singleton
 public class AnonChatFeature extends UHCFeature {
@@ -27,10 +28,11 @@ public class AnonChatFeature extends UHCFeature {
     /**
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private AnonChatFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private AnonChatFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -47,7 +49,7 @@ public class AnonChatFeature extends UHCFeature {
                 String playerName = apce.getPlayer().getName();
                 apce.setCancelled(true);
                 //schedule the new message to be send on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(playerName, apce.getMessage(), translate("anon_chat.no_perms")));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(playerName, apce.getMessage(), "anon_chat.no_perms", getTranslate()));
             }
         }
     }
@@ -75,16 +77,20 @@ public class AnonChatFeature extends UHCFeature {
 
         private final String m_noPermsMessage;
 
+        private final Translate m_translate;
+
         /**
          * Sends the message when ran
          * @param playerName the player to run for
          * @param message the message to send
          * @param noPermsMessage the message to say for no permissions
+         * @param translate the translator
          */
-        ChatRunnable(String playerName, String message, String noPermsMessage) {
+        ChatRunnable(String playerName, String message, String noPermsMessage, Translate translate) {
             m_playerName = playerName;
             m_message = message;
             m_noPermsMessage = noPermsMessage;
+            m_translate = translate;
         }
 
         @Override
@@ -107,7 +113,7 @@ public class AnonChatFeature extends UHCFeature {
                 if (pl.hasPermission(ANON_CHAT_SEE_NAME)) {
                     pl.sendMessage(String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + m_playerName + finalMessage);
                 } else {
-                    pl.sendMessage(PREFIX + finalMessage);
+                    pl.sendMessage(PREFIX + m_translate.translate(finalMessage, m_translate.getLocaleForSender(pl)));
                 }
                 //log the anonchat usage
                 Bukkit.getLogger().info("[AnonChat][" + m_playerName + "]" + finalMessage);

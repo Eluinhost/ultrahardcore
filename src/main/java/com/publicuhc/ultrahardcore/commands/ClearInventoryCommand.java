@@ -1,6 +1,11 @@
 package com.publicuhc.ultrahardcore.commands;
 
+import com.publicuhc.commands.Command;
+import com.publicuhc.commands.CommandRequest;
+import com.publicuhc.commands.SenderType;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -8,10 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
-import com.publicuhc.configuration.ConfigManager;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ public class ClearInventoryCommand extends SimpleCommand {
 
     /**
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private ClearInventoryCommand(ConfigManager configManager) {
-        super(configManager);
+    private ClearInventoryCommand(Configurator configManager, Translate translate) {
+        super(configManager, translate);
     }
 
     /**
@@ -43,7 +45,7 @@ public class ClearInventoryCommand extends SimpleCommand {
             permission = CLEAR_SELF_PERMISSION)
     public void onClearInventorySelf(CommandRequest request){
         clearInventory((HumanEntity) request.getSender());
-        request.sendMessage(translate("ci.cleared"));
+        request.sendMessage(translate("ci.cleared", locale(request.getSender())));
     }
 
     /**
@@ -64,10 +66,10 @@ public class ClearInventoryCommand extends SimpleCommand {
                 continue;
             }
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                request.sendMessage(translate("ci.immune").replaceAll("%name%",p.getName()));
+                request.sendMessage(translate("ci.immune", locale(request.getSender()), "name", p.getName()));
             } else {
                 clearInventory(p);
-                p.sendMessage(translate("ci.tell").replaceAll("%name%",request.getSender().getName()));
+                p.sendMessage(translate("ci.tell", locale(request.getSender()), "name", request.getSender().getName()));
             }
         }
         request.sendMessage("ci.cleared");
@@ -76,7 +78,7 @@ public class ClearInventoryCommand extends SimpleCommand {
             for (String s : namesNotFound) {
                 message.append(' ').append(s);
             }
-            request.sendMessage(translate("ci.not_found").replaceAll("%list%",message.toString()));
+            request.sendMessage(translate("ci.not_found", locale(request.getSender()), "list", message.toString()));
         }
     }
 
@@ -96,7 +98,7 @@ public class ClearInventoryCommand extends SimpleCommand {
                 clearInventory(p);
             }
         }
-        Bukkit.broadcastMessage(translate("ci.announce_all").replaceAll("%name%",request.getSender().getName()));
+        Bukkit.broadcastMessage(translate("ci.announce_all", locale(request.getSender()), "name", request.getSender().getName()));
     }
 
 

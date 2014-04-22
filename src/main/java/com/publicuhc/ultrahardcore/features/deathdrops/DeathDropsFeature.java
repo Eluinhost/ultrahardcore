@@ -1,7 +1,10 @@
 package com.publicuhc.ultrahardcore.features.deathdrops;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import com.publicuhc.ultrahardcore.util.SimplePair;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,8 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,11 +36,12 @@ public class DeathDropsFeature extends UHCFeature {
      * Add drops to a player when they die
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private DeathDropsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
-        ConfigurationSection items = configManager.getConfig().getConfigurationSection(getBaseConfig()+ITEMS_NODE);
+    private DeathDropsFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
+        ConfigurationSection items = configManager.getConfig("main").getConfigurationSection(getBaseConfig()+ITEMS_NODE);
         for (String item : items.getKeys(false)) {
             ConfigurationSection itemSection = items.getConfigurationSection(item);
 

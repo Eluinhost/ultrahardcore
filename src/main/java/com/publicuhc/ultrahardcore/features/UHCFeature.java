@@ -1,9 +1,10 @@
 package com.publicuhc.ultrahardcore.features;
 
-import com.publicuhc.pluginframework.shaded.inject.Inject;
-import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.Feature;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
+import org.bukkit.plugin.Plugin;
 
 public abstract class UHCFeature extends Feature {
 
@@ -15,10 +16,11 @@ public abstract class UHCFeature extends Feature {
      *
      * @param plugin the plugin to use
      * @param configManager the config manager to use
+     * @param translate the translator
      */
     @Inject
-    protected UHCFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    protected UHCFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -26,13 +28,5 @@ public abstract class UHCFeature extends Feature {
      */
     public String getBaseConfig(){
         return BASE_CONFIG+getFeatureID()+".";
-    }
-
-    /**
-     * @param key the key to search for
-     * @return the translated message
-     */
-    public String translate(String key){
-        return getConfigManager().getMessage(key);
     }
 }

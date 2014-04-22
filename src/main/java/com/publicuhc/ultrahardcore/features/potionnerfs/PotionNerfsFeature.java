@@ -1,7 +1,10 @@
 package com.publicuhc.ultrahardcore.features.potionnerfs;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,8 +20,6 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 @Singleton
 public class PotionNerfsFeature extends UHCFeature {
@@ -31,10 +32,11 @@ public class PotionNerfsFeature extends UHCFeature {
      * Disallows tier 2 + splash when enabled, normal when disabled
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private PotionNerfsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private PotionNerfsFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -45,7 +47,7 @@ public class PotionNerfsFeature extends UHCFeature {
     public void onInventoryClickEvent(InventoryClickEvent ice) {
         //if we're enabled
         if (isEnabled()) {
-            FileConfiguration config = getConfigManager().getConfig();
+            FileConfiguration config = getConfigManager().getConfig("main");
 
             //if it's not a brewing stand skip
             if (ice.getInventory().getType() != InventoryType.BREWING) {
@@ -101,7 +103,7 @@ public class PotionNerfsFeature extends UHCFeature {
     @EventHandler
     public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
         //if we're enabled and absorbtion is disabled
-        if (isEnabled() && getConfigManager().getConfig().getBoolean(getBaseConfig() + "disableAbsorb")) {
+        if (isEnabled() && getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "disableAbsorb")) {
             //if they ate a golden apple
             ItemStack is = pee.getItem();
             if (is.getType() == Material.GOLDEN_APPLE) {
@@ -119,7 +121,7 @@ public class PotionNerfsFeature extends UHCFeature {
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent imie) {
         //if we're enabled
         if (isEnabled()) {
-            FileConfiguration config = getConfigManager().getConfig();
+            FileConfiguration config = getConfigManager().getConfig("main");
             //if the item is being moved into a brewing stand
             if (imie.getDestination().getType() == InventoryType.BREWING) {
                 //cancel sulpher if no permission

@@ -1,22 +1,27 @@
 package com.publicuhc.ultrahardcore.features.playerfreeze;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.commands.FreezeCommand;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class PlayerFreezeFeature extends UHCFeature {
@@ -28,10 +33,11 @@ public class PlayerFreezeFeature extends UHCFeature {
      * handles frozen players
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private PlayerFreezeFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**

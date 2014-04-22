@@ -1,14 +1,14 @@
 package com.publicuhc.features;
 
-import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.events.FeatureInitEvent;
 import com.publicuhc.features.exceptions.FeatureIDConflictException;
 import com.publicuhc.features.exceptions.FeatureIDNotFoundException;
 import com.publicuhc.features.exceptions.InvalidFeatureIDException;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 @Singleton
 public class RealFeatureManager implements FeatureManager {
 
-    private final ConfigManager m_configManager;
+    private final Configurator m_configManager;
     private final Plugin m_plugin;
 
     /**
@@ -32,7 +32,7 @@ public class RealFeatureManager implements FeatureManager {
      * @param plugin the plugin
      */
     @Inject
-    public RealFeatureManager(ConfigManager configManager, Plugin plugin){
+    public RealFeatureManager(Configurator configManager, Plugin plugin){
         m_configManager = configManager;
         m_plugin = plugin;
     }
@@ -80,7 +80,7 @@ public class RealFeatureManager implements FeatureManager {
         m_featureList.add(feature);
         Bukkit.getLogger().log(Level.INFO,"Loaded feature module "+featureID);
 
-        List<String> config = m_configManager.getConfig().getStringList("enabledFeatures");
+        List<String> config = m_configManager.getConfig("main").getStringList("enabledFeatures");
         if(config.contains(featureID)){
             feature.enableFeature();
         }else{

@@ -1,7 +1,8 @@
 package com.publicuhc.ultrahardcore.features.timer;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.configuration.ConfigManager;
+import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.plugin.Plugin;
 
@@ -14,10 +15,11 @@ public class TimerFeature extends UHCFeature {
      *
      * @param plugin        the plugin to use
      * @param configManager the config manager to use
+     * @param translate the translator
      */
     @Inject
-    private TimerFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private TimerFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**

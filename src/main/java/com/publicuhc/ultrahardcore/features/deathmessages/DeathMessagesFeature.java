@@ -1,14 +1,15 @@
 package com.publicuhc.ultrahardcore.features.deathmessages;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 
 /**
@@ -28,10 +29,11 @@ public class DeathMessagesFeature extends UHCFeature {
      * Change the format of death messages
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private DeathMessagesFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private DeathMessagesFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -42,7 +44,7 @@ public class DeathMessagesFeature extends UHCFeature {
     public void onPlayerDeath(PlayerDeathEvent pde) {
         if (isEnabled()) {
             //if death message suppression is on
-            if (getConfigManager().getConfig().getBoolean(getBaseConfig() + "remove")) {
+            if (getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "remove")) {
                 //and the players death messages are suppressed
                 if (pde.getEntity().hasPermission(DEATH_MESSAGE_SUPPRESSED)) {
                     //set to nothing
@@ -53,7 +55,7 @@ public class DeathMessagesFeature extends UHCFeature {
             //if there is an affix for the player
             if (pde.getEntity().hasPermission(DEATH_MESSAGE_AFFIXES)) {
                 //grab format from config file
-                String format = ChatColor.translateAlternateColorCodes('&', getConfigManager().getConfig().getString(getBaseConfig() + "message"));
+                String format = ChatColor.translateAlternateColorCodes('&', getConfigManager().getConfig("main").getString(getBaseConfig() + "message"));
 
                 //replace vars
                 format = format.replaceAll("%message", pde.getDeathMessage());

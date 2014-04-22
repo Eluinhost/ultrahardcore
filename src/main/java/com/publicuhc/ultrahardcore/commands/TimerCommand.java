@@ -1,11 +1,12 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.commands.Command;
 import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.IFeature;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.features.timer.TimerFeature;
 import com.publicuhc.ultrahardcore.features.timer.TimerRunnable;
 
@@ -19,11 +20,12 @@ public class TimerCommand extends SimpleCommand {
 
     /**
      * @param configManager the config manager
+     * @param translate the translator
      * @param featureManager the feature manager
      */
     @Inject
-    private TimerCommand(ConfigManager configManager, FeatureManager featureManager) {
-        super(configManager);
+    private TimerCommand(Configurator configManager, Translate translate, FeatureManager featureManager) {
+        super(configManager, translate);
         m_featureManager = featureManager;
     }
 
@@ -40,16 +42,16 @@ public class TimerCommand extends SimpleCommand {
     public void onTimerCommand(CommandRequest request) {
         IFeature feature = m_featureManager.getFeatureByID("Timer");
         if(feature == null) {
-            request.sendMessage(translate("timer.feature_not_found"));
+            request.sendMessage(translate("timer.feature_not_found", locale(request.getSender())));
             return;
         }
         TimerFeature timerFeature = (TimerFeature) feature;
         if(!feature.isEnabled()){
-            request.sendMessage(translate("timer.not_enabled"));
+            request.sendMessage(translate("timer.not_enabled", locale(request.getSender())));
             return;
         }
         if(!request.isArgInt(0)) {
-            request.sendMessage(translate("timer.invalid_time"));
+            request.sendMessage(translate("timer.invalid_time", locale(request.getSender())));
             return;
         }
 
@@ -63,9 +65,9 @@ public class TimerCommand extends SimpleCommand {
         String message = sb.toString();
 
         if(timerFeature.startTimer(TimerRunnable.TICKS_PER_SECOND*seconds,message)) {
-            request.sendMessage(translate("timer.running"));
+            request.sendMessage(translate("timer.running", locale(request.getSender())));
         }else {
-            request.sendMessage(translate("timer.already_running"));
+            request.sendMessage(translate("timer.already_running", locale(request.getSender())));
         }
     }
 
@@ -83,11 +85,11 @@ public class TimerCommand extends SimpleCommand {
     public void onTimerCancelCommand(CommandRequest request) {
         IFeature feature = m_featureManager.getFeatureByID("Timer");
         if(feature == null) {
-            request.sendMessage(translate("timer.feature_not_found"));
+            request.sendMessage(translate("timer.feature_not_found", locale(request.getSender())));
             return;
         }
         TimerFeature timerFeature = (TimerFeature) feature;
         timerFeature.stopTimer();
-        request.sendMessage(translate("timer.cancelled"));
+        request.sendMessage(translate("timer.cancelled", locale(request.getSender())));
     }
 }

@@ -1,14 +1,15 @@
 package com.publicuhc.ultrahardcore.features.nether;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 
 /**
@@ -25,10 +26,11 @@ public class NetherFeature extends UHCFeature {
      * Stops travelling to the nether when enabled
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private NetherFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private NetherFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**

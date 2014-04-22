@@ -1,15 +1,16 @@
 package com.publicuhc.ultrahardcore.features.portals;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.TravelAgent;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 @Singleton
 public class PortalsFeature extends UHCFeature {
@@ -18,10 +19,11 @@ public class PortalsFeature extends UHCFeature {
      * Changes the radius portals will connect, normal when disabled
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private PortalsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private PortalsFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -32,7 +34,7 @@ public class PortalsFeature extends UHCFeature {
     public void onPortalEvent(PlayerPortalEvent entityPortalEvent) {
         //if we're enabled
         if (isEnabled()) {
-            FileConfiguration config = getConfigManager().getConfig();
+            FileConfiguration config = getConfigManager().getConfig("main");
 
             //create a travel agent for the portal
             TravelAgent ta = entityPortalEvent.getPortalTravelAgent();

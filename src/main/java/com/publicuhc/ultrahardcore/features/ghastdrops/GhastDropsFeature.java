@@ -1,7 +1,9 @@
 package com.publicuhc.ultrahardcore.features.ghastdrops;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -9,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 import java.util.ArrayList;
@@ -31,10 +32,11 @@ public class GhastDropsFeature extends UHCFeature {
      * Stops ghasts dropping tears to get rid of regen potions
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private GhastDropsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private GhastDropsFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -74,7 +76,7 @@ public class GhastDropsFeature extends UHCFeature {
      * @return true if allowed, false otherwise
      */
     public boolean featureEnabledForWorld(String featureNode, String worldName) {
-        FileConfiguration config = getConfigManager().getConfig();
+        FileConfiguration config = getConfigManager().getConfig("main");
         //w&&f = enabled
         //w&&!f = disabled
         //!w&&f = disabled

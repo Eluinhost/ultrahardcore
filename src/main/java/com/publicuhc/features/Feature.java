@@ -1,10 +1,11 @@
 package com.publicuhc.features;
 
-import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.events.FeatureDisableEvent;
 import com.publicuhc.features.events.FeatureEnableEvent;
 import com.publicuhc.features.events.FeatureEvent;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -16,8 +17,9 @@ public abstract class Feature implements IFeature {
      */
     private boolean m_enabled;
 
-    private final ConfigManager m_configManager;
+    private final Configurator m_configManager;
     private final Plugin m_plugin;
+    private final Translate m_translate;
 
     @Override
     public final boolean enableFeature(){
@@ -66,11 +68,13 @@ public abstract class Feature implements IFeature {
      * Construct a new feature
      * @param plugin the plugin
      * @param configManager the config manager to use
+     * @param translate the translator
      */
     @Inject
-    protected Feature(Plugin plugin, ConfigManager configManager) {
+    protected Feature(Plugin plugin, Configurator configManager, Translate translate) {
         m_configManager = configManager;
         m_plugin = plugin;
+        m_translate = translate;
     }
 
     /**
@@ -86,7 +90,7 @@ public abstract class Feature implements IFeature {
     /**
      * @return the config manager for the feature
      */
-    protected ConfigManager getConfigManager(){
+    protected Configurator getConfigManager(){
         return m_configManager;
     }
 
@@ -104,5 +108,12 @@ public abstract class Feature implements IFeature {
     @Override
     public int hashCode(){
         return new HashCodeBuilder(17, 31).append(getFeatureID()).toHashCode();
+    }
+
+    /**
+     * @return the translator
+     */
+    protected Translate getTranslate() {
+        return m_translate;
     }
 }

@@ -1,13 +1,16 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.commands.Command;
 import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.IFeature;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FeatureCommand extends SimpleCommand {
 
@@ -19,11 +22,12 @@ public class FeatureCommand extends SimpleCommand {
     /**
      * feature commands
      * @param configManager the config manager
+     * @param translate the translator
      * @param featureManager the feature manager
      */
     @Inject
-    private FeatureCommand(ConfigManager configManager, FeatureManager featureManager){
-        super(configManager);
+    private FeatureCommand(Configurator configManager, Translate translate, FeatureManager featureManager){
+        super(configManager, translate);
         m_featureManager = featureManager;
     }
 
@@ -49,13 +53,15 @@ public class FeatureCommand extends SimpleCommand {
             parentID = "FeatureCommand")
     public void onFeatureListCommand(CommandRequest request){
         List<IFeature> features = m_featureManager.getFeatures();
-        request.sendMessage(translate("features.loaded.header").replaceAll("%amount%",String.valueOf(features.size())));
+        request.sendMessage(translate("features.loaded.header", locale(request.getSender()), "amount", String.valueOf(features.size())));
         if (features.isEmpty()) {
-            request.sendMessage(translate("features.loaded.none"));
+            request.sendMessage(translate("features.loaded.none", locale(request.getSender())));
         }
         for (IFeature feature : features) {
-            String message = translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off");
-            request.sendMessage(message.replaceAll("%id%",feature.getFeatureID()).replaceAll("%desc%",feature.getDescription()));
+            Map<String, String> vars = new HashMap<String, String>();
+            vars.put("id", feature.getFeatureID());
+            vars.put("desc", feature.getDescription());
+            request.sendMessage(translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off", locale(request.getSender()), vars));
         }
     }
 
@@ -72,18 +78,18 @@ public class FeatureCommand extends SimpleCommand {
     public void onFeatureOnCommand(CommandRequest request){
         IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
+            request.sendMessage(translate("features.not_found", locale(request.getSender()), "id", request.getFirstArg()));
             return;
         }
         if(feature.isEnabled()){
-            request.sendMessage(translate("features.already_enabled"));
+            request.sendMessage(translate("features.already_enabled", locale(request.getSender())));
             return;
         }
         if(!feature.enableFeature()){
-            request.sendMessage(translate("features.enabled_cancelled"));
+            request.sendMessage(translate("features.enabled_cancelled", locale(request.getSender())));
             return;
         }
-        request.sendMessage(translate("features.enabled"));
+        request.sendMessage(translate("features.enabled", locale(request.getSender())));
     }
 
     /**
@@ -99,17 +105,17 @@ public class FeatureCommand extends SimpleCommand {
     public void onFeatureOffCommand(CommandRequest request){
         IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.sendMessage(translate("features.not_found").replaceAll("%id%",request.getFirstArg()));
+            request.sendMessage(translate("features.not_found", locale(request.getSender()), "id", request.getFirstArg()));
             return;
         }
         if(!feature.isEnabled()){
-            request.sendMessage(translate("features.already_disabled"));
+            request.sendMessage(translate("features.already_disabled", locale(request.getSender())));
             return;
         }
         if(!feature.disableFeature()){
-            request.sendMessage(translate("features.disabled_cancelled"));
+            request.sendMessage(translate("features.disabled_cancelled", locale(request.getSender())));
             return;
         }
-        request.sendMessage(translate("features.disabled"));
+        request.sendMessage(translate("features.disabled", locale(request.getSender())));
     }
 }

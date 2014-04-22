@@ -1,7 +1,11 @@
 package com.publicuhc.ultrahardcore.features.goldenheads;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
+import com.publicuhc.ultrahardcore.util.RecipeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,9 +20,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
-import com.publicuhc.ultrahardcore.util.RecipeUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,10 +37,11 @@ public class GoldenHeadsFeature extends UHCFeature {
      * Adds a recipe to make golden heads
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private GoldenHeadsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private GoldenHeadsFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -55,7 +57,7 @@ public class GoldenHeadsFeature extends UHCFeature {
             ItemMeta im = is.getItemMeta();
             if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
                 //add tge new potion effect
-                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + getConfigManager().getConfig().getInt(getBaseConfig()+"amountExtra") * POTION_TICK_MULTIPLIER, 1));
+                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + getConfigManager().getConfig("main").getInt(getBaseConfig()+"amountExtra") * POTION_TICK_MULTIPLIER, 1));
             }
         }
     }

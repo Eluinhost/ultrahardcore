@@ -1,14 +1,15 @@
 package com.publicuhc.ultrahardcore.commands;
 
+import com.publicuhc.commands.Command;
+import com.publicuhc.commands.CommandRequest;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.configuration.ConfigManager;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class TPCommand extends SimpleCommand {
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 
     @Inject
-    private TPCommand(ConfigManager configManager) {
-        super(configManager);
+    private TPCommand(Configurator configManager, Translate translate) {
+        super(configManager, translate);
     }
 
     /**
@@ -39,18 +40,18 @@ public class TPCommand extends SimpleCommand {
             World w;
             if (coords.length == 3) {
                 if (!(request.getSender() instanceof Player)) {
-                    request.sendMessage(translate("teleport.non_player_world"));
+                    request.sendMessage(translate("teleport.non_player_world", locale(request.getSender())));
                     return;
                 }
                 w = ((Entity) request.getSender()).getWorld();
             } else if (coords.length == 4) {
                 w = Bukkit.getWorld(coords[3]);
                 if (w == null) {
-                    request.sendMessage(translate("teleport.invalid.world"));
+                    request.sendMessage(translate("teleport.invalid.world", locale(request.getSender())));
                     return;
                 }
             } else {
-                request.sendMessage(translate("teleport.invalid.coords"));
+                request.sendMessage(translate("teleport.invalid.coords", locale(request.getSender())));
                 return;
             }
             int x;
@@ -61,14 +62,14 @@ public class TPCommand extends SimpleCommand {
                 y = Integer.parseInt(coords[1]);
                 z = Integer.parseInt(coords[2]);
             } catch (NumberFormatException ignored) {
-                request.sendMessage(translate("teleport.invalid.coords"));
+                request.sendMessage(translate("teleport.invalid.coords", locale(request.getSender())));
                 return;
             }
             location = new Location(w, x, y, z);
         } else {
             Player p = Bukkit.getPlayer(lastArg);
             if (p == null) {
-                request.sendMessage(translate("teleport.invalid.player").replaceAll("%name%",lastArg));
+                request.sendMessage(translate("teleport.invalid.player", locale(request.getSender()), "name", lastArg));
                 return;
             }
             location = p.getLocation();
@@ -81,7 +82,7 @@ public class TPCommand extends SimpleCommand {
             for (int i = 0; i < arguments.size() - 1; i++) {
                 Player p = Bukkit.getPlayer(arguments.get(i));
                 if (p == null) {
-                    request.sendMessage(translate("teleport.invalid.player").replaceAll("%name%",arguments.get(i)));
+                    request.sendMessage(translate("teleport.invalid.player", locale(request.getSender()), "name", arguments.get(i)));
                     continue;
                 }
                 p.teleport(location);

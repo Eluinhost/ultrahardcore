@@ -1,7 +1,11 @@
 package com.publicuhc.ultrahardcore.features.playerheads;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
+import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +22,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
-import com.publicuhc.ultrahardcore.util.ServerUtil;
 
 import java.util.Random;
 
@@ -43,10 +44,11 @@ public class PlayerHeadsFeature extends UHCFeature {
      * Player heads drop on death, normal behaviour when disabled
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private PlayerHeadsFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private PlayerHeadsFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -66,7 +68,7 @@ public class PlayerHeadsFeature extends UHCFeature {
                 return;
             }
             //do a random chance based on the config options
-            if (RANDOM.nextInt(100) >= 100 - getConfigManager().getConfig().getInt(getBaseConfig()+"percentChance")) {
+            if (RANDOM.nextInt(100) >= 100 - getConfigManager().getConfig("main").getInt(getBaseConfig()+"percentChance")) {
                 //drop the head with the loot if no stake was made
                 if (!putHeadOnStake(pde.getEntity())) {
                     pde.getDrops().add(playerSkullForName(pde.getEntity().getName()));
@@ -81,7 +83,7 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @return boolean
      */
     private boolean isValidKill(Player deadPlayer){
-        FileConfiguration config = getConfigManager().getConfig();
+        FileConfiguration config = getConfigManager().getConfig("main");
         if (config.getBoolean(getBaseConfig()+"pvponly")) {
             //get the killer and if there isn't one it wasn't a PVP kill
             Player killer = deadPlayer.getKiller();
@@ -109,7 +111,7 @@ public class PlayerHeadsFeature extends UHCFeature {
      * @return true if placed, false otherwise
      */
     private boolean putHeadOnStake(Player p) {
-        if(!getConfigManager().getConfig().getBoolean(getBaseConfig()+"onStake")){
+        if(!getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"onStake")){
             return false;
         }
         //head location

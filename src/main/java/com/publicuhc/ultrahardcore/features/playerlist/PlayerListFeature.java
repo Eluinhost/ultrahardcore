@@ -2,8 +2,11 @@ package com.publicuhc.ultrahardcore.features.playerlist;
 
 import com.google.common.collect.Range;
 import com.google.common.collect.Ranges;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,8 +15,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -56,10 +57,11 @@ public class PlayerListFeature extends UHCFeature {
      * Handles the player list health better than base mc, normal behaviour when disabled
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private PlayerListFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private PlayerListFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     /**
@@ -68,7 +70,7 @@ public class PlayerListFeature extends UHCFeature {
      * @param health the health value to update to
      */
     public void updatePlayerListHealth(Player player, double health) {
-        FileConfiguration config = getConfigManager().getConfig();
+        FileConfiguration config = getConfigManager().getConfig("main");
 
         String playerName = config.getBoolean(getBaseConfig()+"displayNames") ? player.getDisplayName() : player.getName();
         //get the players display name and strip the colour codes from it
@@ -143,7 +145,7 @@ public class PlayerListFeature extends UHCFeature {
                 getPlugin(),
                 new PlayerListUpdater(),
                 1L,
-                getConfigManager().getConfig().getLong(getBaseConfig() + "delay")
+                getConfigManager().getConfig("main").getLong(getBaseConfig() + "delay")
         );
         //intialize the scoreboard
         initializeScoreboard();
@@ -184,7 +186,7 @@ public class PlayerListFeature extends UHCFeature {
         m_objectivePlayerList = MAIN_SCOREBOARD.getObjective(OBJECTIVE_SCOREBOARD_NAME);
         m_objectiveUnderName = MAIN_SCOREBOARD.getObjective(OBJECTIVE_UNDER_NAME_NAME);
 
-        FileConfiguration config = getConfigManager().getConfig();
+        FileConfiguration config = getConfigManager().getConfig("main");
 
         //set the display name of the under name objective
         m_objectiveUnderName.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(getBaseConfig() + "belowNameUnit")).replaceAll("&h", "\u2665"));

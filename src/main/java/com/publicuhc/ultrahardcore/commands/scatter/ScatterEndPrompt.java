@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
-import com.publicuhc.configuration.ConfigManager;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.ultrahardcore.scatter.Parameters;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
@@ -52,9 +52,9 @@ public class ScatterEndPrompt extends MessagePrompt {
         params.setMinimumDistance(minDist);
         params.setRadius(radius);
 
-        ConfigManager configManager = (ConfigManager) conversationContext.getSessionData(ScatterStartPrompt.CONFIG_MANAGER);
+        Configurator configManager = (Configurator) conversationContext.getSessionData(ScatterStartPrompt.CONFIG_MANAGER);
 
-        FileConfiguration config = configManager.getConfig();
+        FileConfiguration config = configManager.getConfig("main");
         List<String> materials = config.getStringList("scatter.allowedBlocks");
         Collection<Material> mats = new ArrayList<Material>();
         for(String s : materials){

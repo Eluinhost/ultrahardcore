@@ -1,7 +1,12 @@
 package com.publicuhc.ultrahardcore.features.deathbans;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
+import com.publicuhc.ultrahardcore.util.ServerUtil;
+import com.publicuhc.ultrahardcore.util.WordsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -13,10 +18,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
-import com.publicuhc.ultrahardcore.util.ServerUtil;
-import com.publicuhc.ultrahardcore.util.WordsUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,13 +41,14 @@ public class DeathBansFeature extends UHCFeature {
     /**
      * Bans players on death
      * @param configManager the config manager
+     * @param translate the translator
      * @param plugin the plugin
      */
     @Inject
-    private DeathBansFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private DeathBansFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
 
-        FileConfiguration banConfig = configManager.getConfig();
+        FileConfiguration banConfig = configManager.getConfig("main");
 
         @SuppressWarnings("unchecked")
         List<DeathBan> banList = (List<DeathBan>) banConfig.getList("bans",new ArrayList<Object>());
@@ -59,7 +61,7 @@ public class DeathBansFeature extends UHCFeature {
         }
         m_deathBans = banList;
 
-        m_banDelay = configManager.getConfig().getLong(getBaseConfig()+"delay");
+        m_banDelay = configManager.getConfig("main").getLong(getBaseConfig()+"delay");
     }
 
     /**
@@ -143,7 +145,7 @@ public class DeathBansFeature extends UHCFeature {
      * @param p the player to ban
      */
     public void processBansForPlayer(Player p){
-        ConfigurationSection banTypes = getConfigManager().getConfig().getConfigurationSection(getBaseConfig()+CLASSES_NODE);
+        ConfigurationSection banTypes = getConfigManager().getConfig("main").getConfigurationSection(getBaseConfig()+CLASSES_NODE);
         Set<String> permissionNames = banTypes.getKeys(false);
         Logger logger = getPlugin().getLogger();
         for(String permission : permissionNames){

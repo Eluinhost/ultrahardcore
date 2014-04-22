@@ -1,19 +1,20 @@
 package com.publicuhc.ultrahardcore.commands;
 
+import com.publicuhc.commands.Command;
+import com.publicuhc.commands.CommandRequest;
+import com.publicuhc.commands.SenderType;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.util.MathsHelper;
+import com.publicuhc.ultrahardcore.util.TeamsUtil;
+import com.publicuhc.ultrahardcore.util.WordsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.util.MathsHelper;
-import com.publicuhc.ultrahardcore.util.TeamsUtil;
-import com.publicuhc.ultrahardcore.util.WordsUtil;
 
 import java.util.*;
 
@@ -35,8 +36,8 @@ public class TeamCommands extends SimpleCommand {
     private final WordsUtil m_words;
 
     @Inject
-    private TeamCommands(ConfigManager configManager, WordsUtil words, TeamsUtil teamsUtil) {
-        super(configManager);
+    private TeamCommands(Configurator configManager, Translate translate, WordsUtil words, TeamsUtil teamsUtil) {
+        super(configManager, translate);
         m_words = words;
         m_teamsUtil = teamsUtil;
     }
@@ -55,7 +56,7 @@ public class TeamCommands extends SimpleCommand {
         if (request.getArgs().size() == 1) {
             thisteam = m_teamsUtil.getTeam(request.getFirstArg());
             if (thisteam != null) {
-                request.sendMessage(translate("teams.already_exists").replaceAll("%name%",thisteam.getName()));
+                request.sendMessage(translate("teams.already_exists", locale(request.getSender()), "name", thisteam.getName()));
                 return;
             }
             thisteam = m_teamsUtil.registerNewTeam(request.getFirstArg());
@@ -63,7 +64,10 @@ public class TeamCommands extends SimpleCommand {
         } else {
             thisteam = m_teamsUtil.getNextAvailableTeam(true);
         }
-        request.sendMessage(translate("teams.created").replaceAll("%display%",thisteam.getDisplayName()).replaceAll("%name%",thisteam.getName()));
+        Map<String, String> vars = new HashMap<String, String>();
+        vars.put("display", thisteam.getDisplayName());
+        vars.put("name", thisteam.getName());
+        request.sendMessage(translate("teams.created", locale(request.getSender()), vars));
     }
 
     /**
@@ -78,17 +82,17 @@ public class TeamCommands extends SimpleCommand {
     public void onRemoveTeamCommand(CommandRequest request){
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
-            request.sendMessage(translate("teams.not_exist"));
+            request.sendMessage(translate("teams.not_exist", locale(request.getSender())));
             return;
         }
         for (OfflinePlayer p : team.getPlayers()) {
             Player p1 = p.getPlayer();
             if (p1 != null) {
-                p1.sendMessage(translate("teams.disbanded"));
+                p1.sendMessage(translate("teams.disbanded", locale(request.getSender())));
             }
         }
         m_teamsUtil.removeTeam(request.getFirstArg());
-        request.sendMessage(translate("teams.removed"));
+        request.sendMessage(translate("teams.removed", locale(request.getSender())));
     }
 
     /**
@@ -104,7 +108,7 @@ public class TeamCommands extends SimpleCommand {
     public void onLeaveTeamCommand(CommandRequest request){
         boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam((OfflinePlayer) request.getSender(), true, true);
         if (stillOnTeam) {
-            request.sendMessage(translate("teams.not_in_team"));
+            request.sendMessage(translate("teams.not_in_team", locale(request.getSender())));
         }
     }
 
@@ -121,7 +125,7 @@ public class TeamCommands extends SimpleCommand {
     public void onLeaveTeamForce(CommandRequest request){
         boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam(Bukkit.getOfflinePlayer(request.getFirstArg()), true, true);
         if (stillOnTeam) {
-            request.getSender().sendMessage(translate("teams.player_not_in_team").replaceAll("%name%",request.getFirstArg()));
+            request.getSender().sendMessage(translate("teams.player_not_in_team", locale(request.getSender()) , "name", request.getFirstArg()));
         }
     }
 
@@ -139,7 +143,7 @@ public class TeamCommands extends SimpleCommand {
         OfflinePlayer sender = (OfflinePlayer) request.getSender();
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
-            request.sendMessage(translate("teams.not_exist"));
+            request.sendMessage(translate("teams.not_exist", locale(request.getSender())));
             return;
         }
         if(m_teamsUtil.getPlayersTeam(sender) != null){
@@ -161,7 +165,7 @@ public class TeamCommands extends SimpleCommand {
     public void onJoinTeamOtherCommand(CommandRequest request){
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
-            request.sendMessage(translate("teams.not_exist"));
+            request.sendMessage(translate("teams.not_exist", locale(request.getSender())));
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(request.getLastArg());
@@ -182,7 +186,7 @@ public class TeamCommands extends SimpleCommand {
             permission = CLEAR_TEAMS_PERMISSION)
     public void onClearTeamsCommand(CommandRequest request){
         m_teamsUtil.clearTeams(true);
-        request.sendMessage(translate("teams.cleared"));
+        request.sendMessage(translate("teams.cleared", locale(request.getSender())));
     }
 
     /**
@@ -196,7 +200,7 @@ public class TeamCommands extends SimpleCommand {
             permission = EMPTY_TEAMS_PERMISSION)
     public void onEmptyTeamsCommand(CommandRequest request){
         m_teamsUtil.emptyTeams(true);
-        request.sendMessage(translate("teams.emptied"));
+        request.sendMessage(translate("teams.emptied", locale(request.getSender())));
     }
 
     /**
@@ -215,7 +219,7 @@ public class TeamCommands extends SimpleCommand {
         }
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if(team == null){
-            request.sendMessage(translate("teams.not_exist"));
+            request.sendMessage(translate("teams.not_exist", locale(request.getSender())));
             return;
         }
         request.sendMessage(TeamsUtil.teamToString(team));
@@ -234,7 +238,7 @@ public class TeamCommands extends SimpleCommand {
     public void onListTeamsAllCommand(CommandRequest request){
         Set<Team> teams = m_teamsUtil.getAllTeams();
         if(teams.isEmpty()){
-            request.sendMessage(translate("teams.no_teams"));
+            request.sendMessage(translate("teams.no_teams", locale(request.getSender())));
             return;
         }
         for(Team team : teams){
@@ -256,7 +260,7 @@ public class TeamCommands extends SimpleCommand {
         if(request.getArgs().size() == 2){
             World world = Bukkit.getWorld(request.getLastArg());
             if(world == null){
-                request.sendMessage(translate("teams.invalid_world"));
+                request.sendMessage(translate("teams.invalid_world", locale(request.getSender())));
                 return;
             }
             players.addAll(world.getPlayers());
@@ -270,17 +274,17 @@ public class TeamCommands extends SimpleCommand {
         try {
             teamsToMake = Integer.parseInt(request.getFirstArg());
         } catch (NumberFormatException ignored) {
-            request.sendMessage(translate("teams.invalid_number_teams"));
+            request.sendMessage(translate("teams.invalid_number_teams", locale(request.getSender())));
             return;
         }
 
         if (teamsToMake > players.size()) {
-            request.sendMessage(translate("teams.too_many_teams"));
+            request.sendMessage(translate("teams.too_many_teams", locale(request.getSender())));
             return;
         }
 
         if (teamsToMake <= 0) {
-            request.sendMessage("teams.greater_zero");
+            request.sendMessage(translate("teams.greater_zero", locale(request.getSender())));
             return;
         }
 
@@ -319,6 +323,6 @@ public class TeamCommands extends SimpleCommand {
                 }
             }
         }
-        request.sendMessage(translate("teams.created_teams").replaceAll("%amount%", String.valueOf(teamsToMake)));
+        request.sendMessage(translate("teams.created_teams", locale(request.getSender()), "amount", String.valueOf(teamsToMake)));
     }
 }

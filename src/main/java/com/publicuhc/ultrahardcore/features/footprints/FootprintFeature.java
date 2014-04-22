@@ -4,8 +4,11 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -15,8 +18,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -44,10 +45,11 @@ public class FootprintFeature extends UHCFeature implements Runnable {
      * Leave 'footprints' behind you, requires protocollib
      * @param plugin the plugin
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    private FootprintFeature(Plugin plugin, ConfigManager configManager) {
-        super(plugin, configManager);
+    private FootprintFeature(Plugin plugin, Configurator configManager, Translate translate) {
+        super(plugin, configManager, translate);
     }
 
     @Override
@@ -64,7 +66,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
 
     @Override
     public void run() {
-        FileConfiguration config = getConfigManager().getConfig();
+        FileConfiguration config = getConfigManager().getConfig("main");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.hasPermission(FOOTPRINTS_FOR_PLAYER) || p.getGameMode() == GameMode.CREATIVE) {
                 continue;
@@ -142,7 +144,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
         m_defaultPacket.getIntegers().write(0, 1);
         for (Player p : Bukkit.getOnlinePlayers()) {
             try {
-                int maxRender = getConfigManager().getConfig().getInt(getBaseConfig()+"maxdistance");
+                int maxRender = getConfigManager().getConfig("main").getInt(getBaseConfig()+"maxdistance");
                 if (p.getLocation().distanceSquared(loc) < maxRender * maxRender) {
                     PROTOCOL_MANAGER.sendServerPacket(p, m_defaultPacket);
                 }

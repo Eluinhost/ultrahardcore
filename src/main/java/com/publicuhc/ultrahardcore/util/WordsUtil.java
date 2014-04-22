@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.util;
 
-import com.publicuhc.configuration.ConfigManager;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -34,7 +34,7 @@ public class WordsUtil {
      * @param manager the config manager
      */
     @Inject
-    private WordsUtil(ConfigManager manager){
+    private WordsUtil(Configurator manager){
         FileConfiguration config = manager.getConfig("words");
         m_adjectives = config.getStringList("adjectives");
         m_nouns = config.getStringList("nouns");
