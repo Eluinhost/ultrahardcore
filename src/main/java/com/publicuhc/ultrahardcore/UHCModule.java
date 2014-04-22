@@ -1,8 +1,5 @@
 package com.publicuhc.ultrahardcore;
 
-import com.google.inject.AbstractModule;
-import com.publicuhc.metrics.UHCMetrics;
-import org.bukkit.plugin.Plugin;
 import com.publicuhc.commands.CommandHandler;
 import com.publicuhc.commands.CommandMap;
 import com.publicuhc.commands.RealCommandHandler;
@@ -11,6 +8,8 @@ import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.configuration.RealConfigManager;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.RealFeatureManager;
+import com.publicuhc.metrics.UHCMetrics;
+import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.ultrahardcore.borders.BorderTypeManager;
 import com.publicuhc.ultrahardcore.borders.RealBorderTypeManager;
 import com.publicuhc.ultrahardcore.scatter.FallProtector;
@@ -19,23 +18,11 @@ import com.publicuhc.ultrahardcore.scatter.RealScatterManager;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import org.mcstats.Metrics;
 
+@SuppressWarnings("OverlyCoupledMethod")
 public class UHCModule extends AbstractModule {
 
-    private final Plugin m_plugin;
-
-    /**
-     * Guice bindings
-     * @param plugin the plugin to run for
-     */
-    public UHCModule(Plugin plugin){
-        m_plugin = plugin;
-    }
-
-    @SuppressWarnings("OverlyCoupledMethod")
     @Override
     protected void configure() {
-        bind(Plugin.class).toInstance(m_plugin);
-        //bind(Logger.class).toInstance(m_plugin.getLogger());
         bind(CommandMap.class).to(RealCommandMap.class);
         bind(CommandHandler.class).to(RealCommandHandler.class);
         bind(ConfigManager.class).to(RealConfigManager.class);
