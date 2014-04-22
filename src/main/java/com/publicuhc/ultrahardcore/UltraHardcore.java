@@ -23,8 +23,6 @@ import java.util.logging.Level;
 @Singleton
 public class UltraHardcore extends FrameworkJavaPlugin {
 
-    private DefaultClasses m_defaultClasses = null;
-
     //When the plugin gets started
     @Override
     public void onEnable() {
@@ -40,10 +38,9 @@ public class UltraHardcore extends FrameworkJavaPlugin {
      */
     @Inject
     public void loadDefaultClasses(DefaultClasses defaultClasses) {
-        m_defaultClasses = defaultClasses;
         defaultClasses.loadDefaultCommands();
         if(Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
-            m_defaultClasses.loadBorders();
+            defaultClasses.loadBorders();
         }
         getLogger().log(Level.INFO, "All default classes loaded");
     }
