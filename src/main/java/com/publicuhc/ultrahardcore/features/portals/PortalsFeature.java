@@ -1,7 +1,7 @@
 package com.publicuhc.ultrahardcore.features.portals;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.TravelAgent;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;

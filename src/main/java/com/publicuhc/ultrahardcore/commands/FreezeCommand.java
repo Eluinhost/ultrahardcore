@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.google.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
 import org.bukkit.entity.Player;
 import com.publicuhc.commands.Command;
 import com.publicuhc.commands.CommandRequest;

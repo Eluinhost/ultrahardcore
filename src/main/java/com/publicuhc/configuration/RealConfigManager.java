@@ -1,7 +1,7 @@
 package com.publicuhc.configuration;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

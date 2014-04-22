@@ -1,7 +1,7 @@
 package com.publicuhc.ultrahardcore.features.nether;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPortalEvent;

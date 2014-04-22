@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.features.timer;
 
-import com.google.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.plugin.Plugin;

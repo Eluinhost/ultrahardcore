@@ -1,7 +1,7 @@
 package com.publicuhc.ultrahardcore.features.playerheads;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

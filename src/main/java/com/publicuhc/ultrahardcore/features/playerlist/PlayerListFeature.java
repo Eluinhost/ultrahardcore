@@ -2,8 +2,8 @@ package com.publicuhc.ultrahardcore.features.playerlist;
 
 import com.google.common.collect.Range;
 import com.google.common.collect.Ranges;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;

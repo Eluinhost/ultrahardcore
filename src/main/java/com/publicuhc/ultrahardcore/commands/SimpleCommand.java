@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.google.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.configuration.ConfigManager;
 
 public class SimpleCommand {

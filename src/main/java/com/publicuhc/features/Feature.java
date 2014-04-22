@@ -1,13 +1,13 @@
 package com.publicuhc.features;
 
-import com.google.inject.Inject;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.events.FeatureDisableEvent;
 import com.publicuhc.features.events.FeatureEnableEvent;
 import com.publicuhc.features.events.FeatureEvent;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 public abstract class Feature implements IFeature {
 

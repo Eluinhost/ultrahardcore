@@ -1,9 +1,9 @@
 package com.publicuhc.commands;
 
 import com.google.common.collect.MutableClassToInstanceMap;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Injector;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

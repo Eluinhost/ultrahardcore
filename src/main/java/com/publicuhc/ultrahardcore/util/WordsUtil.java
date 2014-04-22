@@ -1,8 +1,8 @@
 package com.publicuhc.ultrahardcore.util;
 
-import com.google.inject.Inject;
-import org.bukkit.configuration.file.FileConfiguration;
 import com.publicuhc.configuration.ConfigManager;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 import java.util.Random;

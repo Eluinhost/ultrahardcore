@@ -1,7 +1,7 @@
 package com.publicuhc.ultrahardcore.features.deathdrops;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.util.SimplePair;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

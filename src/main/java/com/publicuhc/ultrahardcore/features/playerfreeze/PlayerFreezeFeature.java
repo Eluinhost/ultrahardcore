@@ -1,7 +1,7 @@
 package com.publicuhc.ultrahardcore.features.playerfreeze;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.*;

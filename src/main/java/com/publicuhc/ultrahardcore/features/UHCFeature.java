@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.features;
 
-import com.google.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
 import org.bukkit.plugin.Plugin;
 import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.Feature;

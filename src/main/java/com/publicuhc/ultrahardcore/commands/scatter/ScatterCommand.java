@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
-import com.google.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;

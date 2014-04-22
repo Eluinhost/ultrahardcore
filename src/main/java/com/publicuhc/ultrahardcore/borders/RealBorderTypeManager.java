@@ -1,6 +1,6 @@
 package com.publicuhc.ultrahardcore.borders;
 
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.borders.exceptions.BorderIDConflictException;
 import com.publicuhc.ultrahardcore.borders.types.Border;
 

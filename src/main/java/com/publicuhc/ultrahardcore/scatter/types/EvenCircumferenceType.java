@@ -1,7 +1,7 @@
 package com.publicuhc.ultrahardcore.scatter.types;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.Location;
 import com.publicuhc.ultrahardcore.scatter.Parameters;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
