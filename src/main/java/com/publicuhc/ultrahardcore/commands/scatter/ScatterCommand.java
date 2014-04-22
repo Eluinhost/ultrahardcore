@@ -3,8 +3,9 @@ package com.publicuhc.ultrahardcore.commands.scatter;
 import com.publicuhc.commands.Command;
 import com.publicuhc.commands.CommandRequest;
 import com.publicuhc.commands.SenderType;
-import com.publicuhc.configuration.ConfigManager;
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.commands.SimpleCommand;
 import com.publicuhc.ultrahardcore.scatter.Parameters;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
@@ -30,12 +31,13 @@ public class ScatterCommand extends SimpleCommand {
 
     /**
      * @param configManager the config manager
+     * @param translate the translator
      * @param scatterManager the scatter manager
      * @param plugin the plugin to reference
      */
     @Inject
-    private ScatterCommand(ConfigManager configManager, ScatterManager scatterManager, Plugin plugin) {
-        super(configManager);
+    private ScatterCommand(Configurator configManager, Translate translate, ScatterManager scatterManager, Plugin plugin) {
+        super(configManager, translate);
         m_scatterManager = scatterManager;
         Map<Object,Object> init = new HashMap<Object, Object>();
         init.put(ScatterStartPrompt.SCATTER_MANAGER,scatterManager);
@@ -144,7 +146,7 @@ public class ScatterCommand extends SimpleCommand {
         params.setMinimumDistance(minDistance);
         params.setAsTeam(asTeam);
 
-        FileConfiguration config = getConfigManager().getConfig();
+        FileConfiguration config = getConfigurator().getConfig("main");
         List<String> materials = config.getStringList("scatter.allowedBlocks");
         Collection<Material> mats = new ArrayList<Material>();
         for(String s : materials){

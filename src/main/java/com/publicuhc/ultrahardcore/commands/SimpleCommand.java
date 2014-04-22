@@ -3,6 +3,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
@@ -54,5 +55,12 @@ public class SimpleCommand {
      */
     public String translate(String key, String locale, String var, String value) {
         return m_translate.translate(key, locale, var, value);
+    }
+
+    /**
+     * Proxy method for the Translate object method getLocaleForSender
+     */
+    public String locale(CommandSender sender) {
+        return m_translate.getLocaleForSender(sender);
     }
 }
