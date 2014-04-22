@@ -4,6 +4,8 @@ import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
 
+import java.util.Map;
+
 public class SimpleCommand {
 
     private final Configurator m_configManager;
@@ -31,5 +33,26 @@ public class SimpleCommand {
      */
     public Translate getTranslator() {
         return m_translate;
+    }
+
+    /**
+     * Proxy method for the Translate object method
+     */
+    public String translate(String key, String locale) {
+        return m_translate.translate(key, locale);
+    }
+
+    /**
+     * Proxy method for the Translate object method
+     */
+    public String translate(String key, String locale, Map<String, String> vars) {
+        return m_translate.translate(key, locale, vars);
+    }
+
+    /**
+     * Proxy method for the Translate object method
+     */
+    public String translate(String key, String locale, String var, String value) {
+        return m_translate.translate(key, locale, var, value);
     }
 }
