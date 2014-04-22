@@ -209,7 +209,7 @@ public class ScatterCommand extends SimpleCommand {
      * @param request the request params
      */
     @CommandMethod
-    public void onScatterTypesCommand(CommandRequest request){
+    public void scatterTypesCommand(CommandRequest request){
         String[] types = m_scatterManager.getScatterTypeNames();
         for(String type : types){
             request.sendMessage(ChatColor.GRAY+type);
@@ -221,7 +221,7 @@ public class ScatterCommand extends SimpleCommand {
      * @return the route
      */
     @RouteInfo
-    public MethodRoute scatterTypesCommand() {
+    public MethodRoute scatterTypesCommandDetails() {
         return new DefaultMethodRoute(
                 new SimpleRouteMatcher("types"),
                 new SenderType[] {
