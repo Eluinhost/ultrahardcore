@@ -1,4 +1,4 @@
-package com.publicuhc.metrics;
+package com.publicuhc.ultrahardcore.metrics;
 
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;

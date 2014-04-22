@@ -2,7 +2,7 @@ package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.RealFeatureManager;
-import com.publicuhc.metrics.UHCMetrics;
+import com.publicuhc.ultrahardcore.metrics.UHCMetrics;
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.ultrahardcore.borders.BorderTypeManager;
 import com.publicuhc.ultrahardcore.borders.RealBorderTypeManager;

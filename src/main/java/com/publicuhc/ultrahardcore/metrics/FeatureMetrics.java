@@ -1,4 +1,4 @@
-package com.publicuhc.metrics;
+package com.publicuhc.ultrahardcore.metrics;
 
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.IFeature;
