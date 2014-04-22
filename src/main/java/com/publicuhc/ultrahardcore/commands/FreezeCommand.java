@@ -2,12 +2,12 @@ package com.publicuhc.ultrahardcore.commands;
 
 import com.publicuhc.commands.Command;
 import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.features.FeatureManager;
-import com.publicuhc.features.IFeature;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.features.playerfreeze.PlayerFreezeFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
 
 public class FreezeCommand extends SimpleCommand {

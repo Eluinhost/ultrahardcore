@@ -1,7 +1,5 @@
 package com.publicuhc.ultrahardcore.metrics;
 
-import com.publicuhc.features.FeatureManager;
-import com.publicuhc.features.IFeature;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.mcstats.Metrics;

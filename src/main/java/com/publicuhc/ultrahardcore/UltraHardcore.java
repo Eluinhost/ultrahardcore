@@ -4,7 +4,7 @@ import com.publicuhc.pluginframework.FrameworkJavaPlugin;
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.ultrahardcore.features.deathbans.DeathBan;
+import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBan;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.mcstats.Metrics;
