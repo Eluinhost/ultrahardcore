@@ -1,32 +1,35 @@
 package com.publicuhc.ultrahardcore.commands;
 
+import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.configuration.ConfigManager;
+import com.publicuhc.pluginframework.translate.Translate;
 
 public class SimpleCommand {
 
-    private final ConfigManager m_configManager;
+    private final Configurator m_configManager;
+    private final Translate m_translate;
 
     /**
      * @param configManager the config manager
+     * @param translate the translator
      */
     @Inject
-    protected SimpleCommand(ConfigManager configManager){
+    protected SimpleCommand(Configurator configManager, Translate translate){
         m_configManager = configManager;
+        m_translate = translate;
     }
 
     /**
      * @return the config manager
      */
-    public ConfigManager getConfigManager(){
+    public Configurator getConfigurator(){
         return m_configManager;
     }
 
     /**
-     * @param key the key to search for
-     * @return the translated message
+     * @return the translator
      */
-    public String translate(String key){
-        return m_configManager.getMessage(key);
+    public Translate getTranslator() {
+        return m_translate;
     }
 }
