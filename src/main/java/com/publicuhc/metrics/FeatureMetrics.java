@@ -1,9 +1,9 @@
 package com.publicuhc.metrics;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.IFeature;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 

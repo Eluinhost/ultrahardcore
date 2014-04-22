@@ -1,7 +1,7 @@
 package com.publicuhc.metrics;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import org.bukkit.plugin.Plugin;
 import org.mcstats.Metrics;
 
