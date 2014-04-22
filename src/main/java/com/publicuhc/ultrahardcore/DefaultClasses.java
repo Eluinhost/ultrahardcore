@@ -1,7 +1,6 @@
 package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.commands.CommandHandler;
-import com.publicuhc.configuration.ConfigManager;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.IFeature;
 import com.publicuhc.features.exceptions.FeatureIDConflictException;
@@ -47,15 +46,13 @@ import java.util.logging.Logger;
 @SuppressWarnings({"OverlyCoupledClass", "OverlyCoupledMethod"})
 public class DefaultClasses {
 
-    private final ConfigManager m_configManager;
-    private final FeatureManager m_featureManager;
+     private final FeatureManager m_featureManager;
     private final BorderTypeManager m_borderTypes;
     private final CommandHandler m_commandHandler;
     private final ScatterManager m_scatterManager;
     private final Logger m_logger;
 
     /**
-     * @param conifgManager the config manager
      * @param featureManager the feature manager
      * @param borders the border manager
      * @param commandHandler the command handler
@@ -63,11 +60,10 @@ public class DefaultClasses {
      * @param logger the logger
      */
     @Inject
-    public DefaultClasses(ConfigManager conifgManager, FeatureManager featureManager,
+    public DefaultClasses(FeatureManager featureManager,
                           BorderTypeManager borders, CommandHandler commandHandler, ScatterManager scatterManager,
                           Logger logger){
         m_logger = logger;
-        m_configManager = conifgManager;
         m_featureManager = featureManager;
         m_borderTypes = borders;
         m_commandHandler = commandHandler;
@@ -158,18 +154,10 @@ public class DefaultClasses {
     }
 
     /**
-     * Add the default config files
-     */
-    public void loadDefaultConfigurations(){
-        m_configManager.addConfiguration("main", m_configManager.getFromFile("main.yml", true));
-        m_configManager.addConfiguration("bans", m_configManager.getFromFile("bans.yml", true));
-        m_configManager.addConfiguration("words", m_configManager.getFromFile("words.yml", true));
-    }
-
-    /**
      * Load the default scatter types
      * @param injector the injector
      */
+    @Inject
     public void loadDefaultScatterTypes(Injector injector){
         Class<? extends AbstractScatterType>[] types = new Class[]{
                 EvenCircumferenceType.class,

@@ -32,10 +32,6 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         ConfigurationSerialization.registerClass(DeathBan.class);
         //register the bungeecord plugin channel
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
-            m_defaultClasses.loadBorders();
-        }
     }
 
     /**
@@ -45,6 +41,10 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     @Inject
     public void loadDefaultClasses(DefaultClasses defaultClasses) {
         m_defaultClasses = defaultClasses;
+        defaultClasses.loadDefaultCommands();
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
+            m_defaultClasses.loadBorders();
+        }
         getLogger().log(Level.INFO, "All default classes loaded");
     }
 
