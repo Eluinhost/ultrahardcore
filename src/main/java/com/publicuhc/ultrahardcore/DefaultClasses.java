@@ -1,10 +1,10 @@
 package com.publicuhc.ultrahardcore;
 
-import com.publicuhc.commands.CommandHandler;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.IFeature;
 import com.publicuhc.features.exceptions.FeatureIDConflictException;
 import com.publicuhc.features.exceptions.InvalidFeatureIDException;
+import com.publicuhc.pluginframework.commands.routing.Router;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Injector;
 import com.publicuhc.ultrahardcore.borders.BorderTypeManager;
@@ -48,25 +48,25 @@ public class DefaultClasses {
 
      private final FeatureManager m_featureManager;
     private final BorderTypeManager m_borderTypes;
-    private final CommandHandler m_commandHandler;
+    private final Router m_router;
     private final ScatterManager m_scatterManager;
     private final Logger m_logger;
 
     /**
      * @param featureManager the feature manager
      * @param borders the border manager
-     * @param commandHandler the command handler
+     * @param router the command router
      * @param scatterManager the scatter manager
      * @param logger the logger
      */
     @Inject
     public DefaultClasses(FeatureManager featureManager,
-                          BorderTypeManager borders, CommandHandler commandHandler, ScatterManager scatterManager,
+                          BorderTypeManager borders, Router router, ScatterManager scatterManager,
                           Logger logger){
         m_logger = logger;
         m_featureManager = featureManager;
         m_borderTypes = borders;
-        m_commandHandler = commandHandler;
+        m_router = router;
         m_scatterManager = scatterManager;
     }
 
@@ -102,7 +102,7 @@ public class DefaultClasses {
         };
         for(Class clazz : classes){
             try {
-                m_commandHandler.registerCommands(clazz);
+                m_router.registerCommands(clazz);
             } catch (@SuppressWarnings("OverlyBroadCatchBlock") Exception e) {
                 e.printStackTrace();
             }

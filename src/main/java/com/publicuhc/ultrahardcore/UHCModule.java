@@ -1,9 +1,5 @@
 package com.publicuhc.ultrahardcore;
 
-import com.publicuhc.commands.CommandHandler;
-import com.publicuhc.commands.CommandMap;
-import com.publicuhc.commands.RealCommandHandler;
-import com.publicuhc.commands.RealCommandMap;
 import com.publicuhc.features.FeatureManager;
 import com.publicuhc.features.RealFeatureManager;
 import com.publicuhc.metrics.UHCMetrics;
@@ -21,8 +17,6 @@ public class UHCModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(CommandMap.class).to(RealCommandMap.class);
-        bind(CommandHandler.class).to(RealCommandHandler.class);
         bind(FeatureManager.class).to(RealFeatureManager.class);
         bind(BorderTypeManager.class).to(RealBorderTypeManager.class);
         bind(Protector.class).to(FallProtector.class);
