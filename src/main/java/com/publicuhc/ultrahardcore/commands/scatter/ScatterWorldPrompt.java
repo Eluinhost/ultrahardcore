@@ -1,10 +1,10 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
+import com.publicuhc.pluginframework.commands.prompts.WorldNamePrompt;
+import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.World;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import com.publicuhc.commands.conversations.WorldNamePrompt;
-import com.publicuhc.ultrahardcore.util.ServerUtil;
 
 public class ScatterWorldPrompt extends WorldNamePrompt {
 

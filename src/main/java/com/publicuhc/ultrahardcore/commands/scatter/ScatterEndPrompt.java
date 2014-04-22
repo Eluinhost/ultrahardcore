@@ -1,11 +1,11 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
 import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.util.SimplePair;
 import com.publicuhc.ultrahardcore.scatter.Parameters;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
-import com.publicuhc.ultrahardcore.util.SimplePair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
