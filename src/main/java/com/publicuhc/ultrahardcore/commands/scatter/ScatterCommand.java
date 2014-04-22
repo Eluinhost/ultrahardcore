@@ -1,21 +1,21 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
-import com.publicuhc.pluginframework.shaded.inject.Inject;
-import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.conversations.Conversable;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.entity.Player;
 import com.publicuhc.commands.Command;
 import com.publicuhc.commands.CommandRequest;
 import com.publicuhc.commands.SenderType;
 import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.UltraHardcore;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.ultrahardcore.commands.SimpleCommand;
 import com.publicuhc.ultrahardcore.scatter.Parameters;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
+import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.conversations.Conversable;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
@@ -31,15 +31,17 @@ public class ScatterCommand extends SimpleCommand {
     /**
      * @param configManager the config manager
      * @param scatterManager the scatter manager
+     * @param plugin the plugin to reference
      */
     @Inject
-    private ScatterCommand(ConfigManager configManager, ScatterManager scatterManager) {
+    private ScatterCommand(ConfigManager configManager, ScatterManager scatterManager, Plugin plugin) {
         super(configManager);
         m_scatterManager = scatterManager;
         Map<Object,Object> init = new HashMap<Object, Object>();
         init.put(ScatterStartPrompt.SCATTER_MANAGER,scatterManager);
         init.put(ScatterStartPrompt.CONFIG_MANAGER,configManager);
-        m_conversationFactory = new ConversationFactory(UltraHardcore.getInstance())
+        init.put(ScatterStartPrompt.PLUGIN, plugin);
+        m_conversationFactory = new ConversationFactory(plugin)
                 .withEscapeSequence("cancel")
                 .withPrefix(new ScatterPrefix())
                 .withTimeout(CONVERSATION_TIMEOUT)
