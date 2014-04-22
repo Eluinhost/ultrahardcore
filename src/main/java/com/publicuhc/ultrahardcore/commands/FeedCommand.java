@@ -1,8 +1,13 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.matchers.AnyRouteMatcher;
+import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
+import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
+import com.publicuhc.pluginframework.commands.routing.MethodRoute;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -12,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class FeedCommand extends SimpleCommand {
 
@@ -38,16 +44,11 @@ public class FeedCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /feedself
-     * @param request request params
+     * Feed themselves
+     * @param request the request params
      */
-    @Command(trigger = "feedself",
-            identifier = "FeedSelfCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = FEED_SELF_PERMISSION,
-            senders = {SenderType.PLAYER})
-    public void onFeedCommand(CommandRequest request){
+    @CommandMethod
+    public void feedCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         feedPlayer(player);
         player.sendMessage(translate("feed.tell", locale(request.getSender())));
@@ -58,18 +59,30 @@ public class FeedCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /feed {name}
+     * Run on /feedself.*
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute feedCommandDetails() {
+        return new DefaultMethodRoute(
+                new AnyRouteMatcher(),
+                new SenderType[] {
+                        SenderType.PLAYER
+                },
+                FEED_SELF_PERMISSION,
+                "feedself"
+        );
+    }
+
+    /**
+     * Feed another player
      * @param request request params
      */
-    @Command(trigger = "feed",
-            identifier = "FeedCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = FEED_OTHER_PERMISSION)
-    public void onFeedOtherCommand(CommandRequest request){
+    @CommandMethod
+    public void feedOtherCommand(CommandRequest request){
         Player player = Bukkit.getPlayer(request.getFirstArg());
         if (player == null) {
-            request.getSender().sendMessage(translate("feed.invalid_player", locale(request.getSender()), "name",request.getFirstArg()));
+            request.getSender().sendMessage(translate("feed.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
             return;
         }
         feedPlayer(player);
@@ -82,21 +95,54 @@ public class FeedCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /feed *
+     * Run on /feed .+ except /feed *
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute feedOtherCommandDetails() {
+        return new DefaultMethodRoute(
+                new PatternRouteMatcher(Pattern.compile("[^*]+")),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                FEED_OTHER_PERMISSION,
+                "feed"
+        );
+    }
+
+    /**
+     * Feed all players
      * @param request request params
      */
-    @Command(trigger = "*",
-            identifier = "FeedAllCommand",
-            parentID = "FeedCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = FEED_OTHER_PERMISSION)
-    public void onFeedAllCommand(CommandRequest request){
+    @CommandMethod
+    public void feedAllCommand(CommandRequest request){
         for(Player player : Bukkit.getOnlinePlayers()){
             feedPlayer(player);
             player.sendMessage(translate("feed.tell", locale(request.getSender())));
         }
         request.getSender().sendMessage(translate("feed.fed_all", locale(request.getSender())));
         ServerUtil.broadcastForPermission(translate("feed.fed_all_announce", locale(request.getSender()), "name", request.getSender().getName()), FEED_ANNOUNCE_PERMISSION);
+    }
+
+    /**
+     * Match only on /feed *
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute feedAllCommandDetails() {
+        return new DefaultMethodRoute(
+                new PatternRouteMatcher(Pattern.compile("\\*")),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                FEED_OTHER_PERMISSION,
+                "feed"
+        );
     }
 }
