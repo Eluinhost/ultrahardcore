@@ -1,16 +1,20 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
+import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class FeatureCommand extends SimpleCommand {
 
@@ -32,26 +36,31 @@ public class FeatureCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /feature
      * @param request request params
      */
-    @Command(trigger = "feature",
-            identifier = "FeatureCommand")
-    public void onFeatureCommand(CommandRequest request){
-        //TODO show syntax?
+    @CommandMethod
+    public void featureCommand(CommandRequest request){
+        request.sendMessage(ChatColor.RED+"/feature list - List features");
+        request.sendMessage(ChatColor.RED + "/feature on <featureID> - turn feature on");
+        request.sendMessage(ChatColor.RED+"/feature off <featureID> - turn feature off");
     }
 
     /**
-     * Ran on /feature list
+     * Run whenever a /feature command is run and nothing else triggers
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void featureCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feature");
+        builder.maxMatches(1);
+    }
+
+    /**
+     * List all the features and their status
      * @param request request params
      */
-    @Command(trigger = "list",
-            identifier = "FeatureListCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = FEATURE_LIST_PERMISSION,
-            parentID = "FeatureCommand")
-    public void onFeatureListCommand(CommandRequest request){
+    @CommandMethod
+    public void featureListCommand(CommandRequest request){
         List<IFeature> features = m_featureManager.getFeatures();
         request.sendMessage(translate("features.loaded.header", locale(request.getSender()), "amount", String.valueOf(features.size())));
         if (features.isEmpty()) {
@@ -66,16 +75,22 @@ public class FeatureCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /feature on {name}
+     * Run on /feauture list
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void featureListCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feature");
+        builder.restrictPermission(FEATURE_LIST_PERMISSION);
+        builder.restrictPattern(Pattern.compile("list.*"));
+    }
+
+    /**
+     * Turn on a feature
      * @param request request params
      */
-    @Command(trigger = "on",
-            identifier = "FeatureOnCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = FEATURE_TOGGLE_PERMISSION,
-            parentID = "FeatureCommand")
-    public void onFeatureOnCommand(CommandRequest request){
+    @CommandMethod
+    public void featureOnCommand(CommandRequest request){
         IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
             request.sendMessage(translate("features.not_found", locale(request.getSender()), "id", request.getFirstArg()));
@@ -93,15 +108,21 @@ public class FeatureCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /feature off {name}
+     * Run on /feature on {name}
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void featureOnCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feature");
+        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION);
+        builder.restrictPattern(Pattern.compile("on [\\S]+.*"));
+    }
+
+    /**
+     * Toggle a feature off
      * @param request request params
      */
-    @Command(trigger = "off",
-            identifier = "FeatureOffCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = FEATURE_TOGGLE_PERMISSION,
-            parentID = "FeatureCommand")
+    @CommandMethod
     public void onFeatureOffCommand(CommandRequest request){
         IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
@@ -117,5 +138,16 @@ public class FeatureCommand extends SimpleCommand {
             return;
         }
         request.sendMessage(translate("features.disabled", locale(request.getSender())));
+    }
+
+    /**
+     * Run on /feature off {name}
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void featureOffCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feature");
+        builder.restrictPattern(Pattern.compile("off [\\S]+.*"));
+        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION);
     }
 }
