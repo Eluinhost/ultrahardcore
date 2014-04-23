@@ -43,9 +43,6 @@ public class DeathBanCommand extends SimpleCommand {
      */
     @CommandMethod
     public void deathBanCommand(CommandRequest request){
-        if(request.getCount() != 1){
-            return;
-        }
         request.sendMessage(ChatColor.RED+"Syntax: /deathban unban <name>");
         request.sendMessage(ChatColor.RED+"Syntax: /deathban ban <name> <time>");
     }
@@ -58,6 +55,7 @@ public class DeathBanCommand extends SimpleCommand {
     public void deathBanCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("deathban");
         builder.restrictPermission(DEATH_BAN_BAN);
+        builder.maxMatches(1);
     }
 
     /**
