@@ -1,7 +1,11 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.UltraHardcore;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.util.SimplePair;
+import com.publicuhc.ultrahardcore.scatter.Parameters;
+import com.publicuhc.ultrahardcore.scatter.ScatterManager;
+import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
+import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,11 +16,7 @@ import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.MessagePrompt;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
-import com.publicuhc.ultrahardcore.scatter.Parameters;
-import com.publicuhc.ultrahardcore.scatter.ScatterManager;
-import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
-import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
-import com.publicuhc.ultrahardcore.util.SimplePair;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +39,7 @@ public class ScatterEndPrompt extends MessagePrompt {
         final Set<Player> players = (Set<Player>) conversationContext.getSessionData(ScatterPlayerPrompt.PLAYERS_DATA);
         final AbstractScatterType type = (AbstractScatterType) conversationContext.getSessionData(ScatterTypePrompt.TYPE_DATA);
         Boolean asTeam = (Boolean) conversationContext.getSessionData(ScatterUseTeamsPrompt.TEAMS_DATA);
+        Plugin plugin = (Plugin) conversationContext.getSessionData(ScatterStartPrompt.PLUGIN);
 
         final ScatterManager manager = (ScatterManager) conversationContext.getSessionData(ScatterStartPrompt.SCATTER_MANAGER);
 
@@ -51,9 +52,9 @@ public class ScatterEndPrompt extends MessagePrompt {
         params.setMinimumDistance(minDist);
         params.setRadius(radius);
 
-        ConfigManager configManager = (ConfigManager) conversationContext.getSessionData(ScatterStartPrompt.CONFIG_MANAGER);
+        Configurator configManager = (Configurator) conversationContext.getSessionData(ScatterStartPrompt.CONFIG_MANAGER);
 
-        FileConfiguration config = configManager.getConfig();
+        FileConfiguration config = configManager.getConfig("main");
         List<String> materials = config.getStringList("scatter.allowedBlocks");
         Collection<Material> mats = new ArrayList<Material>();
         for(String s : materials){
@@ -67,7 +68,7 @@ public class ScatterEndPrompt extends MessagePrompt {
 
         final Conversable sender = conversationContext.getForWhom();
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(UltraHardcore.getInstance(),new Runnable(){
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,new Runnable(){
 
             @Override
             public void run() {

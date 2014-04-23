@@ -1,6 +1,5 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
-import com.publicuhc.commands.CommandHandler;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.MessagePrompt;
@@ -15,6 +14,7 @@ public class ScatterStartPrompt extends MessagePrompt {
 
     public static final String CONFIG_MANAGER = "command_handler";
     public static final String SCATTER_MANAGER = "scatter_manager";
+    public static final String PLUGIN = "plugin_class";
 
     @Override
     protected Prompt getNextPrompt(ConversationContext conversationContext) {

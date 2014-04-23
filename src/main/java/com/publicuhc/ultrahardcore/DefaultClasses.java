@@ -1,13 +1,12 @@
 package com.publicuhc.ultrahardcore;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.publicuhc.commands.CommandHandler;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.features.FeatureManager;
-import com.publicuhc.features.IFeature;
-import com.publicuhc.features.exceptions.FeatureIDConflictException;
-import com.publicuhc.features.exceptions.InvalidFeatureIDException;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
+import com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException;
+import com.publicuhc.pluginframework.commands.routing.Router;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Injector;
 import com.publicuhc.ultrahardcore.borders.BorderTypeManager;
 import com.publicuhc.ultrahardcore.borders.exceptions.BorderIDConflictException;
 import com.publicuhc.ultrahardcore.borders.types.CylinderBorder;
@@ -15,26 +14,26 @@ import com.publicuhc.ultrahardcore.borders.types.RoofBorder;
 import com.publicuhc.ultrahardcore.borders.types.SquareBorder;
 import com.publicuhc.ultrahardcore.commands.*;
 import com.publicuhc.ultrahardcore.commands.scatter.ScatterCommand;
-import com.publicuhc.ultrahardcore.features.anonchat.AnonChatFeature;
-import com.publicuhc.ultrahardcore.features.deathbans.DeathBansFeature;
-import com.publicuhc.ultrahardcore.features.deathdrops.DeathDropsFeature;
-import com.publicuhc.ultrahardcore.features.deathlightning.DeathLightningFeature;
-import com.publicuhc.ultrahardcore.features.deathmessages.DeathMessagesFeature;
-import com.publicuhc.ultrahardcore.features.enderpearls.EnderpearlsFeature;
-import com.publicuhc.ultrahardcore.features.footprints.FootprintFeature;
-import com.publicuhc.ultrahardcore.features.ghastdrops.GhastDropsFeature;
-import com.publicuhc.ultrahardcore.features.goldenheads.GoldenHeadsFeature;
-import com.publicuhc.ultrahardcore.features.hardcorehearts.HardcoreHeartsFeature;
-import com.publicuhc.ultrahardcore.features.nether.NetherFeature;
-import com.publicuhc.ultrahardcore.features.playerfreeze.PlayerFreezeFeature;
-import com.publicuhc.ultrahardcore.features.playerheads.PlayerHeadsFeature;
-import com.publicuhc.ultrahardcore.features.playerlist.PlayerListFeature;
-import com.publicuhc.ultrahardcore.features.portals.PortalsFeature;
-import com.publicuhc.ultrahardcore.features.potionnerfs.PotionNerfsFeature;
-import com.publicuhc.ultrahardcore.features.recipes.RecipeFeature;
-import com.publicuhc.ultrahardcore.features.regen.RegenFeature;
-import com.publicuhc.ultrahardcore.features.timer.TimerFeature;
-import com.publicuhc.ultrahardcore.features.witchspawns.WitchSpawnsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.anonchat.AnonChatFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBansFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.deathdrops.DeathDropsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.deathlightning.DeathLightningFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.deathmessages.DeathMessagesFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.enderpearls.EnderpearlsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.footprints.FootprintFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.ghastdrops.GhastDropsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.goldenheads.GoldenHeadsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.hardcorehearts.HardcoreHeartsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.nether.NetherFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.playerheads.PlayerHeadsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.playerlist.PlayerListFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.portals.PortalsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.potionnerfs.PotionNerfsFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.recipes.RecipeFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.regen.RegenFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.witchspawns.WitchSpawnsFeature;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import com.publicuhc.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
@@ -44,41 +43,38 @@ import com.publicuhc.ultrahardcore.scatter.types.RandomSquareType;
 
 import java.util.logging.Logger;
 
-@SuppressWarnings("OverlyCoupledClass")
+@SuppressWarnings({"OverlyCoupledClass", "OverlyCoupledMethod"})
 public class DefaultClasses {
 
-    private final ConfigManager m_configManager;
-    private final FeatureManager m_featureManager;
+     private final FeatureManager m_featureManager;
     private final BorderTypeManager m_borderTypes;
-    private final CommandHandler m_commandHandler;
+    private final Router m_router;
     private final ScatterManager m_scatterManager;
     private final Logger m_logger;
 
     /**
-     * @param conifgManager the config manager
      * @param featureManager the feature manager
      * @param borders the border manager
-     * @param commandHandler the command handler
+     * @param router the command router
      * @param scatterManager the scatter manager
      * @param logger the logger
      */
     @Inject
-    public DefaultClasses(ConfigManager conifgManager, FeatureManager featureManager,
-                          BorderTypeManager borders, CommandHandler commandHandler, ScatterManager scatterManager,
+    public DefaultClasses(FeatureManager featureManager,
+                          BorderTypeManager borders, Router router, ScatterManager scatterManager,
                           Logger logger){
         m_logger = logger;
-        m_configManager = conifgManager;
         m_featureManager = featureManager;
         m_borderTypes = borders;
-        m_commandHandler = commandHandler;
+        m_router = router;
         m_scatterManager = scatterManager;
     }
 
     /**
-     * Load the default border types
+     * Load the default border types, make sure worldedit exists first
      */
-    public void loadDefaultBorders() {
-        try{
+    public void loadBorders() {
+        try {
             m_borderTypes.addBorder(new CylinderBorder());
             m_borderTypes.addBorder(new RoofBorder());
             m_borderTypes.addBorder(new SquareBorder());
@@ -90,7 +86,6 @@ public class DefaultClasses {
     /**
      * Load all the default commands
      */
-    @SuppressWarnings("OverlyCoupledMethod")
     public void loadDefaultCommands() {
         Class[] classes = {
                 HealCommand.class,
@@ -107,7 +102,7 @@ public class DefaultClasses {
         };
         for(Class clazz : classes){
             try {
-                m_commandHandler.registerCommands(clazz);
+                m_router.registerCommands(clazz);
             } catch (@SuppressWarnings("OverlyBroadCatchBlock") Exception e) {
                 e.printStackTrace();
             }
@@ -118,31 +113,31 @@ public class DefaultClasses {
      * Load all the default features into the feature manager
      * @param injector the injector
      */
-    @SuppressWarnings("OverlyCoupledMethod")
+    @Inject
     public void loadDefaultFeatures(Injector injector) {
         m_logger.info("Loading UHC feature modules...");
         //Load the default features with settings in config
         Class<? extends IFeature>[] classes = new Class[]{
-                DeathLightningFeature.class,
-                EnderpearlsFeature.class,
-                GhastDropsFeature.class,
-                PlayerHeadsFeature.class,
-                PlayerListFeature.class,
-                RecipeFeature.class,
-                RegenFeature.class,
-                DeathMessagesFeature.class,
-                DeathDropsFeature.class,
-                AnonChatFeature.class,
-                GoldenHeadsFeature.class,
-                DeathBansFeature.class,
-                PotionNerfsFeature.class,
-                NetherFeature.class,
-                WitchSpawnsFeature.class,
-                PortalsFeature.class,
-                PlayerFreezeFeature.class,
-                HardcoreHeartsFeature.class,
-                FootprintFeature.class,
-                TimerFeature.class
+            DeathLightningFeature.class,
+            EnderpearlsFeature.class,
+            GhastDropsFeature.class,
+            PlayerHeadsFeature.class,
+            PlayerListFeature.class,
+            RecipeFeature.class,
+            RegenFeature.class,
+            DeathMessagesFeature.class,
+            DeathDropsFeature.class,
+            AnonChatFeature.class,
+            GoldenHeadsFeature.class,
+            DeathBansFeature.class,
+            PotionNerfsFeature.class,
+            NetherFeature.class,
+            WitchSpawnsFeature.class,
+            PortalsFeature.class,
+            PlayerFreezeFeature.class,
+            HardcoreHeartsFeature.class,
+            FootprintFeature.class,
+            TimerFeature.class
         };
         for(Class<? extends IFeature> clazz : classes){
             try{
@@ -159,18 +154,10 @@ public class DefaultClasses {
     }
 
     /**
-     * Add the default config files
-     */
-    public void loadDefaultConfigurations(){
-        m_configManager.addConfiguration("main", m_configManager.getFromFile("main.yml", true));
-        m_configManager.addConfiguration("bans", m_configManager.getFromFile("bans.yml", true));
-        m_configManager.addConfiguration("words", m_configManager.getFromFile("words.yml", true));
-    }
-
-    /**
      * Load the default scatter types
      * @param injector the injector
      */
+    @Inject
     public void loadDefaultScatterTypes(Injector injector){
         Class<? extends AbstractScatterType>[] types = new Class[]{
                 EvenCircumferenceType.class,

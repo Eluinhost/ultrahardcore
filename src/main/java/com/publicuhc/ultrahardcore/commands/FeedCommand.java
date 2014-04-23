@@ -1,13 +1,20 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.google.inject.Inject;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.util.ServerUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class FeedCommand extends SimpleCommand {
 
@@ -19,8 +26,8 @@ public class FeedCommand extends SimpleCommand {
     public static final String FEED_OTHER_PERMISSION = "UHC.feed.other";
 
     @Inject
-    private FeedCommand(ConfigManager configManager) {
-        super(configManager);
+    private FeedCommand(Configurator configManager, Translate translate) {
+        super(configManager, translate);
     }
 
     /**
@@ -34,59 +41,85 @@ public class FeedCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /feedself
-     * @param request request params
+     * Feed themselves
+     * @param request the request params
      */
-    @Command(trigger = "feedself",
-            identifier = "FeedSelfCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = FEED_SELF_PERMISSION,
-            senders = {SenderType.PLAYER})
-    public void onFeedCommand(CommandRequest request){
+    @CommandMethod
+    public void feedCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         feedPlayer(player);
-        player.sendMessage(translate("feed.tell"));
-        ServerUtil.broadcastForPermission(translate("feed.announce").replaceAll("%name%",player.getName()).replaceAll("%fed%",player.getName()), FEED_ANNOUNCE_PERMISSION);
+        player.sendMessage(translate("feed.tell", locale(request.getSender())));
+        Map<String, String> vars = new HashMap<String, String>();
+        vars.put("fed", player.getName());
+        vars.put("name", player.getName());
+        ServerUtil.broadcastForPermission(translate("feed.announce", locale(request.getSender()), vars), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**
-     * Ran on /feed {name}
+     * Run on /feedself.*
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void feedCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feedself");
+        builder.restrictSenderType(SenderType.PLAYER);
+        builder.restrictPermission(FEED_SELF_PERMISSION);
+    }
+
+    /**
+     * Feed another player
      * @param request request params
      */
-    @Command(trigger = "feed",
-            identifier = "FeedCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = FEED_OTHER_PERMISSION)
-    public void onFeedOtherCommand(CommandRequest request){
+    @CommandMethod
+    public void feedOtherCommand(CommandRequest request){
         Player player = Bukkit.getPlayer(request.getFirstArg());
         if (player == null) {
-            request.getSender().sendMessage(translate("feed.invalid_player").replaceAll("%name%",request.getFirstArg()));
+            request.getSender().sendMessage(translate("feed.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
             return;
         }
         feedPlayer(player);
-        player.sendMessage(translate("feed.tell"));
-        request.sendMessage(translate("feed.fed"));
-        ServerUtil.broadcastForPermission(translate("feed.announce").replaceAll("%name%",request.getSender().getName()).replaceAll("%fed%",player.getName()), FEED_ANNOUNCE_PERMISSION);
+        player.sendMessage(translate("feed.tell", locale(request.getSender())));
+        request.sendMessage(translate("feed.fed", locale(request.getSender())));
+        Map<String, String> vars = new HashMap<String, String>();
+        vars.put("fed", player.getName());
+        vars.put("name", request.getSender().getName());
+        ServerUtil.broadcastForPermission(translate("feed.announce", locale(request.getSender()), vars), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**
-     * Ran on /feed *
+     * Run on /feed .+ except /feed *
+     * @param builder the builder
+     * @return the route
+     */
+    @RouteInfo
+    public void feedOtherCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feed");
+        builder.restrictPermission(FEED_OTHER_PERMISSION);
+        builder.restrictPattern(Pattern.compile("[^*]+"));
+    }
+
+    /**
+     * Feed all players
      * @param request request params
      */
-    @Command(trigger = "*",
-            identifier = "FeedAllCommand",
-            parentID = "FeedCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = FEED_OTHER_PERMISSION)
-    public void onFeedAllCommand(CommandRequest request){
+    @CommandMethod
+    public void feedAllCommand(CommandRequest request){
         for(Player player : Bukkit.getOnlinePlayers()){
             feedPlayer(player);
-            player.sendMessage(translate("feed.tell"));
+            player.sendMessage(translate("feed.tell", locale(request.getSender())));
         }
-        request.getSender().sendMessage(translate("feed.fed_all"));
-        ServerUtil.broadcastForPermission(translate("feed.fed_all_announce").replaceAll("%name%",request.getSender().getName()), FEED_ANNOUNCE_PERMISSION);
+        request.getSender().sendMessage(translate("feed.fed_all", locale(request.getSender())));
+        ServerUtil.broadcastForPermission(translate("feed.fed_all_announce", locale(request.getSender()), "name", request.getSender().getName()), FEED_ANNOUNCE_PERMISSION);
+    }
+
+    /**
+     * Match only on /feed *
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void feedAllCommandDetails(RouteBuilder builder) {
+        builder.restrictPattern(Pattern.compile("\\*"));
+        builder.restrictCommand("feed");
+        builder.restrictPermission(FEED_OTHER_PERMISSION);
     }
 }

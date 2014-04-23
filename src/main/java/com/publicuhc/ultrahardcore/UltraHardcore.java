@@ -1,15 +1,17 @@
 package com.publicuhc.ultrahardcore;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.FrameworkJavaPlugin;
+import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBan;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-import com.publicuhc.ultrahardcore.features.deathbans.DeathBan;
 import org.mcstats.Metrics;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * UltraHardcore
@@ -19,14 +21,7 @@ import org.mcstats.Metrics;
  * @author ghowden
  */
 @Singleton
-public class UltraHardcore extends JavaPlugin implements Listener {
-
-    /**
-     * @return the current instance of the plugin
-     */
-    public static Plugin getInstance() {
-        return Bukkit.getPluginManager().getPlugin("UltraHardcore");
-    }
+public class UltraHardcore extends FrameworkJavaPlugin {
 
     //When the plugin gets started
     @Override
@@ -35,27 +30,34 @@ public class UltraHardcore extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(DeathBan.class);
         //register the bungeecord plugin channel
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    }
 
-        Injector injector = Guice.createInjector(new UHCModule(this));
-
-        DefaultClasses defaults = injector.getInstance(DefaultClasses.class);
-
-        //load all the configs
-        defaults.loadDefaultConfigurations();
-        //load all the features
-        defaults.loadDefaultFeatures(injector);
-        //load all the scatter types
-        defaults.loadDefaultScatterTypes(injector);
-        //load all the commands
-        defaults.loadDefaultCommands();
-
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null){
-            //load the default border types
-            defaults.loadDefaultBorders();
+    /**
+     * Load all the defaults for the entire plugin, DefaultClasses will do this when being created so we just print that it is done
+     * @param defaultClasses init class
+     */
+    @Inject
+    public void loadDefaultClasses(DefaultClasses defaultClasses) {
+        defaultClasses.loadDefaultCommands();
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
+            defaultClasses.loadBorders();
         }
+        getLogger().log(Level.INFO, "All default classes loaded");
+    }
 
-        Metrics metrics = injector.getInstance(Metrics.class);
+    /**
+     * Load the metrics class and start it
+     * @param metrics the metrics to use
+     */
+    @Inject
+    public void loadMetrics(Metrics metrics) {
         metrics.start();
+    }
 
+    @Override
+    public List<AbstractModule> initialModules() {
+        List<AbstractModule> customModules = new ArrayList<AbstractModule>();
+        customModules.add(new UHCModule());
+        return customModules;
     }
 }

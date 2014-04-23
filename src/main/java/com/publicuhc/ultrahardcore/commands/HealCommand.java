@@ -1,13 +1,20 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.google.inject.Inject;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.util.ServerUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class HealCommand extends SimpleCommand {
 
@@ -16,64 +23,86 @@ public class HealCommand extends SimpleCommand {
     public static final String HEAL_ANNOUNCE_PERMISSION = "UHC.heal.announce";
 
     @Inject
-    private HealCommand(ConfigManager configManager) {
-        super(configManager);
+    private HealCommand(Configurator configManager, Translate translate) {
+        super(configManager, translate);
     }
 
     /**
-     * Ran on /healself
+     * heal yourself
      * @param request request params
      */
-    @Command(trigger = "healself",
-            identifier = "HealSelfCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            senders = {SenderType.PLAYER},
-            permission = HEAL_SELF_PERMISSION)
-    public void onHealSelfCommand(CommandRequest request){
+    @CommandMethod
+    public void healSelfCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         player.setHealth(player.getMaxHealth());
-        player.sendMessage(translate("heal.tell"));
-        ServerUtil.broadcastForPermission(translate("heal.announce").replaceAll("%healer%",player.getName()).replaceAll("%name%",player.getName()),HEAL_ANNOUNCE_PERMISSION);
+        player.sendMessage(translate("heal.tell", locale(request.getSender())));
+        Map<String, String> vars = new HashMap<String, String>();
+        vars.put("healer", player.getName());
+        vars.put("name", player.getName());
+        ServerUtil.broadcastForPermission(translate("heal.announce", locale(request.getSender()), vars),HEAL_ANNOUNCE_PERMISSION);
     }
 
     /**
-     * Ran on /heal {name}
+     * Run on /healself.*
+     */
+    @RouteInfo
+    public void healSelfCommandDetails(RouteBuilder builder) {
+        builder.restrictSenderType(SenderType.PLAYER);
+        builder.restrictCommand("healself");
+        builder.restrictPermission(HEAL_SELF_PERMISSION);
+    }
+
+    /**
+     * heal someone else
      * @param request request params
      */
-    @Command(trigger = "heal",
-            identifier = "HealCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = HEAL_OTHER_PERMISSION)
-    public void onHealCommand(CommandRequest request){
+    @CommandMethod
+    public void healCommand(CommandRequest request){
         Player p = Bukkit.getPlayer(request.getFirstArg());
         if (p == null) {
-            request.sendMessage(translate("heal.invalid_player").replaceAll("%name%",request.getFirstArg()));
+            request.sendMessage(translate("heal.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
             return;
         }
         p.setHealth(p.getMaxHealth());
-        p.sendMessage(translate("heal.tell"));
-        request.sendMessage(translate("heal.healed"));
-        ServerUtil.broadcastForPermission(translate("heal.announce").replaceAll("%healer%",request.getSender().getName()).replaceAll("%name%",p.getName()), HEAL_ANNOUNCE_PERMISSION);
+        p.sendMessage(translate("heal.tell", locale(request.getSender())));
+        request.sendMessage(translate("heal.healed", locale(request.getSender())));
+        Map<String, String> vars = new HashMap<String, String>();
+        vars.put("healer", request.getSender().getName());
+        vars.put("name", p.getName());
+        ServerUtil.broadcastForPermission(translate("heal.announce", locale(request.getSender()), vars), HEAL_ANNOUNCE_PERMISSION);
+    }
+
+    /**
+     * Run on /heal .+ except '/heal *'
+     */
+    @RouteInfo
+    public void healCommandDetails(RouteBuilder builder) {
+        builder.restrictPattern(Pattern.compile("[^*]+"));
+        builder.restrictPermission(HEAL_OTHER_PERMISSION);
+        builder.restrictCommand("heal");
     }
 
     /**
      * Ran on /heal *
      * @param request request params
      */
-    @Command(trigger = "*",
-            identifier = "HealAllCommand",
-            parentID = "HealCommand",
-            permission = HEAL_OTHER_PERMISSION,
-            minArgs = 0,
-            maxArgs = 0)
-    public void onHealAllCommand(CommandRequest request){
+    @CommandMethod
+    public void healAllCommand(CommandRequest request){
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setHealth(p.getMaxHealth());
-            p.sendMessage(translate("heal.tell"));
+            p.sendMessage(translate("heal.tell", locale(request.getSender())));
         }
-        request.sendMessage(translate("heal.heal_all"));
-        ServerUtil.broadcastForPermission(translate("heal.heal_all_announce").replaceAll("%name%",request.getSender().getName()), HEAL_ANNOUNCE_PERMISSION);
+        request.sendMessage(translate("heal.heal_all", locale(request.getSender())));
+        ServerUtil.broadcastForPermission(translate("heal.heal_all_announce", locale(request.getSender()), "name", request.getSender().getName()), HEAL_ANNOUNCE_PERMISSION);
+    }
+
+    /**
+     * Run on /heal * only
+     */
+    @RouteInfo
+    public void healAllCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("heal");
+        builder.restrictPermission(HEAL_OTHER_PERMISSION);
+        builder.restrictPattern(Pattern.compile("\\*"));
     }
 }

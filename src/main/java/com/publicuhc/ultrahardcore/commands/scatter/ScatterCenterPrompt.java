@@ -1,9 +1,9 @@
 package com.publicuhc.ultrahardcore.commands.scatter;
 
+import com.publicuhc.pluginframework.commands.prompts.XZCoordinatePrompt;
+import com.publicuhc.pluginframework.util.SimplePair;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
-import com.publicuhc.commands.conversations.XZCoordinatePrompt;
-import com.publicuhc.ultrahardcore.util.SimplePair;
 
 public class ScatterCenterPrompt extends XZCoordinatePrompt {
 

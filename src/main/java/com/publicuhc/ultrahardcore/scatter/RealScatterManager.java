@@ -1,7 +1,11 @@
 package com.publicuhc.ultrahardcore.scatter;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
+import com.publicuhc.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
+import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,10 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import com.publicuhc.configuration.ConfigManager;
-import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
-import com.publicuhc.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
-import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -30,7 +30,7 @@ public class RealScatterManager implements ScatterManager {
     private int m_jobID = -1;
 
     private final Plugin m_plugin;
-    private final ConfigManager m_configManager;
+    private final Configurator m_configManager;
 
     /**
      * @param plugin the plugin
@@ -38,7 +38,7 @@ public class RealScatterManager implements ScatterManager {
      * @param protector the protector
      */
     @Inject
-    protected RealScatterManager(Plugin plugin, ConfigManager configManager, Protector protector){
+    protected RealScatterManager(Plugin plugin, Configurator configManager, Protector protector){
         m_protector = protector;
         m_plugin = plugin;
         m_configManager = configManager;
@@ -107,7 +107,7 @@ public class RealScatterManager implements ScatterManager {
             m_remainingTeleports.addAll(ptm);
             m_jobID = Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin, this);
             m_commandSender = sender;
-            sender.sendRawMessage("Starting to scatter all players, teleports are " + m_configManager.getConfig().getInt("scatter.delay") + " ticks apart");
+            sender.sendRawMessage("Starting to scatter all players, teleports are " + m_configManager.getConfig("main").getInt("scatter.delay") + " ticks apart");
         }
     }
 
@@ -118,7 +118,7 @@ public class RealScatterManager implements ScatterManager {
 
     @Override
     public int getMaxTries() {
-        return m_configManager.getConfig().getInt("scatter.maxtries");
+        return m_configManager.getConfig("main").getInt("scatter.maxtries");
     }
 
     @Override
@@ -198,6 +198,6 @@ public class RealScatterManager implements ScatterManager {
         }
         Teleporter ptm = m_remainingTeleports.pollFirst();
         ptm.teleport();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin,this,m_configManager.getConfig().getInt("scatter.delay"));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(m_plugin,this,m_configManager.getConfig("main").getInt("scatter.delay"));
     }
 }
