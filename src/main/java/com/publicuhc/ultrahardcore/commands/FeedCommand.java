@@ -2,12 +2,9 @@ package com.publicuhc.ultrahardcore.commands;
 
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.matchers.AnyRouteMatcher;
-import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
-import com.publicuhc.pluginframework.commands.routing.MethodRoute;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -60,18 +57,13 @@ public class FeedCommand extends SimpleCommand {
 
     /**
      * Run on /feedself.*
-     * @return the route
+     * @param builder the builder
      */
     @RouteInfo
-    public MethodRoute feedCommandDetails() {
-        return new DefaultMethodRoute(
-                new AnyRouteMatcher(),
-                new SenderType[] {
-                        SenderType.PLAYER
-                },
-                FEED_SELF_PERMISSION,
-                "feedself"
-        );
+    public void feedCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feedself");
+        builder.restrictSenderType(SenderType.PLAYER);
+        builder.restrictPermission(FEED_SELF_PERMISSION);
     }
 
     /**
@@ -96,21 +88,14 @@ public class FeedCommand extends SimpleCommand {
 
     /**
      * Run on /feed .+ except /feed *
+     * @param builder the builder
      * @return the route
      */
     @RouteInfo
-    public MethodRoute feedOtherCommandDetails() {
-        return new DefaultMethodRoute(
-                new PatternRouteMatcher(Pattern.compile("[^*]+")),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                FEED_OTHER_PERMISSION,
-                "feed"
-        );
+    public void feedOtherCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feed");
+        builder.restrictPermission(FEED_OTHER_PERMISSION);
+        builder.restrictPattern(Pattern.compile("[^*]+"));
     }
 
     /**
@@ -129,20 +114,12 @@ public class FeedCommand extends SimpleCommand {
 
     /**
      * Match only on /feed *
-     * @return the route
+     * @param builder the builder
      */
     @RouteInfo
-    public MethodRoute feedAllCommandDetails() {
-        return new DefaultMethodRoute(
-                new PatternRouteMatcher(Pattern.compile("\\*")),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                FEED_OTHER_PERMISSION,
-                "feed"
-        );
+    public void feedAllCommandDetails(RouteBuilder builder) {
+        builder.restrictPattern(Pattern.compile("\\*"));
+        builder.restrictCommand("feed");
+        builder.restrictPermission(FEED_OTHER_PERMISSION);
     }
 }
