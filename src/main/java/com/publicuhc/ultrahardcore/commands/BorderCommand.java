@@ -1,7 +1,13 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
+import com.publicuhc.pluginframework.commands.matchers.SimpleRouteMatcher;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
+import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
+import com.publicuhc.pluginframework.commands.routing.MethodRoute;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -21,6 +27,7 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class BorderCommand extends SimpleCommand {
 
@@ -44,12 +51,8 @@ public class BorderCommand extends SimpleCommand {
      * Ran on /genborder {worldname} {radius} {typeID}[:blockID][:meta] [x,z]
      * @param request request params
      */
-    @Command(trigger = "genborder",
-            identifier = "BorderCommand",
-            permission = GENERATE_BORDER,
-            minArgs = 3,
-            maxArgs = 4)
-    public void onBorderCommand(CommandRequest request){
+    @CommandMethod
+    public void borderCommand(CommandRequest request){
         World world = request.getWorld(0);
         if(world == null){
             request.sendMessage(translate("border.invalid.world", locale(request.getSender()), "world", request.getFirstArg()));
@@ -131,16 +134,30 @@ public class BorderCommand extends SimpleCommand {
     }
 
     /**
+     * Run on 3 or more parameters
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute borderCommandDetails() {
+        return new DefaultMethodRoute(
+                new PatternRouteMatcher(Pattern.compile("([\\S]+ ){2}[\\S]+.*")),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                GENERATE_BORDER,
+                "genborder"
+        );
+    }
+
+    /**
      * Ran on /genborder undo
      * @param request request params
      */
-    @Command(trigger = "undo",
-            identifier = "BorderUndoCommand",
-            minArgs = 0,
-            maxArgs = 1,
-            permission = GENERATE_BORDER,
-            parentID = "BorderCommand")
-    public void onBorderUndoCommand(CommandRequest request){
+    @CommandMethod
+    public void borderUndoCommand(CommandRequest request){
         CommandSender sender = request.getSender();
         String world;
         if (request.getArgs().size() == 1) {
@@ -161,15 +178,29 @@ public class BorderCommand extends SimpleCommand {
     }
 
     /**
+     * Run on /genborder undo
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute borderUndoCommandDetails() {
+        return new DefaultMethodRoute(
+                new SimpleRouteMatcher("undo"),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                GENERATE_BORDER,
+                "genborder"
+        );
+    }
+
+    /**
      * Ran on /genborder types
      * @param request request params
      */
-    @Command(trigger = "types",
-            identifier = "BorderTypesCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = GENERATE_BORDER,
-            parentID = "BorderCommand")
+    @CommandMethod
     public void onBorderTypesCommand(CommandRequest request){
         Collection<Border> types = m_borderTypes.getTypes();
         if(types.isEmpty()){
@@ -183,5 +214,24 @@ public class BorderCommand extends SimpleCommand {
             vars.put("desc", border.getDescription());
             request.sendMessage(translate("border.type_format", locale(request.getSender()), vars));
         }
+    }
+
+    /**
+     * Run on /genborder types
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute borderTypesCommand() {
+        return new DefaultMethodRoute(
+                new SimpleRouteMatcher("types"),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                GENERATE_BORDER,
+                "genborder"
+        );
     }
 }
