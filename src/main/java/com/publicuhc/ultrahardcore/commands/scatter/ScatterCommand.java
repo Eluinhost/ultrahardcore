@@ -2,13 +2,9 @@ package com.publicuhc.ultrahardcore.commands.scatter;
 
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.matchers.AnyRouteMatcher;
-import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
-import com.publicuhc.pluginframework.commands.matchers.SimpleRouteMatcher;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
-import com.publicuhc.pluginframework.commands.routing.MethodRoute;
+import com.publicuhc.pluginframework.commands.routing.*;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -73,20 +69,13 @@ public class ScatterCommand extends SimpleCommand {
 
     /**
      * Run on /iscatter.*
-     * @return the route
+     * @param builder the builder
      */
     @RouteInfo
-    public MethodRoute interactiveScatterCommandDetails() {
-        return new DefaultMethodRoute(
-                new AnyRouteMatcher(),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.REMOTE_CONSOLE
-                },
-                SCATTER_COMMAND,
-                "iscatter"
-        );
+    public void interactiveScatterCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("iscatter");
+        builder.restrictSenderType(SenderType.CONSOLE, SenderType.PLAYER, SenderType.REMOTE_CONSOLE);
+        builder.restrictPermission(SCATTER_COMMAND);
     }
 
     /**
@@ -187,21 +176,13 @@ public class ScatterCommand extends SimpleCommand {
     /**
      * Ran on /scatter {type} {world} {center} {radius} {minDist} {useTeams} {players/*}*
      * Matches 7 parameters or more
-     * @return the route
+     * @param builder the route builder
      */
     @RouteInfo
-    public MethodRoute scatterCommandDetails() {
-        return new DefaultMethodRoute(
-                new PatternRouteMatcher(Pattern.compile("([\\S]+ ){6}[\\S]+.*")),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                SCATTER_COMMAND,
-                "scatter"
-        );
+    public void scatterCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("scatter");
+        builder.restrictPattern(Pattern.compile("([\\S]+ ){6}[\\S]+.*"));
+        builder.restrictPermission(SCATTER_COMMAND);
     }
 
     /**
@@ -218,20 +199,14 @@ public class ScatterCommand extends SimpleCommand {
 
     /**
      * Run on /scatter types only
-     * @return the route
+     * @param builder the route builder
      */
     @RouteInfo
-    public MethodRoute scatterTypesCommandDetails() {
-        return new DefaultMethodRoute(
-                new SimpleRouteMatcher("types"),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.REMOTE_CONSOLE
-                },
-                SCATTER_COMMAND,
-                "scatter"
-        );
+    public void scatterTypesCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("scatter");
+        builder.restrictPermission(SCATTER_COMMAND);
+        builder.restrictPattern(Pattern.compile("types.*"));
+        builder.restrictSenderType(SenderType.PLAYER, SenderType.CONSOLE, SenderType.REMOTE_CONSOLE);
     }
 
 }

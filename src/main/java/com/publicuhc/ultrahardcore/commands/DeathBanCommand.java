@@ -1,18 +1,22 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBansFeature;
 import com.publicuhc.ultrahardcore.util.WordsUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class DeathBanCommand extends SimpleCommand {
 
@@ -37,23 +41,31 @@ public class DeathBanCommand extends SimpleCommand {
      * Ran on /deathban
      * @param request the request params
      */
-    @Command(trigger = "deathban",
-            identifier = "DeathBanCommand")
-    public void onDeathBanCommand(CommandRequest request){
-        //TODO show syntax?
+    @CommandMethod
+    public void deathBanCommand(CommandRequest request){
+        if(request.getCount() != 1){
+            return;
+        }
+        request.sendMessage(ChatColor.RED+"Syntax: /deathban unban <name>");
+        request.sendMessage(ChatColor.RED+"Syntax: /deathban ban <name> <time>");
     }
 
     /**
-     * Ran on /deathban unban {player}
+     * Run on /deathban.*
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void deathBanCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("deathban");
+        builder.restrictPermission(DEATH_BAN_BAN);
+    }
+
+    /**
+     * Unban a player
      * @param request the request params
      */
-    @Command(trigger = "unban",
-            identifier = "DeathBanUnbanCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            parentID = "DeathBanCommand",
-            permission = DEATH_BAN_UNBAN)
-    public void onDeathBanUnbanCommand(CommandRequest request){
+    @CommandMethod
+    public void deathbanUnbanCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("DeathBans");
         if(feature == null){
             request.sendMessage(translate("deathbans.not_loaded", locale(request.getSender())));
@@ -67,15 +79,20 @@ public class DeathBanCommand extends SimpleCommand {
     }
 
     /**
-     * Ran on /deathban ban {player} {time}
+     * Ran on /deathban unban {player}
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void deathbanUnbanCommandDetails(RouteBuilder builder) {
+        builder.restrictPermission(DEATH_BAN_UNBAN);
+        builder.restrictCommand("deathban");
+        builder.restrictPattern(Pattern.compile("unban .+"));
+    }
+
+    /**
+     * ban a player
      * @param request the request params
      */
-    @Command(trigger = "ban",
-            identifier = "DeathBanBanCommand",
-            minArgs = 2,
-            maxArgs = 2,
-            parentID = "DeathBanCommand",
-            permission = DEATH_BAN_BAN)
     public void onDeathBanBanCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("DeathBans");
         if(feature == null){
@@ -83,11 +100,22 @@ public class DeathBanCommand extends SimpleCommand {
             return;
         }
         String playername = request.getFirstArg();
-        long duration = request.parseDuration(1);
+        long duration = WordsUtil.parseTime(request.getArg(1));
         ((DeathBansFeature)feature).banPlayer(Bukkit.getOfflinePlayer(playername), translate("deathbans.ban_message", locale(request.getSender())), duration);
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("name", playername);
         vars.put("time", WordsUtil.formatTimeLeft(System.currentTimeMillis() + duration));
         request.sendMessage(translate("deathbans.banned", locale(request.getSender()), vars));
+    }
+
+    /**
+     * Ran on /deathban ban {player} {time}
+     * @param builder the builder
+     */
+    @RouteInfo
+    public void deathbanBanCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("deathban");
+        builder.restrictPermission(DEATH_BAN_BAN);
+        builder.restrictPattern(Pattern.compile("ban .+ .+"));
     }
 }

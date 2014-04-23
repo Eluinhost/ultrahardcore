@@ -2,12 +2,8 @@ package com.publicuhc.ultrahardcore.commands;
 
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
-import com.publicuhc.pluginframework.commands.matchers.SimpleRouteMatcher;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
-import com.publicuhc.pluginframework.commands.routing.MethodRoute;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -135,21 +131,13 @@ public class BorderCommand extends SimpleCommand {
 
     /**
      * Run on 3 or more parameters
-     * @return the route
+     * @param builder the builder
      */
     @RouteInfo
-    public MethodRoute borderCommandDetails() {
-        return new DefaultMethodRoute(
-                new PatternRouteMatcher(Pattern.compile("([\\S]+ ){2}[\\S]+.*")),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                GENERATE_BORDER,
-                "genborder"
-        );
+    public void borderCommandDetails(RouteBuilder builder) {
+        builder.restrictPattern(Pattern.compile("([\\S]+ ){2}[\\S]+.*"));
+        builder.restrictCommand("genborder");
+        builder.restrictPermission(GENERATE_BORDER);
     }
 
     /**
@@ -179,21 +167,13 @@ public class BorderCommand extends SimpleCommand {
 
     /**
      * Run on /genborder undo
-     * @return the route
+     * @param builder the builder
      */
     @RouteInfo
-    public MethodRoute borderUndoCommandDetails() {
-        return new DefaultMethodRoute(
-                new SimpleRouteMatcher("undo"),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                GENERATE_BORDER,
-                "genborder"
-        );
+    public void borderUndoCommandDetails(RouteBuilder builder) {
+        builder.restrictPermission(GENERATE_BORDER);
+        builder.restrictCommand("genborder");
+        builder.restrictPattern(Pattern.compile("undo.*"));
     }
 
     /**
@@ -218,20 +198,12 @@ public class BorderCommand extends SimpleCommand {
 
     /**
      * Run on /genborder types
-     * @return the route
+     * @param builder the builder
      */
     @RouteInfo
-    public MethodRoute borderTypesCommand() {
-        return new DefaultMethodRoute(
-                new SimpleRouteMatcher("types"),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                GENERATE_BORDER,
-                "genborder"
-        );
+    public void borderTypesCommand(RouteBuilder builder) {
+        builder.restrictCommand("genborder");
+        builder.restrictPattern(Pattern.compile("types.*"));
+        builder.restrictPermission(GENERATE_BORDER);
     }
 }
