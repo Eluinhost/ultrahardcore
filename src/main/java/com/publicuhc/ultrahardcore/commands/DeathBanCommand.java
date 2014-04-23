@@ -91,6 +91,7 @@ public class DeathBanCommand extends SimpleCommand {
      * ban a player
      * @param request the request params
      */
+    @CommandMethod
     public void onDeathBanBanCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("DeathBans");
         if(feature == null){
