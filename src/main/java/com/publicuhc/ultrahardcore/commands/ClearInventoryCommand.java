@@ -1,8 +1,14 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.matchers.AnyRouteMatcher;
+import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
+import com.publicuhc.pluginframework.commands.matchers.SimpleRouteMatcher;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
+import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
+import com.publicuhc.pluginframework.commands.routing.MethodRoute;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -17,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ClearInventoryCommand extends SimpleCommand {
 
@@ -37,26 +44,34 @@ public class ClearInventoryCommand extends SimpleCommand {
      * Ran on /ciself
      * @param request request params
      */
-    @Command(trigger = "ciself",
-            identifier = "ClearInventorySelf",
-            minArgs = 0,
-            maxArgs = 0,
-            senders = {SenderType.PLAYER},
-            permission = CLEAR_SELF_PERMISSION)
-    public void onClearInventorySelf(CommandRequest request){
+    @CommandMethod
+    public void clearInventorySelf(CommandRequest request){
         clearInventory((HumanEntity) request.getSender());
         request.sendMessage(translate("ci.cleared", locale(request.getSender())));
+    }
+
+    /**
+     * Run on /ciself
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute clearInventorySelfDetails() {
+        return new DefaultMethodRoute(
+                new AnyRouteMatcher(),
+                new SenderType[] {
+                        SenderType.PLAYER
+                },
+                CLEAR_SELF_PERMISSION,
+                "ciself"
+        );
     }
 
     /**
      * Ran on /ci {name}*
      * @param request request params
      */
-    @Command(trigger = "ci",
-            identifier = "ClearInventory",
-            minArgs = 1,
-            permission = CLEAR_OTHER_PERMISSION)
-    public void onClearInventoryCommand(CommandRequest request){
+    @CommandMethod
+    public void clearInventoryCommand(CommandRequest request){
         List<String> arguments = request.getArgs();
         AbstractList<String> namesNotFound = new ArrayList<String>();
         for (String pname : arguments) {
@@ -83,22 +98,55 @@ public class ClearInventoryCommand extends SimpleCommand {
     }
 
     /**
+     * Run on /ci .* except /ci *
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute clearInventoryCommandDetails() {
+        return new DefaultMethodRoute(
+                new PatternRouteMatcher(Pattern.compile("[^*]+")),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                CLEAR_OTHER_PERMISSION,
+                "ci"
+        );
+    }
+
+    /**
      * Ran on /ci *
      * @param request request params
      */
-    @Command(trigger = "*",
-            identifier = "ClearInventoryAll",
-            parentID = "ClearInventory",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = CLEAR_OTHER_PERMISSION)
-    public void onClearInventoryAll(CommandRequest request){
+    @CommandMethod
+    public void clearInventoryAll(CommandRequest request){
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
                 clearInventory(p);
             }
         }
         Bukkit.broadcastMessage(translate("ci.announce_all", locale(request.getSender()), "name", request.getSender().getName()));
+    }
+
+    /**
+     * Run on /ci *
+     * @return the route
+     */
+    @RouteInfo
+    public MethodRoute clearInventoryAll() {
+        return new DefaultMethodRoute(
+                new SimpleRouteMatcher("*"),
+                new SenderType[] {
+                        SenderType.PLAYER,
+                        SenderType.CONSOLE,
+                        SenderType.COMMAND_BLOCK,
+                        SenderType.REMOTE_CONSOLE
+                },
+                CLEAR_OTHER_PERMISSION,
+                "ci"
+        );
     }
 
 
