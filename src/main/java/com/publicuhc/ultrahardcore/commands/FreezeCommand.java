@@ -1,7 +1,9 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.pluginframework.configuration.Configurator;
@@ -9,6 +11,8 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
+
+import java.util.regex.Pattern;
 
 public class FreezeCommand extends SimpleCommand {
 
@@ -33,12 +37,8 @@ public class FreezeCommand extends SimpleCommand {
      * Ran on /freeze
      * @param request the request params
      */
-    @Command(trigger = "freeze",
-            identifier = "FreezeCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = FREEZE_PERMISSION)
-    public void onFreezeCommand(CommandRequest request){
+    @CommandMethod
+    public void freezeCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
@@ -57,17 +57,19 @@ public class FreezeCommand extends SimpleCommand {
         request.sendMessage(translate("freeze.player_froze", locale(request.getSender())));
     }
 
+    @RouteInfo
+    public void freezeCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("freeze");
+        builder.restrictPattern(Pattern.compile("[\\S]+"));
+        builder.restrictPermission(FREEZE_PERMISSION);
+    }
+
     /**
      * Ran on /freeze *
      * @param request the request params
      */
-    @Command(trigger = "*",
-            identifier = "FreezeAllCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            parentID = "FreezeCommand",
-            permission = FREEZE_PERMISSION)
-    public void onFreezeAllCommand(CommandRequest request){
+    @CommandMethod
+    public void freezeAllCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
@@ -77,16 +79,19 @@ public class FreezeCommand extends SimpleCommand {
         request.sendMessage(translate("freeze.froze_all", locale(request.getSender())));
     }
 
+    @RouteInfo
+    public void freezeAllCommandDetails(RouteBuilder builder) {
+        builder.restrictPermission(FREEZE_PERMISSION);
+        builder.restrictPattern(Pattern.compile("\\*"));
+        builder.restrictCommand("freeze");
+    }
+
     /**
      * Ran on /unfreeze
      * @param request the request params
      */
-    @Command(trigger = "unfreeze",
-            identifier = "UnfreezeCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = FREEZE_PERMISSION)
-    public void onUnfreezeCommand(CommandRequest request){
+    @CommandMethod
+    public void unfreezeCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
@@ -96,17 +101,19 @@ public class FreezeCommand extends SimpleCommand {
         request.sendMessage(translate("freeze.player_unfroze", locale(request.getSender())));
     }
 
+    @RouteInfo
+    public void unfreezeCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("unfreeze");
+        builder.restrictPattern(Pattern.compile("[\\S]+"));
+        builder.restrictPermission(FREEZE_PERMISSION);
+    }
+
     /**
      * Ran on /unfreeze *
      * @param request the request params
      */
-    @Command(trigger = "*",
-            identifier = "UnfreezeAllCommand",
-            parentID = "UnfreezeCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = FREEZE_PERMISSION)
-    public void onUnfreezeAllCommand(CommandRequest request){
+    @CommandMethod
+    public void unfreezeAllCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
@@ -114,5 +121,12 @@ public class FreezeCommand extends SimpleCommand {
         }
         ((PlayerFreezeFeature)feature).unfreezeAll();
         request.sendMessage(translate("freeze.unfroze_all", locale(request.getSender())));
+    }
+
+    @RouteInfo
+    public void unfreezeAllCommandDetails(RouteBuilder builder) {
+        builder.restrictPermission(FREEZE_PERMISSION);
+        builder.restrictPattern(Pattern.compile("\\*"));
+        builder.restrictCommand("unfreeze");
     }
 }

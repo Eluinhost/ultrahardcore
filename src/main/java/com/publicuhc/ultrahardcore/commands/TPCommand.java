@@ -1,7 +1,9 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -12,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TPCommand extends SimpleCommand {
 
@@ -25,13 +28,9 @@ public class TPCommand extends SimpleCommand {
     /**
      * Ran on /tpp {list of players} {player/location}
      * @param request request params
-     *                TODO use new methods
      */
-    @Command(trigger = "tpp",
-            identifier = "TeleportCommand",
-            minArgs = 2,
-            permission = TP_ALL_PERMISSION)
-    public void onTeleportCommand(CommandRequest request){
+    @CommandMethod
+    public void teleportCommand(CommandRequest request){
         List<String> arguments = request.getArgs();
         Location location;
         String lastArg = request.getLastArg();
@@ -88,5 +87,12 @@ public class TPCommand extends SimpleCommand {
                 p.teleport(location);
             }
         }
+    }
+
+    @RouteInfo
+    public void teleportCommand(RouteBuilder builder) {
+        builder.restrictCommand("tpp");
+        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+"));
+        builder.restrictPermission(TP_ALL_PERMISSION);
     }
 }

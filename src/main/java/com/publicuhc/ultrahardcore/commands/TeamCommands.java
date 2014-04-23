@@ -1,8 +1,10 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
-import com.publicuhc.commands.SenderType;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -17,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class TeamCommands extends SimpleCommand {
 
@@ -46,12 +49,8 @@ public class TeamCommands extends SimpleCommand {
      * Ran on /createteam [name]
      * @param request request params
      */
-    @Command(trigger = "createteam",
-            identifier = "CreateTeamCommand",
-            minArgs = 0,
-            maxArgs = 1,
-            permission = TEAM_CREATE_PERMISSION)
-    public void onCreateTeamCommand(CommandRequest request){
+    @CommandMethod
+    public void createTeamCommand(CommandRequest request){
         Team thisteam;
         if (request.getArgs().size() == 1) {
             thisteam = m_teamsUtil.getTeam(request.getFirstArg());
@@ -70,16 +69,18 @@ public class TeamCommands extends SimpleCommand {
         request.sendMessage(translate("teams.created", locale(request.getSender()), vars));
     }
 
+    @RouteInfo
+    public void createTeamCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("createteam");
+        builder.restrictPermission(TEAM_CREATE_PERMISSION);
+    }
+
     /**
      * Ran on /removeteam {name}
      * @param request request params
      */
-    @Command(trigger = "removeteam",
-            identifier = "RemoveTeamCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = TEAM_REMOVE_PERMISSION)
-    public void onRemoveTeamCommand(CommandRequest request){
+    @CommandMethod
+    public void removeTeamCommand(CommandRequest request){
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
             request.sendMessage(translate("teams.not_exist", locale(request.getSender())));
@@ -95,51 +96,57 @@ public class TeamCommands extends SimpleCommand {
         request.sendMessage(translate("teams.removed", locale(request.getSender())));
     }
 
+    @RouteInfo
+    public void removeTeamCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("removeteam");
+        builder.restrictPermission(TEAM_REMOVE_PERMISSION);
+        builder.restrictPattern(Pattern.compile("[\\S]+"));
+    }
+
     /**
      * Ran on /leaveteam
      * @param request request params
      */
-    @Command(trigger = "leaveteam",
-            identifier = "LeaveTeamCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = TEAM_LEAVE_PERMISSION,
-            senders = {SenderType.PLAYER})
-    public void onLeaveTeamCommand(CommandRequest request){
+    @CommandMethod
+    public void leaveTeamCommand(CommandRequest request){
         boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam((OfflinePlayer) request.getSender(), true, true);
         if (stillOnTeam) {
             request.sendMessage(translate("teams.not_in_team", locale(request.getSender())));
         }
     }
 
+    @RouteInfo
+    public void leaveTeamCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("leaveteam");
+        builder.restrictPermission(TEAM_LEAVE_PERMISSION);
+        builder.restrictSenderType(SenderType.PLAYER);
+    }
+
     /**
      * Ran on /leaveteam f {name}
      * @param request request params
      */
-    @Command(trigger = "f",
-            identifier = "LeaveTeamOtherCommand",
-            parentID = "LeaveTeamCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = TEAM_LEAVE_OTHER_PERMISSION)
-    public void onLeaveTeamForce(CommandRequest request){
+    @CommandMethod
+    public void leaveTeamForce(CommandRequest request){
         boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam(Bukkit.getOfflinePlayer(request.getFirstArg()), true, true);
         if (stillOnTeam) {
             request.getSender().sendMessage(translate("teams.player_not_in_team", locale(request.getSender()) , "name", request.getFirstArg()));
         }
     }
 
+    @RouteInfo
+    public void leaveTeamForceDetails(RouteBuilder builder) {
+        builder.restrictCommand("leaveteam");
+        builder.restrictPermission(TEAM_LEAVE_OTHER_PERMISSION);
+        builder.restrictPattern(Pattern.compile("f [\\S]+"));
+    }
+
     /**
      * Ran on /jointeam {name}
      * @param request request params
      */
-    @Command(trigger = "jointeam",
-            identifier = "JoinTeamCommand",
-            minArgs = 1,
-            maxArgs = 1,
-            permission = TEAM_JOIN_PERMISSION,
-            senders = {SenderType.PLAYER})
-    public void onJoinTeamCommand(CommandRequest request){
+    @CommandMethod
+    public void joinTeamCommand(CommandRequest request){
         OfflinePlayer sender = (OfflinePlayer) request.getSender();
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
@@ -152,17 +159,20 @@ public class TeamCommands extends SimpleCommand {
         TeamsUtil.playerJoinTeam(sender, team, true, true);
     }
 
+    @RouteInfo
+    public void joinTeamCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("jointeam");
+        builder.restrictPattern(Pattern.compile("[\\S]+"));
+        builder.restrictPermission(TEAM_JOIN_PERMISSION);
+        builder.restrictSenderType(SenderType.PLAYER);
+    }
+
     /**
      * Ran on /jointeam f {team} {name}
      * @param request request params
      */
-    @Command(trigger = "f",
-            identifier = "JoinTeamOtherCommand",
-            parentID = "JoinTeamCommand",
-            minArgs = 2,
-            maxArgs = 2,
-            permission = TEAM_JOIN_OTHER_PERMISSION)
-    public void onJoinTeamOtherCommand(CommandRequest request){
+    @CommandMethod
+    public void joinTeamOtherCommand(CommandRequest request){
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
         if (team == null) {
             request.sendMessage(translate("teams.not_exist", locale(request.getSender())));
@@ -175,46 +185,53 @@ public class TeamCommands extends SimpleCommand {
         TeamsUtil.playerJoinTeam(player,team,true,true);
     }
 
+    @RouteInfo
+    public void joinTeamOtherCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("jointeam");
+        builder.restrictPermission(TEAM_JOIN_OTHER_PERMISSION);
+        builder.restrictPattern(Pattern.compile("f [\\S]+ [\\S]+"));
+    }
+
     /**
      * Ran on /clearteams
      * @param request request params
      */
-    @Command(trigger = "clearteams",
-            identifier = "ClearTeamCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = CLEAR_TEAMS_PERMISSION)
-    public void onClearTeamsCommand(CommandRequest request){
+    @CommandMethod
+    public void clearTeamsCommand(CommandRequest request) {
         m_teamsUtil.clearTeams(true);
         request.sendMessage(translate("teams.cleared", locale(request.getSender())));
+    }
+
+    @RouteInfo
+    public void clearTeamsCommandDetails(RouteBuilder builder) {
+        builder.restrictPermission(CLEAR_TEAMS_PERMISSION);
+        builder.restrictCommand("clearteams");
     }
 
     /**
      * Ran on /emptyteams
      * @param request request params
      */
-    @Command(trigger = "emptyteams",
-            identifier = "EmptyTeamCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = EMPTY_TEAMS_PERMISSION)
-    public void onEmptyTeamsCommand(CommandRequest request){
+    @CommandMethod
+    public void emptyTeamsCommand(CommandRequest request){
         m_teamsUtil.emptyTeams(true);
         request.sendMessage(translate("teams.emptied", locale(request.getSender())));
+    }
+
+    @RouteInfo
+    public void emptyTeamsCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("emptyteams");
+        builder.restrictPermission(EMPTY_TEAMS_PERMISSION);
     }
 
     /**
      * Ran on /listteams {name}
      * @param request request params
      */
-    @Command(trigger = "listteams",
-            identifier = "ListTeamCommand",
-            minArgs = 0,
-            maxArgs = 1,
-            permission = LIST_TEAMS_PERMISSION)
-    public void onListTeamsCommand(CommandRequest request){
+    @CommandMethod
+    public void listTeamsCommand(CommandRequest request){
         if(request.getArgs().isEmpty()){
-            onListTeamsAllCommand(request);
+            listTeamsAllCommand(request);
             return;
         }
         Team team = m_teamsUtil.getTeam(request.getFirstArg());
@@ -225,17 +242,18 @@ public class TeamCommands extends SimpleCommand {
         request.sendMessage(TeamsUtil.teamToString(team));
     }
 
+    @RouteInfo
+    public void listTeamsCommand(RouteBuilder builder) {
+        builder.restrictCommand("listteams");
+        builder.restrictPermission(LIST_TEAMS_PERMISSION);
+    }
+
     /**
      * Ran on /listteam *
      * @param request request params
      */
-    @Command(trigger = "*",
-            identifier = "ListTeamAllCommand",
-            parentID = "ListTeamCommand",
-            minArgs = 0,
-            maxArgs = 0,
-            permission = LIST_TEAMS_PERMISSION)
-    public void onListTeamsAllCommand(CommandRequest request){
+    @CommandMethod
+    public void listTeamsAllCommand(CommandRequest request){
         Set<Team> teams = m_teamsUtil.getAllTeams();
         if(teams.isEmpty()){
             request.sendMessage(translate("teams.no_teams", locale(request.getSender())));
@@ -246,16 +264,19 @@ public class TeamCommands extends SimpleCommand {
         }
     }
 
+    @RouteInfo
+    public void listTeamsAllCommand(RouteBuilder builder) {
+        builder.restrictCommand("listteams");
+        builder.restrictPermission(LIST_TEAMS_PERMISSION);
+        builder.restrictPattern(Pattern.compile("\\*"));
+    }
+
     /**
      * Ran on /randomteams {number} [world]
      * @param request request params
      */
-    @Command(trigger = "randomteams",
-            identifier = "RandomTeamCommand",
-            minArgs = 1,
-            maxArgs = 2,
-            permission = RANDOM_TEAMS_PERMISSION)
-    public void onRandomTeamCommand(CommandRequest request){
+    @CommandMethod
+    public void randomTeamCommand(CommandRequest request){
         List<Player> players = new ArrayList<Player>();
         if(request.getArgs().size() == 2){
             World world = Bukkit.getWorld(request.getLastArg());
@@ -324,5 +345,12 @@ public class TeamCommands extends SimpleCommand {
             }
         }
         request.sendMessage(translate("teams.created_teams", locale(request.getSender()), "amount", String.valueOf(teamsToMake)));
+    }
+
+    @RouteInfo
+    public void randomTeamCommand(RouteBuilder builder) {
+        builder.restrictCommand("randomteams");
+        builder.restrictPattern(Pattern.compile("[\\S]+.*"));
+        builder.restrictPermission(RANDOM_TEAMS_PERMISSION);
     }
 }

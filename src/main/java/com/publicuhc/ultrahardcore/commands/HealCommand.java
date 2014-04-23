@@ -2,12 +2,9 @@ package com.publicuhc.ultrahardcore.commands;
 
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.matchers.AnyRouteMatcher;
-import com.publicuhc.pluginframework.commands.matchers.PatternRouteMatcher;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.DefaultMethodRoute;
-import com.publicuhc.pluginframework.commands.routing.MethodRoute;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -47,18 +44,12 @@ public class HealCommand extends SimpleCommand {
 
     /**
      * Run on /healself.*
-     * @return the route
      */
     @RouteInfo
-    public MethodRoute healSelfCommandDetails() {
-        return new DefaultMethodRoute(
-                new AnyRouteMatcher(),
-                new SenderType[] {
-                        SenderType.PLAYER
-                },
-                HEAL_SELF_PERMISSION,
-                "healself"
-        );
+    public void healSelfCommandDetails(RouteBuilder builder) {
+        builder.restrictSenderType(SenderType.PLAYER);
+        builder.restrictCommand("healself");
+        builder.restrictPermission(HEAL_SELF_PERMISSION);
     }
 
     /**
@@ -83,21 +74,12 @@ public class HealCommand extends SimpleCommand {
 
     /**
      * Run on /heal .+ except '/heal *'
-     * @return the route
      */
     @RouteInfo
-    public MethodRoute healCommandDetails() {
-        return new DefaultMethodRoute(
-                new PatternRouteMatcher(Pattern.compile("[^*]+")),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                HEAL_OTHER_PERMISSION,
-                "heal"
-        );
+    public void healCommandDetails(RouteBuilder builder) {
+        builder.restrictPattern(Pattern.compile("[^*]+"));
+        builder.restrictPermission(HEAL_OTHER_PERMISSION);
+        builder.restrictCommand("heal");
     }
 
     /**
@@ -116,20 +98,11 @@ public class HealCommand extends SimpleCommand {
 
     /**
      * Run on /heal * only
-     * @return the route
      */
     @RouteInfo
-    public MethodRoute healAllCommandDetails() {
-        return new DefaultMethodRoute(
-                new PatternRouteMatcher(Pattern.compile("\\*")),
-                new SenderType[] {
-                        SenderType.PLAYER,
-                        SenderType.CONSOLE,
-                        SenderType.COMMAND_BLOCK,
-                        SenderType.REMOTE_CONSOLE
-                },
-                HEAL_OTHER_PERMISSION,
-                "heal"
-        );
+    public void healAllCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("heal");
+        builder.restrictPermission(HEAL_OTHER_PERMISSION);
+        builder.restrictPattern(Pattern.compile("\\*"));
     }
 }

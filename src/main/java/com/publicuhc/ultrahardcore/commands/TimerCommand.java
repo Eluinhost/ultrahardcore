@@ -1,7 +1,9 @@
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.commands.Command;
-import com.publicuhc.commands.CommandRequest;
+import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
+import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
+import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.pluginframework.configuration.Configurator;
@@ -11,6 +13,7 @@ import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerRunnable;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TimerCommand extends SimpleCommand {
 
@@ -33,13 +36,8 @@ public class TimerCommand extends SimpleCommand {
      * Ran on /timer {duration} {message}*
      * @param request the request params
      */
-    @Command(
-            identifier = "TimerCommand",
-            trigger = "timer",
-            minArgs = 2,
-            permission = TIMER_COMMAND
-    )
-    public void onTimerCommand(CommandRequest request) {
+    @CommandMethod
+    public void timerCommand(CommandRequest request) {
         IFeature feature = m_featureManager.getFeatureByID("Timer");
         if(feature == null) {
             request.sendMessage(translate("timer.feature_not_found", locale(request.getSender())));
@@ -71,18 +69,18 @@ public class TimerCommand extends SimpleCommand {
         }
     }
 
+    @RouteInfo
+    public void timerCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("timer");
+        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+"));
+        builder.restrictPermission(TIMER_COMMAND);
+    }
     /**
      * Ran on /canceltimer
      * @param request the request params
      */
-    @Command(
-            identifier = "TimerCancelCommand",
-            trigger = "canceltimer",
-            maxArgs = 0,
-            minArgs = 0,
-            permission = TIMER_COMMAND
-    )
-    public void onTimerCancelCommand(CommandRequest request) {
+    @CommandMethod
+    public void timerCancelCommand(CommandRequest request) {
         IFeature feature = m_featureManager.getFeatureByID("Timer");
         if(feature == null) {
             request.sendMessage(translate("timer.feature_not_found", locale(request.getSender())));
@@ -91,5 +89,11 @@ public class TimerCommand extends SimpleCommand {
         TimerFeature timerFeature = (TimerFeature) feature;
         timerFeature.stopTimer();
         request.sendMessage(translate("timer.cancelled", locale(request.getSender())));
+    }
+
+    @RouteInfo
+    public void timerCancelCommand(RouteBuilder builder) {
+        builder.restrictCommand("canceltimer");
+        builder.restrictPermission(TIMER_COMMAND);
     }
 }
