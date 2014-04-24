@@ -72,11 +72,11 @@ public class BorderCommand extends SimpleCommand {
     public void borderCommand(CommandRequest request){
         World world = request.getWorld(0);
         if(world == null){
-            request.sendMessage(translate("border.invalid.world", locale(request.getSender()), "world", request.getFirstArg()));
+            request.sendMessage(translate("border.invalid.world", request.getLocale(), "world", request.getFirstArg()));
             return;
         }
         if(!request.isArgNumber(1)){
-            request.sendMessage(translate("border.invalid.radius", locale(request.getSender()), "radius", request.getArg(1)));
+            request.sendMessage(translate("border.invalid.radius", request.getLocale(), "radius", request.getArg(1)));
             return;
         }
         double radius = request.getNumber(1).doubleValue();
@@ -94,23 +94,23 @@ public class BorderCommand extends SimpleCommand {
                 try{
                     metaID = Integer.parseInt(parts[2]);
                 }catch (NumberFormatException ignored){
-                    request.sendMessage(translate("border.invalid.meta_id", locale(request.getSender()), "meta", parts[2]));
+                    request.sendMessage(translate("border.invalid.meta_id", request.getLocale(), "meta", parts[2]));
                     return;
                 }
             }
         }
         if(blockID == null) {
-            request.sendMessage(translate("border.invalid.block_id", locale(request.getSender())));
+            request.sendMessage(translate("border.invalid.block_id", request.getLocale()));
             return;
         }
         if(!blockID.isBlock()){
-            request.sendMessage(translate("border.invalid.block_id_not_block", locale(request.getSender())));
+            request.sendMessage(translate("border.invalid.block_id_not_block", request.getLocale()));
             return;
         }
 
         Border borderType = m_borderTypes.getBorderByID(borderName);
         if(borderType == null){
-            request.sendMessage(translate("border.invalid.border_id", locale(request.getSender()), "borderID", borderName));
+            request.sendMessage(translate("border.invalid.border_id", request.getLocale(), "borderID", borderName));
             return;
         }
 
@@ -120,7 +120,7 @@ public class BorderCommand extends SimpleCommand {
             String coords = request.getArg(3);
             String[] parts = coords.split(",");
             if(parts.length != 2){
-                request.sendMessage(translate("border.invalid.coordinates", locale(request.getSender()), "coords", request.getArg(3)));
+                request.sendMessage(translate("border.invalid.coordinates", request.getLocale(), "coords", request.getArg(3)));
                 return;
             }
             try{
@@ -129,7 +129,7 @@ public class BorderCommand extends SimpleCommand {
                 center.setX(x);
                 center.setZ(z);
             }catch(NumberFormatException ignored){
-                request.sendMessage(translate("border.invalid.coordinates", locale(request.getSender()), "coords", request.getArg(3)));
+                request.sendMessage(translate("border.invalid.coordinates", request.getLocale(), "coords", request.getArg(3)));
                 return;
             }
         }
@@ -143,11 +143,11 @@ public class BorderCommand extends SimpleCommand {
         try {
             creator.createBorder();
         } catch (TooManyBlocksException ignored) {
-            request.sendMessage(translate("border.max_blocks", locale(request.getSender())));
+            request.sendMessage(translate("border.max_blocks", request.getLocale()));
             return;
         }
 
-        request.sendMessage(translate("border.created", locale(request.getSender())));
+        request.sendMessage(translate("border.created", request.getLocale()));
     }
 
     /**
@@ -171,7 +171,7 @@ public class BorderCommand extends SimpleCommand {
         String world;
         if (request.getArgs().size() == 1) {
             if (!(sender instanceof Player)) {
-                request.sendMessage(translate("border.non_player_world", locale(request.getSender())));
+                request.sendMessage(translate("border.non_player_world", request.getLocale()));
                 return;
             }
             world = ((Entity) sender).getWorld().getName();
@@ -180,9 +180,9 @@ public class BorderCommand extends SimpleCommand {
         }
         SessionManager sessionManager = SessionManager.getInstance();
         if (sessionManager.undoLastSession(world)) {
-            request.sendMessage(translate("border.undone", locale(request.getSender())));
+            request.sendMessage(translate("border.undone", request.getLocale()));
         } else {
-            request.sendMessage(translate("border.no_undo", locale(request.getSender())));
+            request.sendMessage(translate("border.no_undo", request.getLocale()));
         }
     }
 
@@ -205,15 +205,15 @@ public class BorderCommand extends SimpleCommand {
     public void onBorderTypesCommand(CommandRequest request){
         Collection<Border> types = m_borderTypes.getTypes();
         if(types.isEmpty()){
-            request.sendMessage(translate("border.no_borders", locale(request.getSender())));
+            request.sendMessage(translate("border.no_borders", request.getLocale()));
             return;
         }
-        request.sendMessage(translate("border.border_types", locale(request.getSender()), "count", String.valueOf(types.size())));
+        request.sendMessage(translate("border.border_types", request.getLocale(), "count", String.valueOf(types.size())));
         for(Border border : types){
             Map<String, String> vars = new HashMap<String, String>();
             vars.put("featureID", border.getID());
             vars.put("desc", border.getDescription());
-            request.sendMessage(translate("border.type_format", locale(request.getSender()), vars));
+            request.sendMessage(translate("border.type_format", request.getLocale(), vars));
         }
     }
 

@@ -62,20 +62,20 @@ public class FreezeCommand extends SimpleCommand {
     public void freezeCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
+            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
         Player player = request.getPlayer(0);
         if(player == null){
-            request.sendMessage(translate("freeze.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
+            request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getFirstArg()));
             return;
         }
         if(player.hasPermission(ANTIFREEZE_PERMISSION)){
-            request.sendMessage(translate("freeze.immune", locale(request.getSender())));
+            request.sendMessage(translate("freeze.immune", request.getLocale()));
             return;
         }
         ((PlayerFreezeFeature)feature).addPlayer(player);
-        request.sendMessage(translate("freeze.player_froze", locale(request.getSender())));
+        request.sendMessage(translate("freeze.player_froze", request.getLocale()));
     }
 
     @RouteInfo
@@ -93,11 +93,11 @@ public class FreezeCommand extends SimpleCommand {
     public void freezeAllCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
+            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
         ((PlayerFreezeFeature)feature).freezeAll();
-        request.sendMessage(translate("freeze.froze_all", locale(request.getSender())));
+        request.sendMessage(translate("freeze.froze_all", request.getLocale()));
     }
 
     @RouteInfo
@@ -115,16 +115,16 @@ public class FreezeCommand extends SimpleCommand {
     public void unfreezeCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
+            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
         Player p = request.getPlayer(0);
         if(null == p) {
-            request.sendMessage(translate("freeze.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
+            request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getFirstArg()));
             return;
         }
         ((PlayerFreezeFeature)feature).removePlayer(p.getUniqueId());
-        request.sendMessage(translate("freeze.player_unfroze", locale(request.getSender())));
+        request.sendMessage(translate("freeze.player_unfroze", request.getLocale()));
     }
 
     @RouteInfo
@@ -142,11 +142,11 @@ public class FreezeCommand extends SimpleCommand {
     public void unfreezeAllCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
-            request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
+            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
         ((PlayerFreezeFeature)feature).unfreezeAll();
-        request.sendMessage(translate("freeze.unfroze_all", locale(request.getSender())));
+        request.sendMessage(translate("freeze.unfroze_all", request.getLocale()));
     }
 
     @RouteInfo

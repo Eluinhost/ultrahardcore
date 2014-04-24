@@ -83,15 +83,15 @@ public class FeatureCommand extends SimpleCommand {
     @CommandMethod
     public void featureListCommand(CommandRequest request){
         List<IFeature> features = m_featureManager.getFeatures();
-        request.sendMessage(translate("features.loaded.header", locale(request.getSender()), "amount", String.valueOf(features.size())));
+        request.sendMessage(translate("features.loaded.header", request.getLocale(), "amount", String.valueOf(features.size())));
         if (features.isEmpty()) {
-            request.sendMessage(translate("features.loaded.none", locale(request.getSender())));
+            request.sendMessage(translate("features.loaded.none", request.getLocale()));
         }
         for (IFeature feature : features) {
             Map<String, String> vars = new HashMap<String, String>();
             vars.put("id", feature.getFeatureID());
             vars.put("desc", feature.getDescription());
-            request.sendMessage(translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off", locale(request.getSender()), vars));
+            request.sendMessage(translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off", request.getLocale(), vars));
         }
     }
 
@@ -114,18 +114,18 @@ public class FeatureCommand extends SimpleCommand {
     public void featureOnCommand(CommandRequest request){
         IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.sendMessage(translate("features.not_found", locale(request.getSender()), "id", request.getFirstArg()));
+            request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;
         }
         if(feature.isEnabled()){
-            request.sendMessage(translate("features.already_enabled", locale(request.getSender())));
+            request.sendMessage(translate("features.already_enabled", request.getLocale()));
             return;
         }
         if(!feature.enableFeature()){
-            request.sendMessage(translate("features.enabled_cancelled", locale(request.getSender())));
+            request.sendMessage(translate("features.enabled_cancelled", request.getLocale()));
             return;
         }
-        request.sendMessage(translate("features.enabled", locale(request.getSender())));
+        request.sendMessage(translate("features.enabled", request.getLocale()));
     }
 
     /**
@@ -147,18 +147,18 @@ public class FeatureCommand extends SimpleCommand {
     public void onFeatureOffCommand(CommandRequest request){
         IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
-            request.sendMessage(translate("features.not_found", locale(request.getSender()), "id", request.getFirstArg()));
+            request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;
         }
         if(!feature.isEnabled()){
-            request.sendMessage(translate("features.already_disabled", locale(request.getSender())));
+            request.sendMessage(translate("features.already_disabled", request.getLocale()));
             return;
         }
         if(!feature.disableFeature()){
-            request.sendMessage(translate("features.disabled_cancelled", locale(request.getSender())));
+            request.sendMessage(translate("features.disabled_cancelled", request.getLocale()));
             return;
         }
-        request.sendMessage(translate("features.disabled", locale(request.getSender())));
+        request.sendMessage(translate("features.disabled", request.getLocale()));
     }
 
     /**

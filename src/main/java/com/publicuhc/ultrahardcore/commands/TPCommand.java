@@ -60,18 +60,18 @@ public class TPCommand extends SimpleCommand {
             World w;
             if (coords.length == 3) {
                 if (!(request.getSender() instanceof Player)) {
-                    request.sendMessage(translate("teleport.non_player_world", locale(request.getSender())));
+                    request.sendMessage(translate("teleport.non_player_world", request.getLocale()));
                     return;
                 }
                 w = ((Entity) request.getSender()).getWorld();
             } else if (coords.length == 4) {
                 w = Bukkit.getWorld(coords[3]);
                 if (w == null) {
-                    request.sendMessage(translate("teleport.invalid.world", locale(request.getSender())));
+                    request.sendMessage(translate("teleport.invalid.world", request.getLocale()));
                     return;
                 }
             } else {
-                request.sendMessage(translate("teleport.invalid.coords", locale(request.getSender())));
+                request.sendMessage(translate("teleport.invalid.coords", request.getLocale()));
                 return;
             }
             int x;
@@ -82,14 +82,14 @@ public class TPCommand extends SimpleCommand {
                 y = Integer.parseInt(coords[1]);
                 z = Integer.parseInt(coords[2]);
             } catch (NumberFormatException ignored) {
-                request.sendMessage(translate("teleport.invalid.coords", locale(request.getSender())));
+                request.sendMessage(translate("teleport.invalid.coords", request.getLocale()));
                 return;
             }
             location = new Location(w, x, y, z);
         } else {
             Player p = Bukkit.getPlayer(lastArg);
             if (p == null) {
-                request.sendMessage(translate("teleport.invalid.player", locale(request.getSender()), "name", lastArg));
+                request.sendMessage(translate("teleport.invalid.player", request.getLocale(), "name", lastArg));
                 return;
             }
             location = p.getLocation();
@@ -102,7 +102,7 @@ public class TPCommand extends SimpleCommand {
             for (int i = 0; i < arguments.size() - 1; i++) {
                 Player p = Bukkit.getPlayer(arguments.get(i));
                 if (p == null) {
-                    request.sendMessage(translate("teleport.invalid.player", locale(request.getSender()), "name", arguments.get(i)));
+                    request.sendMessage(translate("teleport.invalid.player", request.getLocale(), "name", arguments.get(i)));
                     continue;
                 }
                 p.teleport(location);

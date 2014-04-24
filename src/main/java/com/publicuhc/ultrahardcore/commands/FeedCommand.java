@@ -69,11 +69,11 @@ public class FeedCommand extends SimpleCommand {
     public void feedCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         feedPlayer(player);
-        player.sendMessage(translate("feed.tell", locale(request.getSender())));
+        player.sendMessage(translate("feed.tell", request.getLocale()));
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("fed", player.getName());
         vars.put("name", player.getName());
-        ServerUtil.broadcastForPermission(translate("feed.announce", locale(request.getSender()), vars), FEED_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("feed.announce", request.getLocale(), vars), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -95,16 +95,16 @@ public class FeedCommand extends SimpleCommand {
     public void feedOtherCommand(CommandRequest request){
         Player player = request.getPlayer(0);
         if (player == null) {
-            request.getSender().sendMessage(translate("feed.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
+            request.getSender().sendMessage(translate("feed.invalid_player", request.getLocale(), "name", request.getFirstArg()));
             return;
         }
         feedPlayer(player);
-        player.sendMessage(translate("feed.tell", locale(request.getSender())));
-        request.sendMessage(translate("feed.fed", locale(request.getSender())));
+        player.sendMessage(translate("feed.tell", request.getLocale()));
+        request.sendMessage(translate("feed.fed", request.getLocale()));
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("fed", player.getName());
         vars.put("name", request.getSender().getName());
-        ServerUtil.broadcastForPermission(translate("feed.announce", locale(request.getSender()), vars), FEED_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("feed.announce", request.getLocale(), vars), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -127,10 +127,10 @@ public class FeedCommand extends SimpleCommand {
     public void feedAllCommand(CommandRequest request){
         for(Player player : Bukkit.getOnlinePlayers()){
             feedPlayer(player);
-            player.sendMessage(translate("feed.tell", locale(request.getSender())));
+            player.sendMessage(translate("feed.tell", request.getLocale()));
         }
-        request.getSender().sendMessage(translate("feed.fed_all", locale(request.getSender())));
-        ServerUtil.broadcastForPermission(translate("feed.fed_all_announce", locale(request.getSender()), "name", request.getSender().getName()), FEED_ANNOUNCE_PERMISSION);
+        request.getSender().sendMessage(translate("feed.fed_all", request.getLocale()));
+        ServerUtil.broadcastForPermission(translate("feed.fed_all_announce", request.getLocale(), "name", request.getSender().getName()), FEED_ANNOUNCE_PERMISSION);
     }
 
     /**

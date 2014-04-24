@@ -61,16 +61,16 @@ public class TimerCommand extends SimpleCommand {
     public void timerCommand(CommandRequest request) {
         IFeature feature = m_featureManager.getFeatureByID("Timer");
         if(feature == null) {
-            request.sendMessage(translate("timer.feature_not_found", locale(request.getSender())));
+            request.sendMessage(translate("timer.feature_not_found", request.getLocale()));
             return;
         }
         TimerFeature timerFeature = (TimerFeature) feature;
         if(!feature.isEnabled()){
-            request.sendMessage(translate("timer.not_enabled", locale(request.getSender())));
+            request.sendMessage(translate("timer.not_enabled", request.getLocale()));
             return;
         }
         if(!request.isArgInt(0)) {
-            request.sendMessage(translate("timer.invalid_time", locale(request.getSender())));
+            request.sendMessage(translate("timer.invalid_time", request.getLocale()));
             return;
         }
 
@@ -84,9 +84,9 @@ public class TimerCommand extends SimpleCommand {
         String message = sb.toString();
 
         if(timerFeature.startTimer(TimerRunnable.TICKS_PER_SECOND*seconds,message)) {
-            request.sendMessage(translate("timer.running", locale(request.getSender())));
+            request.sendMessage(translate("timer.running", request.getLocale()));
         }else {
-            request.sendMessage(translate("timer.already_running", locale(request.getSender())));
+            request.sendMessage(translate("timer.already_running", request.getLocale()));
         }
     }
 
@@ -104,12 +104,12 @@ public class TimerCommand extends SimpleCommand {
     public void timerCancelCommand(CommandRequest request) {
         IFeature feature = m_featureManager.getFeatureByID("Timer");
         if(feature == null) {
-            request.sendMessage(translate("timer.feature_not_found", locale(request.getSender())));
+            request.sendMessage(translate("timer.feature_not_found", request.getLocale()));
             return;
         }
         TimerFeature timerFeature = (TimerFeature) feature;
         timerFeature.stopTimer();
-        request.sendMessage(translate("timer.cancelled", locale(request.getSender())));
+        request.sendMessage(translate("timer.cancelled", request.getLocale()));
     }
 
     @RouteInfo

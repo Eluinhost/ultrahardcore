@@ -56,11 +56,11 @@ public class HealCommand extends SimpleCommand {
     public void healSelfCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         player.setHealth(player.getMaxHealth());
-        player.sendMessage(translate("heal.tell", locale(request.getSender())));
+        player.sendMessage(translate("heal.tell", request.getLocale()));
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("healer", player.getName());
         vars.put("name", player.getName());
-        ServerUtil.broadcastForPermission(translate("heal.announce", locale(request.getSender()), vars),HEAL_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("heal.announce", request.getLocale(), vars),HEAL_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -81,16 +81,16 @@ public class HealCommand extends SimpleCommand {
     public void healCommand(CommandRequest request){
         Player p = request.getPlayer(0);
         if (p == null) {
-            request.sendMessage(translate("heal.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
+            request.sendMessage(translate("heal.invalid_player", request.getLocale(), "name", request.getFirstArg()));
             return;
         }
         p.setHealth(p.getMaxHealth());
-        p.sendMessage(translate("heal.tell", locale(request.getSender())));
-        request.sendMessage(translate("heal.healed", locale(request.getSender())));
+        p.sendMessage(translate("heal.tell", request.getLocale()));
+        request.sendMessage(translate("heal.healed", request.getLocale()));
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("healer", request.getSender().getName());
         vars.put("name", p.getName());
-        ServerUtil.broadcastForPermission(translate("heal.announce", locale(request.getSender()), vars), HEAL_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("heal.announce", request.getLocale(), vars), HEAL_ANNOUNCE_PERMISSION);
     }
 
     /**
@@ -111,10 +111,10 @@ public class HealCommand extends SimpleCommand {
     public void healAllCommand(CommandRequest request){
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.setHealth(p.getMaxHealth());
-            p.sendMessage(translate("heal.tell", locale(request.getSender())));
+            p.sendMessage(translate("heal.tell", request.getLocale()));
         }
-        request.sendMessage(translate("heal.heal_all", locale(request.getSender())));
-        ServerUtil.broadcastForPermission(translate("heal.heal_all_announce", locale(request.getSender()), "name", request.getSender().getName()), HEAL_ANNOUNCE_PERMISSION);
+        request.sendMessage(translate("heal.heal_all", request.getLocale()));
+        ServerUtil.broadcastForPermission(translate("heal.heal_all_announce", request.getLocale(), "name", request.getSender().getName()), HEAL_ANNOUNCE_PERMISSION);
     }
 
     /**

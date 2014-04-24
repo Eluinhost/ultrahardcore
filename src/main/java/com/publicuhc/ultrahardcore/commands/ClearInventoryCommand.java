@@ -64,7 +64,7 @@ public class ClearInventoryCommand extends SimpleCommand {
     @CommandMethod
     public void clearInventorySelf(CommandRequest request){
         clearInventory((HumanEntity) request.getSender());
-        request.sendMessage(translate("ci.cleared", locale(request.getSender())));
+        request.sendMessage(translate("ci.cleared", request.getLocale()));
     }
 
     /**
@@ -95,10 +95,10 @@ public class ClearInventoryCommand extends SimpleCommand {
                 continue;
             }
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                request.sendMessage(translate("ci.immune", locale(request.getSender()), "name", p.getName()));
+                request.sendMessage(translate("ci.immune", request.getLocale(), "name", p.getName()));
             } else {
                 clearInventory(p);
-                p.sendMessage(translate("ci.tell", locale(request.getSender()), "name", request.getSender().getName()));
+                p.sendMessage(translate("ci.tell", request.getLocale(), "name", request.getSender().getName()));
             }
         }
         request.sendMessage("ci.cleared");
@@ -107,7 +107,7 @@ public class ClearInventoryCommand extends SimpleCommand {
             for (String s : namesNotFound) {
                 message.append(' ').append(s);
             }
-            request.sendMessage(translate("ci.not_found", locale(request.getSender()), "list", message.toString()));
+            request.sendMessage(translate("ci.not_found", request.getLocale(), "list", message.toString()));
         }
     }
 
@@ -133,7 +133,7 @@ public class ClearInventoryCommand extends SimpleCommand {
                 clearInventory(p);
             }
         }
-        Bukkit.broadcastMessage(translate("ci.announce_all", locale(request.getSender()), "name", request.getSender().getName()));
+        Bukkit.broadcastMessage(translate("ci.announce_all", request.getLocale(), "name", request.getSender().getName()));
     }
 
     /**
