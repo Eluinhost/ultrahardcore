@@ -42,6 +42,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.UUID;
+
 @Singleton
 public class PotionNerfsFeature extends UHCFeature {
 
@@ -129,7 +131,7 @@ public class PotionNerfsFeature extends UHCFeature {
             ItemStack is = pee.getItem();
             if (is.getType() == Material.GOLDEN_APPLE) {
                 //remove the absorption effect for the player on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(),new RemoveAbsoptionRunnable(pee.getPlayer().getName()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(),new RemoveAbsoptionRunnable(pee.getPlayer().getUniqueId()));
             }
         }
     }
@@ -172,19 +174,19 @@ public class PotionNerfsFeature extends UHCFeature {
      */
     private static class RemoveAbsoptionRunnable implements Runnable{
 
-        private final String m_playerName;
+        private final UUID m_playerID;
 
         /**
          * Removes absorption from a player when ran
-         * @param playerName the player to run for
+         * @param playerID the player to run for
          */
-        RemoveAbsoptionRunnable(String playerName){
-            m_playerName = playerName;
+        RemoveAbsoptionRunnable(UUID playerID){
+            m_playerID = playerID;
         }
 
         @Override
         public void run() {
-            Player p = Bukkit.getPlayerExact(m_playerName);
+            Player p = Bukkit.getPlayer(m_playerID);
             if(p != null){
                 p.removePotionEffect(PotionEffectType.ABSORPTION);
             }
