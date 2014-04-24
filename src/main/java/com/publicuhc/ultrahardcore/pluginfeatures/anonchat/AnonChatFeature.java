@@ -33,6 +33,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.util.UUID;
+
 @Singleton
 public class AnonChatFeature extends UHCFeature {
 
@@ -66,11 +68,9 @@ public class AnonChatFeature extends UHCFeature {
         if (isEnabled()) {
             //if the message started with a P
             if(apce.getMessage().startsWith("P ")){
-                //get the player name and cancel the event
-                String playerName = apce.getPlayer().getName();
                 apce.setCancelled(true);
                 //schedule the new message to be send on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(playerName, apce.getMessage(), "anon_chat.no_perms", getTranslate()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(apce.getPlayer().getUniqueId(), apce.getMessage(), "anon_chat.no_perms", getTranslate()));
             }
         }
     }
@@ -88,9 +88,9 @@ public class AnonChatFeature extends UHCFeature {
     private static class ChatRunnable implements Runnable {
 
         /**
-         * The player name sending the message
+         * The player sending the message
          */
-        private final String m_playerName;
+        private final UUID m_playerID;
         /**
          * The message they are sending
          */
@@ -102,13 +102,13 @@ public class AnonChatFeature extends UHCFeature {
 
         /**
          * Sends the message when ran
-         * @param playerName the player to run for
+         * @param playerID the player to run for
          * @param message the message to send
          * @param noPermsMessage the message to say for no permissions
          * @param translate the translator
          */
-        ChatRunnable(String playerName, String message, String noPermsMessage, Translate translate) {
-            m_playerName = playerName;
+        ChatRunnable(UUID playerID, String message, String noPermsMessage, Translate translate) {
+            m_playerID = playerID;
             m_message = message;
             m_noPermsMessage = noPermsMessage;
             m_translate = translate;
@@ -117,7 +117,7 @@ public class AnonChatFeature extends UHCFeature {
         @Override
         public void run() {
             //attempt to get the player from the stored name if it exists
-            Player p = Bukkit.getPlayerExact(m_playerName);
+            Player p = Bukkit.getPlayer(m_playerID);
             if (null == p) {
                 return;
             }
@@ -132,12 +132,12 @@ public class AnonChatFeature extends UHCFeature {
             for (Player pl : Bukkit.getOnlinePlayers()) {
                 //check for the see name permission and send the actual name along with the message
                 if (pl.hasPermission(ANON_CHAT_SEE_NAME)) {
-                    pl.sendMessage(String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + m_playerName + finalMessage);
+                    pl.sendMessage(String.valueOf(ChatColor.GRAY) + ChatColor.ITALIC + p.getName() + finalMessage);
                 } else {
                     pl.sendMessage(PREFIX + m_translate.translate(finalMessage, m_translate.getLocaleForSender(pl)));
                 }
                 //log the anonchat usage
-                Bukkit.getLogger().info("[AnonChat][" + m_playerName + "]" + finalMessage);
+                Bukkit.getLogger().info("[AnonChat][" + p.getName() + "]" + finalMessage);
             }
         }
     }
