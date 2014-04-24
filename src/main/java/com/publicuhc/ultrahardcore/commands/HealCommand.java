@@ -79,7 +79,7 @@ public class HealCommand extends SimpleCommand {
      */
     @CommandMethod
     public void healCommand(CommandRequest request){
-        Player p = Bukkit.getPlayer(request.getFirstArg());
+        Player p = request.getPlayer(0);
         if (p == null) {
             request.sendMessage(translate("heal.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
             return;

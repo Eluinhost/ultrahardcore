@@ -93,7 +93,7 @@ public class FeedCommand extends SimpleCommand {
      */
     @CommandMethod
     public void feedOtherCommand(CommandRequest request){
-        Player player = Bukkit.getPlayer(request.getFirstArg());
+        Player player = request.getPlayer(0);
         if (player == null) {
             request.getSender().sendMessage(translate("feed.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
             return;
