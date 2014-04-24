@@ -29,7 +29,6 @@ import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
 import com.publicuhc.ultrahardcore.util.ServerUtil;
 import com.publicuhc.ultrahardcore.util.WordsUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -40,10 +39,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Singleton
@@ -75,7 +71,7 @@ public class DeathBansFeature extends UHCFeature {
         List<DeathBan> banList = (List<DeathBan>) banConfig.getList("bans",new ArrayList<Object>());
         for(DeathBan deathBan : banList){
             for(Player player : Bukkit.getOnlinePlayers()){
-                if(player.getName().equalsIgnoreCase(deathBan.getPlayerName())){
+                if(player.getUniqueId().equals(deathBan.getPlayerID())){
                     player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", WordsUtil.formatTimeLeft(deathBan.getUnbanTime())));
                 }
             }
@@ -101,15 +97,15 @@ public class DeathBansFeature extends UHCFeature {
 
     /**
      * Removes all bans for the playername
-     * @param playerName the player name to unban
+     * @param playerID the player name to unban
      * @return amount of bans removed
      */
-    public int removeBan(String playerName){
+    public int removeBan(UUID playerID){
         Iterator<DeathBan> iterator = m_deathBans.iterator();
         int amount = 0;
         while(iterator.hasNext()){
             DeathBan deathBan = iterator.next();
-            if(deathBan.getPlayerName().equals(playerName)){
+            if(deathBan.getPlayerID().equals(playerID)){
                 iterator.remove();
                 amount++;
             }
@@ -135,7 +131,7 @@ public class DeathBansFeature extends UHCFeature {
         if(isEnabled()){
             for(DeathBan deathBan : m_deathBans){
                 if(deathBan.processPlayerLoginEvent(ple)){
-                    removeBan(deathBan.getPlayerName());
+                    removeBan(deathBan.getPlayerID());
                 }
             }
         }
@@ -143,19 +139,17 @@ public class DeathBansFeature extends UHCFeature {
 
     /**
      * Ban the player
-     * @param offlinePlayer the player to ban
+     * @param playerID the player to ban
      * @param message the message to ban them with
      * @param duration how long in millis to ban them for
      */
-    @SuppressWarnings("TypeMayBeWeakened")
-    public void banPlayer(OfflinePlayer offlinePlayer, String message, long duration){
+    public void banPlayer(UUID playerID, String message, long duration){
         long unbanTime = System.currentTimeMillis()+duration;
-        DeathBan db = new DeathBan(offlinePlayer.getName(),unbanTime, message);
+        DeathBan db = new DeathBan(playerID, unbanTime, message);
         m_deathBans.add(db);
-        String playerName = offlinePlayer.getName();
         Bukkit.getScheduler().scheduleSyncDelayedTask(
                 getPlugin(),
-                new PlayerBanner(playerName, message, unbanTime),
+                new PlayerBanner(playerID, message, unbanTime),
                 m_banDelay
         );
         saveBans();
@@ -176,27 +170,54 @@ public class DeathBansFeature extends UHCFeature {
             List<String> actions = banTypes.getStringList(permission + ".actions");
             ConfigurationSection type = banTypes.getConfigurationSection(permission);
             for(String action : actions){
-                //TODO clean up
+
                 if("serverkick".equalsIgnoreCase(action)){
-                    String kickMessage = type.getString("serverkick_message","NO SERVER KICK MESSAGE SET IN CONFIG FILE");
+                    String kickMessage = type.getString("serverkick_message");
+                    if(null == kickMessage) {
+                        kickMessage = "NO SERVER KICK MESSAGE SET IN CONFIG FILE";
+                    }
                     p.kickPlayer(kickMessage);
-                }else if("serverban".equalsIgnoreCase(action)) {
-                    String length = type.getString("serverban_duration","1s");
-                    String message = type.getString("serverban_message","NO BAN MESSAGE SET IN CONFIG FILE");
+                    continue;
+                }
+
+                if("serverban".equalsIgnoreCase(action)) {
+                    String length = type.getString("serverban_duration");
+                    if(null == length) {
+                        length = "1s";
+                    }
+                    String message = type.getString("serverban_message");
+                    if(null == message) {
+                        message = "NO BAN MESSAGE SET IN CONFIG FILE";
+                    }
                     long duration = WordsUtil.parseTime(length);
-                    banPlayer(p,message,duration);
-                }else if("worldkick".equalsIgnoreCase(action)){
-                    String world = type.getString("worldkick_world","NO WORLD IN CONFIG");
+                    banPlayer(p.getUniqueId(), message, duration);
+                    continue;
+                }
+
+                if("worldkick".equalsIgnoreCase(action)){
+                    String world = type.getString("worldkick_world");
+                    if(null == world) {
+                        logger.severe("Error in deathbans during worldkick, node 'worldkick_world' not set");
+                        continue;
+                    }
                     World w = Bukkit.getWorld(world);
                     if(w != null){
                         p.setBedSpawnLocation(w.getSpawnLocation());
                     }
-                }else if("bungeekick".equalsIgnoreCase(action)){
-                    String server =type.getString("bungeekick_server","NO SERVER SET");
-                    ServerUtil.sendPlayerToServer(getPlugin(),p,server);
-                }else{
-                    logger.severe("Error in deathbans config, action '"+action+"' unknown");
+                    continue;
                 }
+
+                if("bungeekick".equalsIgnoreCase(action)){
+                    String server = type.getString("bungeekick_server");
+                    if(null == server) {
+                        logger.severe("Error in deathbans during bungeekick, node 'bungeekick_server' not set");
+                        continue;
+                    }
+                    ServerUtil.sendPlayerToServer(getPlugin(), p, server);
+                    continue;
+                }
+
+                logger.severe("Error in deathbans config, action '"+action+"' unknown");
             }
             return;
         }
@@ -213,26 +234,25 @@ public class DeathBansFeature extends UHCFeature {
     }
 
     private static class PlayerBanner implements Runnable {
-        private final String m_playerName;
+        private final UUID m_playerID;
         private final String m_message;
         private final long m_unbanTime;
 
         /**
          * Bans the player when ran
-         * @param playerName the player name to ban
+         * @param playerID the player to ban
          * @param message the message to ban them with
          * @param unbanTime the time to unban them again
          */
-        PlayerBanner(String playerName, String message, long unbanTime) {
-            m_playerName = playerName;
+        PlayerBanner(UUID playerID, String message, long unbanTime) {
+            m_playerID = playerID;
             m_message = message;
             m_unbanTime = unbanTime;
         }
 
         @Override
         public void run() {
-            OfflinePlayer op = Bukkit.getOfflinePlayer(m_playerName);
-            Player p = op.getPlayer();
+            Player p = Bukkit.getPlayer(m_playerID);
             if (p != null) {
                 p.kickPlayer(m_message.replaceAll("%timeleft%", WordsUtil.formatTimeLeft(m_unbanTime)));
             }

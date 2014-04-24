@@ -21,26 +21,27 @@
 
 package com.publicuhc.ultrahardcore.pluginfeatures.deathbans;
 
+import com.publicuhc.ultrahardcore.util.WordsUtil;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.event.player.PlayerLoginEvent;
-import com.publicuhc.ultrahardcore.util.WordsUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class DeathBan implements ConfigurationSerializable {
-    private final String m_playerName;
+    private final UUID m_playerID;
     private final long m_unbanTime;
     private final String m_groupName;
 
     /**
      * Represents an active ban on a player
-     * @param playerName the banned player's name
+     * @param playerID the banned player's UUID
      * @param unbanTime the unix timestamp when the ban ends
      * @param message the message to tell the player
      */
-    public DeathBan(String playerName, long unbanTime, String message) {
-        m_playerName = playerName;
+    public DeathBan(UUID playerID, long unbanTime, String message) {
+        m_playerID = playerID;
         m_unbanTime = unbanTime;
         m_groupName = message;
     }
@@ -51,7 +52,7 @@ public class DeathBan implements ConfigurationSerializable {
      */
     @SuppressWarnings("unused")
     public DeathBan(Map<String,Object> ser){
-        m_playerName = (String) ser.get("playerName");
+        m_playerID = UUID.fromString((String) ser.get("playerID"));
         m_unbanTime = (Long) ser.get("unbanTime");
         m_groupName = (String) ser.get("groupName");
     }
@@ -64,10 +65,10 @@ public class DeathBan implements ConfigurationSerializable {
     }
 
     /**
-     * @return the banned player's name
+     * @return the banned player's ID
      */
-    public String getPlayerName() {
-        return m_playerName;
+    public UUID getPlayerID() {
+        return m_playerID;
     }
 
     /**
@@ -80,7 +81,7 @@ public class DeathBan implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String,Object> map = new HashMap<String,Object>();
-        map.put("playerName", m_playerName);
+        map.put("playerName", m_playerID.toString());
         map.put("unbanTime", m_unbanTime);
         map.put("groupName", m_groupName);
         return map;
@@ -92,7 +93,7 @@ public class DeathBan implements ConfigurationSerializable {
      * @return true if the player should be unbanned, false if no action
      */
     public boolean processPlayerLoginEvent(PlayerLoginEvent ple){
-        if(ple.getPlayer().getName().equalsIgnoreCase(m_playerName)){
+        if(ple.getPlayer().getUniqueId().equals(m_playerID)){
             if(System.currentTimeMillis() >= getUnbanTime()){
                 return true;
             }
