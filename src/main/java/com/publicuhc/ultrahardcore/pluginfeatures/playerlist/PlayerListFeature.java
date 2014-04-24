@@ -66,10 +66,13 @@ public class PlayerListFeature extends UHCFeature {
     private static final String OBJECTIVE_UNDER_NAME_NAME = "UHCHealthName";
     private static final String OBJECTIVE_TYPE = "dummy";
 
-    private static final Range<Double> DEAD_HEALTH = Ranges.closed(0.0D,0.0D);
-    private static final Range<Double> LOW_HEALTH = Ranges.openClosed(0.0D,6.0D);
-    private static final Range<Double> MIDDLE_HEALTH = Ranges.openClosed(6.0D,12.0D);
-    private static final Range<Double> HIGH_HEALTH = Ranges.greaterThan(12.0D);
+    private static final double LOW_HEALTH_BOUNDARY = 6.0D;
+    private static final double MID_HEALTH_BOUNDARY = 12.0D;
+
+    private static final Range<Double> DEAD_HEALTH = Ranges.closed(0.0D, 0.0D);
+    private static final Range<Double> LOW_HEALTH = Ranges.openClosed(0.0D, LOW_HEALTH_BOUNDARY);
+    private static final Range<Double> MIDDLE_HEALTH = Ranges.openClosed(LOW_HEALTH_BOUNDARY, MID_HEALTH_BOUNDARY);
+    private static final Range<Double> HIGH_HEALTH = Ranges.greaterThan(MID_HEALTH_BOUNDARY);
 
     private Objective m_objectivePlayerList;
     private Objective m_objectiveUnderName;
@@ -133,8 +136,8 @@ public class PlayerListFeature extends UHCFeature {
         double healthScaling = config.getDouble(getBaseConfig() + "scaling");
         //set the score for both the player and their display name
         //this allows the score to show under the head of players with a changed name
-        m_objectivePlayerList.getScore(Bukkit.getOfflinePlayer(newName)).setScore((int) (showHealth * healthScaling));
-        m_objectiveUnderName.getScore(Bukkit.getOfflinePlayer(ChatColor.stripColor(playerName))).setScore((int) (showHealth * healthScaling));
+        m_objectivePlayerList.getScore(newName).setScore((int) (showHealth * healthScaling));
+        m_objectiveUnderName.getScore(ChatColor.stripColor(playerName)).setScore((int) (showHealth * healthScaling));
     }
 
     /**
