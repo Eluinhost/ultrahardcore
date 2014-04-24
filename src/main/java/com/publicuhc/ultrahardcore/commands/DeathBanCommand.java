@@ -32,11 +32,11 @@ import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBansFeature;
 import com.publicuhc.ultrahardcore.util.WordsUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class DeathBanCommand extends SimpleCommand {
@@ -90,7 +90,12 @@ public class DeathBanCommand extends SimpleCommand {
             request.sendMessage(translate("deathbans.not_loaded", locale(request.getSender())));
             return;
         }
-        int amount = ((DeathBansFeature)feature).removeBan(request.getFirstArg());
+        UUID playerID = request.getPlayerUUID(1);
+        if(playerID.equals(CommandRequest.INVALID_ID)) {
+            request.sendMessage(translate("deathban.uuid_error", locale(request.getSender())));
+            return;
+        }
+        int amount = ((DeathBansFeature)feature).removeBan(playerID);
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("amount", String.valueOf(amount));
         vars.put("name", request.getFirstArg());
@@ -119,11 +124,15 @@ public class DeathBanCommand extends SimpleCommand {
             request.sendMessage(translate("deathbans.not_loaded", locale(request.getSender())));
             return;
         }
-        String playername = request.getFirstArg();
-        long duration = WordsUtil.parseTime(request.getArg(1));
-        ((DeathBansFeature)feature).banPlayer(Bukkit.getOfflinePlayer(playername), translate("deathbans.ban_message", locale(request.getSender())), duration);
+        UUID playerID = request.getPlayerUUID(1);
+        if(playerID.equals(CommandRequest.INVALID_ID)) {
+            request.sendMessage(translate("deathban.uuid_error", locale(request.getSender())));
+            return;
+        }
+        long duration = WordsUtil.parseTime(request.getArg(2));
+        ((DeathBansFeature)feature).banPlayer(playerID, translate("deathbans.ban_message", locale(request.getSender())), duration);
         Map<String, String> vars = new HashMap<String, String>();
-        vars.put("name", playername);
+        vars.put("name", request.getArg(1));
         vars.put("time", WordsUtil.formatTimeLeft(System.currentTimeMillis() + duration));
         request.sendMessage(translate("deathbans.banned", locale(request.getSender()), vars));
     }
