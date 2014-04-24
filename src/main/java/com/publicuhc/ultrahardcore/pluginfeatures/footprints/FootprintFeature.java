@@ -44,6 +44,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.UUID;
 
 @Singleton
 public class FootprintFeature extends UHCFeature implements Runnable {
@@ -100,7 +101,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
             int minRender = config.getInt(getBaseConfig()+"mindistance");
             int minRenderSquared = minRender * minRender;
 
-            if (block.getType() != Material.AIR && block.getType() != Material.WATER && isClearOfFootprints(loc, minRenderSquared, p.getName())) {
+            if (block.getType() != Material.AIR && block.getType() != Material.WATER && isClearOfFootprints(loc, minRenderSquared, p.getUniqueId())) {
                 float offset = REGULAR_OFFSET;
                 if (block.getType() == Material.SNOW) {
                     offset = SNOW_OFFSET;
@@ -109,7 +110,7 @@ public class FootprintFeature extends UHCFeature implements Runnable {
                 Footstep newFootstep = new Footstep(
                     loc,
                     config.getInt(getBaseConfig()+"time") / 2,
-                    p.getName()
+                    p.getUniqueId()
                 );
                 sendFootstep(newFootstep);
                 m_footsteps.add(newFootstep);
@@ -128,15 +129,15 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     }
 
     /**
-     * Checks for footprints within the distance of the location for the player name
+     * Checks for footprints within the distance of the location for the player
      * @param loc Location
      * @param distance int
-     * @param name String
+     * @param playerID the player ID
      * @return boolean true if clear, false if not
      */
-    private boolean isClearOfFootprints(Location loc, int distance, String name) {
+    private boolean isClearOfFootprints(Location loc, int distance, UUID playerID) {
         for (Footstep footstep : m_footsteps) {
-            if (footstep.getName().equals(name)) {
+            if (footstep.getPlayerID().equals(playerID)) {
                 try {
                     if (footstep.getLocation().distanceSquared(loc) < distance) {
                         return false;

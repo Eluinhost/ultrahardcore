@@ -118,7 +118,12 @@ public class FreezeCommand extends SimpleCommand {
             request.sendMessage(translate("freeze.not_loaded", locale(request.getSender())));
             return;
         }
-        ((PlayerFreezeFeature)feature).removePlayer(request.getFirstArg());
+        Player p = request.getPlayer(0);
+        if(null == p) {
+            request.sendMessage(translate("freeze.invalid_player", locale(request.getSender()), "name", request.getFirstArg()));
+            return;
+        }
+        ((PlayerFreezeFeature)feature).removePlayer(p.getUniqueId());
         request.sendMessage(translate("freeze.player_unfroze", locale(request.getSender())));
     }
 

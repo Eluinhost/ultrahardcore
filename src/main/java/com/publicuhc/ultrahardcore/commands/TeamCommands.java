@@ -148,8 +148,12 @@ public class TeamCommands extends SimpleCommand {
      * @param request request params
      */
     @CommandMethod
-    public void leaveTeamForce(CommandRequest request){
-        boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam(Bukkit.getOfflinePlayer(request.getFirstArg()), true, true);
+    public void leaveTeamForce(CommandRequest request) {
+        UUID playerID = request.getPlayerUUID(1);
+        if(playerID.equals(CommandRequest.INVALID_ID)) {
+            request.sendMessage(translate("teams.invalid_player", locale(request.getSender())));
+        }
+        boolean stillOnTeam = !m_teamsUtil.removePlayerFromTeam(Bukkit.getOfflinePlayer(playerID), true, true);
         if (stillOnTeam) {
             request.getSender().sendMessage(translate("teams.player_not_in_team", locale(request.getSender()) , "name", request.getFirstArg()));
         }
@@ -199,7 +203,11 @@ public class TeamCommands extends SimpleCommand {
             request.sendMessage(translate("teams.not_exist", locale(request.getSender())));
             return;
         }
-        OfflinePlayer player = Bukkit.getOfflinePlayer(request.getLastArg());
+        UUID playerID = request.getPlayerUUID(2);
+        if(playerID.equals(CommandRequest.INVALID_ID)) {
+            request.sendMessage(translate("teams.invalid_player", locale(request.getSender())));
+        }
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerID);
         if(m_teamsUtil.getPlayersTeam(player) != null){
             m_teamsUtil.removePlayerFromTeam(player,true,true);
         }
@@ -360,7 +368,7 @@ public class TeamCommands extends SimpleCommand {
             String finalString = buffer.toString();
             for (OfflinePlayer p : teamPlayers) {
                 if(p.isOnline()){
-                    Player p2 = Bukkit.getPlayerExact(p.getName());
+                    Player p2 = Bukkit.getPlayer(p.getUniqueId());
                     p2.sendMessage(finalString);
                 }
             }

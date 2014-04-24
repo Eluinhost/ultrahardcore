@@ -86,11 +86,12 @@ public class ClearInventoryCommand extends SimpleCommand {
     @CommandMethod
     public void clearInventoryCommand(CommandRequest request){
         List<String> arguments = request.getArgs();
+        int amount = request.getArgs().size();
         AbstractList<String> namesNotFound = new ArrayList<String>();
-        for (String pname : arguments) {
-            Player p = Bukkit.getPlayer(pname);
+        for (int i = 0; i < amount; i++) {
+            Player p = request.getPlayer(i);
             if (p == null) {
-                namesNotFound.add(pname);
+                namesNotFound.add(p.getName());
                 continue;
             }
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {

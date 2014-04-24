@@ -26,6 +26,7 @@ deathbans:
   removed: "&6Removed %amount% bans for player %name%"
   banned: "&6Banned player %name% for %time%"
   ban_message: "You are under a death ban, you will be unbanned in %timeleft%"
+  uuid_error: "&4Error getting the UUID for the player from the Mojang servers"
 timer:
   feature_not_found: "&4Timer feature not found!"
   cancelled: "&6Timer cancelled"
@@ -77,6 +78,7 @@ teams:
   not_in_team: "&4You are not in a team!"
   player_not_in_team: "&4Player %name% is not on a team!"
   cleared: "&6All teams cleared"
+  invalid_player: "&4Player UUID not found"
   emptied: "&6All teams emptied"
   no_teams: "&4There are no defined teams!"
   invalid_world: "&4Invalid world supplied"
