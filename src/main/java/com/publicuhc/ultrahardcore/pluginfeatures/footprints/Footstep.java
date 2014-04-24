@@ -23,20 +23,22 @@ package com.publicuhc.ultrahardcore.pluginfeatures.footprints;
 
 import org.bukkit.Location;
 
+import java.util.UUID;
+
 public class Footstep {
 
     private final Location m_location;
     private int m_timeRemaining;
-    private final String m_playerName;
+    private final UUID m_playerID;
 
     /**
      * Make a new footstep
      * @param loc the location to display it
      * @param timeToLast the amount of footstep ticks to last
-     * @param name the name of the player that left the footprint
+     * @param playerID the player that left the footprint
      */
-    public Footstep(Location loc, int timeToLast, String name) {
-        m_playerName = name;
+    public Footstep(Location loc, int timeToLast, UUID playerID) {
+        m_playerID = playerID;
         m_location = loc;
         m_timeRemaining = timeToLast;
     }
@@ -65,7 +67,7 @@ public class Footstep {
     /**
      * @return the name of the player who left the footprint
      */
-    public String getName() {
-        return m_playerName;
+    public UUID getPlayerID() {
+        return m_playerID;
     }
 }
