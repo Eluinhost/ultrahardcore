@@ -32,6 +32,7 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerRunnable;
+import com.publicuhc.ultrahardcore.util.WordsUtil;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -69,12 +70,9 @@ public class TimerCommand extends SimpleCommand {
             request.sendMessage(translate("timer.not_enabled", request.getLocale()));
             return;
         }
-        if(!request.isArgInt(0)) {
-            request.sendMessage(translate("timer.invalid_time", request.getLocale()));
-            return;
-        }
+        long millis = WordsUtil.parseTime(request.getFirstArg());
 
-        int seconds = request.getInt(0);
+        int seconds = (int) (millis / 1000);
 
         List<String> args = request.getArgs();
         StringBuilder sb = new StringBuilder();
@@ -93,7 +91,7 @@ public class TimerCommand extends SimpleCommand {
     @RouteInfo
     public void timerCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("timer");
-        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+"));
+        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+.*"));
         builder.restrictPermission(TIMER_COMMAND);
     }
     /**
