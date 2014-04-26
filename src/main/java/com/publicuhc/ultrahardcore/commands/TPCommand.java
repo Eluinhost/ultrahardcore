@@ -113,7 +113,7 @@ public class TPCommand extends SimpleCommand {
     @RouteInfo
     public void teleportCommand(RouteBuilder builder) {
         builder.restrictCommand("tpp");
-        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+"));
+        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+.*"));
         builder.restrictPermission(TP_ALL_PERMISSION);
     }
 }
