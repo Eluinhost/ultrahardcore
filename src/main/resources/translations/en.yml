@@ -96,3 +96,6 @@ teleport:
     player: "&4Player %name% not found!"
 anon_chat:
   no_perms: "&4You don't have the permissions to use annonymous chat"
+whitelist:
+  added: "&6All online players added to the whitelist"
+  cleared: "&6Whitelist cleared"

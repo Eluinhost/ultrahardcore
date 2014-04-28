@@ -105,6 +105,10 @@ commands:
       description: Make a team out of the players provided
       usage: /<command> player1 player2 player3 player4
       aliases: [uhcteamup]
+    whitelistall:
+      description: Whitelist all online players
+      usage: /<command>
+      aliases: [uhcwhitelistall]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
@@ -287,4 +291,7 @@ permissions:
         default: op
     UHC.nether.allow:
         description: Allows travel to the nether when feature is enabled
+        default: op
+    UHC.whitelistall:
+        description: Allows use of the /whitelistall command
         default: op
