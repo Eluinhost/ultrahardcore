@@ -73,6 +73,7 @@ teams:
   already_exists: "&4Team %name% already exists!"
   created: "&6Created the team %display% (%name%)"
   not_exist: "&4That team doesn't exist"
+  joined_notification: "&6You joined the team %display% (%name%)"
   disbanded: "&4Your team was disbanded"
   removed: "&6Team removed!"
   not_in_team: "&4You are not in a team!"
@@ -86,6 +87,7 @@ teams:
   too_many_teams: "&4Teams to create is greater than the number of people without a team!"
   greater_zero: "&4Teams to create can not be zero or less!"
   created_teams: "&6Made %amount% random teams"
+  player_not_found: "&4Could not find details for the player %name%"
 teleport:
   non_player_world: "&4You need to specify a world when not running the command as a player"
   invalid:

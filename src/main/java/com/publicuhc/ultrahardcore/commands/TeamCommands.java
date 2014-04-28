@@ -29,6 +29,7 @@ import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.pluginframework.util.UUIDFetcher;
 import com.publicuhc.ultrahardcore.util.MathsHelper;
 import com.publicuhc.ultrahardcore.util.TeamsUtil;
 import com.publicuhc.ultrahardcore.util.WordsUtil;
@@ -38,7 +39,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -56,6 +59,7 @@ public class TeamCommands extends SimpleCommand {
     public static final String EMPTY_TEAMS_PERMISSION = "UHC.teams.empty";
     public static final String LIST_TEAMS_PERMISSION = "UHC.teams.list";
     public static final String RANDOM_TEAMS_PERMISSION = "UHC.teams.random";
+    public static final String TEAMUP_PERMISSION = "UHC.teams.teamup";
 
     private final WordsUtil m_words;
 
@@ -381,5 +385,72 @@ public class TeamCommands extends SimpleCommand {
         builder.restrictCommand("randomteams");
         builder.restrictPattern(Pattern.compile("[\\S]+.*"));
         builder.restrictPermission(RANDOM_TEAMS_PERMISSION);
+    }
+
+    @CommandMethod
+    public void teamupCommand(CommandRequest request) {
+        int count = request.getArgs().size();
+
+        Collection<String> notFound = new ArrayList<String>();
+        Collection<Player> players = new ArrayList<Player>();
+
+        //get the online players first
+        for(int i = 0; i < count; i++) {
+            Player player = request.getPlayer(i);
+            if(null == player) {
+                notFound.add(request.getArg(i));
+            }
+            players.add(player);
+        }
+
+        //get the offline player's UUIDs
+        Collection<UUID> uuids = new ArrayList<UUID>();
+
+        if(!notFound.isEmpty()) {
+            Map<String, UUID> fetched = new HashMap<String, UUID>();
+
+            UUIDFetcher fetcher = new UUIDFetcher(notFound.toArray(new String[notFound.size()]));
+            try {
+                fetched = fetcher.call();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            for (String current : notFound) {
+                UUID uu = fetched.get(current);
+                if (null == uu) {
+                    request.sendMessage(translate("teams.player_not_found", request.getLocale(), "name", current));
+                    continue;
+                }
+                uuids.add(uu);
+            }
+        }
+
+        Team team = m_teamsUtil.getNextAvailableTeam(false);
+        Map<String, String> context = new HashMap<String, String>();
+        context.put("display", team.getDisplayName());
+        context.put("name", team.getName());
+
+        for(Player p : players) {
+            team.addPlayer(p);
+            p.sendMessage(translate("teams.joined_notification", request.getLocale(), context));
+        }
+
+        for(UUID uuid : uuids) {
+            team.addPlayer(Bukkit.getOfflinePlayer(uuid));
+        }
+
+        request.sendMessage(translate("teams.created", request.getLocale(), context));
+    }
+
+    @RouteInfo
+    public void teamupCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("teamup");
+        builder.restrictPermission(TEAMUP_PERMISSION);
+        builder.restrictPattern(Pattern.compile(".+"));
     }
 }

@@ -101,6 +101,10 @@ commands:
       description: Dragon bar timers
       usage: /<command>
       aliases: [uhctimer]
+    teamup:
+      description: Make a team out of the players provided
+      usage: /<command> player1 player2 player3 player4
+      aliases: [uhcteamup]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
@@ -248,6 +252,9 @@ permissions:
     UHC.teams.leave:
         description: Allows a player to leave their team
         default: true
+    UHC.teams.teamup:
+        description: Allows the use of /teamup
+        default: op
     UHC.teams.leave.other:
         description: Allows a player to remove someone else from their team
         default: op
