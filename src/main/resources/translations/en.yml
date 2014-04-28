@@ -88,6 +88,17 @@ teams:
   greater_zero: "&4Teams to create can not be zero or less!"
   created_teams: "&6Made %amount% random teams"
   player_not_found: "&4Could not find details for the player %name%"
+  request:
+    denied: "&6Reqest denied"
+    requester_denied: "&4Your team request was denied"
+    requester_accepted: "&6Your team request was accepted"
+    announce: "&6Player %name% has requested a team with the following: %names%"
+    submitted: "&6Request submitted"
+    not_found: "&4Cannot find a request from that player"
+    open:
+      title: "&6Open requests"
+      request: "&7%name% to team with %names%"
+      none: "&4No open requests"
 teleport:
   non_player_world: "&4You need to specify a world when not running the command as a player"
   invalid:

@@ -109,6 +109,10 @@ commands:
       description: Whitelist all online players
       usage: /<command>
       aliases: [uhcwhitelistall]
+    reqteam:
+      description: Request a team with the given players
+      usage: /<command> player1 player2 ...
+      aliases: [uhcreqteam]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
@@ -261,6 +265,12 @@ permissions:
         default: op
     UHC.teams.leave.other:
         description: Allows a player to remove someone else from their team
+        default: op
+    UHC.teams.request.request:
+        description: Allows a player to make a team request
+        default: true
+    UHC.teams.request.reply:
+        description: Allows a player to receive/reply to requests
         default: op
     UHC.footprints.leavePrints:
         description: Player leaves footprints behind them
