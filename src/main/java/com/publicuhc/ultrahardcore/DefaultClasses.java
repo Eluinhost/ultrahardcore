@@ -118,7 +118,9 @@ public class DefaultClasses {
                 BorderCommand.class,
                 DeathBanCommand.class,
                 ScatterCommand.class,
-                TimerCommand.class
+                TimerCommand.class,
+                WhitelistCommands.class,
+                TeamRequestsCommands.class
         };
         for(Class clazz : classes){
             try {
