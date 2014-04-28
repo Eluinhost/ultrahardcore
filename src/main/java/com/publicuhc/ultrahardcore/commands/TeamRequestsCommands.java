@@ -70,6 +70,14 @@ public class TeamRequestsCommands extends SimpleCommand {
         router.setDefaultMessageForCommand("reqteam", syntax);
     }
 
+    protected Map<String, List<String>> getRequests() {
+        return Collections.unmodifiableMap(m_requests);
+    }
+
+    protected void addRequest(String name, List<String> names) {
+        m_requests.put(name, names);
+    }
+
     @CommandMethod
     public void requestTeam(CommandRequest request) {
         List<String> args = request.getArgs();
@@ -126,7 +134,7 @@ public class TeamRequestsCommands extends SimpleCommand {
 
         //get the online players first
         for(int i = 0; i < team.size(); i++) {
-            Player player = request.getPlayer(i);
+            Player player = Bukkit.getPlayer(team.get(i));
             if(null == player) {
                 notFound.add(request.getArg(i));
             }
@@ -184,6 +192,8 @@ public class TeamRequestsCommands extends SimpleCommand {
         if(null != p) {
             p.sendMessage(translate("teams.request.requester_accepted", getTranslator().getLocaleForSender(p)));
         }
+
+        m_requests.remove(toCheck);
 
         //tell sender it was accepted
         request.sendMessage(translate("teams.created", request.getLocale(), context));
