@@ -437,7 +437,7 @@ public class TeamCommands extends SimpleCommand {
 
         for(Player p : players) {
             team.addPlayer(p);
-            p.sendMessage(translate("teams.joined_notification", request.getLocale(), context));
+            p.sendMessage(translate("teams.joined_notification", getTranslator().getLocaleForSender(p), context));
         }
 
         for(UUID uuid : uuids) {
