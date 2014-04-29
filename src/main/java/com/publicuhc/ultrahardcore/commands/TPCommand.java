@@ -108,6 +108,7 @@ public class TPCommand extends SimpleCommand {
                 p.teleport(location);
             }
         }
+        request.sendMessage(translate("teleport.all_teleported", request.getLocale()));
     }
 
     @RouteInfo

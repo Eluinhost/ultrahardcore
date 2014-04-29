@@ -218,7 +218,7 @@ permissions:
     UHC.generateborder:
         description: Allows a player to generate the borders
         default: op
-    UHC.tpall2:
+    UHC.tpall:
         description: Allows a player to tp all players to another player/location
         default: op
     UHC.AnonChat.chat:

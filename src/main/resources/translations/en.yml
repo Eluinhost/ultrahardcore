@@ -105,6 +105,7 @@ teleport:
     world: "&4Invalid world supplied"
     coords: "&4Invalid coordinate syntax, try x,y,z[,worldname]"
     player: "&4Player %name% not found!"
+  all_teleported: "&6All players teleported"
 anon_chat:
   no_perms: "&4You don't have the permissions to use annonymous chat"
 whitelist:
