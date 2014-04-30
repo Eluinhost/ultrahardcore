@@ -138,31 +138,30 @@ public class DefaultClasses {
     /**
      * Load all the default features into the feature manager
      */
-    @Inject
     public void loadDefaultFeatures() {
         m_logger.info("Loading UHC feature modules...");
         //Load the default features with settings in config
         Class<? extends IFeature>[] classes = new Class[]{
+            AnonChatFeature.class,
+            DeathBansFeature.class,
+            DeathDropsFeature.class,
             DeathLightningFeature.class,
+            DeathMessagesFeature.class,
             EnderpearlsFeature.class,
+            FootprintFeature.class,
             GhastDropsFeature.class,
+            GoldenHeadsFeature.class,
+            HardcoreHeartsFeature.class,
+            NetherFeature.class,
+            PlayerFreezeFeature.class,
             PlayerHeadsFeature.class,
             PlayerListFeature.class,
+            PortalsFeature.class,
+            PotionNerfsFeature.class,
             RecipeFeature.class,
             RegenFeature.class,
-            DeathMessagesFeature.class,
-            DeathDropsFeature.class,
-            AnonChatFeature.class,
-            GoldenHeadsFeature.class,
-            DeathBansFeature.class,
-            PotionNerfsFeature.class,
-            NetherFeature.class,
-            WitchSpawnsFeature.class,
-            PortalsFeature.class,
-            PlayerFreezeFeature.class,
-            HardcoreHeartsFeature.class,
-            FootprintFeature.class,
-            TimerFeature.class
+            TimerFeature.class,
+            WitchSpawnsFeature.class
         };
         for(Class<? extends IFeature> clazz : classes){
             try{
