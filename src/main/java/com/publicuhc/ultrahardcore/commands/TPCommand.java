@@ -24,7 +24,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -35,7 +35,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class TPCommand extends SimpleCommand {
 
@@ -113,8 +112,8 @@ public class TPCommand extends SimpleCommand {
 
     @RouteInfo
     public void teleportCommand(RouteBuilder builder) {
-        builder.restrictCommand("tpp");
-        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+.*"));
-        builder.restrictPermission(TP_ALL_PERMISSION);
+        builder.restrictCommand("tpp")
+                .restrictArgumentCount(2, -1)
+                .restrictPermission(TP_ALL_PERMISSION);
     }
 }

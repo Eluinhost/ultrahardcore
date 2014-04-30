@@ -24,7 +24,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -33,7 +33,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public class WhitelistCommands extends SimpleCommand {
 
@@ -58,9 +57,9 @@ public class WhitelistCommands extends SimpleCommand {
 
     @RouteInfo
     public void whitelistAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(WHITELIST_ALL_PERMISSION);
-        builder.restrictCommand("whitelistall");
-        builder.maxMatches(1);
+        builder.restrictPermission(WHITELIST_ALL_PERMISSION)
+                .restrictCommand("whitelistall")
+                .maxMatches(1);
     }
 
     @CommandMethod
@@ -74,8 +73,8 @@ public class WhitelistCommands extends SimpleCommand {
 
     @RouteInfo
     public void whitelistClearCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("whitelistall");
-        builder.restrictPermission(WHITELIST_ALL_PERMISSION);
-        builder.restrictPattern(Pattern.compile("clear"));
+        builder.restrictCommand("whitelistall")
+                .restrictPermission(WHITELIST_ALL_PERMISSION)
+                .restrictStartsWith("clear");
     }
 }

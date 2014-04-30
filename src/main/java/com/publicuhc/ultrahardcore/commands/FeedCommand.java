@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -35,7 +35,6 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class FeedCommand extends SimpleCommand {
 
@@ -82,9 +81,9 @@ public class FeedCommand extends SimpleCommand {
      */
     @RouteInfo
     public void feedCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feedself");
-        builder.restrictSenderType(SenderType.PLAYER);
-        builder.restrictPermission(FEED_SELF_PERMISSION);
+        builder.restrictCommand("feedself")
+                .restrictSenderType(SenderType.PLAYER)
+                .restrictPermission(FEED_SELF_PERMISSION);
     }
 
     /**
@@ -114,9 +113,10 @@ public class FeedCommand extends SimpleCommand {
      */
     @RouteInfo
     public void feedOtherCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feed");
-        builder.restrictPermission(FEED_OTHER_PERMISSION);
-        builder.restrictPattern(Pattern.compile("[^*]+"));
+        builder.restrictCommand("feed")
+                .restrictPermission(FEED_OTHER_PERMISSION)
+                .restrictArgumentCount(1, -1)
+                .maxMatches(1);
     }
 
     /**
@@ -139,8 +139,8 @@ public class FeedCommand extends SimpleCommand {
      */
     @RouteInfo
     public void feedAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPattern(Pattern.compile("\\*"));
-        builder.restrictCommand("feed");
-        builder.restrictPermission(FEED_OTHER_PERMISSION);
+        builder.restrictCommand("feed")
+                .restrictPermission(FEED_OTHER_PERMISSION)
+                .restrictStartsWith("*");
     }
 }

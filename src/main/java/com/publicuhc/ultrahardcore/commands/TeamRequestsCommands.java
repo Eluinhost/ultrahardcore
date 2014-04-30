@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.commands.routing.Router;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
@@ -41,7 +41,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class TeamRequestsCommands extends SimpleCommand {
 
@@ -106,11 +105,11 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam");
-        builder.restrictPermission(REQUEST_TEAM_PERMISSION);
-        builder.restrictPattern(Pattern.compile(".+"));
-        builder.restrictSenderType(SenderType.PLAYER);
-        builder.maxMatches(1);
+        builder.restrictCommand("reqteam")
+                .restrictPermission(REQUEST_TEAM_PERMISSION)
+                .restrictArgumentCount(1, -1)
+                .restrictSenderType(SenderType.PLAYER)
+                .maxMatches(1);
     }
 
     @CommandMethod
@@ -201,9 +200,10 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamReplyAcceptDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam");
-        builder.restrictPermission(REQUEST_TEAM_REPLY_PERMISSION);
-        builder.restrictPattern(Pattern.compile("(accept) .+"));
+        builder.restrictCommand("reqteam")
+                .restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
+                .restrictStartsWith("accept")
+                .restrictArgumentCount(2, 2);
     }
 
     @CommandMethod
@@ -230,9 +230,10 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamReplyDenyDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam");
-        builder.restrictPermission(REQUEST_TEAM_REPLY_PERMISSION);
-        builder.restrictPattern(Pattern.compile("(deny) .+"));
+        builder.restrictCommand("reqteam")
+                .restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
+                .restrictStartsWith("deny")
+                .restrictArgumentCount(2, 2);
     }
 
     @CommandMethod
@@ -257,8 +258,8 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamListDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam");
-        builder.restrictPermission(REQUEST_TEAM_REPLY_PERMISSION);
-        builder.restrictPattern(Pattern.compile("list"));
+        builder.restrictCommand("reqteam")
+                .restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
+                .restrictStartsWith("list");
     }
 }

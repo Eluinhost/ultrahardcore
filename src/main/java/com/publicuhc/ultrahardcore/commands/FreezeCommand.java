@@ -24,16 +24,14 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
-import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
-
-import java.util.regex.Pattern;
 
 public class FreezeCommand extends SimpleCommand {
 
@@ -80,9 +78,10 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void freezeCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("freeze");
-        builder.restrictPattern(Pattern.compile("[\\S]+"));
-        builder.restrictPermission(FREEZE_PERMISSION);
+        builder.restrictCommand("freeze")
+                .restrictArgumentCount(1, 1)
+                .restrictPermission(FREEZE_PERMISSION)
+                .maxMatches(1);
     }
 
     /**
@@ -102,9 +101,9 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void freezeAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FREEZE_PERMISSION);
-        builder.restrictPattern(Pattern.compile("\\*"));
-        builder.restrictCommand("freeze");
+        builder.restrictPermission(FREEZE_PERMISSION)
+                .restrictCommand("freeze")
+                .restrictStartsWith("*");
     }
 
     /**
@@ -129,9 +128,10 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void unfreezeCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("unfreeze");
-        builder.restrictPattern(Pattern.compile("[\\S]+"));
-        builder.restrictPermission(FREEZE_PERMISSION);
+        builder.restrictCommand("unfreeze")
+                .restrictArgumentCount(1, 1)
+                .maxMatches(1).
+                restrictPermission(FREEZE_PERMISSION);
     }
 
     /**
@@ -151,8 +151,8 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void unfreezeAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FREEZE_PERMISSION);
-        builder.restrictPattern(Pattern.compile("\\*"));
-        builder.restrictCommand("unfreeze");
+        builder.restrictPermission(FREEZE_PERMISSION)
+                .restrictStartsWith("*")
+                .restrictCommand("unfreeze");
     }
 }

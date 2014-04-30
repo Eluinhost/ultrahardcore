@@ -24,7 +24,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -35,7 +35,6 @@ import org.bukkit.ChatColor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class FeatureCommand extends SimpleCommand {
 
@@ -72,8 +71,7 @@ public class FeatureCommand extends SimpleCommand {
      */
     @RouteInfo
     public void featureCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature");
-        builder.maxMatches(1);
+        builder.restrictCommand("feature").maxMatches(1);
     }
 
     /**
@@ -101,9 +99,9 @@ public class FeatureCommand extends SimpleCommand {
      */
     @RouteInfo
     public void featureListCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature");
-        builder.restrictPermission(FEATURE_LIST_PERMISSION);
-        builder.restrictPattern(Pattern.compile("list.*"));
+        builder.restrictCommand("feature")
+                .restrictPermission(FEATURE_LIST_PERMISSION)
+                .restrictStartsWith("list");
     }
 
     /**
@@ -134,9 +132,10 @@ public class FeatureCommand extends SimpleCommand {
      */
     @RouteInfo
     public void featureOnCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature");
-        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION);
-        builder.restrictPattern(Pattern.compile("on [\\S]+.*"));
+        builder.restrictCommand("feature")
+                .restrictPermission(FEATURE_TOGGLE_PERMISSION)
+                .restrictStartsWith("on")
+                .restrictArgumentCount(2, 2);
     }
 
     /**
@@ -167,8 +166,9 @@ public class FeatureCommand extends SimpleCommand {
      */
     @RouteInfo
     public void featureOffCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature");
-        builder.restrictPattern(Pattern.compile("off [\\S]+.*"));
-        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION);
+        builder.restrictCommand("feature")
+                .restrictPermission(FEATURE_TOGGLE_PERMISSION)
+                .restrictStartsWith("off")
+                .restrictArgumentCount(2, 2);
     }
 }

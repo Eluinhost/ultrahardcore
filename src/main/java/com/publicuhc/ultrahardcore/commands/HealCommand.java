@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -35,7 +35,6 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class HealCommand extends SimpleCommand {
 
@@ -68,9 +67,9 @@ public class HealCommand extends SimpleCommand {
      */
     @RouteInfo
     public void healSelfCommandDetails(RouteBuilder builder) {
-        builder.restrictSenderType(SenderType.PLAYER);
-        builder.restrictCommand("healself");
-        builder.restrictPermission(HEAL_SELF_PERMISSION);
+        builder.restrictSenderType(SenderType.PLAYER)
+                .restrictCommand("healself")
+                .restrictPermission(HEAL_SELF_PERMISSION);
     }
 
     /**
@@ -98,9 +97,10 @@ public class HealCommand extends SimpleCommand {
      */
     @RouteInfo
     public void healCommandDetails(RouteBuilder builder) {
-        builder.restrictPattern(Pattern.compile("[^*]+"));
-        builder.restrictPermission(HEAL_OTHER_PERMISSION);
-        builder.restrictCommand("heal");
+        builder.restrictPermission(HEAL_OTHER_PERMISSION)
+                .maxMatches(1)
+                .restrictArgumentCount(1, -1)
+                .restrictCommand("heal");
     }
 
     /**
@@ -122,8 +122,8 @@ public class HealCommand extends SimpleCommand {
      */
     @RouteInfo
     public void healAllCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("heal");
-        builder.restrictPermission(HEAL_OTHER_PERMISSION);
-        builder.restrictPattern(Pattern.compile("\\*"));
+        builder.restrictCommand("heal")
+                .restrictPermission(HEAL_OTHER_PERMISSION)
+                .restrictStartsWith("*");
     }
 }

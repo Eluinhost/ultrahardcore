@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -43,7 +43,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class TeamCommands extends SimpleCommand {
 
@@ -96,8 +95,9 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void createTeamCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("createteam");
-        builder.restrictPermission(TEAM_CREATE_PERMISSION);
+        builder.restrictCommand("createteam")
+                .restrictPermission(TEAM_CREATE_PERMISSION)
+                .restrictArgumentCount(0, 1);
     }
 
     /**
@@ -123,9 +123,9 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void removeTeamCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("removeteam");
-        builder.restrictPermission(TEAM_REMOVE_PERMISSION);
-        builder.restrictPattern(Pattern.compile("[\\S]+"));
+        builder.restrictCommand("removeteam")
+                .restrictPermission(TEAM_REMOVE_PERMISSION)
+                .restrictArgumentCount(1, 1);
     }
 
     /**
@@ -142,9 +142,9 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void leaveTeamCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("leaveteam");
-        builder.restrictPermission(TEAM_LEAVE_PERMISSION);
-        builder.restrictSenderType(SenderType.PLAYER);
+        builder.restrictCommand("leaveteam")
+                .restrictPermission(TEAM_LEAVE_PERMISSION)
+                .restrictSenderType(SenderType.PLAYER);
     }
 
     /**
@@ -165,9 +165,10 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void leaveTeamForceDetails(RouteBuilder builder) {
-        builder.restrictCommand("leaveteam");
-        builder.restrictPermission(TEAM_LEAVE_OTHER_PERMISSION);
-        builder.restrictPattern(Pattern.compile("f [\\S]+"));
+        builder.restrictCommand("leaveteam")
+                .restrictPermission(TEAM_LEAVE_OTHER_PERMISSION)
+                .restrictStartsWith("f")
+                .restrictArgumentCount(2, 2);
     }
 
     /**
@@ -190,10 +191,10 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void joinTeamCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("jointeam");
-        builder.restrictPattern(Pattern.compile("[\\S]+"));
-        builder.restrictPermission(TEAM_JOIN_PERMISSION);
-        builder.restrictSenderType(SenderType.PLAYER);
+        builder.restrictCommand("jointeam")
+                .restrictArgumentCount(1, 1)
+                .restrictPermission(TEAM_JOIN_PERMISSION)
+                .restrictSenderType(SenderType.PLAYER);
     }
 
     /**
@@ -220,9 +221,10 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void joinTeamOtherCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("jointeam");
-        builder.restrictPermission(TEAM_JOIN_OTHER_PERMISSION);
-        builder.restrictPattern(Pattern.compile("f [\\S]+ [\\S]+"));
+        builder.restrictCommand("jointeam")
+                .restrictPermission(TEAM_JOIN_OTHER_PERMISSION)
+                .restrictArgumentCount(3, 3)
+                .restrictStartsWith("f");
     }
 
     /**
@@ -237,8 +239,7 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void clearTeamsCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(CLEAR_TEAMS_PERMISSION);
-        builder.restrictCommand("clearteams");
+        builder.restrictPermission(CLEAR_TEAMS_PERMISSION).restrictCommand("clearteams");
     }
 
     /**
@@ -253,8 +254,7 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void emptyTeamsCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("emptyteams");
-        builder.restrictPermission(EMPTY_TEAMS_PERMISSION);
+        builder.restrictCommand("emptyteams").restrictPermission(EMPTY_TEAMS_PERMISSION);
     }
 
     /**
@@ -277,8 +277,9 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void listTeamsCommand(RouteBuilder builder) {
-        builder.restrictCommand("listteams");
-        builder.restrictPermission(LIST_TEAMS_PERMISSION);
+        builder.restrictCommand("listteams")
+                .restrictPermission(LIST_TEAMS_PERMISSION)
+                .maxMatches(1);
     }
 
     /**
@@ -299,9 +300,9 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void listTeamsAllCommand(RouteBuilder builder) {
-        builder.restrictCommand("listteams");
-        builder.restrictPermission(LIST_TEAMS_PERMISSION);
-        builder.restrictPattern(Pattern.compile("\\*"));
+        builder.restrictCommand("listteams")
+                .restrictPermission(LIST_TEAMS_PERMISSION)
+                .restrictStartsWith("*");
     }
 
     /**
@@ -382,9 +383,9 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void randomTeamCommand(RouteBuilder builder) {
-        builder.restrictCommand("randomteams");
-        builder.restrictPattern(Pattern.compile("[\\S]+.*"));
-        builder.restrictPermission(RANDOM_TEAMS_PERMISSION);
+        builder.restrictCommand("randomteams")
+                .restrictArgumentCount(1, 2)
+                .restrictPermission(RANDOM_TEAMS_PERMISSION);
     }
 
     @CommandMethod
@@ -449,8 +450,8 @@ public class TeamCommands extends SimpleCommand {
 
     @RouteInfo
     public void teamupCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("teamup");
-        builder.restrictPermission(TEAMUP_PERMISSION);
-        builder.restrictPattern(Pattern.compile(".+"));
+        builder.restrictCommand("teamup")
+                .restrictPermission(TEAMUP_PERMISSION)
+                .restrictArgumentCount(1, -1);
     }
 }

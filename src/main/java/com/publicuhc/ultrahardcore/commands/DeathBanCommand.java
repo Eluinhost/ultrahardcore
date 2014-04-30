@@ -24,7 +24,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -37,7 +37,6 @@ import org.bukkit.ChatColor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 public class DeathBanCommand extends SimpleCommand {
 
@@ -74,9 +73,9 @@ public class DeathBanCommand extends SimpleCommand {
      */
     @RouteInfo
     public void deathBanCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("deathban");
-        builder.restrictPermission(DEATH_BAN_BAN);
-        builder.maxMatches(1);
+        builder.restrictCommand("deathban")
+                .restrictPermission(DEATH_BAN_BAN)
+                .maxMatches(1);
     }
 
     /**
@@ -108,9 +107,10 @@ public class DeathBanCommand extends SimpleCommand {
      */
     @RouteInfo
     public void deathbanUnbanCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(DEATH_BAN_UNBAN);
-        builder.restrictCommand("deathban");
-        builder.restrictPattern(Pattern.compile("unban .+"));
+        builder.restrictPermission(DEATH_BAN_UNBAN)
+                .restrictCommand("deathban")
+                .restrictStartsWith("unban")
+                .restrictArgumentCount(2, 2);
     }
 
     /**
@@ -143,8 +143,9 @@ public class DeathBanCommand extends SimpleCommand {
      */
     @RouteInfo
     public void deathbanBanCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("deathban");
-        builder.restrictPermission(DEATH_BAN_BAN);
-        builder.restrictPattern(Pattern.compile("ban .+ .+"));
+        builder.restrictCommand("deathban")
+                .restrictPermission(DEATH_BAN_BAN)
+                .restrictStartsWith("ban")
+                .restrictArgumentCount(2, 2);
     }
 }

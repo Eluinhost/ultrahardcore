@@ -24,18 +24,17 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
-import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerRunnable;
 import com.publicuhc.ultrahardcore.util.WordsUtil;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class TimerCommand extends SimpleCommand {
 
@@ -79,7 +78,7 @@ public class TimerCommand extends SimpleCommand {
         for (int i = 1; i < args.size(); i++) {
             sb.append(args.get(i)).append(" ");
         }
-        String message = sb.substring(0, sb.length()-1);
+        String message = sb.substring(0, sb.length() - 1);
 
         if(timerFeature.startTimer(TimerRunnable.TICKS_PER_SECOND*seconds,message)) {
             request.sendMessage(translate("timer.running", request.getLocale()));
@@ -90,9 +89,9 @@ public class TimerCommand extends SimpleCommand {
 
     @RouteInfo
     public void timerCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("timer");
-        builder.restrictPattern(Pattern.compile("[\\S]+ [\\S]+.*"));
-        builder.restrictPermission(TIMER_COMMAND);
+        builder.restrictCommand("timer")
+                .restrictArgumentCount(2, -1)
+                .restrictPermission(TIMER_COMMAND);
     }
     /**
      * Ran on /canceltimer
@@ -112,7 +111,6 @@ public class TimerCommand extends SimpleCommand {
 
     @RouteInfo
     public void timerCancelCommand(RouteBuilder builder) {
-        builder.restrictCommand("canceltimer");
-        builder.restrictPermission(TIMER_COMMAND);
+        builder.restrictCommand("canceltimer").restrictPermission(TIMER_COMMAND);
     }
 }

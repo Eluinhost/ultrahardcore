@@ -24,7 +24,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -44,7 +44,6 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class BorderCommand extends SimpleCommand {
 
@@ -156,9 +155,9 @@ public class BorderCommand extends SimpleCommand {
      */
     @RouteInfo
     public void borderCommandDetails(RouteBuilder builder) {
-        builder.restrictPattern(Pattern.compile("([\\S]+ ){2}[\\S]+.*"));
-        builder.restrictCommand("genborder");
-        builder.restrictPermission(GENERATE_BORDER);
+        builder.restrictCommand("genborder")
+                .restrictPermission(GENERATE_BORDER)
+                .restrictArgumentCount(3, -1);
     }
 
     /**
@@ -192,9 +191,9 @@ public class BorderCommand extends SimpleCommand {
      */
     @RouteInfo
     public void borderUndoCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(GENERATE_BORDER);
-        builder.restrictCommand("genborder");
-        builder.restrictPattern(Pattern.compile("undo.*"));
+        builder.restrictPermission(GENERATE_BORDER)
+                .restrictCommand("genborder")
+                .restrictStartsWith("undo");
     }
 
     /**
@@ -223,8 +222,8 @@ public class BorderCommand extends SimpleCommand {
      */
     @RouteInfo
     public void borderTypesCommand(RouteBuilder builder) {
-        builder.restrictCommand("genborder");
-        builder.restrictPattern(Pattern.compile("types.*"));
-        builder.restrictPermission(GENERATE_BORDER);
+        builder.restrictCommand("genborder")
+                .restrictStartsWith("types")
+                .restrictPermission(GENERATE_BORDER);
     }
 }

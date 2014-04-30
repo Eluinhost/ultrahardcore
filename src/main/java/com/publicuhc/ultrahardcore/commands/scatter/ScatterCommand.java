@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.*;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -42,7 +42,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class ScatterCommand extends SimpleCommand {
 
@@ -94,9 +93,9 @@ public class ScatterCommand extends SimpleCommand {
      */
     @RouteInfo
     public void interactiveScatterCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("iscatter");
-        builder.restrictSenderType(SenderType.CONSOLE, SenderType.PLAYER, SenderType.REMOTE_CONSOLE);
-        builder.restrictPermission(SCATTER_COMMAND);
+        builder.restrictCommand("iscatter")
+                .restrictSenderType(SenderType.CONSOLE, SenderType.PLAYER, SenderType.REMOTE_CONSOLE)
+                .restrictPermission(SCATTER_COMMAND);
     }
 
     /**
@@ -201,9 +200,9 @@ public class ScatterCommand extends SimpleCommand {
      */
     @RouteInfo
     public void scatterCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("scatter");
-        builder.restrictPattern(Pattern.compile("([\\S]+ ){6}[\\S]+.*"));
-        builder.restrictPermission(SCATTER_COMMAND);
+        builder.restrictCommand("scatter")
+                .restrictArgumentCount(7, -1)
+                .restrictPermission(SCATTER_COMMAND);
     }
 
     /**
@@ -224,10 +223,10 @@ public class ScatterCommand extends SimpleCommand {
      */
     @RouteInfo
     public void scatterTypesCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("scatter");
-        builder.restrictPermission(SCATTER_COMMAND);
-        builder.restrictPattern(Pattern.compile("types.*"));
-        builder.restrictSenderType(SenderType.PLAYER, SenderType.CONSOLE, SenderType.REMOTE_CONSOLE);
+        builder.restrictCommand("scatter")
+                .restrictPermission(SCATTER_COMMAND)
+                .restrictStartsWith("types")
+                .restrictSenderType(SenderType.PLAYER, SenderType.CONSOLE, SenderType.REMOTE_CONSOLE);
     }
 
 }

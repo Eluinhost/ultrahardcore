@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
 import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routing.RouteBuilder;
+import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
@@ -40,7 +40,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class ClearInventoryCommand extends SimpleCommand {
 
@@ -74,9 +73,9 @@ public class ClearInventoryCommand extends SimpleCommand {
      */
     @RouteInfo
     public void clearInventorySelfDetails(RouteBuilder builder) {
-        builder.restrictCommand("ciself");
-        builder.restrictPermission(CLEAR_SELF_PERMISSION);
-        builder.restrictSenderType(SenderType.PLAYER);
+        builder.restrictCommand("ciself")
+                .restrictPermission(CLEAR_SELF_PERMISSION)
+                .restrictSenderType(SenderType.PLAYER);
     }
 
     /**
@@ -117,9 +116,10 @@ public class ClearInventoryCommand extends SimpleCommand {
      */
     @RouteInfo
     public void clearInventoryCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(CLEAR_OTHER_PERMISSION);
-        builder.restrictPattern(Pattern.compile("[^*]+"));
-        builder.restrictCommand("ci");
+        builder.restrictPermission(CLEAR_OTHER_PERMISSION)
+                .restrictArgumentCount(1, -1)
+                .restrictCommand("ci")
+                .maxMatches(1);
     }
 
     /**
@@ -142,9 +142,9 @@ public class ClearInventoryCommand extends SimpleCommand {
      */
     @RouteInfo
     public void clearInventoryAll(RouteBuilder builder) {
-        builder.restrictCommand("ci");
-        builder.restrictPermission(CLEAR_OTHER_PERMISSION);
-        builder.restrictPattern(Pattern.compile("\\*"));
+        builder.restrictCommand("ci")
+                .restrictPermission(CLEAR_OTHER_PERMISSION)
+                .restrictStartsWith("*");
     }
 
 
