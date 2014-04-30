@@ -47,7 +47,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
 
     //When the plugin gets started
     @Override
-    public void onEnable() {
+    public void onFrameworkEnable() {
         //register deathbans for serilization
         ConfigurationSerialization.registerClass(DeathBan.class);
         //register the bungeecord plugin channel
@@ -56,7 +56,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         m_defaults.loadDefaultFeatures();
         m_defaults.loadDefaultScatterTypes();
         m_defaults.loadDefaultCommands();
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null){
             m_defaults.loadBorders();
         }
         getLogger().log(Level.INFO, "All default classes loaded");
