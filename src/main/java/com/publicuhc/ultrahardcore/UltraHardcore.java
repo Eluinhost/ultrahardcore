@@ -43,6 +43,8 @@ import java.util.logging.Level;
 @Singleton
 public class UltraHardcore extends FrameworkJavaPlugin {
 
+    private DefaultClasses m_defaults;
+
     //When the plugin gets started
     @Override
     public void onEnable() {
@@ -50,19 +52,23 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         ConfigurationSerialization.registerClass(DeathBan.class);
         //register the bungeecord plugin channel
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+        m_defaults.loadDefaultFeatures();
+        m_defaults.loadDefaultScatterTypes();
+        m_defaults.loadDefaultCommands();
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
+            m_defaults.loadBorders();
+        }
+        getLogger().log(Level.INFO, "All default classes loaded");
     }
 
     /**
-     * Load all the defaults for the entire plugin, DefaultClasses will do this when being created so we just print that it is done
+     * Load all the defaults for the entire plugin
      * @param defaultClasses init class
      */
     @Inject
     public void loadDefaultClasses(DefaultClasses defaultClasses) {
-        defaultClasses.loadDefaultCommands();
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
-            defaultClasses.loadBorders();
-        }
-        getLogger().log(Level.INFO, "All default classes loaded");
+        m_defaults = defaultClasses;
     }
 
     /**

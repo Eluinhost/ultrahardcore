@@ -20,10 +20,6 @@
  */
 package com.publicuhc.ultrahardcore;
 
-import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
-import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
-import com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException;
 import com.publicuhc.pluginframework.commands.routing.Router;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Injector;
@@ -34,6 +30,10 @@ import com.publicuhc.ultrahardcore.borders.types.RoofBorder;
 import com.publicuhc.ultrahardcore.borders.types.SquareBorder;
 import com.publicuhc.ultrahardcore.commands.*;
 import com.publicuhc.ultrahardcore.commands.scatter.ScatterCommand;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
+import com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException;
 import com.publicuhc.ultrahardcore.pluginfeatures.anonchat.AnonChatFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBansFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathdrops.DeathDropsFeature;
@@ -60,17 +60,19 @@ import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
 import com.publicuhc.ultrahardcore.scatter.types.EvenCircumferenceType;
 import com.publicuhc.ultrahardcore.scatter.types.RandomCircularType;
 import com.publicuhc.ultrahardcore.scatter.types.RandomSquareType;
+import org.bukkit.plugin.PluginLogger;
 
 import java.util.logging.Logger;
 
 @SuppressWarnings({"OverlyCoupledClass", "OverlyCoupledMethod"})
 public class DefaultClasses {
 
-     private final FeatureManager m_featureManager;
+    private final FeatureManager m_featureManager;
     private final BorderTypeManager m_borderTypes;
     private final Router m_router;
     private final ScatterManager m_scatterManager;
     private final Logger m_logger;
+    private final Injector m_injector;
 
     /**
      * @param featureManager the feature manager
@@ -78,16 +80,18 @@ public class DefaultClasses {
      * @param router the command router
      * @param scatterManager the scatter manager
      * @param logger the logger
+     * @param injector the injector
      */
     @Inject
     public DefaultClasses(FeatureManager featureManager,
                           BorderTypeManager borders, Router router, ScatterManager scatterManager,
-                          Logger logger){
+                          PluginLogger logger, Injector injector){
         m_logger = logger;
         m_featureManager = featureManager;
         m_borderTypes = borders;
         m_router = router;
         m_scatterManager = scatterManager;
+        m_injector = injector;
     }
 
     /**
@@ -133,10 +137,9 @@ public class DefaultClasses {
 
     /**
      * Load all the default features into the feature manager
-     * @param injector the injector
      */
     @Inject
-    public void loadDefaultFeatures(Injector injector) {
+    public void loadDefaultFeatures() {
         m_logger.info("Loading UHC feature modules...");
         //Load the default features with settings in config
         Class<? extends IFeature>[] classes = new Class[]{
@@ -163,7 +166,7 @@ public class DefaultClasses {
         };
         for(Class<? extends IFeature> clazz : classes){
             try{
-                IFeature feature = injector.getInstance(clazz);
+                IFeature feature = m_injector.getInstance(clazz);
                 m_featureManager.addFeature(feature);
             } catch (FeatureIDConflictException ignored) {
                 m_logger.severe("A default UHC Feature ID is conflicting, this should never happen!");
@@ -177,10 +180,8 @@ public class DefaultClasses {
 
     /**
      * Load the default scatter types
-     * @param injector the injector
      */
-    @Inject
-    public void loadDefaultScatterTypes(Injector injector){
+    public void loadDefaultScatterTypes(){
         Class<? extends AbstractScatterType>[] types = new Class[]{
                 EvenCircumferenceType.class,
                 RandomCircularType.class,
@@ -188,7 +189,7 @@ public class DefaultClasses {
         };
         for(Class<? extends AbstractScatterType> clazz : types){
             try {
-                AbstractScatterType type = injector.getInstance(clazz);
+                AbstractScatterType type = m_injector.getInstance(clazz);
                 m_scatterManager.addScatterType(type);
             } catch (ScatterTypeConflictException ignored) {
                 m_logger.severe("Conflict error when loading default scatter types!");
