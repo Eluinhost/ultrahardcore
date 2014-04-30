@@ -201,7 +201,7 @@ public class BorderCommand extends SimpleCommand {
      * @param request request params
      */
     @CommandMethod
-    public void onBorderTypesCommand(CommandRequest request){
+    public void borderTypesCommand(CommandRequest request){
         Collection<Border> types = m_borderTypes.getTypes();
         if(types.isEmpty()){
             request.sendMessage(translate("border.no_borders", request.getLocale()));
@@ -221,7 +221,7 @@ public class BorderCommand extends SimpleCommand {
      * @param builder the builder
      */
     @RouteInfo
-    public void borderTypesCommand(RouteBuilder builder) {
+    public void borderTypesCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("genborder")
                 .restrictStartsWith("types")
                 .restrictPermission(GENERATE_BORDER);

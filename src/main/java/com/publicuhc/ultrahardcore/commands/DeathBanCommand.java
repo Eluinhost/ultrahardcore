@@ -118,7 +118,7 @@ public class DeathBanCommand extends SimpleCommand {
      * @param request the request params
      */
     @CommandMethod
-    public void onDeathBanBanCommand(CommandRequest request){
+    public void deathbanBanCommand(CommandRequest request){
         IFeature feature = m_features.getFeatureByID("DeathBans");
         if(feature == null){
             request.sendMessage(translate("deathbans.not_loaded", request.getLocale()));

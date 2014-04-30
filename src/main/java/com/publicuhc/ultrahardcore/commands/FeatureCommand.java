@@ -143,7 +143,7 @@ public class FeatureCommand extends SimpleCommand {
      * @param request request params
      */
     @CommandMethod
-    public void onFeatureOffCommand(CommandRequest request){
+    public void featureOffCommand(CommandRequest request){
         IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
         if(null == feature){
             request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));

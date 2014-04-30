@@ -141,7 +141,7 @@ public class ClearInventoryCommand extends SimpleCommand {
      * @param builder the builder
      */
     @RouteInfo
-    public void clearInventoryAll(RouteBuilder builder) {
+    public void clearInventoryAllDetails(RouteBuilder builder) {
         builder.restrictCommand("ci")
                 .restrictPermission(CLEAR_OTHER_PERMISSION)
                 .restrictStartsWith("*");

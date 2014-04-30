@@ -276,7 +276,7 @@ public class TeamCommands extends SimpleCommand {
     }
 
     @RouteInfo
-    public void listTeamsCommand(RouteBuilder builder) {
+    public void listTeamsCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("listteams")
                 .restrictPermission(LIST_TEAMS_PERMISSION)
                 .maxMatches(1);
@@ -299,7 +299,7 @@ public class TeamCommands extends SimpleCommand {
     }
 
     @RouteInfo
-    public void listTeamsAllCommand(RouteBuilder builder) {
+    public void listTeamsAllCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("listteams")
                 .restrictPermission(LIST_TEAMS_PERMISSION)
                 .restrictStartsWith("*");
@@ -382,7 +382,7 @@ public class TeamCommands extends SimpleCommand {
     }
 
     @RouteInfo
-    public void randomTeamCommand(RouteBuilder builder) {
+    public void randomTeamCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("randomteams")
                 .restrictArgumentCount(1, 2)
                 .restrictPermission(RANDOM_TEAMS_PERMISSION);

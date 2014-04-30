@@ -110,7 +110,7 @@ public class TimerCommand extends SimpleCommand {
     }
 
     @RouteInfo
-    public void timerCancelCommand(RouteBuilder builder) {
+    public void timerCancelCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("canceltimer").restrictPermission(TIMER_COMMAND);
     }
 }
