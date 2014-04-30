@@ -79,7 +79,7 @@ public class TimerCommand extends SimpleCommand {
         for (int i = 1; i < args.size(); i++) {
             sb.append(args.get(i)).append(" ");
         }
-        String message = sb.toString();
+        String message = sb.substring(0, sb.length()-1);
 
         if(timerFeature.startTimer(TimerRunnable.TICKS_PER_SECOND*seconds,message)) {
             request.sendMessage(translate("timer.running", request.getLocale()));

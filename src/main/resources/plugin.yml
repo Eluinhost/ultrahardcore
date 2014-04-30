@@ -99,8 +99,12 @@ commands:
       aliases: [uhcgivedrops]
     timer:
       description: Dragon bar timers
-      usage: /<command>
+      usage: /<command> 1h2m3s message to display
       aliases: [uhctimer]
+    canceltimer:
+      description: Cancel the dragon timer
+      usage: /<command>
+      aliases: [uhccanceltimer]
     teamup:
       description: Make a team out of the players provided
       usage: /<command> player1 player2 player3 player4
