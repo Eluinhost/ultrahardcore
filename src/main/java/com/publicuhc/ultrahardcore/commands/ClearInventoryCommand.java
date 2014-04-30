@@ -39,7 +39,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClearInventoryCommand extends SimpleCommand {
 
@@ -84,13 +83,12 @@ public class ClearInventoryCommand extends SimpleCommand {
      */
     @CommandMethod
     public void clearInventoryCommand(CommandRequest request){
-        List<String> arguments = request.getArgs();
         int amount = request.getArgs().size();
         AbstractList<String> namesNotFound = new ArrayList<String>();
         for (int i = 0; i < amount; i++) {
             Player p = request.getPlayer(i);
             if (p == null) {
-                namesNotFound.add(p.getName());
+                namesNotFound.add(request.getArg(i));
                 continue;
             }
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
@@ -100,7 +98,7 @@ public class ClearInventoryCommand extends SimpleCommand {
                 p.sendMessage(translate("ci.tell", request.getLocale(), "name", request.getSender().getName()));
             }
         }
-        request.sendMessage("ci.cleared");
+        request.sendMessage(translate("ci.cleared", request.getLocale()));
         if (!namesNotFound.isEmpty()) {
             StringBuilder message = new StringBuilder();
             for (String s : namesNotFound) {
