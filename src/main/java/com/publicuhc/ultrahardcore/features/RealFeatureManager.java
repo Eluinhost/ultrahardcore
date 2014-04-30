@@ -66,7 +66,7 @@ public class RealFeatureManager implements FeatureManager {
     /**
      * Only allow uhcFeatures with this pattern as an ID
      */
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[\\w]++$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[\\S]++$");
 
     @Override
     public void addFeature(IFeature feature) throws FeatureIDConflictException, InvalidFeatureIDException {
