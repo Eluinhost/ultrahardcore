@@ -77,7 +77,7 @@ public class TeamCommands extends SimpleCommand {
     @CommandMethod
     public void createTeamCommand(CommandRequest request){
         Team thisteam;
-        if (request.getArgs().size() == 1) {
+        if (request.getArgs().size() >= 1) {
             thisteam = m_teamsUtil.getTeam(request.getFirstArg());
             if (thisteam != null) {
                 request.sendMessage(translate("teams.already_exists", request.getLocale(), "name", thisteam.getName()));
