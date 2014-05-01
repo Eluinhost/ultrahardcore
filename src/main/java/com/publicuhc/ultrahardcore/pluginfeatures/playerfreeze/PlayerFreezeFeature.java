@@ -67,6 +67,9 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     @SuppressWarnings("TypeMayBeWeakened")
     public void addPlayer(Player player){
+        if(player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)) {
+            return;
+        }
         LivingEntity pig = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
         pig.setPassenger(player);
         pig.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true));
@@ -136,8 +139,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     @EventHandler( priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoinEvent(PlayerJoinEvent pje){
-        if((m_globalMode || m_entityMap.keySet().contains(pje.getPlayer().getUniqueId()))
-             && !pje.getPlayer().hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)){
+        if(m_globalMode || m_entityMap.keySet().contains(pje.getPlayer().getUniqueId())){
             addPlayer(pje.getPlayer());
         }else{
             removePlayer(pje.getPlayer().getUniqueId());
