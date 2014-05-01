@@ -1,7 +1,4 @@
-WAITING ON BUKKIT
------------------
-Needs Attribute API - Item attributes to change potions after brewing e.t.c.
-
-SUGGESTIONS
------------
-Very Low - Make note pitch on arrow hit scale on distance
+GENERIC TO-DO LIST
+TODO remove kick/ban messages from main config and move into the translations
+TODO move time parsing stuff out of wordsutil
+TODO need to fix the attached logger
