@@ -85,7 +85,7 @@ public class TeamRequestsCommands extends SimpleCommand {
             builder.append(s).append(" ");
         }
 
-        m_requests.put(request.getSender().getName(), request.getArgs());
+        m_requests.put(request.getSender().getName(), new ArrayList<String>(request.getArgs()));
 
         Map<String, String> context = new HashMap<String, String>();
         context.put("name", request.getSender().getName());
