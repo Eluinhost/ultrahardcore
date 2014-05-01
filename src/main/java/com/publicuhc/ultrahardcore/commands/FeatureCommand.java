@@ -110,7 +110,7 @@ public class FeatureCommand extends SimpleCommand {
      */
     @CommandMethod
     public void featureOnCommand(CommandRequest request){
-        IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
+        IFeature feature = m_featureManager.getFeatureByID(request.getArg(1));
         if(null == feature){
             request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;
@@ -144,7 +144,7 @@ public class FeatureCommand extends SimpleCommand {
      */
     @CommandMethod
     public void featureOffCommand(CommandRequest request){
-        IFeature feature = m_featureManager.getFeatureByID(request.getFirstArg());
+        IFeature feature = m_featureManager.getFeatureByID(request.getArg(1));
         if(null == feature){
             request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;
