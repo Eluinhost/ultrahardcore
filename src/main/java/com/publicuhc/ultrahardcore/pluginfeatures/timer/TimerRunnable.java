@@ -149,6 +149,7 @@ public class TimerRunnable implements Runnable {
     private void displayTextBar(String text, float health) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             try {
+                destroyTimer();
                 PacketContainer pc = m_spawnPacket.deepClone();
                 //noinspection deprecation
                 pc.getIntegers()
