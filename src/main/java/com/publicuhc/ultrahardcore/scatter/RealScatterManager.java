@@ -114,7 +114,11 @@ public class RealScatterManager implements ScatterManager {
     @Override
     public void teleportSafe(Player player, Location loc) {
         loc.getChunk().load(true);
-        player.teleport(loc);
+        if( player.getVehicle() == null ){
+            player.getVehicle().teleport(loc);
+        } else {
+            player.teleport(loc);
+        }
         m_protector.addPlayer(player, loc);
     }
 
