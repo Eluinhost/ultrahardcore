@@ -53,19 +53,19 @@ public class TimerRunnable implements Runnable {
 
 
 
-    private int m_ticksLeft = 0;
+    private int m_secondsLeft = 0;
     private int m_jobID = -1;
     private final Plugin m_plugin;
     private final String m_message;
 
     /**
      * A new timer
-     * @param ticks the ticks to run for
+     * @param seconds the ticks to run for
      * @param message the message to display
      * @param plugin the plugin we run under
      */
-    public TimerRunnable(int ticks, String message, Plugin plugin){
-        m_ticksLeft = ticks;
+    public TimerRunnable(int seconds, String message, Plugin plugin){
+        m_secondsLeft = seconds;
         m_plugin = plugin;
         m_message = message;
         m_destroyPacket.getIntegerArrays().write(0, new int[]{ENTITY_ID});
@@ -87,19 +87,20 @@ public class TimerRunnable implements Runnable {
             m_jobID = -1;
         }
         destroyTimer();
+        m_secondsLeft = 0;
     }
 
     /**
-     * Converts the ticks to human readable
+     * Converts the seconds to human readable
      * @param ticks the  number of ticks
      * @return the human readable version
      */
     public static String ticksToString(long ticks) {
-        int hours = (int) Math.floor(ticks / (double)(SECONDS_PER_HOUR * 2)); //half seconds in a hour
-        ticks -= hours * SECONDS_PER_HOUR * 2;
-        int minutes = (int) Math.floor(ticks / (double)(SECONDS_PER_MINUTE * 2));    //half seconds in a minute
-        ticks -= minutes * SECONDS_PER_MINUTE * 2;
-        int seconds = (int) Math.floor(ticks / (double) 2);
+        int hours = (int) Math.floor(ticks / (double) SECONDS_PER_HOUR); //half seconds in a hour
+        ticks -= hours * SECONDS_PER_HOUR;
+        int minutes = (int) Math.floor(ticks / (double)SECONDS_PER_MINUTE);    //half seconds in a minute
+        ticks -= minutes * SECONDS_PER_MINUTE;
+        int seconds = (int) ticks;
 
         String output = "";
         if (hours > 0) {
@@ -117,7 +118,7 @@ public class TimerRunnable implements Runnable {
      * @return Is it still running or not
      */
     public boolean isRunning(){
-        return m_ticksLeft > 0;
+        return m_secondsLeft > 0;
     }
 
     /**
@@ -133,12 +134,12 @@ public class TimerRunnable implements Runnable {
 
     @Override
     public void run() {
-        --m_ticksLeft;
-        if (m_ticksLeft == 0) {
+        --m_secondsLeft;
+        if (m_secondsLeft == 0) {
             stopTimer();
             return;
         }
-        displayTextBar(m_message + ticksToString(m_ticksLeft), m_ticksLeft / (float) m_ticksLeft * DRAGON_HEALTH);
+        displayTextBar(m_message + ticksToString(m_secondsLeft), m_secondsLeft / (float) m_secondsLeft * DRAGON_HEALTH);
     }
 
     /**
