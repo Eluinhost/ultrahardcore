@@ -34,6 +34,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
@@ -84,6 +85,13 @@ public class PlayerFreezeFeature extends UHCFeature {
     public void removePlayer(UUID playerID){
         removePig(playerID);
         m_entityMap.remove(playerID);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onEntityDamageEvent(EntityDamageEvent ede) {
+        if(m_entityMap.containsKey(ede.getEntity().getUniqueId())) {
+            ede.setCancelled(true);
+        }
     }
 
     /**
