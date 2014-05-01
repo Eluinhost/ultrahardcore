@@ -102,16 +102,16 @@ public class TimerRunnable implements Runnable {
         ticks -= minutes * SECONDS_PER_MINUTE;
         int seconds = (int) ticks;
 
-        String output = "";
+        StringBuilder output = new StringBuilder();
         if (hours > 0) {
-            output += hours + "h";
+            output.append(hours).append('h');
         }
         if (minutes > 0) {
-            output += minutes + "m";
+            output.append(minutes).append('m');
         }
-        output += seconds + "s";
+        output.append(seconds).append('s');
 
-        return output;
+        return output.toString();
     }
 
     /**
@@ -139,7 +139,7 @@ public class TimerRunnable implements Runnable {
             stopTimer();
             return;
         }
-        displayTextBar(m_message + ticksToString(m_secondsLeft), m_secondsLeft / (float) m_secondsLeft * DRAGON_HEALTH);
+        displayTextBar(m_message + " " + ticksToString(m_secondsLeft), m_secondsLeft / (float) m_secondsLeft * DRAGON_HEALTH);
     }
 
     /**

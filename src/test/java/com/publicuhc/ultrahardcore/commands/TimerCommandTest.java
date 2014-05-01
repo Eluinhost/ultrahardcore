@@ -142,12 +142,12 @@ public class TimerCommandTest {
         when(timerFeature.isEnabled()).thenReturn(true);
         when(timerFeature.startTimer(anyInt(), anyString())).thenReturn(false);
         timer.timerCommand(builder.build());
-        verify(timerFeature, times(1)).startTimer(180200, "this is a message");
+        verify(timerFeature, times(1)).startTimer(9010, "this is a message");
         verify(p, times(1)).sendMessage(translate.translate("timer.already_running", "en"));
 
         when(timerFeature.startTimer(anyInt(), anyString())).thenReturn(true);
         timer.timerCommand(builder.build());
-        verify(timerFeature, times(2)).startTimer(180200, "this is a message");
+        verify(timerFeature, times(2)).startTimer(9010, "this is a message");
         verify(p, times(1)).sendMessage(translate.translate("timer.running", "en"));
     }
 
