@@ -70,7 +70,7 @@ public class AnonChatFeature extends UHCFeature {
             if(apce.getMessage().startsWith("P ")){
                 apce.setCancelled(true);
                 //schedule the new message to be send on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(apce.getPlayer().getUniqueId(), apce.getMessage(), "anon_chat.no_perms", getTranslate()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(apce.getPlayer().getUniqueId(), apce.getMessage().substring(2), "anon_chat.no_perms", getTranslate()));
             }
         }
     }
