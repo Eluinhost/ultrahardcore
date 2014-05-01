@@ -144,11 +144,12 @@ public class TeamCommands extends SimpleCommand {
     public void leaveTeamCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("leaveteam")
                 .restrictPermission(TEAM_LEAVE_PERMISSION)
-                .restrictSenderType(SenderType.PLAYER);
+                .restrictSenderType(SenderType.PLAYER)
+                .maxMatches(1);
     }
 
     /**
-     * Ran on /leaveteam f {name}
+     * Ran on /leaveteam {name}
      * @param request request params
      */
     @CommandMethod
@@ -167,8 +168,7 @@ public class TeamCommands extends SimpleCommand {
     public void leaveTeamForceDetails(RouteBuilder builder) {
         builder.restrictCommand("leaveteam")
                 .restrictPermission(TEAM_LEAVE_OTHER_PERMISSION)
-                .restrictStartsWith("f")
-                .restrictArgumentCount(2, 2);
+                .restrictArgumentCount(1, 1);
     }
 
     /**
@@ -198,7 +198,7 @@ public class TeamCommands extends SimpleCommand {
     }
 
     /**
-     * Ran on /jointeam f {team} {name}
+     * Ran on /jointeam {team} {name}
      * @param request request params
      */
     @CommandMethod
@@ -223,8 +223,7 @@ public class TeamCommands extends SimpleCommand {
     public void joinTeamOtherCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("jointeam")
                 .restrictPermission(TEAM_JOIN_OTHER_PERMISSION)
-                .restrictArgumentCount(3, 3)
-                .restrictStartsWith("f");
+                .restrictArgumentCount(2, 2);
     }
 
     /**
