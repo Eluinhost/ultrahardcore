@@ -69,6 +69,7 @@ freeze:
   froze_all: "&6All players frozen"
   player_unfroze: "&6Player unfrozen"
   unfroze_all: "&6All players unfrozen"
+  not_enabled: "&4Freeze feature is not enabled!"
 teams:
   already_exists: "&4Team %name% already exists!"
   created: "&6Created the team %display% (%name%)"

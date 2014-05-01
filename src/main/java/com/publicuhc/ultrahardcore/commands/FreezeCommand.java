@@ -63,6 +63,10 @@ public class FreezeCommand extends SimpleCommand {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
+        if(!feature.isEnabled()) {
+            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
+            return;
+        }
         Player player = request.getPlayer(0);
         if(player == null){
             request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getFirstArg()));
@@ -95,6 +99,10 @@ public class FreezeCommand extends SimpleCommand {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
+        if(!feature.isEnabled()) {
+            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
+            return;
+        }
         ((PlayerFreezeFeature)feature).freezeAll();
         request.sendMessage(translate("freeze.froze_all", request.getLocale()));
     }
@@ -115,6 +123,10 @@ public class FreezeCommand extends SimpleCommand {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
+            return;
+        }
+        if(!feature.isEnabled()) {
+            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
         Player p = request.getPlayer(0);
@@ -143,6 +155,10 @@ public class FreezeCommand extends SimpleCommand {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
         if(feature == null){
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
+            return;
+        }
+        if(!feature.isEnabled()) {
+            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
         ((PlayerFreezeFeature)feature).unfreezeAll();
