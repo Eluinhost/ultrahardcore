@@ -131,7 +131,7 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
-        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation));
+        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation), eq(false));
     }
 
     @Test
@@ -158,7 +158,7 @@ public class TPCommandTest {
 
         verify(p).sendMessage(translate.translate("teleport.invalid.world", "en"));
 
-        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation));
+        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation), eq(false));
     }
 
     @Test
@@ -187,7 +187,7 @@ public class TPCommandTest {
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
 
-        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation));
+        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation), eq(false));
     }
 
     @Test
@@ -214,7 +214,7 @@ public class TPCommandTest {
 
         verify(p).sendMessage(translate.translate("teleport.non_player_world", "en"));
 
-        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation));
+        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation), eq(false));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class TPCommandTest {
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
 
-        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation));
+        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation), eq(false));
     }
 
     @Test
@@ -272,7 +272,7 @@ public class TPCommandTest {
 
         verify(p).sendMessage(translate.translate("teleport.invalid.player", "en", "name", "sonmica"));
 
-        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation));
+        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation), eq(false));
     }
 
     @Test
@@ -300,6 +300,6 @@ public class TPCommandTest {
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
 
-        verify(scatterManager, times(3)).teleportSafe(any(Player.class), eq(tpLocation));
+        verify(scatterManager, times(3)).teleportSafe(any(Player.class), eq(tpLocation), eq(false));
     }
 }
