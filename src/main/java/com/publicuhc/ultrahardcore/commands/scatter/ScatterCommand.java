@@ -153,6 +153,7 @@ public class ScatterCommand extends SimpleCommand {
         for(int i = 6; i < request.getArgs().size(); i++){
             if("*".equals(request.getArg(i))){
                 scatterPlayers.addAll(Arrays.asList(Bukkit.getOnlinePlayers()));
+                continue;
             }
             Player p = request.getPlayer(i);
             if(p == null){
