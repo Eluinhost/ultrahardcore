@@ -62,10 +62,19 @@ public interface ScatterManager extends Runnable {
 
     /**
      * Scatters the player and protects them from damage using Protector
+     * Applied protection
      * @param player the player to scatter
      * @param loc the location to scatter to
      */
     void teleportSafe(Player player, Location loc);
+
+    /**
+     * Scatters the player and protects them from damage using Protector
+     * @param player the player to scatter
+     * @param loc the location to scatter to
+     * @param protect whether to apply the protector or not
+     */
+    void teleportSafe(Player player, Location loc, boolean protect);
 
     /**
      * @return unmodifiable list of teleports left to process

@@ -42,15 +42,15 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 public class PlayerFreezeFeature extends UHCFeature {
 
     private final Map<UUID, Entity> m_entityMap = new HashMap<UUID, Entity>();
     private boolean m_globalMode = false;
+
+    private final Collection<UUID> m_allowNextEvent = new ArrayList<UUID>();
 
     /**
      * handles frozen players
@@ -61,6 +61,11 @@ public class PlayerFreezeFeature extends UHCFeature {
     @Inject
     private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate) {
         super(plugin, configManager, translate);
+    }
+
+    public void allowNextEvent(UUID player) {
+        System.out.println("ALLOWING NEXT");
+        m_allowNextEvent.add(player);
     }
 
     /**
@@ -112,8 +117,13 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param vee the vechile exit event
      */
     @EventHandler
-    public void onVehicleDismountEvent(VehicleExitEvent vee){
+    public void onVehicleDismountEvent(VehicleExitEvent vee) {
         LivingEntity entity = vee.getExited();
+        if(m_allowNextEvent.contains(entity.getUniqueId())) {
+            m_allowNextEvent.remove(entity.getUniqueId());
+            vee.setCancelled(false);
+            return;
+        }
         if(entity instanceof Player){
             if(m_entityMap.containsKey(entity.getUniqueId())){
                 vee.setCancelled(true);

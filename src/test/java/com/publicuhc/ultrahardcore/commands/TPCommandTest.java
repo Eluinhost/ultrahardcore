@@ -30,6 +30,7 @@ import com.publicuhc.pluginframework.shaded.inject.Injector;
 import com.publicuhc.pluginframework.shaded.inject.name.Names;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.pluginframework.translate.TranslateModule;
+import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -67,8 +68,11 @@ public class TPCommandTest {
     private Location tpLocation;
     private World world;
 
+    private ScatterManager scatterManager;
+
     @Before
     public void onStartUp() {
+        scatterManager = mock(ScatterManager.class);
         Injector injector = Guice.createInjector(
                 new ConfigurationModule(getClass().getClassLoader()),
                 new TranslateModule(),
@@ -76,6 +80,7 @@ public class TPCommandTest {
                     @Override
                     protected void configure() {
                         bind(File.class).annotatedWith(Names.named("dataFolder")).toInstance(new File("target" + File.separator + "testdatafolder"));
+                        bind(ScatterManager.class).toInstance(scatterManager);
                     }
                 }
         );
@@ -126,10 +131,7 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
-        verify(ghowden, times(1)).teleport(tpLocation);
-        verify(eluinhost, times(1)).teleport(tpLocation);
-        verify(fuzzboxx, never()).teleport(any(Location.class));
-        verify(sonmica, never()).teleport(any(Location.class));
+        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation));
     }
 
     @Test
@@ -155,10 +157,8 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.invalid.world", "en"));
-        verify(eluinhost, never()).teleport(any(Location.class));
-        verify(sonmica, never()).teleport(any(Location.class));
-        verify(fuzzboxx, never()).teleport(any(Location.class));
-        verify(ghowden, never()).teleport(any(Location.class));
+
+        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation));
     }
 
     @Test
@@ -186,10 +186,8 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
-        verify(ghowden, times(1)).teleport(tpLocation);
-        verify(eluinhost, times(1)).teleport(tpLocation);
-        verify(fuzzboxx, never()).teleport(any(Location.class));
-        verify(sonmica, never()).teleport(any(Location.class));
+
+        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation));
     }
 
     @Test
@@ -215,10 +213,8 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.non_player_world", "en"));
-        verify(eluinhost, never()).teleport(any(Location.class));
-        verify(sonmica, never()).teleport(any(Location.class));
-        verify(fuzzboxx, never()).teleport(any(Location.class));
-        verify(ghowden, never()).teleport(any(Location.class));
+
+        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation));
     }
 
     @Test
@@ -246,10 +242,8 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
-        verify(ghowden, times(1)).teleport(tpLocation);
-        verify(eluinhost, times(1)).teleport(tpLocation);
-        verify(fuzzboxx, never()).teleport(any(Location.class));
-        verify(sonmica, never()).teleport(any(Location.class));
+
+        verify(scatterManager, times(2)).teleportSafe(any(Player.class), eq(tpLocation));
     }
 
     @Test
@@ -277,10 +271,8 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.invalid.player", "en", "name", "sonmica"));
-        verify(eluinhost, never()).teleport(any(Location.class));
-        verify(sonmica, never()).teleport(any(Location.class));
-        verify(fuzzboxx, never()).teleport(any(Location.class));
-        verify(ghowden, never()).teleport(any(Location.class));
+
+        verify(scatterManager, never()).teleportSafe(any(Player.class), eq(tpLocation));
     }
 
     @Test
@@ -307,9 +299,7 @@ public class TPCommandTest {
         teleport.teleportCommand(builder.build());
 
         verify(p).sendMessage(translate.translate("teleport.all_teleported", "en"));
-        verify(ghowden, times(1)).teleport(tpLocation);
-        verify(eluinhost, times(1)).teleport(tpLocation);
-        verify(fuzzboxx, times(1)).teleport(tpLocation);
-        verify(sonmica, never()).teleport(any(Location.class));
+
+        verify(scatterManager, times(3)).teleportSafe(any(Player.class), eq(tpLocation));
     }
 }

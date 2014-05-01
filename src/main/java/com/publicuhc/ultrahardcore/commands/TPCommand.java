@@ -28,6 +28,7 @@ import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -40,9 +41,12 @@ public class TPCommand extends SimpleCommand {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 
+    private final ScatterManager m_scatterManager;
+
     @Inject
-    private TPCommand(Configurator configManager, Translate translate) {
+    private TPCommand(Configurator configManager, Translate translate, ScatterManager scatterManager) {
         super(configManager, translate);
+        m_scatterManager = scatterManager;
     }
 
     /**
@@ -95,7 +99,7 @@ public class TPCommand extends SimpleCommand {
         }
         if (arguments.size() == 2 && "*".equals(request.getFirstArg())) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                p.teleport(location);
+                m_scatterManager.teleportSafe(p, location, false);
             }
         } else {
             for (int i = 0; i < arguments.size() - 1; i++) {
@@ -104,7 +108,7 @@ public class TPCommand extends SimpleCommand {
                     request.sendMessage(translate("teleport.invalid.player", request.getLocale(), "name", arguments.get(i)));
                     continue;
                 }
-                p.teleport(location);
+                m_scatterManager.teleportSafe(p, location, false);
             }
         }
         request.sendMessage(translate("teleport.all_teleported", request.getLocale()));

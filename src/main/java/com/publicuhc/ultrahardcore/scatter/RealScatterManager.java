@@ -24,6 +24,9 @@ package com.publicuhc.ultrahardcore.scatter;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
 import com.publicuhc.ultrahardcore.scatter.exceptions.MaxAttemptsReachedException;
 import com.publicuhc.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
 import com.publicuhc.ultrahardcore.scatter.types.AbstractScatterType;
@@ -31,6 +34,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.conversations.Conversable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
@@ -53,16 +57,20 @@ public class RealScatterManager implements ScatterManager {
     private final Plugin m_plugin;
     private final Configurator m_configManager;
 
+    private final PlayerFreezeFeature m_freeze;
+
     /**
      * @param plugin the plugin
      * @param configManager the config manager
      * @param protector the protector
      */
     @Inject
-    protected RealScatterManager(Plugin plugin, Configurator configManager, Protector protector){
+    protected RealScatterManager(Plugin plugin, Configurator configManager, Protector protector, PlayerFreezeFeature freeze) {
         m_protector = protector;
         m_plugin = plugin;
         m_configManager = configManager;
+
+        m_freeze = freeze;
 
         //register ourselves for events
         Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
@@ -113,13 +121,25 @@ public class RealScatterManager implements ScatterManager {
 
     @Override
     public void teleportSafe(Player player, Location loc) {
+        teleportSafe(player, loc, true);
+    }
+
+    @Override
+    public void teleportSafe(Player player, Location loc, boolean protect) {
         loc.getChunk().load(true);
-        if( player.getVehicle() == null ){
-            player.getVehicle().teleport(loc);
+        m_freeze.allowNextEvent(player.getUniqueId());
+        if(player.isInsideVehicle()){
+            Entity riding = player.getVehicle();
+            riding.eject();
+            riding.teleport(loc);
+            player.teleport(loc);
+            riding.setPassenger(player);
         } else {
             player.teleport(loc);
         }
-        m_protector.addPlayer(player, loc);
+        if(protect) {
+            m_protector.addPlayer(player, loc);
+        }
     }
 
     /**
