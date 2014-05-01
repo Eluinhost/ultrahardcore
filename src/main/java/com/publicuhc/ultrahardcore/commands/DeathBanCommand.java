@@ -89,7 +89,7 @@ public class DeathBanCommand extends SimpleCommand {
             request.sendMessage(translate("deathbans.not_loaded", request.getLocale()));
             return;
         }
-        UUID playerID = request.getPlayerUUID(1);
+        UUID playerID = request.getPlayerUUID(2);
         if(playerID.equals(CommandRequest.INVALID_ID)) {
             request.sendMessage(translate("deathban.uuid_error", request.getLocale()));
             return;
@@ -146,6 +146,6 @@ public class DeathBanCommand extends SimpleCommand {
         builder.restrictCommand("deathban")
                 .restrictPermission(DEATH_BAN_BAN)
                 .restrictStartsWith("ban")
-                .restrictArgumentCount(2, 2);
+                .restrictArgumentCount(3, 3);
     }
 }
