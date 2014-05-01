@@ -72,7 +72,7 @@ public class DeathBansFeature extends UHCFeature {
         for(DeathBan deathBan : banList){
             for(Player player : Bukkit.getOnlinePlayers()){
                 if(player.getUniqueId().equals(deathBan.getPlayerID())){
-                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft", WordsUtil.formatTimeLeft(deathBan.getUnbanTime())));
+                    player.kickPlayer(deathBan.getGroupName().replaceAll("%timeleft%", WordsUtil.formatTimeLeft(deathBan.getUnbanTime())));
                 }
             }
         }
