@@ -38,8 +38,8 @@ features:
   loaded:
     header: "&6Currently loaded features (%amount%):"
     none: "&7No features loaded!"
-    on: "&a%id% - &7%desc%"
-    off: "&4%id% - &7%desc%"
+    "on": "&a%id% - &7%desc%"
+    "off": "&4%id% - &7%desc%"
   not_found: "&4The feature %id% was not found, use /feature list to see a list of available features"
   already_enabled: "&4Feature already enabled!"
   already_disabled: "&4Feature already disabled!"
