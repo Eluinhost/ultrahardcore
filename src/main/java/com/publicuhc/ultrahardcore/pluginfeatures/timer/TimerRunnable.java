@@ -75,7 +75,7 @@ public class TimerRunnable implements Runnable {
      * Start the runnable
      */
     public void start(){
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(m_plugin, this, 0, TICKS_PER_SECOND);
+        m_jobID = Bukkit.getScheduler().scheduleSyncRepeatingTask(m_plugin, this, 0, TICKS_PER_SECOND);
     }
 
     /**
