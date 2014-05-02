@@ -138,7 +138,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     public void unfreezeAll(){
         m_globalMode = false;
-        for(UUID playerID : m_entityMap.keySet()){
+        for(UUID playerID : m_entityMap.keySet().toArray(new UUID[m_entityMap.size()])){
             removePlayer(playerID);
         }
     }
