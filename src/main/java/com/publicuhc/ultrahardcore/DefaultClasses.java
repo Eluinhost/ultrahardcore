@@ -95,19 +95,6 @@ public class DefaultClasses {
     }
 
     /**
-     * Load the default border types, make sure worldedit exists first
-     */
-    public void loadBorders() {
-        try {
-            m_borderTypes.addBorder(new CylinderBorder());
-            m_borderTypes.addBorder(new RoofBorder());
-            m_borderTypes.addBorder(new SquareBorder());
-        } catch (BorderIDConflictException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Load all the default commands
      */
     public void loadDefaultCommands() {
@@ -119,10 +106,8 @@ public class DefaultClasses {
                 TeamCommands.class,
                 FeedCommand.class,
                 FreezeCommand.class,
-                BorderCommand.class,
                 DeathBanCommand.class,
                 ScatterCommand.class,
-                TimerCommand.class,
                 WhitelistCommands.class,
                 TeamRequestsCommands.class
         };
@@ -148,10 +133,8 @@ public class DefaultClasses {
             DeathLightningFeature.class,
             DeathMessagesFeature.class,
             EnderpearlsFeature.class,
-            FootprintFeature.class,
             GhastDropsFeature.class,
             GoldenHeadsFeature.class,
-            HardcoreHeartsFeature.class,
             NetherFeature.class,
             PlayerFreezeFeature.class,
             PlayerHeadsFeature.class,
@@ -160,7 +143,6 @@ public class DefaultClasses {
             PotionNerfsFeature.class,
             RecipeFeature.class,
             RegenFeature.class,
-            TimerFeature.class,
             WitchSpawnsFeature.class
         };
         for(Class<? extends IFeature> clazz : classes){
@@ -193,6 +175,43 @@ public class DefaultClasses {
             } catch (ScatterTypeConflictException ignored) {
                 m_logger.severe("Conflict error when loading default scatter types!");
             }
+        }
+    }
+
+    public void loadWorldEditThings() {
+        try {
+            m_borderTypes.addBorder(new CylinderBorder());
+            m_borderTypes.addBorder(new RoofBorder());
+            m_borderTypes.addBorder(new SquareBorder());
+        } catch (BorderIDConflictException e) {
+            e.printStackTrace();
+        }
+        try {
+            m_router.registerCommands(BorderCommand.class);
+        } catch (@SuppressWarnings("OverlyBroadCatchBlock") Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadProtocolLibThings() {
+        Class<? extends IFeature>[] classes = new Class[]{
+                FootprintFeature.class,
+                HardcoreHeartsFeature.class,
+                TimerFeature.class
+        };
+        for(Class<? extends IFeature> klazz : classes) {
+            try {
+                m_featureManager.addFeature(m_injector.getInstance(klazz));
+            } catch (FeatureIDConflictException e) {
+                e.printStackTrace();
+            } catch (InvalidFeatureIDException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            m_router.registerCommands(TimerCommand.class);
+        } catch (@SuppressWarnings("OverlyBroadCatchBlock") Exception e) {
+            e.printStackTrace();
         }
     }
 }

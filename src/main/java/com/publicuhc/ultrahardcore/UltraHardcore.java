@@ -59,8 +59,15 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         m_defaults.loadDefaultFeatures();
         m_defaults.loadDefaultScatterTypes();
         m_defaults.loadDefaultCommands();
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null){
-            m_defaults.loadBorders();
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
+            m_defaults.loadWorldEditThings();
+        } else {
+            getLogger().log(Level.WARNING, "WorldEdit not found, skipping related features/commands");
+        }
+        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+            m_defaults.loadProtocolLibThings();
+        } else {
+            getLogger().log(Level.WARNING, "ProtocolLib not found, skipping related features/commands");
         }
         getLogger().log(Level.INFO, "All default classes loaded");
     }
