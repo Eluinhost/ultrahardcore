@@ -25,6 +25,7 @@ import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBan;
+import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.mcstats.Metrics;
@@ -45,6 +46,8 @@ public class UltraHardcore extends FrameworkJavaPlugin {
 
     private DefaultClasses m_defaults;
 
+    private ScatterManager m_scatterManager;
+
     //When the plugin gets started
     @Override
     public void onFrameworkEnable() {
@@ -60,6 +63,15 @@ public class UltraHardcore extends FrameworkJavaPlugin {
             m_defaults.loadBorders();
         }
         getLogger().log(Level.INFO, "All default classes loaded");
+    }
+
+    @Inject
+    public void setScatterManager(ScatterManager scatterManager) {
+        m_scatterManager = scatterManager;
+    }
+
+    public ScatterManager getScatterManager() {
+        return m_scatterManager;
     }
 
     /**
