@@ -470,7 +470,7 @@ public class TeamCommands extends SimpleCommand {
     }
 
     @RouteInfo
-    public void noteamCommand(RouteBuilder builder) {
+    public void noteamCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("noteam")
                 .restrictPermission(NOTEAM_PERMISSION);
     }
