@@ -134,10 +134,11 @@ public class TeamRequestsCommands extends SimpleCommand {
         //get the online players first
         for(int i = 0; i < team.size(); i++) {
             Player player = Bukkit.getPlayer(team.get(i));
-            if(null == player) {
+            if( null == player ) {
                 notFound.add(request.getArg(i));
+            } else {
+                found.add(player);
             }
-            found.add(player);
         }
 
         //get the offline player's UUIDs
