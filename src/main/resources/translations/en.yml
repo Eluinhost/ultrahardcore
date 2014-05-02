@@ -89,6 +89,7 @@ teams:
   greater_zero: "&4Teams to create can not be zero or less!"
   created_teams: "&6Made %amount% random teams"
   player_not_found: "&4Could not find details for the player %name%"
+  all_in_team: "&6All players are in teams"
   request:
     denied: "&6Reqest denied"
     requester_denied: "&4Your team request was denied"

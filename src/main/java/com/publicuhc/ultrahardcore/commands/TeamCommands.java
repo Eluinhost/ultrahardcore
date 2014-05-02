@@ -59,6 +59,7 @@ public class TeamCommands extends SimpleCommand {
     public static final String LIST_TEAMS_PERMISSION = "UHC.teams.list";
     public static final String RANDOM_TEAMS_PERMISSION = "UHC.teams.random";
     public static final String TEAMUP_PERMISSION = "UHC.teams.teamup";
+    public static final String NOTEAM_PERMISSION = "UHC.teams.noteam";
 
     private final WordsUtil m_words;
 
@@ -452,5 +453,25 @@ public class TeamCommands extends SimpleCommand {
         builder.restrictCommand("teamup")
                 .restrictPermission(TEAMUP_PERMISSION)
                 .restrictArgumentCount(1, -1);
+    }
+
+    @CommandMethod
+    public void noteamCommand(CommandRequest request) {
+        int found = 0;
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if( m_teamsUtil.getPlayersTeam(p) == null ) {
+                found++;
+                request.sendMessage(ChatColor.GRAY + p.getName());
+            }
+        }
+        if(found == 0) {
+            request.sendMessage(translate("teams.all_in_team", request.getLocale()));
+        }
+    }
+
+    @RouteInfo
+    public void noteamCommand(RouteBuilder builder) {
+        builder.restrictCommand("noteam")
+                .restrictPermission(NOTEAM_PERMISSION);
     }
 }

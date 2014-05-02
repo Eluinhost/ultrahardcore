@@ -117,6 +117,10 @@ commands:
       description: Request a team with the given players
       usage: /<command> player1 player2 ...
       aliases: [uhcreqteam]
+    noteam:
+      description: Display all players not in a team
+      usage: /<command>
+      aliases: [uhcnoteam]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
@@ -165,6 +169,9 @@ permissions:
     UHC.feed.announce:
         description: All feed commands will be announced to this player
         default: false
+    UHC.teams.noteam:
+        description: Allows usage of the noteam command
+        default: op
     UHC.feature.toggle:
         description: Allows a player to globally change loaded features
         default: op
