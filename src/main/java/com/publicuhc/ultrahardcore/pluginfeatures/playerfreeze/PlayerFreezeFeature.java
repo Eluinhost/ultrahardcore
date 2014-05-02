@@ -64,7 +64,6 @@ public class PlayerFreezeFeature extends UHCFeature {
     }
 
     public void allowNextEvent(UUID player) {
-        System.out.println("ALLOWING NEXT");
         m_allowNextEvent.add(player);
     }
 
@@ -74,6 +73,9 @@ public class PlayerFreezeFeature extends UHCFeature {
     @SuppressWarnings("TypeMayBeWeakened")
     public void addPlayer(Player player){
         if(player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)) {
+            return;
+        }
+        if(m_entityMap.containsKey(player.getUniqueId())) {
             return;
         }
         LivingEntity pig = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
@@ -100,13 +102,13 @@ public class PlayerFreezeFeature extends UHCFeature {
     }
 
     /**
-     * remove the chicken for the name
+     * remove the pig for the name
      * @param playerID the player ID
      */
     private void removePig(UUID playerID){
         if(m_entityMap.containsKey(playerID)){
             Entity pig = m_entityMap.get(playerID);
-            pig.setPassenger(null);
+            pig.eject();
             pig.remove();
             m_entityMap.put(playerID, null);
         }
@@ -165,7 +167,7 @@ public class PlayerFreezeFeature extends UHCFeature {
     }
 
     /**
-     * When a player logs out remove the chicken
+     * When a player logs out remove the pig
      * @param pqe the quit event
      */
     @EventHandler
