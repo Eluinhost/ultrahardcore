@@ -42,7 +42,7 @@ import org.bukkit.plugin.Plugin;
 @Singleton
 public class DeathMessagesFeature extends UHCFeature {
 
-    public static final String BASE_MESSAGES = BASE_PERMISSION + "death_messages.";
+    public static final String BASE_MESSAGES = BASE_PERMISSION + "deathmessages.";
     public static final String DEATH_MESSAGE_SUPPRESSED = BASE_MESSAGES + "remove";
     public static final String DEATH_MESSAGE_AFFIXES = BASE_MESSAGES + "affixes";
 
@@ -79,10 +79,10 @@ public class DeathMessagesFeature extends UHCFeature {
                 String format = ChatColor.translateAlternateColorCodes('&', getConfigManager().getConfig("main").getString(getBaseConfig() + "message"));
 
                 //replace vars
-                format = format.replaceAll("%message", pde.getDeathMessage());
-                format = format.replaceAll("%player", pde.getEntity().getName());
+                format = format.replaceAll("%message%", pde.getDeathMessage());
+                format = format.replaceAll("%player%", pde.getEntity().getName());
                 Location loc = pde.getEntity().getLocation();
-                format = format.replaceAll("%coords", locationString(loc));
+                format = format.replaceAll("%coords%", locationString(loc));
 
                 //set the new message
                 pde.setDeathMessage(format);
