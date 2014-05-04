@@ -32,7 +32,7 @@ features:
     percentChance: 100
     onStake: true
   DeathMessages:
-    message: "&c%message at %coords"
+    message: "&c%message% at %coords%"
     remove: false
   DeathDrops:
     items:
@@ -75,13 +75,13 @@ features:
         actions:
         - "serverban"
         serverban_duration: "2h"
-        serverban_message: "You are under a death ban, you will be unbanned in %timeleft"
+        serverban_message: "You are under a death ban, you will be unbanned in %timeleft%"
       bungee_kick_and_server_ban:
         actions:
         - "bungeekick"
         - "serverban"
         serverban_duration: "1h"
-        serverban_message: "You are under a death ban, you will be unbanned in %timeleft"
+        serverban_message: "You are under a death ban, you will be unbanned in %timeleft%"
         bungeekick_server: "lobby"
       kick_to_a_world:
         actions:
@@ -103,15 +103,6 @@ scatter:
   - "SNOW"
   - "SNOW_BLOCK"
   - "ICE"
-  default:
-    world: world
-    x: 0
-    z: 0
-    radius: 1000
-    minradius: 50
-    players: "*"
-    type: RandomCircle
-    useteams: yes
 border:
   id: BEDROCK
   meta: 0
