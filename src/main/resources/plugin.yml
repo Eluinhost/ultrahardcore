@@ -183,15 +183,12 @@ permissions:
         default: op
     UHC.freeze.antifreeze:
         description: Players with this permission are not affected by /freeze
-        default: false
+        default: op
     UHC.scatter:
         description: Allows a player to use the scatter command/s
         default: op
     UHC.playerListHealth:
         description: Player with this permission have health on their name in the player list
-        default: true
-    UHC.recipes.disableGApple:
-        description: Player with this permission cannot craft normal golden apple
         default: true
     UHC.recipes.disableGMelon:
         description: Player with this permission cannot craft normal glistering melons
@@ -201,9 +198,6 @@ permissions:
         default: true
     UHC.recipes.allowNewGCarrot:
         description: Player with this permission can craft the new golden carrot recipe
-        default: true
-    UHC.recipes.allowNewGApple:
-        description: Player with this permission can craft the new golden apple recipe
         default: true
     UHC.recipes.allowNewGMelon:
         description: Player with this permission can craft the new glistering melon recipe
@@ -240,7 +234,7 @@ permissions:
         default: op
     UHC.deathmessages.remove:
         description: Removes the death message for this player
-        default: false
+        default: true
     UHC.deathmessages.affixes:
         description: Adds the death message prefix/suffix
         default: true
@@ -286,10 +280,10 @@ permissions:
     UHC.footprints.leavePrints:
         description: Player leaves footprints behind them
         default: true
-    UHC.recipes.disableSplash:
+    UHC.potions.disableSplash:
         description: Stops a player from brewing splash potions
         default: true
-    UHC.recipes.disableImproved:
+    UHC.potions.disableImproved:
         description: Stops a player brewing using glowstone
         default: true
     UHC.deathban.immune:
