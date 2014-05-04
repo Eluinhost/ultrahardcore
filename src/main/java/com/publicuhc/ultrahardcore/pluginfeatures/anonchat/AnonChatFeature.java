@@ -38,7 +38,7 @@ import java.util.UUID;
 @Singleton
 public class AnonChatFeature extends UHCFeature {
 
-    public static final String ANON_BASE = BASE_PERMISSION + "anon_chat.";
+    public static final String ANON_BASE = BASE_PERMISSION + "AnonChat.";
     public static final String ANON_CHAT_CHAT = ANON_BASE + "chat";
     public static final String ANON_CHAT_SEE_NAME = ANON_BASE + "seeName";
 
