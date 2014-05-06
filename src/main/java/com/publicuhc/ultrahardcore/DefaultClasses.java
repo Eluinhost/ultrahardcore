@@ -53,6 +53,7 @@ import com.publicuhc.ultrahardcore.pluginfeatures.potionnerfs.PotionNerfsFeature
 import com.publicuhc.ultrahardcore.pluginfeatures.recipes.RecipeFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.regen.RegenFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.uberapples.UberApples;
 import com.publicuhc.ultrahardcore.pluginfeatures.witchspawns.WitchSpawnsFeature;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import com.publicuhc.ultrahardcore.scatter.exceptions.ScatterTypeConflictException;
@@ -143,6 +144,7 @@ public class DefaultClasses {
             PotionNerfsFeature.class,
             RecipeFeature.class,
             RegenFeature.class,
+            UberApples.class,
             WitchSpawnsFeature.class
         };
         for(Class<? extends IFeature> clazz : classes){

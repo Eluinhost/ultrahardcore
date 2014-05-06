@@ -13,6 +13,7 @@ enabledFeatures:
 - "PotionNerfs"
 - "WitchSpawns"
 - "PlayerFreeze"
+- "DisableUberApples"
 features:
   GhastDrops:
     whitelist: false
