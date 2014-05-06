@@ -24,6 +24,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
+import com.publicuhc.pluginframework.commands.requests.SenderType;
 import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
@@ -32,6 +33,8 @@ import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class FreezeCommand extends SimpleCommand {
 
@@ -170,5 +173,71 @@ public class FreezeCommand extends SimpleCommand {
         builder.restrictPermission(FREEZE_PERMISSION)
                 .restrictStartsWith("*")
                 .restrictCommand("unfreeze");
+    }
+
+    @CommandMethod
+    public void toggleFreezeCommand(CommandRequest request) {
+        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        if(feature == null){
+            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
+            return;
+        }
+        if(!feature.isEnabled()) {
+            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
+            return;
+        }
+        PlayerFreezeFeature freezeFeature = (PlayerFreezeFeature) feature;
+        Player player = request.getPlayer(1);
+
+        if(null == player) {
+            request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getArg(1)));
+            return;
+        }
+
+        if(freezeFeature.isPlayerFrozen(player)) {
+            freezeFeature.addPlayer(player);
+            request.sendMessage(translate("freeze.player_froze", request.getLocale()));
+        } else {
+            freezeFeature.removePlayer(player);
+            request.sendMessage(translate("freeze.player_unfroze", request.getLocale()));
+        }
+    }
+
+    @RouteInfo
+    public void toggleFreezeCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("freeze")
+                .restrictPermission(FREEZE_PERMISSION)
+                .restrictArgumentCount(2,2)
+                .restrictStartsWith("toggle")
+                .maxMatches(2);
+    }
+
+    @CommandMethod
+    public void toggleFreezeAllCommand(CommandRequest request) {
+        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        if(feature == null){
+            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
+            return;
+        }
+        if(!feature.isEnabled()) {
+            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
+            return;
+        }
+        PlayerFreezeFeature freezeFeature = (PlayerFreezeFeature) feature;
+
+        if(freezeFeature.isGlobalMode()) {
+            freezeFeature.unfreezeAll();
+            request.sendMessage(translate("freeze.unfroze_all", request.getLocale()));
+        } else {
+            freezeFeature.freezeAll();
+            request.sendMessage(translate("freeze.froze_all", request.getLocale()));
+        }
+    }
+
+    @CommandMethod
+    public void toggleFreezeAllCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("freeze")
+                .restrictStartsWith("toggle *")
+                .restrictPermission(FREEZE_PERMISSION);
     }
 }

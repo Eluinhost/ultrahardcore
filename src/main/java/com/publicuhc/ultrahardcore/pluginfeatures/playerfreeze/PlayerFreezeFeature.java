@@ -41,6 +41,7 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import sun.net.www.content.text.plain;
 
 import java.util.*;
 
@@ -86,6 +87,10 @@ public class PlayerFreezeFeature extends UHCFeature {
         m_entityMap.put(player.getUniqueId(), pig);
     }
 
+    public void removePlayer(Player player) {
+        removePlayer(player.getUniqueId());
+    }
+
     /**
      * @param playerID the player id
      */
@@ -99,6 +104,14 @@ public class PlayerFreezeFeature extends UHCFeature {
         if(m_entityMap.containsKey(ede.getEntity().getUniqueId())) {
             ede.setCancelled(true);
         }
+    }
+
+    public boolean isPlayerFrozen(Player player) {
+        return isPlayerFrozen(player.getUniqueId());
+    }
+
+    public boolean isPlayerFrozen(UUID uuid) {
+        return m_entityMap.containsKey(uuid);
     }
 
     /**
@@ -151,6 +164,10 @@ public class PlayerFreezeFeature extends UHCFeature {
         for(Player p : Bukkit.getOnlinePlayers()){
             addPlayer(p);
         }
+    }
+
+    public boolean isGlobalMode() {
+        return m_globalMode;
     }
 
     /**
