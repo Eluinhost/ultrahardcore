@@ -171,4 +171,28 @@ public class FeatureCommand extends SimpleCommand {
                 .restrictStartsWith("off")
                 .restrictArgumentCount(2, 2);
     }
+
+    @CommandMethod
+    public void featureToggleCommand(CommandRequest request) {
+        IFeature feature = m_featureManager.getFeatureByID(request.getArg(1));
+        if(null == feature){
+            request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
+            return;
+        }
+        if(feature.isEnabled()) {
+            feature.enableFeature();
+            request.sendMessage(translate("features.enabled", request.getLocale()));
+        } else {
+            feature.disableFeature();
+            request.sendMessage(translate("features.disabled", request.getLocale()));
+        }
+    }
+
+    @RouteInfo
+    public void featureToggleCommandDetails(RouteBuilder builder) {
+        builder.restrictCommand("feature")
+                .restrictPermission(FEATURE_TOGGLE_PERMISSION)
+                .restrictStartsWith("toggle")
+                .restrictArgumentCount(2, 2);
+    }
 }
