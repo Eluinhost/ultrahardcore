@@ -27,10 +27,7 @@ import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
 import com.publicuhc.ultrahardcore.util.ServerUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Skull;
@@ -44,6 +41,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -239,5 +238,15 @@ public class PlayerHeadsFeature extends UHCFeature {
     @Override
     public String getDescription() {
         return "Players can drop their heads on death";
+    }
+
+    @Override
+    public List<String> getStatus() {
+        List<String> status = new ArrayList<String>();
+        status.add(ChatColor.GRAY + "--- PvP drop only: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"pvponly")));
+        status.add(ChatColor.GRAY + "--- Non team kill only: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"nonteamonly")));
+        status.add(ChatColor.GRAY + "--- Percent chance to drop: " + getConfigManager().getConfig("main").getInt(getBaseConfig()+"percentChance"));
+        status.add(ChatColor.GRAY + "--- Drop on a stake: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"onStake")));
+        return status;
     }
 }

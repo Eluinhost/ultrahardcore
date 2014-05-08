@@ -30,10 +30,7 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,10 +38,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 public class FootprintFeature extends UHCFeature implements Runnable {
@@ -184,5 +178,12 @@ public class FootprintFeature extends UHCFeature implements Runnable {
     @Override
     public String getDescription() {
         return "Leave footprints behind you...";
+    }
+
+    @Override
+    public List<String> getStatus() {
+        List<String> status = new ArrayList<String>();
+        status.add(ChatColor.GRAY + "--- Time to last: " + getConfigManager().getConfig("main").getInt(getBaseConfig()+"time"));
+        return status;
     }
 }

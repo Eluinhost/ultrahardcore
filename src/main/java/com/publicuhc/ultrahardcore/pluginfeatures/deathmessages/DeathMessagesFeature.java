@@ -32,6 +32,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * DeathMessagesFeature
@@ -107,5 +110,15 @@ public class DeathMessagesFeature extends UHCFeature {
     @Override
     public String getDescription() {
         return "Adds a prefix/suffix to all player deaths";
+    }
+
+    @Override
+    public List<String> getStatus() {
+        List<String> status = new ArrayList<String>();
+        String removal = convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "remove"));
+        String message = ChatColor.translateAlternateColorCodes('&', getConfigManager().getConfig("main").getString(getBaseConfig() + "message"));
+        status.add(ChatColor.GRAY + "--- Death message removal: "+ removal);
+        status.add(ChatColor.GRAY + "--- Message replacement: "+ message);
+        return status;
     }
 }

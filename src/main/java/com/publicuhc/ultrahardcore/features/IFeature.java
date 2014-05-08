@@ -23,6 +23,8 @@ package com.publicuhc.ultrahardcore.features;
 
 import org.bukkit.event.Listener;
 
+import java.util.List;
+
 public interface IFeature extends Listener {
 
     /**
@@ -53,4 +55,9 @@ public interface IFeature extends Listener {
      * @return String
      */
     String getDescription();
+
+    /**
+     * @return a list detailing the components of this feature that are enabled/disabled. null if no config
+     */
+    List<String> getStatus();
 }
