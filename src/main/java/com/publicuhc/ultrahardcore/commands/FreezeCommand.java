@@ -24,7 +24,6 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
 import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
 import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.requests.SenderType;
 import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
@@ -33,8 +32,6 @@ import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class FreezeCommand extends SimpleCommand {
 
@@ -45,9 +42,10 @@ public class FreezeCommand extends SimpleCommand {
 
     /**
      * The freeze command
-     * @param features the feature manager
+     *
+     * @param features      the feature manager
      * @param configManager the config manager
-     * @param translate the translator
+     * @param translate     the translator
      */
     @Inject
     private FreezeCommand(FeatureManager features, Configurator configManager, Translate translate) {
@@ -57,29 +55,30 @@ public class FreezeCommand extends SimpleCommand {
 
     /**
      * Ran on /freeze
+     *
      * @param request the request params
      */
     @CommandMethod
-    public void freezeCommand(CommandRequest request){
+    public void freezeCommand(CommandRequest request) {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
-        if(feature == null){
+        if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
-        if(!feature.isEnabled()) {
+        if (!feature.isEnabled()) {
             request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
         Player player = request.getPlayer(0);
-        if(player == null){
+        if (player == null) {
             request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getFirstArg()));
             return;
         }
-        if(player.hasPermission(ANTIFREEZE_PERMISSION)){
+        if (player.hasPermission(ANTIFREEZE_PERMISSION)) {
             request.sendMessage(translate("freeze.immune", request.getLocale()));
             return;
         }
-        ((PlayerFreezeFeature)feature).addPlayer(player);
+        ((PlayerFreezeFeature) feature).addPlayer(player);
         request.sendMessage(translate("freeze.player_froze", request.getLocale()));
     }
 
@@ -93,20 +92,21 @@ public class FreezeCommand extends SimpleCommand {
 
     /**
      * Ran on /freeze *
+     *
      * @param request the request params
      */
     @CommandMethod
-    public void freezeAllCommand(CommandRequest request){
+    public void freezeAllCommand(CommandRequest request) {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
-        if(feature == null){
+        if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
-        if(!feature.isEnabled()) {
+        if (!feature.isEnabled()) {
             request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
-        ((PlayerFreezeFeature)feature).freezeAll();
+        ((PlayerFreezeFeature) feature).freezeAll();
         request.sendMessage(translate("freeze.froze_all", request.getLocale()));
     }
 
@@ -119,25 +119,26 @@ public class FreezeCommand extends SimpleCommand {
 
     /**
      * Ran on /unfreeze
+     *
      * @param request the request params
      */
     @CommandMethod
-    public void unfreezeCommand(CommandRequest request){
+    public void unfreezeCommand(CommandRequest request) {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
-        if(feature == null){
+        if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
-        if(!feature.isEnabled()) {
+        if (!feature.isEnabled()) {
             request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
         Player p = request.getPlayer(0);
-        if(null == p) {
+        if (null == p) {
             request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getFirstArg()));
             return;
         }
-        ((PlayerFreezeFeature)feature).removePlayer(p.getUniqueId());
+        ((PlayerFreezeFeature) feature).removePlayer(p.getUniqueId());
         request.sendMessage(translate("freeze.player_unfroze", request.getLocale()));
     }
 
@@ -151,20 +152,21 @@ public class FreezeCommand extends SimpleCommand {
 
     /**
      * Ran on /unfreeze *
+     *
      * @param request the request params
      */
     @CommandMethod
-    public void unfreezeAllCommand(CommandRequest request){
+    public void unfreezeAllCommand(CommandRequest request) {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
-        if(feature == null){
+        if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
-        if(!feature.isEnabled()) {
+        if (!feature.isEnabled()) {
             request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
-        ((PlayerFreezeFeature)feature).unfreezeAll();
+        ((PlayerFreezeFeature) feature).unfreezeAll();
         request.sendMessage(translate("freeze.unfroze_all", request.getLocale()));
     }
 
@@ -178,23 +180,23 @@ public class FreezeCommand extends SimpleCommand {
     @CommandMethod
     public void toggleFreezeCommand(CommandRequest request) {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
-        if(feature == null){
+        if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
-        if(!feature.isEnabled()) {
+        if (!feature.isEnabled()) {
             request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
         PlayerFreezeFeature freezeFeature = (PlayerFreezeFeature) feature;
         Player player = request.getPlayer(1);
 
-        if(null == player) {
+        if (null == player) {
             request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getArg(1)));
             return;
         }
 
-        if(freezeFeature.isPlayerFrozen(player)) {
+        if (freezeFeature.isPlayerFrozen(player)) {
             freezeFeature.addPlayer(player);
             request.sendMessage(translate("freeze.player_froze", request.getLocale()));
         } else {
@@ -207,7 +209,7 @@ public class FreezeCommand extends SimpleCommand {
     public void toggleFreezeCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("freeze")
                 .restrictPermission(FREEZE_PERMISSION)
-                .restrictArgumentCount(2,2)
+                .restrictArgumentCount(2, 2)
                 .restrictStartsWith("toggle")
                 .maxMatches(2);
     }
@@ -215,17 +217,17 @@ public class FreezeCommand extends SimpleCommand {
     @CommandMethod
     public void toggleFreezeAllCommand(CommandRequest request) {
         IFeature feature = m_features.getFeatureByID("PlayerFreeze");
-        if(feature == null){
+        if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
         }
-        if(!feature.isEnabled()) {
+        if (!feature.isEnabled()) {
             request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
             return;
         }
         PlayerFreezeFeature freezeFeature = (PlayerFreezeFeature) feature;
 
-        if(freezeFeature.isGlobalMode()) {
+        if (freezeFeature.isGlobalMode()) {
             freezeFeature.unfreezeAll();
             request.sendMessage(translate("freeze.unfroze_all", request.getLocale()));
         } else {
