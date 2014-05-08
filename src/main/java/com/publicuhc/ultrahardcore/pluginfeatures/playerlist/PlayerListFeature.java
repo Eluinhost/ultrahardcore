@@ -37,6 +37,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -240,6 +242,20 @@ public class PlayerListFeature extends UHCFeature {
     @Override
     public String getDescription() {
         return "Player's health shown in player list and under their name";
+    }
+
+    @Override
+    public List<String> getStatus() {
+        List<String> status = new ArrayList<String>();
+        status.add(ChatColor.GRAY + "--- Colours: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "colours")));
+        status.add(ChatColor.GRAY + "--- Update delay: " + getConfigManager().getConfig("main").getInt(getBaseConfig() + "delay"));
+        status.add(ChatColor.GRAY + "--- Below Name: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "belowName")));
+        status.add(ChatColor.GRAY + "--- Scaling: " + getConfigManager().getConfig("main").getInt(getBaseConfig() + "scaling"));
+        status.add(ChatColor.GRAY + "--- Rounding: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "roundHealth")));
+        String unit = ChatColor.translateAlternateColorCodes('&', getConfigManager().getConfig("main").getString(getBaseConfig() + "belowNameUnit")).replaceAll("&h", "\u2665");
+        status.add(ChatColor.GRAY + "--- Unit: " + unit);
+        status.add(ChatColor.GRAY + "--- Use display names: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "displayNames")));
+        return status;
     }
 
     private class PlayerListUpdater implements Runnable {
