@@ -42,6 +42,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Singleton
@@ -167,6 +169,15 @@ public class PotionNerfsFeature extends UHCFeature {
     @Override
     public String getDescription() {
         return "Applies nerfs to potions";
+    }
+
+    @Override
+    public List<String> getStatus() {
+        List<String> status = new ArrayList<String>();
+        status.add(ChatColor.GRAY + "--- Splash potions: "+convertBooleanToOnOff(!getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"disableGlowstone")));
+        status.add(ChatColor.GRAY + "--- Tier 2 potions: "+convertBooleanToOnOff(!getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"disableSplash")));
+        status.add(ChatColor.GRAY + "--- Absorbtion: "+convertBooleanToOnOff(!getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"disableAbsorb")));
+        return status;
     }
 
     /**

@@ -26,12 +26,16 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
+import org.bukkit.ChatColor;
 import org.bukkit.TravelAgent;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Singleton
 public class PortalsFeature extends UHCFeature {
@@ -82,5 +86,17 @@ public class PortalsFeature extends UHCFeature {
     @Override
     public String getDescription() {
         return "Change the radius portals can spawn in";
+    }
+
+    @Override
+    public List<String> getStatus() {
+        List<String> status = new ArrayList<String>();
+        status.add(ChatColor.GRAY + "--- Allow from nether: "+convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "from_nether.allowed")));
+        status.add(ChatColor.GRAY + "--- From nether creation radius: "+getConfigManager().getConfig("main").getInt(getBaseConfig()+"from_nether.creation_radius"));
+        status.add(ChatColor.GRAY + "--- From nether search radius: "+getConfigManager().getConfig("main").getInt(getBaseConfig()+"from_nether.search_radius"));
+        status.add(ChatColor.GRAY + "--- Allow to nether: "+convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "to_nether.allowed")));
+        status.add(ChatColor.GRAY + "--- To nether creation radius: "+getConfigManager().getConfig("main").getInt(getBaseConfig()+"to_nether.creation_radius"));
+        status.add(ChatColor.GRAY + "--- To nether search radius: "+getConfigManager().getConfig("main").getInt(getBaseConfig()+"to_nether.search_radius"));
+        return status;
     }
 }

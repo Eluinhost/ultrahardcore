@@ -41,7 +41,6 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import sun.net.www.content.text.plain;
 
 import java.util.*;
 

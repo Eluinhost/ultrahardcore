@@ -29,7 +29,10 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
 
 public abstract class Feature implements IFeature {
 
@@ -136,5 +139,18 @@ public abstract class Feature implements IFeature {
      */
     protected Translate getTranslate() {
         return m_translate;
+    }
+
+    @Override
+    public List<String> getStatus() {
+        return null;
+    }
+
+    /**
+     * @param onOff the boolean
+     * @return green 'ON' if true, red 'OFF' if false
+     */
+    protected String convertBooleanToOnOff(boolean onOff) {
+        return onOff ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF";
     }
 }

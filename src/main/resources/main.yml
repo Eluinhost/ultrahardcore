@@ -63,12 +63,12 @@ features:
   PortalRanges:
     to_nether:
       allowed: true
-      creation_range: 50
-      search_range: 50
+      creation_radius: 50
+      search_radius: 50
     from_nether:
       allowed: true
-      creation_range: 50
-      search_range: 50
+      creation_radius: 50
+      search_radius: 50
   DeathBans:
     delay: 10
     classes:

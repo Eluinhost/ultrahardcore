@@ -169,4 +169,11 @@ public class GoldenHeadsFeature extends UHCFeature {
     public String getDescription() {
         return "New and improved golden apples!";
     }
+
+    @Override
+    public List<String> getStatus() {
+        List<String> status = new ArrayList<String>();
+        status.add(ChatColor.GRAY + "--- Extra hearts healed: " + getConfigManager().getConfig("main").getInt(getBaseConfig()+"amountExtra"));
+        return status;
+    }
 }
