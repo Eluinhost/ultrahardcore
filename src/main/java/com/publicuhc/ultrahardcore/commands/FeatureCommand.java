@@ -90,6 +90,14 @@ public class FeatureCommand extends SimpleCommand {
             vars.put("id", feature.getFeatureID());
             vars.put("desc", feature.getDescription());
             request.sendMessage(translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off", request.getLocale(), vars));
+
+            List<String> status = feature.getStatus();
+
+            if (status != null) {
+                for(String message : status) {
+                    request.sendMessage(message);
+                }
+            }
         }
     }
 
