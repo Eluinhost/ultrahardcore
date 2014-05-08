@@ -34,7 +34,6 @@ import com.publicuhc.pluginframework.translate.TranslateModule;
 import com.publicuhc.ultrahardcore.borders.BorderTypeManager;
 import com.publicuhc.ultrahardcore.borders.RealBorderTypeManager;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.metrics.UHCMetrics;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerFeature;
 import com.publicuhc.ultrahardcore.scatter.FallProtector;
 import com.publicuhc.ultrahardcore.scatter.Protector;
@@ -48,7 +47,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mcstats.Metrics;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
@@ -96,7 +94,6 @@ public class TimerCommandTest {
                         bind(BorderTypeManager.class).to(RealBorderTypeManager.class);
                         bind(Protector.class).to(FallProtector.class);
                         bind(ScatterManager.class).to(RealScatterManager.class);
-                        bind(Metrics.class).to(UHCMetrics.class);
                     }
                 }
         );
