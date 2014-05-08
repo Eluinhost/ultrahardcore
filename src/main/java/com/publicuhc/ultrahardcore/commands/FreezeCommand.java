@@ -234,7 +234,7 @@ public class FreezeCommand extends SimpleCommand {
         }
     }
 
-    @CommandMethod
+    @RouteInfo
     public void toggleFreezeAllCommandDetails(RouteBuilder builder) {
         builder.restrictCommand("freeze")
                 .restrictStartsWith("toggle *")
