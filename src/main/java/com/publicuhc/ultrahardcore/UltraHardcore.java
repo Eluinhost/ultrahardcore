@@ -24,6 +24,8 @@ import com.publicuhc.pluginframework.FrameworkJavaPlugin;
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.ultrahardcore.features.FeatureManager;
+import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBan;
 import com.publicuhc.ultrahardcore.scatter.ScatterManager;
 import org.bukkit.Bukkit;
@@ -47,6 +49,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     private DefaultClasses m_defaults;
 
     private ScatterManager m_scatterManager;
+    private FeatureManager m_featureManager;
 
     //When the plugin gets started
     @Override
@@ -70,15 +73,41 @@ public class UltraHardcore extends FrameworkJavaPlugin {
             getLogger().log(Level.WARNING, "ProtocolLib not found, skipping related features/commands");
         }
         getLogger().log(Level.INFO, "All default classes loaded");
+
+        Metrics metrics = getMetrics();
+
+        Metrics.Graph graph = metrics.createGraph("Features Loaded");
+
+        for(final IFeature feature : m_featureManager.getFeatures()){
+            graph.addPlotter(new Metrics.Plotter(feature.getFeatureID()) {
+                @Override
+                public int getValue() {
+                    return feature.isEnabled() ? 1 : 0;
+                }
+            });
+        }
+
+        metrics.addGraph(graph);
+
+        metrics.start();
     }
 
     @Inject
-    public void setScatterManager(ScatterManager scatterManager) {
+    private void setScatterManager(ScatterManager scatterManager) {
         m_scatterManager = scatterManager;
     }
 
     public ScatterManager getScatterManager() {
         return m_scatterManager;
+    }
+
+    @Inject
+    private void setFeatureManager(FeatureManager featureManager) {
+        m_featureManager = featureManager;
+    }
+
+    public FeatureManager getFeatureManager() {
+        return m_featureManager;
     }
 
     /**
@@ -88,15 +117,6 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     @Inject
     public void loadDefaultClasses(DefaultClasses defaultClasses) {
         m_defaults = defaultClasses;
-    }
-
-    /**
-     * Load the metrics class and start it
-     * @param metrics the metrics to use
-     */
-    @Inject
-    public void loadMetrics(Metrics metrics) {
-        metrics.start();
     }
 
     @Override
