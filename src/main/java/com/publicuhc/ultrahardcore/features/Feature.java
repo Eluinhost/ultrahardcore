@@ -31,6 +31,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import java.util.List;
+
 public abstract class Feature implements IFeature {
 
     /**
@@ -136,5 +138,10 @@ public abstract class Feature implements IFeature {
      */
     protected Translate getTranslate() {
         return m_translate;
+    }
+
+    @Override
+    public List<String> getStatus() {
+        return null;
     }
 }
