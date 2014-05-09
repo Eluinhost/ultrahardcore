@@ -187,12 +187,12 @@ public class FeatureCommand extends SimpleCommand {
             request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;
         }
-        if(feature.isEnabled()) {
-            feature.enableFeature();
-            request.sendMessage(translate("features.enabled", request.getLocale()));
-        } else {
+        if (feature.isEnabled()) {
             feature.disableFeature();
             request.sendMessage(translate("features.disabled", request.getLocale()));
+        } else {
+            feature.enableFeature();
+            request.sendMessage(translate("features.enabled", request.getLocale()));
         }
     }
 
