@@ -35,6 +35,7 @@ import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException;
 import com.publicuhc.ultrahardcore.pluginfeatures.anonchat.AnonChatFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.autorespawn.AutoRespawn;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBansFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathdrops.DeathDropsFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathlightning.DeathLightningFeature;
@@ -199,7 +200,8 @@ public class DefaultClasses {
         Class<? extends IFeature>[] classes = new Class[]{
                 FootprintFeature.class,
                 HardcoreHeartsFeature.class,
-                TimerFeature.class
+                TimerFeature.class,
+                AutoRespawn.class
         };
         for(Class<? extends IFeature> klazz : classes) {
             try {
