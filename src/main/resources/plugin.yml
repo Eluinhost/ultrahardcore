@@ -310,3 +310,6 @@ permissions:
     UHC.whitelistall:
         description: Allows use of the /whitelistall command
         default: op
+    UHC.autorespawn:
+        description: Allows player to auto respawn on death
+        default: true
