@@ -28,6 +28,7 @@ import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -47,10 +48,8 @@ import java.util.*;
 @Singleton
 public class PlayerFreezeFeature extends UHCFeature {
 
-    private final Map<UUID, Entity> m_entityMap = new HashMap<UUID, Entity>();
+    private final Map<UUID, Location> m_entityMap = new HashMap<UUID, Location>();
     private boolean m_globalMode = false;
-
-    private final Collection<UUID> m_allowNextEvent = new ArrayList<UUID>();
 
     /**
      * handles frozen players
@@ -61,10 +60,6 @@ public class PlayerFreezeFeature extends UHCFeature {
     @Inject
     private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate) {
         super(plugin, configManager, translate);
-    }
-
-    public void allowNextEvent(UUID player) {
-        m_allowNextEvent.add(player);
     }
 
     /**
@@ -78,12 +73,7 @@ public class PlayerFreezeFeature extends UHCFeature {
         if(m_entityMap.containsKey(player.getUniqueId())) {
             return;
         }
-        LivingEntity pig = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
-        pig.setPassenger(player);
-        pig.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true));
-        pig.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 5, true));
-        pig.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 5, true));
-        m_entityMap.put(player.getUniqueId(), pig);
+        m_entityMap.put(player.getUniqueId(), player.getLocation());
     }
 
     public void removePlayer(Player player) {
@@ -94,15 +84,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param playerID the player id
      */
     public void removePlayer(UUID playerID){
-        removePig(playerID);
         m_entityMap.remove(playerID);
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onEntityDamageEvent(EntityDamageEvent ede) {
-        if(m_entityMap.containsKey(ede.getEntity().getUniqueId())) {
-            ede.setCancelled(true);
-        }
     }
 
     public boolean isPlayerFrozen(Player player) {
@@ -111,38 +93,6 @@ public class PlayerFreezeFeature extends UHCFeature {
 
     public boolean isPlayerFrozen(UUID uuid) {
         return m_entityMap.containsKey(uuid);
-    }
-
-    /**
-     * remove the pig for the name
-     * @param playerID the player ID
-     */
-    private void removePig(UUID playerID){
-        if(m_entityMap.containsKey(playerID)){
-            Entity pig = m_entityMap.get(playerID);
-            pig.eject();
-            pig.remove();
-            m_entityMap.put(playerID, null);
-        }
-    }
-
-    /**
-     * Called when a living entity tries to exit a vehicle
-     * @param vee the vechile exit event
-     */
-    @EventHandler
-    public void onVehicleDismountEvent(VehicleExitEvent vee) {
-        LivingEntity entity = vee.getExited();
-        if(m_allowNextEvent.contains(entity.getUniqueId())) {
-            m_allowNextEvent.remove(entity.getUniqueId());
-            vee.setCancelled(false);
-            return;
-        }
-        if(entity instanceof Player){
-            if(m_entityMap.containsKey(entity.getUniqueId())){
-                vee.setCancelled(true);
-            }
-        }
     }
 
     /**
@@ -179,17 +129,6 @@ public class PlayerFreezeFeature extends UHCFeature {
             addPlayer(pje.getPlayer());
         }else{
             removePlayer(pje.getPlayer().getUniqueId());
-        }
-    }
-
-    /**
-     * When a player logs out remove the pig
-     * @param pqe the quit event
-     */
-    @EventHandler
-    public void onPlayerLogout(PlayerQuitEvent pqe){
-        if(m_entityMap.containsKey(pqe.getPlayer().getUniqueId())){
-            removePig(pqe.getPlayer().getUniqueId());
         }
     }
 
