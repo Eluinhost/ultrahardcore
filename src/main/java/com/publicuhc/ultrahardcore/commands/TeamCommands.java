@@ -155,7 +155,7 @@ public class TeamCommands extends SimpleCommand {
      */
     @CommandMethod
     public void leaveTeamForce(CommandRequest request) {
-        UUID playerID = request.getPlayerUUID(1);
+        UUID playerID = request.getPlayerUUID(0);
         if(playerID.equals(CommandRequest.INVALID_ID)) {
             request.sendMessage(translate("teams.invalid_player", request.getLocale()));
         }
@@ -209,7 +209,7 @@ public class TeamCommands extends SimpleCommand {
             request.sendMessage(translate("teams.not_exist", request.getLocale()));
             return;
         }
-        UUID playerID = request.getPlayerUUID(2);
+        UUID playerID = request.getPlayerUUID(1);
         if(playerID.equals(CommandRequest.INVALID_ID)) {
             request.sendMessage(translate("teams.invalid_player", request.getLocale()));
         }
