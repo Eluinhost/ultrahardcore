@@ -29,21 +29,15 @@ import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Singleton
 public class PlayerFreezeFeature extends UHCFeature {
@@ -53,9 +47,10 @@ public class PlayerFreezeFeature extends UHCFeature {
 
     /**
      * handles frozen players
-     * @param plugin the plugin
+     *
+     * @param plugin        the plugin
      * @param configManager the config manager
-     * @param translate the translator
+     * @param translate     the translator
      */
     @Inject
     private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate) {
@@ -66,11 +61,11 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param player the entity to freeze
      */
     @SuppressWarnings("TypeMayBeWeakened")
-    public void addPlayer(Player player){
-        if(player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)) {
+    public void addPlayer(Player player) {
+        if (player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)) {
             return;
         }
-        if(m_entityMap.containsKey(player.getUniqueId())) {
+        if (m_entityMap.containsKey(player.getUniqueId())) {
             return;
         }
         m_entityMap.put(player.getUniqueId(), player.getLocation());
@@ -83,7 +78,7 @@ public class PlayerFreezeFeature extends UHCFeature {
     /**
      * @param playerID the player id
      */
-    public void removePlayer(UUID playerID){
+    public void removePlayer(UUID playerID) {
         m_entityMap.remove(playerID);
     }
 
@@ -98,9 +93,9 @@ public class PlayerFreezeFeature extends UHCFeature {
     /**
      * Remove all from the frozen list and sets global off
      */
-    public void unfreezeAll(){
+    public void unfreezeAll() {
         m_globalMode = false;
-        for(UUID playerID : m_entityMap.keySet().toArray(new UUID[m_entityMap.size()])){
+        for (UUID playerID : m_entityMap.keySet().toArray(new UUID[m_entityMap.size()])) {
             removePlayer(playerID);
         }
     }
@@ -108,9 +103,9 @@ public class PlayerFreezeFeature extends UHCFeature {
     /**
      * Adds all to the list and sets global on
      */
-    public void freezeAll(){
+    public void freezeAll() {
         m_globalMode = true;
-        for(Player p : Bukkit.getOnlinePlayers()){
+        for (Player p : Bukkit.getOnlinePlayers()) {
             addPlayer(p);
         }
     }
@@ -121,13 +116,14 @@ public class PlayerFreezeFeature extends UHCFeature {
 
     /**
      * Whenever a player joins
+     *
      * @param pje the player join event
      */
-    @EventHandler( priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoinEvent(PlayerJoinEvent pje){
-        if(m_globalMode || m_entityMap.keySet().contains(pje.getPlayer().getUniqueId())){
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerJoinEvent(PlayerJoinEvent pje) {
+        if (m_globalMode || m_entityMap.keySet().contains(pje.getPlayer().getUniqueId())) {
             addPlayer(pje.getPlayer());
-        }else{
+        } else {
             removePlayer(pje.getPlayer().getUniqueId());
         }
     }
@@ -136,7 +132,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      * Called when the feature is being disabled
      */
     @Override
-    protected void disableCallback(){
+    protected void disableCallback() {
         unfreezeAll();
     }
 
