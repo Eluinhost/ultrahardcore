@@ -28,22 +28,27 @@ import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginLogger;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.logging.Level;
 
 @Singleton
 public class PlayerFreezeFeature extends UHCFeature {
 
-    private final Map<UUID, Location> m_entityMap = new HashMap<UUID, Location>();
     private boolean m_globalMode = false;
+    private final List<PotionEffect> m_effects = new ArrayList<PotionEffect>();
+
+    private FreezeRunnable m_freezer;
+    private final PluginLogger m_logger;
 
     /**
      * handles frozen players
@@ -53,8 +58,53 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param translate     the translator
      */
     @Inject
-    private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate) {
+    private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate, PluginLogger logger) {
         super(plugin, configManager, translate);
+        m_logger = logger;
+        init();
+    }
+
+    private void init() {
+        List<String> potionEffectsList = getConfigManager().getConfig("main").getStringList(getBaseConfig() + "potion.effects");
+        int duration = getConfigManager().getConfig("main").getInt(getBaseConfig() + "potion.duration");
+        for (String potionEffectString : potionEffectsList) {
+            String[] parts = potionEffectString.split(":");
+            if (parts.length != 2) {
+                m_logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " does not contain a ':', skipping it.");
+                continue;
+            }
+
+            int amplifier = -1;
+            try {
+                amplifier = Integer.parseInt(parts[1]);
+            } catch (NumberFormatException ignored) {}
+
+            if (amplifier < 0) {
+                m_logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " has an invalid potion effect level '" + parts[1] + "', skipping it");
+                continue;
+            }
+
+            PotionEffectType type = PotionEffectType.getByName(parts[0]);
+
+            if (null == type) {
+                m_logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " has an invalid potion effect type '" + parts[0] + "', skipping it");
+                continue;
+            }
+
+            m_effects.add(new PotionEffect(type, duration, amplifier, true));
+        }
+
+        m_freezer = new FreezeRunnable(m_effects);
+        Bukkit.getPluginManager().registerEvents(m_freezer, getPlugin());
+    }
+
+    @EventHandler
+    public void onPlayerTeleportEvent(PlayerTeleportEvent pte) {
+        if( pte.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN ) {
+            if (m_freezer.isPlayerFrozen(pte.getPlayer())) {
+                m_freezer.addPlayer(pte.getPlayer());
+            }
+        }
     }
 
     /**
@@ -65,29 +115,29 @@ public class PlayerFreezeFeature extends UHCFeature {
         if (player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)) {
             return;
         }
-        if (m_entityMap.containsKey(player.getUniqueId())) {
+        if (m_freezer.isPlayerFrozen(player)) {
             return;
         }
-        m_entityMap.put(player.getUniqueId(), player.getLocation());
+        m_freezer.addPlayer(player);
     }
 
     public void removePlayer(Player player) {
-        removePlayer(player.getUniqueId());
+        m_freezer.removePlayer(player);
     }
 
     /**
      * @param playerID the player id
      */
     public void removePlayer(UUID playerID) {
-        m_entityMap.remove(playerID);
+        m_freezer.removePlayer(playerID);
     }
 
     public boolean isPlayerFrozen(Player player) {
-        return isPlayerFrozen(player.getUniqueId());
+        return m_freezer.isPlayerFrozen(player);
     }
 
     public boolean isPlayerFrozen(UUID uuid) {
-        return m_entityMap.containsKey(uuid);
+        return m_freezer.isPlayerFrozen(uuid);
     }
 
     /**
@@ -95,9 +145,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     public void unfreezeAll() {
         m_globalMode = false;
-        for (UUID playerID : m_entityMap.keySet().toArray(new UUID[m_entityMap.size()])) {
-            removePlayer(playerID);
-        }
+        m_freezer.clear();
     }
 
     /**
@@ -105,9 +153,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     public void freezeAll() {
         m_globalMode = true;
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            addPlayer(p);
-        }
+        m_freezer.addPlayers(Bukkit.getOnlinePlayers());
     }
 
     public boolean isGlobalMode() {
@@ -121,10 +167,10 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoinEvent(PlayerJoinEvent pje) {
-        if (m_globalMode || m_entityMap.keySet().contains(pje.getPlayer().getUniqueId())) {
+        if (m_globalMode || m_freezer.isPlayerFrozen(pje.getPlayer())) {
             addPlayer(pje.getPlayer());
         } else {
-            removePlayer(pje.getPlayer().getUniqueId());
+            removePlayer(pje.getPlayer());
         }
     }
 
@@ -133,7 +179,12 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     @Override
     protected void disableCallback() {
-        unfreezeAll();
+        Bukkit.getScheduler().cancelTask(m_freezer.getTaskId());
+    }
+
+    @Override
+    protected void enableCallback() {
+        m_freezer.runTaskTimer(getPlugin(), 0, getConfigManager().getConfig("main").getInt(getBaseConfig() + "period"));
     }
 
     @Override

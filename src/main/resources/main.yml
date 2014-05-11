@@ -20,6 +20,14 @@ features:
     whitelist: false
     worlds:
     - world_names_to_drop_tears_in
+  PlayerFreeze:
+    period: 40
+    potion:
+      duration: 160
+      effects:
+      - BLINDNESS:1
+      - DAMAGE_RESISTANCE:5
+      - SLOW_DIGGING:5
   PlayerList:
     colours: true
     delay: 10
