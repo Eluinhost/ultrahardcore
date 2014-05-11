@@ -28,141 +28,132 @@ import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginLogger;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
+import java.util.logging.Level;
 
 @Singleton
 public class PlayerFreezeFeature extends UHCFeature {
 
-    private final Map<UUID, Entity> m_entityMap = new HashMap<UUID, Entity>();
     private boolean m_globalMode = false;
+    private final List<PotionEffect> m_effects = new ArrayList<PotionEffect>();
 
-    private final Collection<UUID> m_allowNextEvent = new ArrayList<UUID>();
+    private FreezeRunnable m_freezer;
+    private final PluginLogger m_logger;
 
     /**
      * handles frozen players
-     * @param plugin the plugin
+     *
+     * @param plugin        the plugin
      * @param configManager the config manager
-     * @param translate the translator
+     * @param translate     the translator
      */
     @Inject
-    private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate) {
+    private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate, PluginLogger logger) {
         super(plugin, configManager, translate);
+        m_logger = logger;
+        init();
     }
 
-    public void allowNextEvent(UUID player) {
-        m_allowNextEvent.add(player);
+    private void init() {
+        List<String> potionEffectsList = getConfigManager().getConfig("main").getStringList(getBaseConfig() + "potion.effects");
+        int duration = getConfigManager().getConfig("main").getInt(getBaseConfig() + "potion.duration");
+        for (String potionEffectString : potionEffectsList) {
+            String[] parts = potionEffectString.split(":");
+            if (parts.length != 2) {
+                m_logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " does not contain a ':', skipping it.");
+                continue;
+            }
+
+            int amplifier = -1;
+            try {
+                amplifier = Integer.parseInt(parts[1]);
+            } catch (NumberFormatException ignored) {}
+
+            if (amplifier < 0) {
+                m_logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " has an invalid potion effect level '" + parts[1] + "', skipping it");
+                continue;
+            }
+
+            PotionEffectType type = PotionEffectType.getByName(parts[0]);
+
+            if (null == type) {
+                m_logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " has an invalid potion effect type '" + parts[0] + "', skipping it");
+                continue;
+            }
+
+            m_effects.add(new PotionEffect(type, duration, amplifier, true));
+        }
+
+        m_freezer = new FreezeRunnable(m_effects);
+        Bukkit.getPluginManager().registerEvents(m_freezer, getPlugin());
+    }
+
+    @EventHandler
+    public void onPlayerTeleportEvent(PlayerTeleportEvent pte) {
+        if( pte.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN ) {
+            if (m_freezer.isPlayerFrozen(pte.getPlayer())) {
+                m_freezer.addPlayer(pte.getPlayer());
+            }
+        }
     }
 
     /**
      * @param player the entity to freeze
      */
     @SuppressWarnings("TypeMayBeWeakened")
-    public void addPlayer(Player player){
-        if(player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)) {
+    public void addPlayer(Player player) {
+        if (player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION)) {
             return;
         }
-        if(m_entityMap.containsKey(player.getUniqueId())) {
+        if (m_freezer.isPlayerFrozen(player)) {
             return;
         }
-        LivingEntity pig = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
-        pig.setPassenger(player);
-        pig.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0, true));
-        pig.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 5, true));
-        pig.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 5, true));
-        m_entityMap.put(player.getUniqueId(), pig);
+        m_freezer.addPlayer(player);
     }
 
     public void removePlayer(Player player) {
-        removePlayer(player.getUniqueId());
+        m_freezer.removePlayer(player);
     }
 
     /**
      * @param playerID the player id
      */
-    public void removePlayer(UUID playerID){
-        removePig(playerID);
-        m_entityMap.remove(playerID);
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onEntityDamageEvent(EntityDamageEvent ede) {
-        if(m_entityMap.containsKey(ede.getEntity().getUniqueId())) {
-            ede.setCancelled(true);
-        }
+    public void removePlayer(UUID playerID) {
+        m_freezer.removePlayer(playerID);
     }
 
     public boolean isPlayerFrozen(Player player) {
-        return isPlayerFrozen(player.getUniqueId());
+        return m_freezer.isPlayerFrozen(player);
     }
 
     public boolean isPlayerFrozen(UUID uuid) {
-        return m_entityMap.containsKey(uuid);
-    }
-
-    /**
-     * remove the pig for the name
-     * @param playerID the player ID
-     */
-    private void removePig(UUID playerID){
-        if(m_entityMap.containsKey(playerID)){
-            Entity pig = m_entityMap.get(playerID);
-            pig.eject();
-            pig.remove();
-            m_entityMap.put(playerID, null);
-        }
-    }
-
-    /**
-     * Called when a living entity tries to exit a vehicle
-     * @param vee the vechile exit event
-     */
-    @EventHandler
-    public void onVehicleDismountEvent(VehicleExitEvent vee) {
-        LivingEntity entity = vee.getExited();
-        if(m_allowNextEvent.contains(entity.getUniqueId())) {
-            m_allowNextEvent.remove(entity.getUniqueId());
-            vee.setCancelled(false);
-            return;
-        }
-        if(entity instanceof Player){
-            if(m_entityMap.containsKey(entity.getUniqueId())){
-                vee.setCancelled(true);
-            }
-        }
+        return m_freezer.isPlayerFrozen(uuid);
     }
 
     /**
      * Remove all from the frozen list and sets global off
      */
-    public void unfreezeAll(){
+    public void unfreezeAll() {
         m_globalMode = false;
-        for(UUID playerID : m_entityMap.keySet().toArray(new UUID[m_entityMap.size()])){
-            removePlayer(playerID);
-        }
+        m_freezer.clear();
     }
 
     /**
      * Adds all to the list and sets global on
      */
-    public void freezeAll(){
+    public void freezeAll() {
         m_globalMode = true;
-        for(Player p : Bukkit.getOnlinePlayers()){
-            addPlayer(p);
-        }
+        m_freezer.addPlayers(Bukkit.getOnlinePlayers());
     }
 
     public boolean isGlobalMode() {
@@ -171,25 +162,15 @@ public class PlayerFreezeFeature extends UHCFeature {
 
     /**
      * Whenever a player joins
+     *
      * @param pje the player join event
      */
-    @EventHandler( priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoinEvent(PlayerJoinEvent pje){
-        if(m_globalMode || m_entityMap.keySet().contains(pje.getPlayer().getUniqueId())){
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerJoinEvent(PlayerJoinEvent pje) {
+        if (m_globalMode || m_freezer.isPlayerFrozen(pje.getPlayer())) {
             addPlayer(pje.getPlayer());
-        }else{
-            removePlayer(pje.getPlayer().getUniqueId());
-        }
-    }
-
-    /**
-     * When a player logs out remove the pig
-     * @param pqe the quit event
-     */
-    @EventHandler
-    public void onPlayerLogout(PlayerQuitEvent pqe){
-        if(m_entityMap.containsKey(pqe.getPlayer().getUniqueId())){
-            removePig(pqe.getPlayer().getUniqueId());
+        } else {
+            removePlayer(pje.getPlayer());
         }
     }
 
@@ -197,8 +178,13 @@ public class PlayerFreezeFeature extends UHCFeature {
      * Called when the feature is being disabled
      */
     @Override
-    protected void disableCallback(){
-        unfreezeAll();
+    protected void disableCallback() {
+        Bukkit.getScheduler().cancelTask(m_freezer.getTaskId());
+    }
+
+    @Override
+    protected void enableCallback() {
+        m_freezer.runTaskTimer(getPlugin(), 0, getConfigManager().getConfig("main").getInt(getBaseConfig() + "period"));
     }
 
     @Override

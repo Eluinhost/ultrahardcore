@@ -57,8 +57,6 @@ public class RealScatterManager implements ScatterManager {
     private final Plugin m_plugin;
     private final Configurator m_configManager;
 
-    private final PlayerFreezeFeature m_freeze;
-
     /**
      * @param plugin the plugin
      * @param configManager the config manager
@@ -69,8 +67,6 @@ public class RealScatterManager implements ScatterManager {
         m_protector = protector;
         m_plugin = plugin;
         m_configManager = configManager;
-
-        m_freeze = freeze;
 
         //register ourselves for events
         Bukkit.getServer().getPluginManager().registerEvents(m_protector, plugin);
@@ -127,7 +123,6 @@ public class RealScatterManager implements ScatterManager {
     @Override
     public void teleportSafe(Player player, Location loc, boolean protect) {
         loc.getChunk().load(true);
-        m_freeze.allowNextEvent(player.getUniqueId());
         if(player.isInsideVehicle()){
             Entity riding = player.getVehicle();
             riding.eject();
