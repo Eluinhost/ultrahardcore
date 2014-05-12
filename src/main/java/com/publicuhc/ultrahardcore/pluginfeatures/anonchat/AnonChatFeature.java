@@ -47,6 +47,7 @@ public class AnonChatFeature extends UHCFeature {
      */
     private static final String PREFIX = ChatColor.RESET + "<" + ChatColor.MAGIC + "SECRET" + ChatColor.RESET + ">";
 
+    private final String m_trigger;
 
     /**
      * @param plugin the plugin
@@ -56,6 +57,8 @@ public class AnonChatFeature extends UHCFeature {
     @Inject
     private AnonChatFeature(Plugin plugin, Configurator configManager, Translate translate) {
         super(plugin, configManager, translate);
+
+        m_trigger = configManager.getConfig("main").getString(getBaseConfig() + "trigger");
     }
 
     /**
@@ -67,10 +70,12 @@ public class AnonChatFeature extends UHCFeature {
         //only if we are enabled
         if (isEnabled()) {
             //if the message started with a P
-            if(apce.getMessage().startsWith("P ")){
+            if(apce.getMessage().startsWith(m_trigger)){
                 apce.setCancelled(true);
                 //schedule the new message to be send on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new ChatRunnable(apce.getPlayer().getUniqueId(), apce.getMessage().substring(2), "anon_chat.no_perms", getTranslate()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(
+                        getPlugin(),
+                        new ChatRunnable(apce.getPlayer().getUniqueId(), apce.getMessage().substring(m_trigger.length()), "anon_chat.no_perms", getTranslate()));
             }
         }
     }

@@ -16,6 +16,8 @@ enabledFeatures:
 - "PlayerFreeze"
 - "DisableUberApples"
 features:
+  AnonChat:
+    trigger: "P "
   GhastDrops:
     whitelist: false
     worlds:
