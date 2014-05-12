@@ -93,9 +93,9 @@ public class ScatterCommand extends SimpleCommand {
      */
     @RouteInfo
     public void interactiveScatterCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("iscatter")
-                .restrictSenderType(SenderType.CONSOLE, SenderType.PLAYER, SenderType.REMOTE_CONSOLE)
-                .restrictPermission(SCATTER_COMMAND);
+        builder.restrictSenderType(SenderType.CONSOLE, SenderType.PLAYER, SenderType.REMOTE_CONSOLE)
+                .restrictPermission(SCATTER_COMMAND)
+                .restrictCommand("iscatter");
     }
 
     /**
@@ -201,9 +201,9 @@ public class ScatterCommand extends SimpleCommand {
      */
     @RouteInfo
     public void scatterCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("scatter")
-                .restrictArgumentCount(7, -1)
-                .restrictPermission(SCATTER_COMMAND);
+        builder.restrictArgumentCount(7, -1)
+                .restrictPermission(SCATTER_COMMAND)
+                .restrictCommand("scatter");
     }
 
     /**
@@ -224,10 +224,10 @@ public class ScatterCommand extends SimpleCommand {
      */
     @RouteInfo
     public void scatterTypesCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("scatter")
-                .restrictPermission(SCATTER_COMMAND)
+        builder.restrictPermission(SCATTER_COMMAND)
+                .restrictSenderType(SenderType.PLAYER, SenderType.CONSOLE, SenderType.REMOTE_CONSOLE)
                 .restrictStartsWith("types")
-                .restrictSenderType(SenderType.PLAYER, SenderType.CONSOLE, SenderType.REMOTE_CONSOLE);
+                .restrictCommand("scatter");
     }
 
 }

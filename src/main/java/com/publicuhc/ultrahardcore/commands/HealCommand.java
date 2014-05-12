@@ -68,8 +68,8 @@ public class HealCommand extends SimpleCommand {
     @RouteInfo
     public void healSelfCommandDetails(RouteBuilder builder) {
         builder.restrictSenderType(SenderType.PLAYER)
-                .restrictCommand("healself")
-                .restrictPermission(HEAL_SELF_PERMISSION);
+                .restrictPermission(HEAL_SELF_PERMISSION)
+                .restrictCommand("healself");
     }
 
     /**
@@ -122,8 +122,8 @@ public class HealCommand extends SimpleCommand {
      */
     @RouteInfo
     public void healAllCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("heal")
-                .restrictPermission(HEAL_OTHER_PERMISSION)
-                .restrictStartsWith("*");
+        builder.restrictPermission(HEAL_OTHER_PERMISSION)
+                .restrictStartsWith("*")
+                .restrictCommand("heal");
     }
 }

@@ -107,9 +107,9 @@ public class FeatureCommand extends SimpleCommand {
      */
     @RouteInfo
     public void featureListCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature")
-                .restrictPermission(FEATURE_LIST_PERMISSION)
-                .restrictStartsWith("list");
+        builder.restrictPermission(FEATURE_LIST_PERMISSION)
+                .restrictStartsWith("list")
+                .restrictCommand("feature");
     }
 
     /**
@@ -140,10 +140,10 @@ public class FeatureCommand extends SimpleCommand {
      */
     @RouteInfo
     public void featureOnCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature")
-                .restrictPermission(FEATURE_TOGGLE_PERMISSION)
+        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION)
+                .restrictArgumentCount(2, 2)
                 .restrictStartsWith("on")
-                .restrictArgumentCount(2, 2);
+                .restrictCommand("feature");
     }
 
     /**
@@ -174,10 +174,10 @@ public class FeatureCommand extends SimpleCommand {
      */
     @RouteInfo
     public void featureOffCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature")
-                .restrictPermission(FEATURE_TOGGLE_PERMISSION)
+        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION)
+                .restrictArgumentCount(2, 2)
                 .restrictStartsWith("off")
-                .restrictArgumentCount(2, 2);
+                .restrictCommand("feature");
     }
 
     @CommandMethod
@@ -198,9 +198,9 @@ public class FeatureCommand extends SimpleCommand {
 
     @RouteInfo
     public void featureToggleCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature")
-                .restrictPermission(FEATURE_TOGGLE_PERMISSION)
+        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION)
+                .restrictArgumentCount(2, 2)
                 .restrictStartsWith("toggle")
-                .restrictArgumentCount(2, 2);
+                .restrictCommand("feature");
     }
 }

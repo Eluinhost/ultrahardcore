@@ -116,8 +116,8 @@ public class TPCommand extends SimpleCommand {
 
     @RouteInfo
     public void teleportCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("tpp")
+        builder.restrictPermission(TP_ALL_PERMISSION)
                 .restrictArgumentCount(2, -1)
-                .restrictPermission(TP_ALL_PERMISSION);
+                .restrictCommand("tpp");
     }
 }

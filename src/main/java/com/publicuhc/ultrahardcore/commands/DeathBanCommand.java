@@ -73,8 +73,8 @@ public class DeathBanCommand extends SimpleCommand {
      */
     @RouteInfo
     public void deathBanCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("deathban")
-                .restrictPermission(DEATH_BAN_BAN)
+        builder.restrictPermission(DEATH_BAN_BAN)
+                .restrictCommand("deathban")
                 .maxMatches(1);
     }
 
@@ -108,9 +108,9 @@ public class DeathBanCommand extends SimpleCommand {
     @RouteInfo
     public void deathbanUnbanCommandDetails(RouteBuilder builder) {
         builder.restrictPermission(DEATH_BAN_UNBAN)
-                .restrictCommand("deathban")
                 .restrictStartsWith("unban")
-                .restrictArgumentCount(2, 2);
+                .restrictArgumentCount(2, 2)
+                .restrictCommand("deathban");
     }
 
     /**
@@ -143,9 +143,9 @@ public class DeathBanCommand extends SimpleCommand {
      */
     @RouteInfo
     public void deathbanBanCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("deathban")
-                .restrictPermission(DEATH_BAN_BAN)
+        builder.restrictPermission(DEATH_BAN_BAN)
+                .restrictArgumentCount(3, 3)
                 .restrictStartsWith("ban")
-                .restrictArgumentCount(3, 3);
+                .restrictCommand("deathban");
     }
 }

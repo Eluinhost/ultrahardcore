@@ -81,9 +81,9 @@ public class FeedCommand extends SimpleCommand {
      */
     @RouteInfo
     public void feedCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feedself")
-                .restrictSenderType(SenderType.PLAYER)
-                .restrictPermission(FEED_SELF_PERMISSION);
+        builder.restrictSenderType(SenderType.PLAYER)
+                .restrictPermission(FEED_SELF_PERMISSION)
+                .restrictCommand("feedself");
     }
 
     /**
@@ -113,9 +113,9 @@ public class FeedCommand extends SimpleCommand {
      */
     @RouteInfo
     public void feedOtherCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feed")
-                .restrictPermission(FEED_OTHER_PERMISSION)
+        builder.restrictPermission(FEED_OTHER_PERMISSION)
                 .restrictArgumentCount(1, -1)
+                .restrictCommand("feed")
                 .maxMatches(1);
     }
 
@@ -139,8 +139,8 @@ public class FeedCommand extends SimpleCommand {
      */
     @RouteInfo
     public void feedAllCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feed")
-                .restrictPermission(FEED_OTHER_PERMISSION)
-                .restrictStartsWith("*");
+        builder.restrictPermission(FEED_OTHER_PERMISSION)
+                .restrictStartsWith("*")
+                .restrictCommand("feed");
     }
 }

@@ -155,9 +155,9 @@ public class BorderCommand extends SimpleCommand {
      */
     @RouteInfo
     public void borderCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("genborder")
-                .restrictPermission(GENERATE_BORDER)
-                .restrictArgumentCount(3, -1);
+        builder.restrictPermission(GENERATE_BORDER)
+                .restrictArgumentCount(3, -1)
+                .restrictCommand("genborder");
     }
 
     /**
@@ -192,8 +192,8 @@ public class BorderCommand extends SimpleCommand {
     @RouteInfo
     public void borderUndoCommandDetails(RouteBuilder builder) {
         builder.restrictPermission(GENERATE_BORDER)
-                .restrictCommand("genborder")
-                .restrictStartsWith("undo");
+                .restrictStartsWith("undo")
+                .restrictCommand("genborder");
     }
 
     /**
@@ -222,8 +222,8 @@ public class BorderCommand extends SimpleCommand {
      */
     @RouteInfo
     public void borderTypesCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("genborder")
+        builder.restrictPermission(GENERATE_BORDER)
                 .restrictStartsWith("types")
-                .restrictPermission(GENERATE_BORDER);
+                .restrictCommand("genborder");
     }
 }

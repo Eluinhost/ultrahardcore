@@ -73,8 +73,8 @@ public class WhitelistCommands extends SimpleCommand {
 
     @RouteInfo
     public void whitelistClearCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("whitelistall")
-                .restrictPermission(WHITELIST_ALL_PERMISSION)
-                .restrictStartsWith("clear");
+        builder.restrictPermission(WHITELIST_ALL_PERMISSION)
+                .restrictStartsWith("clear")
+                .restrictCommand("whitelistall");
     }
 }

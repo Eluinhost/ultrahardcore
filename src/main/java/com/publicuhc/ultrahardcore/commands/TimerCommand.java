@@ -31,7 +31,6 @@ import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerFeature;
-import com.publicuhc.ultrahardcore.pluginfeatures.timer.TimerRunnable;
 import com.publicuhc.ultrahardcore.util.WordsUtil;
 
 import java.util.List;
@@ -89,9 +88,9 @@ public class TimerCommand extends SimpleCommand {
 
     @RouteInfo
     public void timerCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("timer")
+        builder.restrictPermission(TIMER_COMMAND)
                 .restrictArgumentCount(2, -1)
-                .restrictPermission(TIMER_COMMAND);
+                .restrictCommand("timer");
     }
     /**
      * Ran on /canceltimer
@@ -111,6 +110,7 @@ public class TimerCommand extends SimpleCommand {
 
     @RouteInfo
     public void timerCancelCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("canceltimer").restrictPermission(TIMER_COMMAND);
+        builder.restrictPermission(TIMER_COMMAND)
+                .restrictCommand("canceltimer");
     }
 }

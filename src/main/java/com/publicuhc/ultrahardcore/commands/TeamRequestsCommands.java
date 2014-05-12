@@ -105,10 +105,10 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam")
-                .restrictPermission(REQUEST_TEAM_PERMISSION)
-                .restrictArgumentCount(1, -1)
+        builder.restrictPermission(REQUEST_TEAM_PERMISSION)
                 .restrictSenderType(SenderType.PLAYER)
+                .restrictArgumentCount(1, -1)
+                .restrictCommand("reqteam")
                 .maxMatches(1);
     }
 
@@ -201,10 +201,10 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamReplyAcceptDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam")
-                .restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
+        builder.restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
+                .restrictArgumentCount(2, 2)
                 .restrictStartsWith("accept")
-                .restrictArgumentCount(2, 2);
+                .restrictCommand("reqteam");
     }
 
     @CommandMethod
@@ -231,10 +231,10 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamReplyDenyDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam")
-                .restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
+        builder.restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
                 .restrictStartsWith("deny")
-                .restrictArgumentCount(2, 2);
+                .restrictArgumentCount(2, 2)
+                .restrictCommand("reqteam");
     }
 
     @CommandMethod
@@ -259,8 +259,8 @@ public class TeamRequestsCommands extends SimpleCommand {
 
     @RouteInfo
     public void requestTeamListDetails(RouteBuilder builder) {
-        builder.restrictCommand("reqteam")
-                .restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
-                .restrictStartsWith("list");
+        builder.restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
+                .restrictStartsWith("list")
+                .restrictCommand("reqteam");
     }
 }

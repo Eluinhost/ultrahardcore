@@ -84,9 +84,9 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void freezeCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("freeze")
+        builder.restrictPermission(FREEZE_PERMISSION)
                 .restrictArgumentCount(1, 1)
-                .restrictPermission(FREEZE_PERMISSION)
+                .restrictCommand("freeze")
                 .maxMatches(1);
     }
 
@@ -113,8 +113,8 @@ public class FreezeCommand extends SimpleCommand {
     @RouteInfo
     public void freezeAllCommandDetails(RouteBuilder builder) {
         builder.restrictPermission(FREEZE_PERMISSION)
-                .restrictCommand("freeze")
-                .restrictStartsWith("*");
+                .restrictStartsWith("*")
+                .restrictCommand("freeze");
     }
 
     /**
@@ -144,10 +144,10 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void unfreezeCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("unfreeze")
+        builder.maxMatches(1)
+                .restrictPermission(FREEZE_PERMISSION)
                 .restrictArgumentCount(1, 1)
-                .maxMatches(1).
-                restrictPermission(FREEZE_PERMISSION);
+                .restrictCommand("unfreeze");
     }
 
     /**
@@ -207,10 +207,10 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void toggleFreezeCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("freeze")
-                .restrictPermission(FREEZE_PERMISSION)
+        builder.restrictPermission(FREEZE_PERMISSION)
                 .restrictArgumentCount(2, 2)
                 .restrictStartsWith("toggle")
+                .restrictCommand("freeze")
                 .maxMatches(2);
     }
 
@@ -238,8 +238,8 @@ public class FreezeCommand extends SimpleCommand {
 
     @RouteInfo
     public void toggleFreezeAllCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("freeze")
+        builder.restrictPermission(FREEZE_PERMISSION)
                 .restrictStartsWith("toggle *")
-                .restrictPermission(FREEZE_PERMISSION);
+                .restrictCommand("freeze");
     }
 }

@@ -72,9 +72,9 @@ public class ClearInventoryCommand extends SimpleCommand {
      */
     @RouteInfo
     public void clearInventorySelfDetails(RouteBuilder builder) {
-        builder.restrictCommand("ciself")
-                .restrictPermission(CLEAR_SELF_PERMISSION)
-                .restrictSenderType(SenderType.PLAYER);
+        builder.restrictPermission(CLEAR_SELF_PERMISSION)
+                .restrictSenderType(SenderType.PLAYER)
+                .restrictCommand("ciself");
     }
 
     /**
@@ -140,9 +140,9 @@ public class ClearInventoryCommand extends SimpleCommand {
      */
     @RouteInfo
     public void clearInventoryAllDetails(RouteBuilder builder) {
-        builder.restrictCommand("ci")
-                .restrictPermission(CLEAR_OTHER_PERMISSION)
-                .restrictStartsWith("*");
+        builder.restrictPermission(CLEAR_OTHER_PERMISSION)
+                .restrictStartsWith("*")
+                .restrictCommand("ci");
     }
 
 
