@@ -147,12 +147,6 @@
             <version>1.5.4</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics</artifactId>
-            <version>R8-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -186,7 +180,6 @@
                             <include>org.sonatype.sisu:sisu-guice</include>
                             <include>javax.inject:javax.inject</include>
                             <include>aopalliance:aopalliance</include>
-                            <include>org.mcstats.bukkit:metrics</include>
                             <include>com.publicuhc:pluginframework</include>
                         </includes>
                     </artifactSet>
@@ -202,10 +195,6 @@
                         <relocation>
                             <pattern>org.aopalliance</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.aopalliance</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.mcstats</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.metrics</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.publicuhc.pluginframework</pattern>
