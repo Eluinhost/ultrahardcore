@@ -232,8 +232,8 @@ public class TeamRequestsCommands extends SimpleCommand {
     @RouteInfo
     public void requestTeamReplyDenyDetails(RouteBuilder builder) {
         builder.restrictPermission(REQUEST_TEAM_REPLY_PERMISSION)
-                .restrictStartsWith("deny")
                 .restrictArgumentCount(2, 2)
+                .restrictStartsWith("deny")
                 .restrictCommand("reqteam");
     }
 

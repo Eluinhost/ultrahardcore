@@ -108,8 +108,8 @@ public class DeathBanCommand extends SimpleCommand {
     @RouteInfo
     public void deathbanUnbanCommandDetails(RouteBuilder builder) {
         builder.restrictPermission(DEATH_BAN_UNBAN)
-                .restrictStartsWith("unban")
                 .restrictArgumentCount(2, 2)
+                .restrictStartsWith("unban")
                 .restrictCommand("deathban");
     }
 
