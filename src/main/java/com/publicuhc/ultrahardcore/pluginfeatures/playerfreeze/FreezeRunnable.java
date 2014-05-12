@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -39,6 +38,15 @@ public class FreezeRunnable extends BukkitRunnable implements Listener {
 
     public void removePlayer(Player player) {
         removePlayer(player.getUniqueId());
+        removePotionEffects(player);
+    }
+
+    private void removePotionEffects(Player player) {
+        for(PotionEffect effect : m_effects) {
+            if (player.hasPotionEffect(effect.getType())) {
+                player.removePotionEffect(effect.getType());
+            }
+        }
     }
 
     public void removePlayer(UUID player) {
@@ -54,6 +62,12 @@ public class FreezeRunnable extends BukkitRunnable implements Listener {
     }
 
     public void clear() {
+        for(UUID uuid : m_playerMap.keySet()) {
+            Player player = Bukkit.getPlayer(uuid);
+            if( null != player ) {
+                removePotionEffects(player);
+            }
+        }
         m_playerMap.clear();
     }
 
