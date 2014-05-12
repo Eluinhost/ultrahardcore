@@ -50,8 +50,7 @@ import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -72,7 +71,7 @@ public class TeamRequestsCommandsTest {
     private Player fuzzboxx;
     private Player sonmica;
 
-    private UUID sonmicaUUID = UUID.fromString("0123456789ab-0123-0123-0123-01234567");
+    private final UUID sonmicaUUID = UUID.fromString("0123456789ab-0123-0123-0123-01234567");
 
     @Before
     public void onStartup() {
@@ -168,8 +167,8 @@ public class TeamRequestsCommandsTest {
         verify(fuzzboxx, never()).sendMessage(anyString());
         verify(sonmica, never()).sendMessage(anyString());
 
-        assertThat(requests.getRequests().get("testplayer"), is(not(nullValue())));
-        assertThat(requests.getRequests().get("testplayer"), is(equalTo(Arrays.asList("ghowden", "eluinhost", "fuzzboxx"))));
+        assertThat(requests.getRequests().get("testplayer")).isNotNull();
+        assertThat(requests.getRequests().get("testplayer")).contains("ghowden", "eluinhost", "fuzzboxx");
     }
 
     @Test
@@ -206,7 +205,7 @@ public class TeamRequestsCommandsTest {
 
         requests.requestTeamReplyDeny(builder.build());
 
-        assertThat(requests.getRequests().size(), is(0));
+        assertThat(requests.getRequests().size()).isEqualTo(0);
 
         verify(p, times(1)).sendMessage(translate.translate("teams.request.denied", "en"));
         verify(ghowden, times(1)).sendMessage(translate.translate("teams.request.requester_denied", "en"));
@@ -274,9 +273,9 @@ public class TeamRequestsCommandsTest {
 
         requests.requestTeamReplyAccept(builder.build());
 
-        assertThat(requests.getRequests().size(), is(1));
+        assertThat(requests.getRequests().size()).isEqualTo(1);
         verify(p, times(1)).sendMessage(translate.translate("teams.request.not_found", "en"));
-        assertThat(requests.getRequests().size(), is(1));
+        assertThat(requests.getRequests().size()).isEqualTo(1);
 
         args = new ArrayList<String>();
         args.add("accept");
@@ -286,7 +285,7 @@ public class TeamRequestsCommandsTest {
 
         requests.requestTeamReplyAccept(builder.build());
 
-        assertThat(requests.getRequests().size(), is(0));
+        assertThat(requests.getRequests().size()).isEqualTo(0);
 
         Map<String, String> context = new HashMap<String, String>();
         context.put("display", "TEAMNAME");
