@@ -121,6 +121,10 @@ commands:
       description: Display all players not in a team
       usage: /<command>
       aliases: [uhcnoteam]
+    pmteam:
+      description: PM your team
+      usage: /<command> message
+      aliases: [uhcpmteam]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
@@ -312,4 +316,7 @@ permissions:
         default: op
     UHC.autorespawn:
         description: Allows player to auto respawn on death
+        default: true
+    UHC.teams.pm:
+        description: Pm your team
         default: true

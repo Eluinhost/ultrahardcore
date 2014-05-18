@@ -77,6 +77,7 @@ teams:
   joined_notification: "&6You joined the team %display% (%name%)"
   disbanded: "&4Your team was disbanded"
   removed: "&6Team removed!"
+  pm_message: "&a[PM - %sender%]&f %message%"
   not_in_team: "&4You are not in a team!"
   player_not_in_team: "&4Player %name% is not on a team!"
   cleared: "&6All teams cleared"

@@ -60,6 +60,7 @@ public class TeamCommands extends SimpleCommand {
     public static final String RANDOM_TEAMS_PERMISSION = "UHC.teams.random";
     public static final String TEAMUP_PERMISSION = "UHC.teams.teamup";
     public static final String NOTEAM_PERMISSION = "UHC.teams.noteam";
+    public static final String TEAM_PM_PERMISSION = "UHC.teams.pm";
 
     private final WordsUtil m_words;
 
@@ -475,5 +476,40 @@ public class TeamCommands extends SimpleCommand {
     public void noteamCommandDetails(RouteBuilder builder) {
         builder.restrictPermission(NOTEAM_PERMISSION)
                 .restrictCommand("noteam");
+    }
+
+    @CommandMethod
+    public void teamMessageCommand(CommandRequest request) {
+        Player player = (Player) request.getSender();
+        Team team = m_teamsUtil.getPlayersTeam(player);
+
+        if(null == team) {
+            request.sendMessage(translate("teams.not_in_team", request.getLocale()));
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for(String part : request.getArgs()) {
+            builder.append(part).append(" ");
+        }
+        String message = builder.toString();
+
+        Map<String, String> context = new HashMap<String, String>();
+        context.put("message", message);
+        context.put("sender", player.getName());
+
+        for(OfflinePlayer member : team.getPlayers()) {
+            if(member.isOnline()) {
+                Player onlinePlayer = (Player) member;
+                onlinePlayer.sendMessage(translate("teams.pm_message", request.getLocale(), context));
+            }
+        }
+    }
+
+    @RouteInfo
+    public void teamMessageCommandDetails(RouteBuilder builder) {
+        builder.restrictPermission(TEAM_PM_PERMISSION)
+                .restrictSenderType(SenderType.PLAYER)
+                .restrictCommand("pmteam");
     }
 }
