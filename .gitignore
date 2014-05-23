@@ -2,7 +2,6 @@
 #################
 /target
 dependency-reduced-pom.xml
-atlassian-ide-plugin.xml
 
 # IDE files #
 #############
