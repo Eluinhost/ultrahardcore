@@ -33,7 +33,7 @@ public abstract class Teleporter {
     private Location m_location;
     private String m_team;
 
-    private static final Vector Y_OFFSET = new Vector(0,2,0);
+    private static final Vector Y_OFFSET = new Vector(0,1,0);
 
     /**
      * @param player the player to teleport
