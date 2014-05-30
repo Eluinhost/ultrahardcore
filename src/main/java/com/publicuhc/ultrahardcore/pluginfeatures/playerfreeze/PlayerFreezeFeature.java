@@ -98,15 +98,6 @@ public class PlayerFreezeFeature extends UHCFeature {
         Bukkit.getPluginManager().registerEvents(m_freezer, getPlugin());
     }
 
-    @EventHandler
-    public void onPlayerTeleportEvent(PlayerTeleportEvent pte) {
-        if( pte.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN ) {
-            if (m_freezer.isPlayerFrozen(pte.getPlayer())) {
-                m_freezer.addPlayer(pte.getPlayer());
-            }
-        }
-    }
-
     /**
      * @param player the entity to freeze
      */
@@ -179,7 +170,7 @@ public class PlayerFreezeFeature extends UHCFeature {
      */
     @Override
     protected void disableCallback() {
-        Bukkit.getScheduler().cancelTask(m_freezer.getTaskId());
+        m_freezer.cancel();
     }
 
     @Override
