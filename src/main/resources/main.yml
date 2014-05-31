@@ -62,7 +62,7 @@ features:
         amount: 20-30
         chance: 0
   GoldenHeads:
-    amountExtra: 4
+    amountExtra: 3
   Footprints:
     maxdistance: 60
     mindistance: 2

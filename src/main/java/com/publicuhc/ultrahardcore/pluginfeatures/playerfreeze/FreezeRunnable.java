@@ -4,36 +4,29 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class FreezeRunnable extends BukkitRunnable implements Listener {
 
     private final List<PotionEffect> m_effects;
-    private boolean enabled;
-    private final Map<UUID, Location> m_playerMap = new HashMap<UUID, Location>();
+    private final Set<UUID> m_playerSet = new HashSet<UUID>();
 
     public FreezeRunnable(List<PotionEffect> effects) {
         m_effects = effects;
     }
 
-    public void setEnabled(boolean enabled) {
-
-    }
-
     public void addPlayer(Player player) {
-        addPlayer(player.getUniqueId(), player.getLocation());
+        addPlayer(player.getUniqueId());
     }
 
-    public void addPlayer(UUID player, Location location) {
-        m_playerMap.put(player, location);
+    public void addPlayer(UUID player) {
+        m_playerSet.add(player);
     }
 
     public void removePlayer(Player player) {
@@ -50,7 +43,7 @@ public class FreezeRunnable extends BukkitRunnable implements Listener {
     }
 
     public void removePlayer(UUID player) {
-        m_playerMap.remove(player);
+        m_playerSet.remove(player);
     }
 
     public boolean isPlayerFrozen(Player player) {
@@ -58,17 +51,17 @@ public class FreezeRunnable extends BukkitRunnable implements Listener {
     }
 
     public boolean isPlayerFrozen(UUID uuid) {
-        return m_playerMap.containsKey(uuid);
+        return m_playerSet.contains(uuid);
     }
 
     public void clear() {
-        for(UUID uuid : m_playerMap.keySet()) {
+        for(UUID uuid : m_playerSet) {
             Player player = Bukkit.getPlayer(uuid);
             if( null != player ) {
                 removePotionEffects(player);
             }
         }
-        m_playerMap.clear();
+        m_playerSet.clear();
     }
 
     public void addPlayers(Player... players) {
@@ -77,7 +70,7 @@ public class FreezeRunnable extends BukkitRunnable implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveEvent(PlayerMoveEvent pme) {
         //check if we're running
         try {
@@ -88,18 +81,18 @@ public class FreezeRunnable extends BukkitRunnable implements Listener {
 
         Player player = pme.getPlayer();
         if (isPlayerFrozen(player)) {
-            Location newLocation = pme.getTo();
-            Location storedLocation = m_playerMap.get(player.getUniqueId());
-            storedLocation.setPitch(newLocation.getPitch());
-            storedLocation.setYaw(newLocation.getYaw());
-            pme.setTo(storedLocation);
+            Location newLocation = pme.getFrom();
+            newLocation.setYaw(pme.getTo().getYaw());
+            newLocation.setPitch(pme.getTo().getPitch());
+            newLocation.setY(pme.getTo().getY());
+            pme.setTo(newLocation);
         }
     }
 
     @Override
     public void run() {
-        for(Map.Entry<UUID, Location> entry : m_playerMap.entrySet()) {
-            Player player = Bukkit.getPlayer(entry.getKey());
+        for(UUID entry : m_playerSet) {
+            Player player = Bukkit.getPlayer(entry);
             if (null == player) {
                 continue;
             }

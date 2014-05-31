@@ -24,6 +24,7 @@ package com.publicuhc.ultrahardcore.scatter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -38,7 +39,7 @@ public class FallProtector implements Protector {
      * Called when a player moves
      * @param event the PlayerMoveEvent
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void playerMoveEvent(PlayerMoveEvent event) {
         if (m_protectedPlayers.containsKey(event.getPlayer())) {
             Player player = event.getPlayer();

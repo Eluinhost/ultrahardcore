@@ -26,7 +26,7 @@
 
     <groupId>com.publicuhc</groupId>
     <artifactId>uhc</artifactId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.0.0</version>
 
     <name>UltraHardcore</name>
     <url>http://www.publicuhc.com</url>

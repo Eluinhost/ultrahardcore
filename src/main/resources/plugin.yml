@@ -1,6 +1,6 @@
 name: UltraHardcore
 main: com.publicuhc.ultrahardcore.UltraHardcore
-version: 3.0.<buildnumber>
+version: 3.0.0
 description: Make minecraft harder, no health regen and extras!
 author: ghowden/Eluinhost
 website: eluinhost.co.uk
