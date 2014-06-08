@@ -26,25 +26,19 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Singleton
 public class PotionNerfsFeature extends UHCFeature {
@@ -122,23 +116,6 @@ public class PotionNerfsFeature extends UHCFeature {
     }
 
     /**
-     * Runs on a player eating
-     * @param pee PlayerItemConsumeEvent
-     */
-    @EventHandler
-    public void onPlayerEatEvent(PlayerItemConsumeEvent pee) {
-        //if we're enabled and absorbtion is disabled
-        if (isEnabled() && getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "disableAbsorb")) {
-            //if they ate a golden apple
-            ItemStack is = pee.getItem();
-            if (is.getType() == Material.GOLDEN_APPLE) {
-                //remove the absorption effect for the player on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(),new RemoveAbsoptionRunnable(pee.getPlayer().getUniqueId()));
-            }
-        }
-    }
-
-    /**
      * Triggered on an item moved in an inventory
      * @param imie InventoryMoveItemEvent
      */
@@ -176,31 +153,6 @@ public class PotionNerfsFeature extends UHCFeature {
         List<String> status = new ArrayList<String>();
         status.add(ChatColor.GRAY + "--- Splash potions: "+convertBooleanToOnOff(!getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"disableGlowstone")));
         status.add(ChatColor.GRAY + "--- Tier 2 potions: "+convertBooleanToOnOff(!getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"disableSplash")));
-        status.add(ChatColor.GRAY + "--- Absorbtion: "+convertBooleanToOnOff(!getConfigManager().getConfig("main").getBoolean(getBaseConfig()+"disableAbsorb")));
         return status;
-    }
-
-    /**
-     * When run removes absorption effect from the player name supplied
-     */
-    private static class RemoveAbsoptionRunnable implements Runnable{
-
-        private final UUID m_playerID;
-
-        /**
-         * Removes absorption from a player when ran
-         * @param playerID the player to run for
-         */
-        RemoveAbsoptionRunnable(UUID playerID){
-            m_playerID = playerID;
-        }
-
-        @Override
-        public void run() {
-            Player p = Bukkit.getPlayer(m_playerID);
-            if(p != null){
-                p.removePotionEffect(PotionEffectType.ABSORPTION);
-            }
-        }
     }
 }
