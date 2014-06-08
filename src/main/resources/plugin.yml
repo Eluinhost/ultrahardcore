@@ -285,9 +285,6 @@ permissions:
     UHC.teams.request.reply:
         description: Allows a player to receive/reply to requests
         default: op
-    UHC.footprints.leavePrints:
-        description: Player leaves footprints behind them
-        default: true
     UHC.potions.disableSplash:
         description: Stops a player from brewing splash potions
         default: true
