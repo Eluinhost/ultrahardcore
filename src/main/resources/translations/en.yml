@@ -117,4 +117,4 @@ whitelist:
 headheal:
   not_int: "&4Must provide an integer for the amount to heal"
   feature_not_found: "&4Golden head feature not found!"
-  updated: "&4Amount healed now updated"
+  updated: "&6Amount healed now updated"
