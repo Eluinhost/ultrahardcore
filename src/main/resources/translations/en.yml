@@ -114,3 +114,7 @@ anon_chat:
 whitelist:
   added: "&6All online players added to the whitelist"
   cleared: "&6Whitelist cleared"
+headheal:
+  not_int: "&4Must provide an integer for the amount to heal"
+  feature_not_found: "&4Golden head feature not found!"
+  updated: "&6Amount healed now updated"
