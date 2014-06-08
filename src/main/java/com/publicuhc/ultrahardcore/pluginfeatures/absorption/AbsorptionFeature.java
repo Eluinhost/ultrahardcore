@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 
 public class AbsorptionFeature extends UHCFeature {
 
@@ -27,6 +28,7 @@ public class AbsorptionFeature extends UHCFeature {
 
     /**
      * Runs on a player eating
+     *
      * @param pee PlayerItemConsumeEvent
      */
     @EventHandler
@@ -37,7 +39,7 @@ public class AbsorptionFeature extends UHCFeature {
             ItemStack is = pee.getItem();
             if (is.getType() == Material.GOLDEN_APPLE) {
                 //remove the absorption effect for the player on the next tick
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(),new RemoveAbsorptionRunnable(pee.getPlayer().getUniqueId()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new RemovePotionEffectRunnable(pee.getPlayer().getUniqueId(), PotionEffectType.ABSORPTION));
             }
         }
     }
