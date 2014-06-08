@@ -39,8 +39,6 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,7 +47,6 @@ import java.util.List;
 @Singleton
 public class GoldenHeadsFeature extends UHCFeature {
 
-    public static final int POTION_TICK_MULTIPLIER = 25;
     public static final String HEAD_NAME = ChatColor.GOLD+"Golden Head";
 
     private ShapedRecipe m_headRecipe;
@@ -77,8 +74,13 @@ public class GoldenHeadsFeature extends UHCFeature {
             //if it was a golden head
             ItemMeta im = is.getItemMeta();
             if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
-                //add tge new potion effect
-                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100 + getConfigManager().getConfig("main").getInt(getBaseConfig()+"amountExtra") * POTION_TICK_MULTIPLIER, 1));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(
+                        getPlugin(),
+                        new DelayedRegenerationRunnable(
+                                getConfigManager().getConfig("main").getInt(getBaseConfig()+"amountTotal"),
+                                pee.getPlayer().getUniqueId()
+                        )
+                );
             }
         }
     }
@@ -161,7 +163,7 @@ public class GoldenHeadsFeature extends UHCFeature {
     }
 
     public void setAmountExtra(int amountExtra) {
-        getConfigManager().getConfig("main").set(getBaseConfig() + "amountExtra", amountExtra);
+        getConfigManager().getConfig("main").set(getBaseConfig() + "amountTotal", amountExtra);
     }
 
     @Override
