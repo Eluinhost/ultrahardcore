@@ -160,6 +160,10 @@ public class GoldenHeadsFeature extends UHCFeature {
         }
     }
 
+    public void setAmountExtra(int amountExtra) {
+        getConfigManager().getConfig("main").set(getBaseConfig() + "amountExtra", amountExtra);
+    }
+
     @Override
     public String getFeatureID() {
         return "GoldenHeads";
