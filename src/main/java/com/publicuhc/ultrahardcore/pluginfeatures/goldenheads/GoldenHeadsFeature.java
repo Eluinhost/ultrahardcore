@@ -39,6 +39,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,6 +50,7 @@ import java.util.List;
 public class GoldenHeadsFeature extends UHCFeature {
 
     public static final String HEAD_NAME = ChatColor.GOLD+"Golden Head";
+    public static final int TICKS_PER_HALF_HEART = 25;
 
     private ShapedRecipe m_headRecipe;
 
@@ -74,13 +77,7 @@ public class GoldenHeadsFeature extends UHCFeature {
             //if it was a golden head
             ItemMeta im = is.getItemMeta();
             if (im.hasDisplayName() && im.getDisplayName().equals(HEAD_NAME)) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(
-                        getPlugin(),
-                        new DelayedRegenerationRunnable(
-                                getConfigManager().getConfig("main").getInt(getBaseConfig()+"amountTotal"),
-                                pee.getPlayer().getUniqueId()
-                        )
-                );
+                pee.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, TICKS_PER_HALF_HEART * getConfigManager().getConfig("main").getInt(getBaseConfig() + "amountTotal"), 1));
             }
         }
     }
@@ -162,8 +159,8 @@ public class GoldenHeadsFeature extends UHCFeature {
         }
     }
 
-    public void setAmountExtra(int amountExtra) {
-        getConfigManager().getConfig("main").set(getBaseConfig() + "amountTotal", amountExtra);
+    public void setAmountTotal(int amountTotal) {
+        getConfigManager().getConfig("main").set(getBaseConfig() + "amountTotal", amountTotal);
     }
 
     @Override
@@ -179,7 +176,7 @@ public class GoldenHeadsFeature extends UHCFeature {
     @Override
     public List<String> getStatus() {
         List<String> status = new ArrayList<String>();
-        status.add(ChatColor.GRAY + "--- Extra hearts healed: " + getConfigManager().getConfig("main").getInt(getBaseConfig()+"amountExtra"));
+        status.add(ChatColor.GRAY + "--- Total half hearts healed: " + getConfigManager().getConfig("main").getInt(getBaseConfig()+"amountTotal"));
         return status;
     }
 }

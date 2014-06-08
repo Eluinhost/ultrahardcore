@@ -41,7 +41,7 @@ public class GoldenHeadCommand extends SimpleCommand {
             return;
         }
         GoldenHeadsFeature gheadFeature = (GoldenHeadsFeature) feature;
-        gheadFeature.setAmountExtra(amount);
+        gheadFeature.setAmountTotal(amount);
 
         request.sendMessage(translate("headheal.updated", request.getLocale()));
     }
