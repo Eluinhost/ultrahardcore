@@ -69,7 +69,6 @@ features:
     time: 120
   PotionNerfs:
     disableSplash: true
-    disableAbsorb: true
     disableGlowstone: true
   PortalRanges:
     to_nether:
