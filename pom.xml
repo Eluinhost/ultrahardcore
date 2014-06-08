@@ -52,9 +52,9 @@
     </ciManagement>
 
     <scm>
-        <connection>scm:http://stash.publicuhc.com/scm/uhc/uhc.git</connection>
+        <connection>scm:https://github.com/Eluinhost/ultrahardcore.git</connection>
         <tag>HEAD</tag>
-        <url>http://stash.publicuhc.com/projects/UHC/repos/uhc/browse</url>
+        <url>https://github.com/Eluinhost/ultrahardcore</url>
     </scm>
 
     <properties>
