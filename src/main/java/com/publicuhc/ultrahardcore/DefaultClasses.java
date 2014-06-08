@@ -42,7 +42,6 @@ import com.publicuhc.ultrahardcore.pluginfeatures.deathdrops.DeathDropsFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathlightning.DeathLightningFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathmessages.DeathMessagesFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.enderpearls.EnderpearlsFeature;
-import com.publicuhc.ultrahardcore.pluginfeatures.footprints.FootprintFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.ghastdrops.GhastDropsFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.goldenheads.GoldenHeadsFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.hardcorehearts.HardcoreHeartsFeature;
@@ -200,8 +199,7 @@ public class DefaultClasses {
     }
 
     public void loadProtocolLibThings() {
-        Class<? extends IFeature>[] classes = new Class[]{
-                FootprintFeature.class,
+        Class<? extends IFeature>[] classes = new Class[] {
                 HardcoreHeartsFeature.class,
                 TimerFeature.class,
                 AutoRespawn.class

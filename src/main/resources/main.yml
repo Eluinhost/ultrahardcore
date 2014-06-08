@@ -10,7 +10,6 @@ enabledFeatures:
 - "PlayerHeads"
 - "GoldenHeads"
 - "HardcoreHearts"
-- "Footprints"
 - "PotionNerfs"
 - "WitchSpawns"
 - "PlayerFreeze"
@@ -63,10 +62,6 @@ features:
         chance: 0
   GoldenHeads:
     amountTotal: 6
-  Footprints:
-    maxdistance: 60
-    mindistance: 2
-    time: 120
   PotionNerfs:
     disableSplash: true
     disableGlowstone: true
