@@ -34,6 +34,7 @@ import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException;
+import com.publicuhc.ultrahardcore.pluginfeatures.absorption.AbsorptionFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.anonchat.AnonChatFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.autorespawn.AutoRespawn;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBansFeature;
@@ -128,7 +129,8 @@ public class DefaultClasses {
     public void loadDefaultFeatures() {
         m_logger.info("Loading UHC feature modules...");
         //Load the default features with settings in config
-        Class<? extends IFeature>[] classes = new Class[]{
+        Class<? extends IFeature>[] classes = new Class[] {
+            AbsorptionFeature.class,
             AnonChatFeature.class,
             DeathBansFeature.class,
             DeathDropsFeature.class,
