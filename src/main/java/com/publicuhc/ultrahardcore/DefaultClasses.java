@@ -103,6 +103,7 @@ public class DefaultClasses {
     public void loadDefaultCommands() {
         Class[] classes = {
                 HealCommand.class,
+                GoldenHeadCommand.class,
                 ClearInventoryCommand.class,
                 TPCommand.class,
                 FeatureCommand.class,
