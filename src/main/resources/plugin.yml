@@ -125,6 +125,10 @@ commands:
       description: PM your team
       usage: /<command> message
       aliases: [uhcpmteam]
+    headheal:
+      description: Change the amount a head heals
+      usage: /<command> amount
+      aliases: [uhcheadheal]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
@@ -320,3 +324,6 @@ permissions:
     UHC.teams.pm:
         description: Pm your team
         default: true
+    UHC.goldenhead.command:
+        description: Allows use of the /headheal command
+        default: op
