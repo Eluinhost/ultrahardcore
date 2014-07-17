@@ -138,6 +138,12 @@ public class PlayerHeadsFeature extends UHCFeature {
         Location head = p.getEyeLocation();
         //block the player's head is in
         Block headBlock = head.getBlock();
+
+        //don't do anything if below the world
+        if(headBlock.getY() < 0) {
+            return false;
+        }
+
         //get the closest non air block below the players feet
         Block ground = getClosestGround(headBlock.getRelative(BlockFace.DOWN, 2));
         if (ground == null) {
@@ -201,10 +207,11 @@ public class PlayerHeadsFeature extends UHCFeature {
         Block loopBlock = block;
         //recurse until found
         while (true) {
-            //if there is no block return null
-            if (loopBlock == null) {
+            //if below the world return null
+            if (loopBlock.getY() < 0) {
                 return null;
             }
+
             //if it's not empty return this block
             if (!loopBlock.isEmpty()) {
                 return block;
