@@ -9,3 +9,6 @@ deploy:
   on:
     tags: true
     repo: Eluinhost/ultrahardcore
+cache:
+  directories:
+    - $HOME/.m2
