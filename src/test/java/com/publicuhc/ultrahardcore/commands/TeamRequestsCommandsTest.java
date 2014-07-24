@@ -43,6 +43,7 @@ import org.bukkit.scoreboard.Team;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -74,7 +75,8 @@ public class TeamRequestsCommandsTest {
     private final UUID sonmicaUUID = UUID.fromString("0123456789ab-0123-0123-0123-01234567");
 
     @Before
-    public void onStartup() {
+    public void onStartup() throws Exception
+    {
         mockStatic(Bukkit.class);
         ScoreboardManager manager = mock(ScoreboardManager.class);
         when(Bukkit.getScoreboardManager()).thenReturn(manager);
@@ -116,11 +118,11 @@ public class TeamRequestsCommandsTest {
         when(Bukkit.getPlayer("fuzzboxx")).thenReturn(fuzzboxx);
         when(Bukkit.getPlayer("sonmica")).thenReturn(null);
 
-        Collection<Player> onlinePlayers = new ArrayList<Player>();
+        List<Player> onlinePlayers = new ArrayList<Player>();
         onlinePlayers.add(ghowden);
         onlinePlayers.add(eluinhost);
         onlinePlayers.add(fuzzboxx);
-        doReturn(onlinePlayers).when(Bukkit.getOnlinePlayers());
+        PowerMockito.<List<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         when(ghowden.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);
         when(eluinhost.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);

@@ -37,17 +37,21 @@ import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Bukkit.class)
@@ -62,7 +66,8 @@ public class WhitelistCommandsTest {
     private Player sonmica;
 
     @Before
-    public void onStartup() {
+    public void onStartup() throws Exception
+    {
         Injector injector = Guice.createInjector(
             new ConfigurationModule(getClass().getClassLoader()),
             new TranslateModule(),
@@ -83,11 +88,11 @@ public class WhitelistCommandsTest {
         fuzzboxx = mock(Player.class);
         sonmica = mock(Player.class);
 
-        Collection<Player> onlinePlayers = new ArrayList<Player>();
+        List<Player> onlinePlayers = new ArrayList<Player>();
         onlinePlayers.add(ghowden);
         onlinePlayers.add(eluinhost);
         onlinePlayers.add(fuzzboxx);
-        doReturn(onlinePlayers).when(Bukkit.getOnlinePlayers());
+        PowerMockito.<List<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         Set<OfflinePlayer> whitelist = new HashSet<OfflinePlayer>();
         whitelist.add(ghowden);
