@@ -10,6 +10,6 @@ The plugin adds many toggleable/configurable features to make your UHC game/serv
 
 [Documentation](http://wiki.publicuhc.com/display/UHC/UltraHardcore)
 
-[Bug Tracker](http://jira.publicuhc.com/browse/UHC/)
+[Bug Tracker](https://github.com/Eluinhost/ultrahardcore/issues)
 
 [Source Code](https://github.com/Eluinhost/ultrahardcore)
