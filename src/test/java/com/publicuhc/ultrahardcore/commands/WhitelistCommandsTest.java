@@ -42,10 +42,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.*;
@@ -92,7 +89,7 @@ public class WhitelistCommandsTest {
         onlinePlayers.add(ghowden);
         onlinePlayers.add(eluinhost);
         onlinePlayers.add(fuzzboxx);
-        PowerMockito.<List<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
+        PowerMockito.<Collection<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         Set<OfflinePlayer> whitelist = new HashSet<OfflinePlayer>();
         whitelist.add(ghowden);

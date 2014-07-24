@@ -102,7 +102,7 @@ public class TPCommandTest {
         onlinePlayers.add(ghowden);
         onlinePlayers.add(eluinhost);
         onlinePlayers.add(fuzzboxx);
-        PowerMockito.<List<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
+        PowerMockito.<Collection<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         world = mock(World.class);
         when(Bukkit.getWorld("validworld")).thenReturn(world);

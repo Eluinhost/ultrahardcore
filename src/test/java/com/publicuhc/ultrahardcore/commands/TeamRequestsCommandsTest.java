@@ -122,7 +122,7 @@ public class TeamRequestsCommandsTest {
         onlinePlayers.add(ghowden);
         onlinePlayers.add(eluinhost);
         onlinePlayers.add(fuzzboxx);
-        PowerMockito.<List<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
+        PowerMockito.<Collection<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         when(ghowden.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);
         when(eluinhost.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);
