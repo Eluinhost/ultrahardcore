@@ -37,14 +37,12 @@ import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.*;
@@ -65,7 +63,8 @@ public class WhitelistCommandsTest {
     private Player sonmica;
 
     @Before
-    public void onStartup() {
+    public void onStartup() throws Exception
+    {
         Injector injector = Guice.createInjector(
             new ConfigurationModule(getClass().getClassLoader()),
             new TranslateModule(),
@@ -86,7 +85,11 @@ public class WhitelistCommandsTest {
         fuzzboxx = mock(Player.class);
         sonmica = mock(Player.class);
 
-        when(Bukkit.getOnlinePlayers()).thenReturn(new Player[] { ghowden, eluinhost, fuzzboxx } );
+        List<Player> onlinePlayers = new ArrayList<Player>();
+        onlinePlayers.add(ghowden);
+        onlinePlayers.add(eluinhost);
+        onlinePlayers.add(fuzzboxx);
+        PowerMockito.<Collection<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         Set<OfflinePlayer> whitelist = new HashSet<OfflinePlayer>();
         whitelist.add(ghowden);

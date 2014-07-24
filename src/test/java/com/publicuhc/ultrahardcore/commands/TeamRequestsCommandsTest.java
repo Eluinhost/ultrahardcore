@@ -43,6 +43,7 @@ import org.bukkit.scoreboard.Team;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -52,10 +53,10 @@ import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Bukkit.class)
@@ -74,7 +75,8 @@ public class TeamRequestsCommandsTest {
     private final UUID sonmicaUUID = UUID.fromString("0123456789ab-0123-0123-0123-01234567");
 
     @Before
-    public void onStartup() {
+    public void onStartup() throws Exception
+    {
         mockStatic(Bukkit.class);
         ScoreboardManager manager = mock(ScoreboardManager.class);
         when(Bukkit.getScoreboardManager()).thenReturn(manager);
@@ -116,7 +118,11 @@ public class TeamRequestsCommandsTest {
         when(Bukkit.getPlayer("fuzzboxx")).thenReturn(fuzzboxx);
         when(Bukkit.getPlayer("sonmica")).thenReturn(null);
 
-        when(Bukkit.getOnlinePlayers()).thenReturn(new Player[] { ghowden, eluinhost, fuzzboxx });
+        List<Player> onlinePlayers = new ArrayList<Player>();
+        onlinePlayers.add(ghowden);
+        onlinePlayers.add(eluinhost);
+        onlinePlayers.add(fuzzboxx);
+        PowerMockito.<Collection<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         when(ghowden.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);
         when(eluinhost.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);

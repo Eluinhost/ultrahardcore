@@ -40,19 +40,23 @@ import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.*;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+@SuppressWarnings("deprecation")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Bukkit.class)
 public class TPCommandTest {
@@ -71,7 +75,8 @@ public class TPCommandTest {
     private ScatterManager scatterManager;
 
     @Before
-    public void onStartUp() {
+    public void onStartUp() throws Exception
+    {
         scatterManager = mock(ScatterManager.class);
         Injector injector = Guice.createInjector(
                 new ConfigurationModule(getClass().getClassLoader()),
@@ -94,7 +99,11 @@ public class TPCommandTest {
         fuzzboxx = mock(Player.class);
         sonmica = mock(Player.class);
 
-        when(Bukkit.getOnlinePlayers()).thenReturn(new Player[] { ghowden, eluinhost, fuzzboxx } );
+        List<Player> onlinePlayers = new ArrayList<Player>();
+        onlinePlayers.add(ghowden);
+        onlinePlayers.add(eluinhost);
+        onlinePlayers.add(fuzzboxx);
+        PowerMockito.<Collection<? extends Player>>when(Bukkit.getOnlinePlayers()).thenReturn(onlinePlayers);
 
         world = mock(World.class);
         when(Bukkit.getWorld("validworld")).thenReturn(world);
