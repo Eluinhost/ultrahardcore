@@ -37,10 +37,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * PlayerListHandler
@@ -144,9 +141,9 @@ public class PlayerListFeature extends UHCFeature {
 
     /**
      * Update all the players supplied
-     * @param onlinePlayers Player[]
+     * @param onlinePlayers list of online players
      */
-    public void updatePlayers(Player[] onlinePlayers) {
+    public void updatePlayers(Collection<? extends Player> onlinePlayers) {
         for (Player player : onlinePlayers) {
             //get the existing health
             Double health = HANDLED_PLAYERS.get(player);
