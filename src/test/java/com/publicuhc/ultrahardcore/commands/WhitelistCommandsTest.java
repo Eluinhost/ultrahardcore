@@ -41,16 +41,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Bukkit.class)
@@ -86,7 +83,11 @@ public class WhitelistCommandsTest {
         fuzzboxx = mock(Player.class);
         sonmica = mock(Player.class);
 
-        when(Bukkit.getOnlinePlayers()).thenReturn(new Player[] { ghowden, eluinhost, fuzzboxx } );
+        Collection<Player> onlinePlayers = new ArrayList<Player>();
+        onlinePlayers.add(ghowden);
+        onlinePlayers.add(eluinhost);
+        onlinePlayers.add(fuzzboxx);
+        doReturn(onlinePlayers).when(Bukkit.getOnlinePlayers());
 
         Set<OfflinePlayer> whitelist = new HashSet<OfflinePlayer>();
         whitelist.add(ghowden);

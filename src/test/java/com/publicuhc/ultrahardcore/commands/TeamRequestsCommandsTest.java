@@ -52,10 +52,10 @@ import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Bukkit.class)
@@ -116,7 +116,11 @@ public class TeamRequestsCommandsTest {
         when(Bukkit.getPlayer("fuzzboxx")).thenReturn(fuzzboxx);
         when(Bukkit.getPlayer("sonmica")).thenReturn(null);
 
-        when(Bukkit.getOnlinePlayers()).thenReturn(new Player[] { ghowden, eluinhost, fuzzboxx });
+        Collection<Player> onlinePlayers = new ArrayList<Player>();
+        onlinePlayers.add(ghowden);
+        onlinePlayers.add(eluinhost);
+        onlinePlayers.add(fuzzboxx);
+        doReturn(onlinePlayers).when(Bukkit.getOnlinePlayers());
 
         when(ghowden.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);
         when(eluinhost.hasPermission(TeamRequestsCommands.REQUEST_TEAM_REPLY_PERMISSION)).thenReturn(true);
