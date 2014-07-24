@@ -34,7 +34,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <plugin-framework.version>LATEST</plugin-framework.version>
+        <plugin-framework.version>0.1-SNAPSHOT</plugin-framework.version>
         <worldedit.version>LATEST</worldedit.version>
         <bukkit.version>LATEST</bukkit.version>
         <protocollib.version>LATEST</protocollib.version>
@@ -253,7 +253,6 @@
                 </executions>
 
                 <configuration>
-                    <verbose>true</verbose>
                     <failOnNoGitDirectory>true</failOnNoGitDirectory>
                     <useNativeGit>true</useNativeGit>
                     <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
