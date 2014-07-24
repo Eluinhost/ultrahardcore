@@ -60,7 +60,7 @@ public class ScatterPlayerPrompt extends StringPrompt {
         }
 
         if("*".equalsIgnoreCase(s)){
-            Collections.addAll(players, Bukkit.getOnlinePlayers());
+            players.addAll(Bukkit.getOnlinePlayers());
             return new ScatterPlayerPrompt();
         }
 
