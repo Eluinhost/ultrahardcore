@@ -323,7 +323,7 @@ public class TeamCommands extends SimpleCommand {
             }
             players.addAll(world.getPlayers());
         }else{
-            Collections.addAll(players, Bukkit.getOnlinePlayers());
+            players.addAll(Bukkit.getOnlinePlayers());
         }
         Collections.shuffle(players);
         m_teamsUtil.removePlayersInATeam(players);
