@@ -34,7 +34,7 @@
     <inceptionYear>2012</inceptionYear>
 
     <properties>
-        <plugin-framework.version>0.1-SNAPSHOT</plugin-framework.version>
+        <plugin-framework.version>0.2-SNAPSHOT</plugin-framework.version>
         <worldedit.version>5.6.3</worldedit.version>
         <bukkit.version>LATEST</bukkit.version>
         <protocollib.version>LATEST</protocollib.version>
