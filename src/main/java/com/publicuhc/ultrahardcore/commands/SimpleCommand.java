@@ -24,6 +24,7 @@ package com.publicuhc.ultrahardcore.commands;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
@@ -57,30 +58,56 @@ public class SimpleCommand {
     }
 
     /**
-     * Proxy method for the Translate object method
+     * Proxy method.
+     *
+     * @see com.publicuhc.pluginframework.translate.Translate#translate(String, String)
      */
     public String translate(String key, String locale) {
         return m_translate.translate(key, locale);
     }
 
     /**
-     * Proxy method for the Translate object method
+     * Proxy method.
+     *
+     * @see com.publicuhc.pluginframework.translate.Translate#translate(String, CommandSender)
+     */
+    public String translate(String key, CommandSender sender) {
+        return m_translate.translate(key, sender);
+    }
+
+    /**
+     * Proxy method.
+     *
+     * @see com.publicuhc.pluginframework.translate.Translate#translate(String, String, java.util.Map)
      */
     public String translate(String key, String locale, Map<String, String> vars) {
         return m_translate.translate(key, locale, vars);
     }
 
     /**
-     * Proxy method for the Translate object method
+     * Proxy method.
+     *
+     * @see com.publicuhc.pluginframework.translate.Translate#translate(String, org.bukkit.command.CommandSender, java.util.Map)
      */
-    public String translate(String key, String locale, String var, String value) {
-        return m_translate.translate(key, locale, var, value);
+    public String translate(String key, CommandSender sender, Map<String, String> vars) {
+        return m_translate.translate(key, sender, vars);
     }
 
     /**
-     * Proxy method for the Translate object method getLocaleForSender
+     * Proxy method.
+     *
+     * @see com.publicuhc.pluginframework.translate.Translate#translate(String, String, String, String)
      */
-    /*public String locale(CommandSender sender) {
-        return m_translate.getLocaleForSender(sender);
-    }*/
+    public String translate(String key, String locale, String varkey, String value) {
+        return m_translate.translate(key, locale, varkey, value);
+    }
+
+    /**
+     * Proxy method.
+     *
+     * @see com.publicuhc.pluginframework.translate.Translate#translate(String, org.bukkit.command.CommandSender, String, String)
+     */
+    public String translate(String key, CommandSender sender, String varkey, String value) {
+        return m_translate.translate(key, sender, varkey, value);
+    }
 }
