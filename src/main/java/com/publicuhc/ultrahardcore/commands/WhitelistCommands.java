@@ -21,11 +21,11 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
-import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.routing.CommandMethod;
+import com.publicuhc.pluginframework.routing.CommandRequest;
+import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Bukkit;
@@ -47,34 +47,37 @@ public class WhitelistCommands extends SimpleCommand {
         super(configManager, translate);
     }
 
-    @CommandMethod
-    public void whitelistAllCommand(CommandRequest request) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            p.setWhitelisted(true);
+    @CommandMethod(command = "whitelistall", permission = WHITELIST_ALL_PERMISSION)
+    public void whitelistAllCommand(CommandRequest request)
+    {
+        if(request.getOptions().has("c")) {
+            clearWhitelist();
+            request.sendMessage(translate("whitelist.cleared", request.getSender()));
+        } else {
+            addAllToWhitelist();
+            request.sendMessage(translate("whitelist.added", request.getSender()));
         }
-        request.sendMessage(translate("whitelist.added", request.getLocale()));
     }
 
-    @RouteInfo
-    public void whitelistAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(WHITELIST_ALL_PERMISSION)
-                .restrictCommand("whitelistall")
-                .maxMatches(1);
+    @OptionsMethod
+    public String[] whitelistAllCommand(OptionParser parser)
+    {
+        parser.accepts("c");
+        return null;
     }
 
-    @CommandMethod
-    public void whitelistClearCommand(CommandRequest request) {
+    private static void clearWhitelist()
+    {
         Set<OfflinePlayer> players = Bukkit.getWhitelistedPlayers();
         for(OfflinePlayer p : players) {
             p.setWhitelisted(false);
         }
-        request.sendMessage(translate("whitelist.cleared", request.getLocale()));
     }
 
-    @RouteInfo
-    public void whitelistClearCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(WHITELIST_ALL_PERMISSION)
-                .restrictStartsWith("clear")
-                .restrictCommand("whitelistall");
+    private static void addAllToWhitelist()
+    {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.setWhitelisted(true);
+        }
     }
 }
