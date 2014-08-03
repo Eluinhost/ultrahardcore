@@ -62,7 +62,7 @@ public class WhitelistCommands extends SimpleCommand {
     @OptionsMethod
     public String[] whitelistAllCommand(OptionParser parser)
     {
-        parser.accepts("c");
+        parser.accepts("c", "Clears the whitelist instead");
         return null;
     }
 
