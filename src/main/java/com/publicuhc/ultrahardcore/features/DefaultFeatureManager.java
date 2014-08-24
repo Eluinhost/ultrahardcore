@@ -21,13 +21,13 @@
 
 package com.publicuhc.ultrahardcore.features;
 
-import com.publicuhc.ultrahardcore.features.events.FeatureInitEvent;
-import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
-import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDNotFoundException;
-import com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException;
+import com.google.common.base.Preconditions;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.ultrahardcore.features.events.FeatureInitEvent;
+import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
+import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -69,14 +68,9 @@ public class DefaultFeatureManager implements FeatureManager {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[\\S]++$");
 
     @Override
-    public void addFeature(Feature feature) throws FeatureIDConflictException, InvalidFeatureIDException {
+    public void addFeature(Feature feature) throws FeatureIDConflictException {
         String featureID = feature.getFeatureID();
-
-        //check for right pattern
-        Matcher mat = NAME_PATTERN.matcher(featureID);
-        if (!mat.matches()) {
-            throw new InvalidFeatureIDException();
-        }
+        Preconditions.checkArgument(NAME_PATTERN.matcher(featureID).matches(), "Invalid feature ID: %s, cannot contain whitespace", featureID);
 
         //check for existing feature of the same name
         for (Feature uhcFeature : featureList) {

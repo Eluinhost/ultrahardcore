@@ -23,7 +23,6 @@ package com.publicuhc.ultrahardcore.features;
 
 import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDNotFoundException;
-import com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException;
 
 import java.util.List;
 
@@ -36,9 +35,9 @@ public interface FeatureManager {
      *
      * @param feature Feature the feature to be added
      * @throws com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException when feature with the same ID already exists
-     * @throws com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException  when the feature has an invalid ID name
+     * @throws java.lang.IllegalArgumentException when the feature has an invalid ID name
      */
-    void addFeature(Feature feature) throws FeatureIDConflictException, InvalidFeatureIDException;
+    void addFeature(Feature feature) throws FeatureIDConflictException;
 
     /**
      * Check if a feature is enabled by it's ID
