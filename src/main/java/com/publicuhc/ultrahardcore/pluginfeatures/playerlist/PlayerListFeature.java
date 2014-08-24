@@ -26,8 +26,7 @@ import com.google.common.collect.Ranges;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,18 +36,21 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
- * PlayerListHandler
- * Handles the playerlist health numbers for HANDLED_PLAYERS
+ * PlayerListFeature
  *
- * @author ghowden
+ * Enabled: Handles showing health in the player list
+ * Disabled: Nothing
  */
 @Singleton
 public class PlayerListFeature extends UHCFeature {
 
-    public static final String PLAYER_LIST_HEALTH = BASE_PERMISSION + "playerListHealth";
+    public static final String PLAYER_LIST_HEALTH = "UHC.playerListHealth";
 
     //the internal bukkit id for the task
     private int m_taskID = -1;
@@ -73,18 +75,22 @@ public class PlayerListFeature extends UHCFeature {
     private static final Range<Double> MIDDLE_HEALTH = Ranges.openClosed(LOW_HEALTH_BOUNDARY, MID_HEALTH_BOUNDARY);
     private static final Range<Double> HIGH_HEALTH = Ranges.greaterThan(MID_HEALTH_BOUNDARY);
 
-    private Objective m_objectivePlayerList;
-    private Objective m_objectiveUnderName;
+    private Objective playerListObjective;
+    private Objective underNameObjective;
+
+    private final FileConfiguration config;
+    private final Plugin plugin;
 
     /**
      * Handles the player list health better than base mc, normal behaviour when disabled
+     *
      * @param plugin the plugin
      * @param configManager the config manager
-     * @param translate the translator
      */
     @Inject
-    private PlayerListFeature(Plugin plugin, Configurator configManager, Translate translate) {
-        super(plugin, configManager, translate);
+    private PlayerListFeature(Plugin plugin, Configurator configManager) {
+        config = configManager.getConfig("main");
+        this.plugin = plugin;
     }
 
     /**
@@ -93,50 +99,51 @@ public class PlayerListFeature extends UHCFeature {
      * @param health the health value to update to
      */
     public void updatePlayerListHealth(Player player, double health) {
-        FileConfiguration config = getConfigManager().getConfig("main");
+        String playerName = config.getBoolean("PlayerList.displayNames") ? player.getDisplayName() : player.getName();
 
-        String playerName = config.getBoolean(getBaseConfig()+"displayNames") ? player.getDisplayName() : player.getName();
-        //get the players display name and strip the colour codes from it
-        String newName = ChatColor.stripColor(playerName);
+        //strip the colour codes from the player name
+        String cutName = ChatColor.stripColor(playerName);
 
-        boolean useColours = config.getBoolean(getBaseConfig()+"colours");
+        //whether to use colours or not
+        boolean useColours = config.getBoolean("PlayerList.colours");
+
+        //maximum length allowed for the player name to not crash people
+        int maxLength = useColours ? MAX_LENGTH_COLOURS : MAX_LENGTH_NO_COLOURS;
 
         //cut the name down to the right length
-        newName = newName.substring(0,Math.min(newName.length(),useColours ? MAX_LENGTH_COLOURS : MAX_LENGTH_NO_COLOURS));
-
-        double showHealth = health;
+        cutName = cutName.substring(0, Math.min(cutName.length(), maxLength));
 
         if (useColours) {
             ChatColor prefix = ChatColor.GREEN;
-            if(HIGH_HEALTH.contains(health)){
-                prefix = ChatColor.GREEN;
-            }else if(MIDDLE_HEALTH.contains(health)){
-                prefix = ChatColor.YELLOW;
-            }else if(LOW_HEALTH.contains(health)){
-                prefix = ChatColor.RED;
-            }else if(DEAD_HEALTH.contains(health)){
-                prefix = ChatColor.GRAY;
-            }
-            if (!player.hasPermission(PLAYER_LIST_HEALTH)) {
+            if (player.hasPermission(PLAYER_LIST_HEALTH)) {
+                if (MIDDLE_HEALTH.contains(health)) {
+                    prefix = ChatColor.YELLOW;
+                } else if (LOW_HEALTH.contains(health)) {
+                    prefix = ChatColor.RED;
+                } else if (DEAD_HEALTH.contains(health)) {
+                    prefix = ChatColor.GRAY;
+                }
+            } else {
                 prefix = ChatColor.BLUE;
-                showHealth = 0.0D;
+                health = 0.0D;
             }
-            newName = prefix+newName;
+            cutName = prefix + cutName;
         }
 
         //set the player list name
-        player.setPlayerListName(newName);
+        player.setPlayerListName(cutName);
 
         //if we're rounding health
-        if (config.getBoolean(getBaseConfig()+"roundHealth")) {
-            showHealth = Math.ceil(showHealth);
+        if (config.getBoolean("PlayerList.roundHealth")) {
+            health = Math.ceil(health);
         }
 
-        double healthScaling = config.getDouble(getBaseConfig() + "scaling");
+        double healthScaling = config.getDouble("PlayerList.scaling");
+
         //set the score for both the player and their display name
         //this allows the score to show under the head of players with a changed name
-        m_objectivePlayerList.getScore(newName).setScore((int) (showHealth * healthScaling));
-        m_objectiveUnderName.getScore(ChatColor.stripColor(playerName)).setScore((int) (showHealth * healthScaling));
+        playerListObjective.getScore(cutName).setScore((int) (health * healthScaling));
+        underNameObjective.getScore(ChatColor.stripColor(playerName)).setScore((int) (health * healthScaling));
     }
 
     /**
@@ -165,10 +172,10 @@ public class PlayerListFeature extends UHCFeature {
     protected void enableCallback() {
         //set up the timer that runs
         m_taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
-                getPlugin(),
+                plugin,
                 new PlayerListUpdater(),
                 1L,
-                getConfigManager().getConfig("main").getLong(getBaseConfig() + "delay")
+                config.getLong("PlayerList.delay")
         );
         //intialize the scoreboard
         initializeScoreboard();
@@ -206,21 +213,19 @@ public class PlayerListFeature extends UHCFeature {
         } catch (IllegalArgumentException ignored) {}
 
         //set the objectives we created
-        m_objectivePlayerList = MAIN_SCOREBOARD.getObjective(OBJECTIVE_SCOREBOARD_NAME);
-        m_objectiveUnderName = MAIN_SCOREBOARD.getObjective(OBJECTIVE_UNDER_NAME_NAME);
-
-        FileConfiguration config = getConfigManager().getConfig("main");
+        playerListObjective = MAIN_SCOREBOARD.getObjective(OBJECTIVE_SCOREBOARD_NAME);
+        underNameObjective = MAIN_SCOREBOARD.getObjective(OBJECTIVE_UNDER_NAME_NAME);
 
         //set the display name of the under name objective
-        m_objectiveUnderName.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(getBaseConfig() + "belowNameUnit")).replaceAll("&h", "\u2665"));
+        underNameObjective.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString("PlayerList.belowNameUnit")).replaceAll("&h", "\u2665"));
 
         //set the slot for player list health
-        m_objectivePlayerList.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+        playerListObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
         //if under name is enabled
-        if (config.getBoolean(getBaseConfig() + "belowName")) {
+        if (config.getBoolean("PlayerList.belowName")) {
             //set it's slot
-            m_objectiveUnderName.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            underNameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         } else {
             //get the objective that is below the name
             Objective o = MAIN_SCOREBOARD.getObjective(DisplaySlot.BELOW_NAME);
@@ -244,14 +249,14 @@ public class PlayerListFeature extends UHCFeature {
     @Override
     public List<String> getStatus() {
         List<String> status = new ArrayList<String>();
-        status.add(ChatColor.GRAY + "--- Colours: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "colours")));
-        status.add(ChatColor.GRAY + "--- Update delay: " + getConfigManager().getConfig("main").getInt(getBaseConfig() + "delay"));
-        status.add(ChatColor.GRAY + "--- Below Name: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "belowName")));
-        status.add(ChatColor.GRAY + "--- Scaling: " + getConfigManager().getConfig("main").getInt(getBaseConfig() + "scaling"));
-        status.add(ChatColor.GRAY + "--- Rounding: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "roundHealth")));
-        String unit = ChatColor.translateAlternateColorCodes('&', getConfigManager().getConfig("main").getString(getBaseConfig() + "belowNameUnit")).replaceAll("&h", "\u2665");
+        status.add(ChatColor.GRAY + "--- Colours: " + convertBooleanToOnOff(config.getBoolean("PlayerList.colours")));
+        status.add(ChatColor.GRAY + "--- Update delay: " + config.getInt("PlayerList.delay"));
+        status.add(ChatColor.GRAY + "--- Below Name: " + convertBooleanToOnOff(config.getBoolean("PlayerList.belowName")));
+        status.add(ChatColor.GRAY + "--- Scaling: " + config.getInt("PlayerList.scaling"));
+        status.add(ChatColor.GRAY + "--- Rounding: " + convertBooleanToOnOff(config.getBoolean("PlayerList.roundHealth")));
+        String unit = ChatColor.translateAlternateColorCodes('&', config.getString("PlayerList.belowNameUnit")).replaceAll("&h", "\u2665");
         status.add(ChatColor.GRAY + "--- Unit: " + unit);
-        status.add(ChatColor.GRAY + "--- Use display names: " + convertBooleanToOnOff(getConfigManager().getConfig("main").getBoolean(getBaseConfig() + "displayNames")));
+        status.add(ChatColor.GRAY + "--- Use display names: " + convertBooleanToOnOff(config.getBoolean("PlayerList.displayNames")));
         return status;
     }
 
