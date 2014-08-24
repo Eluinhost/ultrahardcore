@@ -21,103 +21,58 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
-import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
-import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.routing.CommandMethod;
+import com.publicuhc.pluginframework.routing.CommandRequest;
+import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.converters.LocationValueConverter;
+import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.scatter.ScatterManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class TPCommand extends SimpleCommand {
+public class TPCommand extends Command {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 
-    private final ScatterManager m_scatterManager;
-
     @Inject
-    private TPCommand(Configurator configManager, Translate translate, ScatterManager scatterManager) {
-        super(configManager, translate);
-        m_scatterManager = scatterManager;
+    private TPCommand(Translate translate) {
+        super(translate);
     }
 
     /**
      * Ran on /tpp {list of players} {player/location}
      * @param request request params
      */
-    @CommandMethod
+    @CommandMethod(command = "tpp", options = true, permission = TP_ALL_PERMISSION)
     public void teleportCommand(CommandRequest request){
-        List<String> arguments = request.getArgs();
-        Location location;
-        String lastArg = request.getLastArg();
-        if (lastArg.contains(",")) {
-            String[] coords = lastArg.split(",");
-            World w;
-            if (coords.length == 3) {
-                if (!(request.getSender() instanceof Player)) {
-                    request.sendMessage(translate("teleport.non_player_world", request.getLocale()));
-                    return;
-                }
-                w = ((Entity) request.getSender()).getWorld();
-            } else if (coords.length == 4) {
-                w = Bukkit.getWorld(coords[3]);
-                if (w == null) {
-                    request.sendMessage(translate("teleport.invalid.world", request.getLocale()));
-                    return;
-                }
-            } else {
-                request.sendMessage(translate("teleport.invalid.coords", request.getLocale()));
-                return;
-            }
-            int x;
-            int y;
-            int z;
-            try {
-                x = Integer.parseInt(coords[0]);
-                y = Integer.parseInt(coords[1]);
-                z = Integer.parseInt(coords[2]);
-            } catch (NumberFormatException ignored) {
-                request.sendMessage(translate("teleport.invalid.coords", request.getLocale()));
-                return;
-            }
-            location = new Location(w, x, y, z);
-        } else {
-            Player p = Bukkit.getPlayer(lastArg);
-            if (p == null) {
-                request.sendMessage(translate("teleport.invalid.player", request.getLocale(), "name", lastArg));
-                return;
-            }
-            location = p.getLocation();
+        OptionSet set = request.getOptions();
+
+        Location teleportLoc = set.has("p") ? ((Player) set.valueOf("p")).getLocation() : (Location) set.valueOf("l");
+        List<Player> toTeleport = (List<Player>) set.nonOptionArguments();
+
+        for (Player p : toTeleport) {
+            p.teleport(teleportLoc);
         }
-        if (arguments.size() == 2 && "*".equals(request.getFirstArg())) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                m_scatterManager.teleportSafe(p, location, false);
-            }
-        } else {
-            for (int i = 0; i < arguments.size() - 1; i++) {
-                Player p = Bukkit.getPlayer(arguments.get(i));
-                if (p == null) {
-                    request.sendMessage(translate("teleport.invalid.player", request.getLocale(), "name", arguments.get(i)));
-                    continue;
-                }
-                m_scatterManager.teleportSafe(p, location, false);
-            }
-        }
-        request.sendMessage(translate("teleport.all_teleported", request.getLocale()));
+
+        request.sendMessage(translate("teleport.all_teleported", request.getSender()));
     }
 
-    @RouteInfo
-    public void teleportCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(TP_ALL_PERMISSION)
-                .restrictArgumentCount(2, -1)
-                .restrictCommand("tpp");
+    @OptionsMethod
+    public void teleportCommandDetails(OptionParser parser) {
+        parser.accepts("p", "Player to teleport to")
+                .requiredUnless("l")
+                .withRequiredArg()
+                .withValuesConvertedBy(new OnlinePlayerValueConverter(false));
+        parser.accepts("l", "Location to teleport to")
+                .requiredUnless("p")
+                .withRequiredArg()
+                .withValuesConvertedBy(new LocationValueConverter());
+        parser.nonOptions("Player to teleport to, * for all players")
+                .withValuesConvertedBy(new OnlinePlayerValueConverter(true));
     }
 }
