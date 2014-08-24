@@ -21,14 +21,14 @@
 
 package com.publicuhc.ultrahardcore.features.events;
 
-import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.ultrahardcore.features.Feature;
 
 public class FeatureDisableEvent extends FeatureEvent {
     /**
      * Called when a feature is disabled, cancelling stops the feature disabling
      * @param feature the feature involved
      */
-    public FeatureDisableEvent(IFeature feature) {
+    public FeatureDisableEvent(Feature feature) {
         super(feature);
     }
 }

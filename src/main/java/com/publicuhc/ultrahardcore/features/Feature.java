@@ -1,5 +1,5 @@
 /*
- * Feature.java
+ * IFeature.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -21,94 +21,43 @@
 
 package com.publicuhc.ultrahardcore.features;
 
-import com.publicuhc.ultrahardcore.features.events.FeatureDisableEvent;
-import com.publicuhc.ultrahardcore.features.events.FeatureEnableEvent;
-import com.publicuhc.ultrahardcore.features.events.FeatureEvent;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.event.Listener;
 
 import java.util.List;
 
-public abstract class Feature implements IFeature {
+public interface Feature extends Listener {
 
     /**
-     * Is the feautre enabeld right now?
+    * Attempt to enable the feature
+    * @return bool true if the feature was enabled, false if already enabled or event cancelled
+    */
+    boolean enableFeature();
+
+    /**
+     * Attempt to disable the feature
+     * @return bool true if the feature was disabled, false if already disabled or event cancelled
      */
-    private boolean m_enabled;
-
-    @Override
-    public final boolean enableFeature(){
-        if(isEnabled()){
-            return false;
-        }
-        FeatureEvent event = new FeatureEnableEvent(this);
-        Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()){
-            m_enabled = true;
-            enableCallback();
-        }
-        return true;
-    }
-
-    @Override
-    public final boolean disableFeature(){
-        if(!isEnabled()){
-            return false;
-        }
-        FeatureDisableEvent event = new FeatureDisableEvent(this);
-        Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()){
-            m_enabled = false;
-            disableCallback();
-        }
-        return true;
-    }
+    boolean disableFeature();
 
     /**
-     * Called when the feature is being enabled
+     * @return name of the feature
      */
-    protected void enableCallback(){}
+    String getFeatureID();
 
     /**
-     * Called when the feature is being disabled
-     */
-    protected void disableCallback(){}
-
-    @Override
-    public boolean isEnabled() {
-        return m_enabled;
-    }
-
-    /**
-     * Are the features the same feature? Returns true if they have the same ID
-     * @param obj Object
+     * Is the feature enabled?
      * @return boolean
      */
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof IFeature && ((IFeature) obj).getFeatureID().equals(getFeatureID());
-    }
+    boolean isEnabled();
 
     /**
-     * Return the hashcode of this feature
-     * @return int
+     * Get the description of the feature
+     * @return String
      */
-    @Override
-    public int hashCode(){
-        return new HashCodeBuilder(17, 31).append(getFeatureID()).toHashCode();
-    }
-
-    @Override
-    public List<String> getStatus() {
-        return null;
-    }
+    String getDescription();
 
     /**
-     * @param onOff the boolean
-     * @return green 'ON' if true, red 'OFF' if false
+     * @return a list detailing the components of this feature that are enabled/disabled. null if no config
      */
-    protected String convertBooleanToOnOff(boolean onOff) {
-        return onOff ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF";
-    }
+    List<String> getStatus();
 }

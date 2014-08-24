@@ -21,13 +21,12 @@
 
 package com.publicuhc.ultrahardcore.pluginfeatures;
 
-import com.publicuhc.ultrahardcore.features.Feature;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.plugin.Plugin;
 
-public abstract class UHCFeature extends Feature {
+public abstract class UHCFeature extends com.publicuhc.ultrahardcore.features.UHCFeature {
 
     protected static final String BASE_PERMISSION = "UHC.";
     protected static final String BASE_CONFIG = "features.";

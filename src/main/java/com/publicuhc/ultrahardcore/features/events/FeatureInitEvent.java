@@ -21,14 +21,14 @@
 
 package com.publicuhc.ultrahardcore.features.events;
 
-import com.publicuhc.ultrahardcore.features.IFeature;
+import com.publicuhc.ultrahardcore.features.Feature;
 
 public class FeatureInitEvent extends FeatureEvent {
     /**
      * Called when a feature is first initialized, cancelling stops the feature from getting events and being added to the list
      * @param feature the feature involved
      */
-    public FeatureInitEvent(IFeature feature) {
+    public FeatureInitEvent(Feature feature) {
         super(feature);
     }
 }

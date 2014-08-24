@@ -28,8 +28,8 @@ import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.Feature;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
 
@@ -60,7 +60,7 @@ public class FreezeCommand extends SimpleCommand {
      */
     @CommandMethod
     public void freezeCommand(CommandRequest request) {
-        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        Feature feature = m_features.getFeatureByID("PlayerFreeze");
         if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
@@ -97,7 +97,7 @@ public class FreezeCommand extends SimpleCommand {
      */
     @CommandMethod
     public void freezeAllCommand(CommandRequest request) {
-        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        Feature feature = m_features.getFeatureByID("PlayerFreeze");
         if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
@@ -124,7 +124,7 @@ public class FreezeCommand extends SimpleCommand {
      */
     @CommandMethod
     public void unfreezeCommand(CommandRequest request) {
-        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        Feature feature = m_features.getFeatureByID("PlayerFreeze");
         if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
@@ -157,7 +157,7 @@ public class FreezeCommand extends SimpleCommand {
      */
     @CommandMethod
     public void unfreezeAllCommand(CommandRequest request) {
-        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        Feature feature = m_features.getFeatureByID("PlayerFreeze");
         if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
@@ -179,7 +179,7 @@ public class FreezeCommand extends SimpleCommand {
 
     @CommandMethod
     public void toggleFreezeCommand(CommandRequest request) {
-        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        Feature feature = m_features.getFeatureByID("PlayerFreeze");
         if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;
@@ -216,7 +216,7 @@ public class FreezeCommand extends SimpleCommand {
 
     @CommandMethod
     public void toggleFreezeAllCommand(CommandRequest request) {
-        IFeature feature = m_features.getFeatureByID("PlayerFreeze");
+        Feature feature = m_features.getFeatureByID("PlayerFreeze");
         if (feature == null) {
             request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
             return;

@@ -25,8 +25,8 @@ import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.shaded.metrics.Metrics;
+import com.publicuhc.ultrahardcore.features.Feature;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         //enable metrics
         Metrics metrics = getMetrics();
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
-        for(final IFeature feature : m_featureManager.getFeatures()){
+        for(final Feature feature : m_featureManager.getFeatures()){
             graph.addPlotter(new Metrics.Plotter(feature.getFeatureID()) {
                 @Override
                 public int getValue() {

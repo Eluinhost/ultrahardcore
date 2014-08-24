@@ -28,8 +28,8 @@ import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.Feature;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.features.IFeature;
 import org.bukkit.ChatColor;
 
 import java.util.HashMap;
@@ -80,12 +80,12 @@ public class FeatureCommand extends SimpleCommand {
      */
     @CommandMethod
     public void featureListCommand(CommandRequest request){
-        List<IFeature> features = m_featureManager.getFeatures();
+        List<Feature> features = m_featureManager.getFeatures();
         request.sendMessage(translate("features.loaded.header", request.getLocale(), "amount", String.valueOf(features.size())));
         if (features.isEmpty()) {
             request.sendMessage(translate("features.loaded.none", request.getLocale()));
         }
-        for (IFeature feature : features) {
+        for (Feature feature : features) {
             Map<String, String> vars = new HashMap<String, String>();
             vars.put("id", feature.getFeatureID());
             vars.put("desc", feature.getDescription());
@@ -118,7 +118,7 @@ public class FeatureCommand extends SimpleCommand {
      */
     @CommandMethod
     public void featureOnCommand(CommandRequest request){
-        IFeature feature = m_featureManager.getFeatureByID(request.getArg(1));
+        Feature feature = m_featureManager.getFeatureByID(request.getArg(1));
         if(null == feature){
             request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;
@@ -152,7 +152,7 @@ public class FeatureCommand extends SimpleCommand {
      */
     @CommandMethod
     public void featureOffCommand(CommandRequest request){
-        IFeature feature = m_featureManager.getFeatureByID(request.getArg(1));
+        Feature feature = m_featureManager.getFeatureByID(request.getArg(1));
         if(null == feature){
             request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;
@@ -182,7 +182,7 @@ public class FeatureCommand extends SimpleCommand {
 
     @CommandMethod
     public void featureToggleCommand(CommandRequest request) {
-        IFeature feature = m_featureManager.getFeatureByID(request.getArg(1));
+        Feature feature = m_featureManager.getFeatureByID(request.getArg(1));
         if(null == feature){
             request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
             return;

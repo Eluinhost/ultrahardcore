@@ -61,7 +61,7 @@ public class RealFeatureManager implements FeatureManager {
     /**
      * Stores a list of all the features loaded on the server
      */
-    private final List<IFeature> m_featureList = new ArrayList<IFeature>();
+    private final List<Feature> m_featureList = new ArrayList<Feature>();
 
     /**
      * Only allow uhcFeatures with this pattern as an ID
@@ -69,7 +69,7 @@ public class RealFeatureManager implements FeatureManager {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[\\S]++$");
 
     @Override
-    public void addFeature(IFeature feature) throws FeatureIDConflictException, InvalidFeatureIDException {
+    public void addFeature(Feature feature) throws FeatureIDConflictException, InvalidFeatureIDException {
         String featureID = feature.getFeatureID();
 
         //check for right pattern
@@ -79,7 +79,7 @@ public class RealFeatureManager implements FeatureManager {
         }
 
         //check for existing feature of the same name
-        for (IFeature uhcFeature : m_featureList) {
+        for (Feature uhcFeature : m_featureList) {
             if (uhcFeature.equals(feature)) {
                 throw new FeatureIDConflictException();
             }
@@ -114,7 +114,7 @@ public class RealFeatureManager implements FeatureManager {
 
     @Override
     public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException {
-        for (IFeature feature : m_featureList) {
+        for (Feature feature : m_featureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
@@ -123,8 +123,8 @@ public class RealFeatureManager implements FeatureManager {
     }
 
     @Override
-    public IFeature getFeatureByID(String featureID) {
-        for (IFeature feature : m_featureList) {
+    public Feature getFeatureByID(String featureID) {
+        for (Feature feature : m_featureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
@@ -133,14 +133,14 @@ public class RealFeatureManager implements FeatureManager {
     }
 
     @Override
-    public List<IFeature> getFeatures() {
+    public List<Feature> getFeatures() {
         return Collections.unmodifiableList(m_featureList);
     }
 
     @Override
     public List<String> getFeatureNames() {
         List<String> features = new ArrayList<String>();
-        for (IFeature feature : m_featureList) {
+        for (Feature feature : m_featureList) {
             features.add(feature.getFeatureID());
         }
         return features;

@@ -37,7 +37,7 @@ public interface FeatureManager {
      * @throws com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException when feature with the same ID already exists
      * @throws com.publicuhc.ultrahardcore.features.exceptions.InvalidFeatureIDException  when the feature has an invalid ID name
      */
-    void addFeature(IFeature feature) throws FeatureIDConflictException, InvalidFeatureIDException;
+    void addFeature(Feature feature) throws FeatureIDConflictException, InvalidFeatureIDException;
 
     /**
      * Check if a feature is enabled by it's ID
@@ -54,14 +54,14 @@ public interface FeatureManager {
      * @param featureID String the ID to check for
      * @return Feature the returned feature, or null if not found
      */
-    IFeature getFeatureByID(String featureID);
+    Feature getFeatureByID(String featureID);
 
     /**
      * Returns an unmodifiable list of all of the uhcFeatures loaded
      *
      * @return List
      */
-    List<IFeature> getFeatures();
+    List<Feature> getFeatures();
 
     /**
      * Get a list of all the used feature names
