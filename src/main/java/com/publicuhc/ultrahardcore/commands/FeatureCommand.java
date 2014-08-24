@@ -21,75 +21,78 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
-import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
-import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.routing.CommandMethod;
+import com.publicuhc.pluginframework.routing.CommandRequest;
+import com.publicuhc.pluginframework.routing.OptionsMethod;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.features.Feature;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
-import org.bukkit.ChatColor;
+import com.publicuhc.ultrahardcore.features.FeatureValueConverter;
+import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FeatureCommand extends SimpleCommand {
+public class FeatureCommand extends Command {
 
     public static final String FEATURE_LIST_PERMISSION = "UHC.feature.list";
     public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";
 
-    private final FeatureManager m_featureManager;
+    private final FeatureManager featureManager;
 
     /**
-     * feature commands
-     * @param configManager the config manager
      * @param translate the translator
      * @param featureManager the feature manager
      */
     @Inject
-    private FeatureCommand(Configurator configManager, Translate translate, FeatureManager featureManager){
-        super(configManager, translate);
-        m_featureManager = featureManager;
+    private FeatureCommand(Translate translate, FeatureManager featureManager){
+        super(translate);
+        this.featureManager = featureManager;
     }
 
-    /**
-     * @param request request params
-     */
-    @CommandMethod
-    public void featureCommand(CommandRequest request){
-        request.sendMessage(ChatColor.RED+"/feature list - List features");
-        request.sendMessage(ChatColor.RED + "/feature on <featureID> - turn feature on");
-        request.sendMessage(ChatColor.RED+"/feature off <featureID> - turn feature off");
+    private void turnFeatureOn(Feature feature, CommandSender sender)
+    {
+        if(feature.disableFeature()) {
+            sender.sendMessage(translate("features.disabled", sender));
+        } else {
+            sender.sendMessage(translate("features.disabled_cancelled", sender));
+        }
     }
 
-    /**
-     * Run whenever a /feature command is run and nothing else triggers
-     * @param builder the builder
-     */
-    @RouteInfo
-    public void featureCommandDetails(RouteBuilder builder) {
-        builder.restrictCommand("feature").maxMatches(1);
+    private void turnFeatureOff(Feature feature, CommandSender sender)
+    {
+        if(feature.enableFeature()) {
+            sender.sendMessage(translate("features.enabled", sender));
+        } else {
+            sender.sendMessage(translate("features.enabled_cancelled", sender));
+        }
     }
 
-    /**
-     * List all the features and their status
-     * @param request request params
-     */
-    @CommandMethod
-    public void featureListCommand(CommandRequest request){
-        List<Feature> features = m_featureManager.getFeatures();
-        request.sendMessage(translate("features.loaded.header", request.getLocale(), "amount", String.valueOf(features.size())));
+    private void toggleFeature(Feature feature, CommandSender sender)
+    {
+        if(feature.isEnabled()) {
+            turnFeatureOff(feature, sender);
+        } else {
+            turnFeatureOn(feature, sender);
+        }
+    }
+
+    @CommandMethod(command = "feature list", permission = FEATURE_LIST_PERMISSION)
+    public void featureListCommand(CommandRequest request)
+    {
+        List<Feature> features = featureManager.getFeatures();
+        request.sendMessage(translate("features.loaded.header", request.getSender(), "amount", String.valueOf(features.size())));
         if (features.isEmpty()) {
-            request.sendMessage(translate("features.loaded.none", request.getLocale()));
+            request.sendMessage(translate("features.loaded.none", request.getSender()));
         }
         for (Feature feature : features) {
             Map<String, String> vars = new HashMap<String, String>();
             vars.put("id", feature.getFeatureID());
             vars.put("desc", feature.getDescription());
-            request.sendMessage(translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off", request.getLocale(), vars));
+            request.sendMessage(translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off", request.getSender(), vars));
 
             List<String> status = feature.getStatus();
 
@@ -101,106 +104,50 @@ public class FeatureCommand extends SimpleCommand {
         }
     }
 
-    /**
-     * Run on /feauture list
-     * @param builder the builder
-     */
-    @RouteInfo
-    public void featureListCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FEATURE_LIST_PERMISSION)
-                .restrictStartsWith("list")
-                .restrictCommand("feature");
-    }
+    @CommandMethod(command = "feature toggle", permission = FEATURE_TOGGLE_PERMISSION)
+    public void featureToggleCommand(CommandRequest request){
+        List<Feature> features = (List<Feature>) request.getOptions().nonOptionArguments();
 
-    /**
-     * Turn on a feature
-     * @param request request params
-     */
-    @CommandMethod
-    public void featureOnCommand(CommandRequest request){
-        Feature feature = m_featureManager.getFeatureByID(request.getArg(1));
-        if(null == feature){
-            request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
-            return;
-        }
-        if(feature.isEnabled()){
-            request.sendMessage(translate("features.already_enabled", request.getLocale()));
-            return;
-        }
-        if(!feature.enableFeature()){
-            request.sendMessage(translate("features.enabled_cancelled", request.getLocale()));
-            return;
-        }
-        request.sendMessage(translate("features.enabled", request.getLocale()));
-    }
-
-    /**
-     * Run on /feature on {name}
-     * @param builder the builder
-     */
-    @RouteInfo
-    public void featureOnCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION)
-                .restrictArgumentCount(2, 2)
-                .restrictStartsWith("on")
-                .restrictCommand("feature");
-    }
-
-    /**
-     * Toggle a feature off
-     * @param request request params
-     */
-    @CommandMethod
-    public void featureOffCommand(CommandRequest request){
-        Feature feature = m_featureManager.getFeatureByID(request.getArg(1));
-        if(null == feature){
-            request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
-            return;
-        }
-        if(!feature.isEnabled()){
-            request.sendMessage(translate("features.already_disabled", request.getLocale()));
-            return;
-        }
-        if(!feature.disableFeature()){
-            request.sendMessage(translate("features.disabled_cancelled", request.getLocale()));
-            return;
-        }
-        request.sendMessage(translate("features.disabled", request.getLocale()));
-    }
-
-    /**
-     * Run on /feature off {name}
-     * @param builder the builder
-     */
-    @RouteInfo
-    public void featureOffCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION)
-                .restrictArgumentCount(2, 2)
-                .restrictStartsWith("off")
-                .restrictCommand("feature");
-    }
-
-    @CommandMethod
-    public void featureToggleCommand(CommandRequest request) {
-        Feature feature = m_featureManager.getFeatureByID(request.getArg(1));
-        if(null == feature){
-            request.sendMessage(translate("features.not_found", request.getLocale(), "id", request.getFirstArg()));
-            return;
-        }
-        if (feature.isEnabled()) {
-            feature.disableFeature();
-            request.sendMessage(translate("features.disabled", request.getLocale()));
-        } else {
-            feature.enableFeature();
-            request.sendMessage(translate("features.enabled", request.getLocale()));
+        for(Feature feature : features) {
+            toggleFeature(feature, request.getSender());
         }
     }
 
-    @RouteInfo
-    public void featureToggleCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FEATURE_TOGGLE_PERMISSION)
-                .restrictArgumentCount(2, 2)
-                .restrictStartsWith("toggle")
-                .restrictCommand("feature");
+    @OptionsMethod
+    public void featureToggleCommand(OptionParser parser)
+    {
+        parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
+    }
+
+    @CommandMethod(command = "feature on", permission = FEATURE_TOGGLE_PERMISSION)
+    public void featureOnCommand(CommandRequest request)
+    {
+        List<Feature> features = (List<Feature>) request.getOptions().nonOptionArguments();
+
+        for(Feature feature : features) {
+            turnFeatureOn(feature, request.getSender());
+        }
+    }
+
+    @OptionsMethod
+    public void featureOnCommand(OptionParser parser)
+    {
+        parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
+    }
+
+    @CommandMethod(command = "feature off", permission = FEATURE_TOGGLE_PERMISSION)
+    public void featureOffCommand(CommandRequest request)
+    {
+        List<Feature> features = (List<Feature>) request.getOptions().nonOptionArguments();
+
+        for(Feature feature : features) {
+            turnFeatureOff(feature, request.getSender());
+        }
+    }
+
+    @OptionsMethod
+    public void featureOffCommand(OptionParser parser)
+    {
+        parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
     }
 }
