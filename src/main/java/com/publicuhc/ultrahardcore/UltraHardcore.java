@@ -41,7 +41,7 @@ import java.util.List;
 @Singleton
 public class UltraHardcore extends FrameworkJavaPlugin {
 
-    private FeatureManager m_featureManager;
+    private FeatureManager featureManager;
 
     //When the plugin gets started
     @Override
@@ -50,7 +50,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         //enable metrics
         Metrics metrics = getMetrics();
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
-        for(final Feature feature : m_featureManager.getFeatures()){
+        for(final Feature feature : featureManager.getFeatures()){
             graph.addPlotter(new Metrics.Plotter(feature.getFeatureID()) {
                 @Override
                 public int getValue() {
@@ -64,14 +64,14 @@ public class UltraHardcore extends FrameworkJavaPlugin {
 
     @Inject
     private void setFeatureManager(FeatureManager featureManager) {
-        m_featureManager = featureManager;
+        this.featureManager = featureManager;
     }
 
     /**
      * @return the feature manager for handling features
      */
     public FeatureManager getFeatureManager() {
-        return m_featureManager;
+        return featureManager;
     }
 
     @Override
