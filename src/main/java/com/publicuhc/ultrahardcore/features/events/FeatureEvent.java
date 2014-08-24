@@ -29,15 +29,15 @@ import org.bukkit.event.HandlerList;
 public class FeatureEvent extends Event implements Cancellable{
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    private final Feature m_feature;
-    private boolean m_cancelled;
+    private final Feature feature;
+    private boolean cancelled;
 
     /**
      * Generic feature event
      * @param feature feature event is running for
      */
     protected FeatureEvent(Feature feature){
-        m_feature = feature;
+        this.feature = feature;
     }
 
     @Override
@@ -56,16 +56,16 @@ public class FeatureEvent extends Event implements Cancellable{
      * @return the feature involved in this event
      */
     public Feature getFeature(){
-        return m_feature;
+        return feature;
     }
 
     @Override
     public boolean isCancelled() {
-        return m_cancelled;
+        return cancelled;
     }
 
     @Override
     public void setCancelled(boolean cancelled) {
-        m_cancelled = cancelled;
+        this.cancelled = cancelled;
     }
 }

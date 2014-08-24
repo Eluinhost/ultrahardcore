@@ -44,8 +44,8 @@ import java.util.regex.Pattern;
 @Singleton
 public class DefaultFeatureManager implements FeatureManager {
 
-    private final Configurator m_configManager;
-    private final Plugin m_plugin;
+    private final Configurator configManager;
+    private final Plugin plugin;
 
     /**
      * Create a new feature manager
@@ -54,14 +54,14 @@ public class DefaultFeatureManager implements FeatureManager {
      */
     @Inject
     public DefaultFeatureManager(Configurator configManager, Plugin plugin){
-        m_configManager = configManager;
-        m_plugin = plugin;
+        this.configManager = configManager;
+        this.plugin = plugin;
     }
 
     /**
      * Stores a list of all the features loaded on the server
      */
-    private final List<Feature> m_featureList = new ArrayList<Feature>();
+    private final List<Feature> featureList = new ArrayList<Feature>();
 
     /**
      * Only allow features with this pattern as an ID (no whitespace)
@@ -79,7 +79,7 @@ public class DefaultFeatureManager implements FeatureManager {
         }
 
         //check for existing feature of the same name
-        for (Feature uhcFeature : m_featureList) {
+        for (Feature uhcFeature : featureList) {
             if (uhcFeature.equals(feature)) {
                 throw new FeatureIDConflictException();
             }
@@ -98,10 +98,10 @@ public class DefaultFeatureManager implements FeatureManager {
         }
 
         //add the feature
-        m_featureList.add(feature);
+        featureList.add(feature);
         Bukkit.getLogger().log(Level.INFO,"Loaded feature module "+featureID);
 
-        List<String> config = m_configManager.getConfig("main").getStringList("enabledFeatures");
+        List<String> config = configManager.getConfig("main").getStringList("enabledFeatures");
         if(config.contains(featureID)){
             feature.enableFeature();
         }else{
@@ -109,12 +109,12 @@ public class DefaultFeatureManager implements FeatureManager {
         }
 
         //Register the feature for plugin events
-        Bukkit.getPluginManager().registerEvents(feature, m_plugin);
+        Bukkit.getPluginManager().registerEvents(feature, plugin);
     }
 
     @Override
     public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException {
-        for (Feature feature : m_featureList) {
+        for (Feature feature : featureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
@@ -124,7 +124,7 @@ public class DefaultFeatureManager implements FeatureManager {
 
     @Override
     public Feature getFeatureByID(String featureID) {
-        for (Feature feature : m_featureList) {
+        for (Feature feature : featureList) {
             if (feature.getFeatureID().equals(featureID)) {
                 return feature;
             }
@@ -134,13 +134,13 @@ public class DefaultFeatureManager implements FeatureManager {
 
     @Override
     public List<Feature> getFeatures() {
-        return Collections.unmodifiableList(m_featureList);
+        return Collections.unmodifiableList(featureList);
     }
 
     @Override
     public List<String> getFeatureNames() {
         List<String> features = new ArrayList<String>();
-        for (Feature feature : m_featureList) {
+        for (Feature feature : featureList) {
             features.add(feature.getFeatureID());
         }
         return features;

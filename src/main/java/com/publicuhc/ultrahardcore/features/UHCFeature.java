@@ -35,7 +35,7 @@ public abstract class UHCFeature implements Feature {
     /**
      * Is the feautre enabeld right now?
      */
-    private boolean m_enabled;
+    private boolean enabled;
 
     @Override
     public final boolean enableFeature(){
@@ -52,7 +52,7 @@ public abstract class UHCFeature implements Feature {
             return false;
 
         //enable the feature
-        m_enabled = true;
+        enabled = true;
         enableCallback();
         return true;
     }
@@ -72,7 +72,7 @@ public abstract class UHCFeature implements Feature {
             return false;
 
         //disable the feature
-        m_enabled = false;
+        enabled = false;
         disableCallback();
         return true;
     }
@@ -89,7 +89,7 @@ public abstract class UHCFeature implements Feature {
 
     @Override
     public boolean isEnabled() {
-        return m_enabled;
+        return enabled;
     }
 
     /**
