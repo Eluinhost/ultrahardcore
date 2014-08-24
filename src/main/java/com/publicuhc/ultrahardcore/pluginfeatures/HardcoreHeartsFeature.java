@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.pluginfeatures.hardcorehearts;
+package com.publicuhc.ultrahardcore.pluginfeatures;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;

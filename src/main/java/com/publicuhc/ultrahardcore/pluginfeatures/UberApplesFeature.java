@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.pluginfeatures.uberapples;
+package com.publicuhc.ultrahardcore.pluginfeatures;
 
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
@@ -42,7 +42,7 @@ import java.util.Collection;
  * Disabled: Nothing
  */
 @Singleton
-public class UberApples extends UHCFeature {
+public class UberApplesFeature extends UHCFeature {
 
     public static final String ALLOW_NOTCH_APPLE = "UHC.recipies.allowNotchApple";
 

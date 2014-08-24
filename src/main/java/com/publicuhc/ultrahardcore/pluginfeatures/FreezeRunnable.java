@@ -1,4 +1,4 @@
-package com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze;
+package com.publicuhc.ultrahardcore.pluginfeatures;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.pluginfeatures.witchspawns;
+package com.publicuhc.ultrahardcore.pluginfeatures;
 
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.features.UHCFeature;

@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze;
+package com.publicuhc.ultrahardcore.pluginfeatures;
 
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
@@ -27,6 +27,7 @@ import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.FreezeRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

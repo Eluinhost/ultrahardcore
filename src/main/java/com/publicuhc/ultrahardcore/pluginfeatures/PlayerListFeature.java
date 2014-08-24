@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.pluginfeatures.playerlist;
+package com.publicuhc.ultrahardcore.pluginfeatures;
 
 import com.google.common.collect.Range;
 import com.google.common.collect.Ranges;

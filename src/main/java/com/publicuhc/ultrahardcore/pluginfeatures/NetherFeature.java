@@ -1,5 +1,5 @@
 /*
- * EnderpearlsFeature.java
+ * NetherFeature.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,35 +19,34 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.pluginfeatures.enderpearls;
+package com.publicuhc.ultrahardcore.pluginfeatures;
 
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.features.UHCFeature;
-import org.bukkit.entity.EntityType;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.permissions.Permissible;
 
-
 /**
- * EnderpearlsFeature
+ * NetherFeature
  *
- * Enabled: Removes damage from enderpearls
+ * Enabled: Disables travelling into the nether
  * Disabled: Nothing
- *
- * Permissions: UHC.enderpearls.damage - takes damage from enderpearls when enabled
  */
 @Singleton
-public class EnderpearlsFeature extends UHCFeature {
+public class NetherFeature extends UHCFeature {
 
-    public static final String ENDERPEARL_DAMAGE = "UHC.enderpearls.damage";
+    public static final String ALLOW_NETHER = "UHC.nether.allow";
 
     @EventHandler
-    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent ede) {
-        if (isEnabled()) {
-            if (ede.getDamager().getType() == EntityType.ENDER_PEARL) {
-                if (!((Permissible) ede.getEntity()).hasPermission(ENDERPEARL_DAMAGE)) {
-                    ede.setCancelled(true);
+    public void onPortalEvent(EntityPortalEvent epe) {
+        //if it's enabled
+        if (isEnabled() && epe.getEntity() instanceof Permissible) {
+            //if they're going into the nether cancel it
+            if(!((Permissible) epe.getEntity()).hasPermission(ALLOW_NETHER)) {
+                if (epe.getTo().getWorld().getEnvironment() == World.Environment.NETHER) {
+                    epe.setCancelled(true);
                 }
             }
         }
@@ -55,11 +54,11 @@ public class EnderpearlsFeature extends UHCFeature {
 
     @Override
     public String getFeatureID() {
-        return "Enderpearls";
+        return "NetherFeature";
     }
 
     @Override
     public String getDescription() {
-        return "Enderpearls cause no teleport damage";
+        return "Disables the use of nether portals";
     }
 }

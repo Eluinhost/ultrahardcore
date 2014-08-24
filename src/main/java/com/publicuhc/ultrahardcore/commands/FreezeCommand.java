@@ -30,7 +30,7 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.features.Feature;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.pluginfeatures.playerfreeze.PlayerFreezeFeature;
+import com.publicuhc.ultrahardcore.pluginfeatures.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
 
 public class FreezeCommand extends SimpleCommand {
