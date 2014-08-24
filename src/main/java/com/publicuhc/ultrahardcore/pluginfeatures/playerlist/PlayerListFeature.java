@@ -67,13 +67,12 @@ public class PlayerListFeature extends UHCFeature {
     private static final String OBJECTIVE_UNDER_NAME_NAME = "UHCHealthName";
     private static final String OBJECTIVE_TYPE = "dummy";
 
-    private static final double LOW_HEALTH_BOUNDARY = 6.0D;
-    private static final double MID_HEALTH_BOUNDARY = 12.0D;
+    private static final double LOW_HEALTH_BOUNDARY = 33;
+    private static final double MID_HEALTH_BOUNDARY = 66;
 
-    private static final Range<Double> DEAD_HEALTH = Ranges.closed(0.0D, 0.0D);
-    private static final Range<Double> LOW_HEALTH = Ranges.openClosed(0.0D, LOW_HEALTH_BOUNDARY);
-    private static final Range<Double> MIDDLE_HEALTH = Ranges.openClosed(LOW_HEALTH_BOUNDARY, MID_HEALTH_BOUNDARY);
-    private static final Range<Double> HIGH_HEALTH = Ranges.greaterThan(MID_HEALTH_BOUNDARY);
+    private static final Range<Double> DEAD_HEALTH_PERCENT = Ranges.closed(0.0D, 0.0D);
+    private static final Range<Double> LOW_HEALTH_PERCENT = Ranges.openClosed(0.0D, LOW_HEALTH_BOUNDARY);
+    private static final Range<Double> MIDDLE_HEALTH_PERCENT = Ranges.openClosed(LOW_HEALTH_BOUNDARY, MID_HEALTH_BOUNDARY);
 
     private Objective playerListObjective;
     private Objective underNameObjective;
@@ -115,12 +114,15 @@ public class PlayerListFeature extends UHCFeature {
 
         if (useColours) {
             ChatColor prefix = ChatColor.GREEN;
+
+            double healthPercent = health / player.getMaxHealth() * 100;
+
             if (player.hasPermission(PLAYER_LIST_HEALTH)) {
-                if (MIDDLE_HEALTH.contains(health)) {
+                if (MIDDLE_HEALTH_PERCENT.contains(healthPercent)) {
                     prefix = ChatColor.YELLOW;
-                } else if (LOW_HEALTH.contains(health)) {
+                } else if (LOW_HEALTH_PERCENT.contains(healthPercent)) {
                     prefix = ChatColor.RED;
-                } else if (DEAD_HEALTH.contains(health)) {
+                } else if (DEAD_HEALTH_PERCENT.contains(healthPercent)) {
                     prefix = ChatColor.GRAY;
                 }
             } else {
