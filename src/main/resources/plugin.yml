@@ -5,7 +5,7 @@ description: Make minecraft harder, no health regen and extras!
 author: ghowden/Eluinhost
 website: wiki.publicuhc.com
 database: false
-softdepend: [WorldEdit,ProtocolLib]
+softdepend: [ProtocolLib]
 commands:
     heal:
       description: Heal a player/yourself
