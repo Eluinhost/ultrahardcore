@@ -64,7 +64,7 @@ public class DefaultFeatureManager implements FeatureManager {
     private final List<Feature> m_featureList = new ArrayList<Feature>();
 
     /**
-     * Only allow uhcFeatures with this pattern as an ID
+     * Only allow features with this pattern as an ID (no whitespace)
      */
     private static final Pattern NAME_PATTERN = Pattern.compile("^[\\S]++$");
 
