@@ -21,29 +21,21 @@
 
 package com.publicuhc.ultrahardcore.pluginfeatures.witchspawns;
 
-import com.publicuhc.pluginframework.configuration.Configurator;
-import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.plugin.Plugin;
 
+
+/**
+ * WitchSpawns
+ *
+ * Enabled: Disables witch spawning
+ * Disabled: Nothing
+ */
 @Singleton
 public class WitchSpawnsFeature extends UHCFeature {
-
-    /**
-     * Feature allows witches to spawn when enabled, disables it when disabled
-     * @param plugin the plugin
-     * @param configManager the config manager
-     * @param translate the translator
-     */
-    @Inject
-    private WitchSpawnsFeature(Plugin plugin, Configurator configManager, Translate translate) {
-        super(plugin, configManager, translate);
-    }
 
     /**
      * Whenever a creature spawns
@@ -51,8 +43,7 @@ public class WitchSpawnsFeature extends UHCFeature {
      */
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent ese) {
-        //when enabled witches can spawn, when not enabled they are cancelled
-        if (!isEnabled() && ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
+        if (isEnabled() && ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
             ese.setCancelled(true);
         }
     }
@@ -64,6 +55,6 @@ public class WitchSpawnsFeature extends UHCFeature {
 
     @Override
     public String getDescription() {
-        return "Allows natural witch spawns";
+        return "Disables natural witch spawns";
     }
 }
