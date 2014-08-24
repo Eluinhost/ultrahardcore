@@ -21,10 +21,10 @@
 package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.pluginframework.FrameworkJavaPlugin;
-import com.publicuhc.pluginframework.metrics.Metrics;
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.shaded.metrics.Metrics;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
 import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBan;
