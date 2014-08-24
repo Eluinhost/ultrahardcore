@@ -24,15 +24,13 @@ package com.publicuhc.ultrahardcore.pluginfeatures.ghastdrops;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,36 +38,32 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Handles conversion of ghast tears to gold ingots
- * Config is whitelist type world dependant
- * Nothing special to do on disable and enable
+ * GhastDropsFeature
  *
- * @author Graham
+ * Enabled: Replaces ghast tears with gold ingots on death of ghast
+ * Disabled: Nothing
  */
 @Singleton
 public class GhastDropsFeature extends UHCFeature {
 
-    /**
-     * Stops ghasts dropping tears to get rid of regen potions
-     * @param plugin the plugin
-     * @param configManager the config manager
-     * @param translate the translator
-     */
-    @Inject
-    private GhastDropsFeature(Plugin plugin, Configurator configManager, Translate translate) {
-        super(plugin, configManager, translate);
-    }
+    private final FileConfiguration config;
 
     /**
-     * Whenever an entity dies
-     * @param ede the death event
+     * Stops ghasts dropping tears to get rid of regen potions
+     *
+     * @param configManager the config manager
      */
+    @Inject
+    private GhastDropsFeature(Configurator configManager) {
+        config = configManager.getConfig("main");
+    }
+
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent ede) {
         //if we're enabled and a ghast died
         if (isEnabled() && ede.getEntityType() == EntityType.GHAST) {
             //if ghasts can't drop tears in this world
-            if (featureEnabledForWorld(getBaseConfig(), ede.getEntity().getWorld().getName())) {
+            if (featureEnabledForWorld(ede.getEntity().getWorld().getName())) {
 
                 //get the list of drops
                 List<ItemStack> drops = ede.getDrops();
@@ -91,20 +85,19 @@ public class GhastDropsFeature extends UHCFeature {
     }
 
     /**
-     *  Is the feature enabled for the world given
-     * @param featureNode the feature name
+     * Is the feature enabled for the world given
+     *
      * @param worldName the world
      * @return true if allowed, false otherwise
      */
-    public boolean featureEnabledForWorld(String featureNode, String worldName) {
-        FileConfiguration config = getConfigManager().getConfig("main");
+    public boolean featureEnabledForWorld(String worldName) {
         //w&&f = enabled
         //w&&!f = disabled
         //!w&&f = disabled
         //!w&&!f = enabled
         // = AND
-        boolean whitelist = config.getBoolean(featureNode + ".whitelist");
-        boolean found = config.getStringList(featureNode + ".worlds").contains(worldName);
+        boolean whitelist = config.getBoolean("GhastDrops.whitelist");
+        boolean found = config.getStringList("GhastDrops.worlds").contains(worldName);
         return !(whitelist ^ found);
     }
 
