@@ -21,6 +21,7 @@
 package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.pluginframework.FrameworkJavaPlugin;
+import com.publicuhc.pluginframework.routing.Router;
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
@@ -45,8 +46,8 @@ public class UltraHardcore extends FrameworkJavaPlugin {
 
     //When the plugin gets started
     @Override
-    protected void onFrameworkEnable() {
-
+    protected void onFrameworkEnable()
+    {
         //enable metrics
         Metrics metrics = getMetrics();
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
@@ -63,19 +64,30 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     }
 
     @Inject
-    private void setFeatureManager(FeatureManager featureManager) {
+    private void setFeatureManager(FeatureManager featureManager)
+    {
         this.featureManager = featureManager;
     }
 
     /**
      * @return the feature manager for handling features
      */
-    public FeatureManager getFeatureManager() {
+    public FeatureManager getFeatureManager()
+    {
         return featureManager;
     }
 
+    /**
+     * @return the plugin router, used for registering commands e.t.c.
+     */
+    public Router getCommandRouter()
+    {
+        return getRouter();
+    }
+
     @Override
-    protected List<AbstractModule> initialModules() {
+    protected List<AbstractModule> initialModules()
+    {
         List<AbstractModule> customModules = new ArrayList<AbstractModule>();
         customModules.add(new UHCModule());
         return customModules;
