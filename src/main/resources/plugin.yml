@@ -33,18 +33,6 @@ commands:
       description: Unfreezes players
       usage: /<command> player/*
       aliases: [uhcunfreeze]
-    scatter:
-      description: Scatters players within a world within set borders
-      usage: /<command> typeID world centerX,centerZ radius minDist useTeams players/*
-      aliases: [uhcscatter]
-    iscatter:
-      description: Interactive scattering
-      usage: /<command>
-      aliases: [uhciscatter]
-    genborder:
-      description: Generates a border in the world
-      usage: /<command> worldname radius typeID[:blockID:meta] [x,z]
-      aliases: [uhcgenerateborder]
     tpp:
       description: Teleports all players to another player/location
       usage: /<command> list_of_players/* playername OR /tpp list_of_players/* x,y,z[,worldname]
@@ -57,78 +45,10 @@ commands:
       description: Clears your inventory
       usage: /ciself
       aliases: [uhcciself]
-    randomteams:
-      description: Put people in random teams
-      usage: /<command> numberofteams [world_name]
-      aliases: [uhcrandomteams]
-    clearteams:
-      description: Clears all the UHC teams or all teams if specifed
-      usage: /<command> [all]
-      aliases: [uhcclearteams]
-    emptyteams:
-      description: Empties all the UHC teams or all teams if specified
-      usage: /<command> [all]
-      aliases: [uhcemptyteams]
-    listteams:
-      description: List the teams on the server
-      usage: /<command> [all]
-      aliases: [uhclistteams]
-    jointeam:
-      description: Join a team
-      usage: /<command> teamid [playername]
-      aliases: [uhcjointeam]
-    leaveteam:
-      description: Leave team
-      usage: /<command> [playername]
-      aliases: [uhcleaveteam]
-    createteam:
-      description: Create a random named UHC team
-      usage: /<command> [teamID]
-      aliases: [uhccreateteam]
-    removeteam:
-      description: Remove and clear a team
-      usage: /<command> id
-      aliases: [uhcremoveteam]
-    deathban:
-      description: Manage death bans
-      usage: /<command> ban playername time OR /<command> unban playername
-      aliases: [uhcdeathban]
-    givedrops:
-      description: Give players items defined for death drops
-      usage: /<command> groupname */player1 player2 player3
-      aliases: [uhcgivedrops]
-    timer:
-      description: Dragon bar timers
-      usage: /<command> 1h2m3s message to display
-      aliases: [uhctimer]
-    canceltimer:
-      description: Cancel the dragon timer
-      usage: /<command>
-      aliases: [uhccanceltimer]
-    teamup:
-      description: Make a team out of the players provided
-      usage: /<command> player1 player2 player3 player4
-      aliases: [uhcteamup]
     whitelistall:
       description: Whitelist all online players
       usage: /<command>
       aliases: [uhcwhitelistall]
-    reqteam:
-      description: Request a team with the given players
-      usage: /<command> player1 player2 ...
-      aliases: [uhcreqteam]
-    noteam:
-      description: Display all players not in a team
-      usage: /<command>
-      aliases: [uhcnoteam]
-    pmteam:
-      description: PM your team
-      usage: /<command> message
-      aliases: [uhcpmteam]
-    headheal:
-      description: Change the amount a head heals
-      usage: /<command> amount
-      aliases: [uhcheadheal]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions
@@ -177,9 +97,6 @@ permissions:
     UHC.feed.announce:
         description: All feed commands will be announced to this player
         default: false
-    UHC.teams.noteam:
-        description: Allows usage of the noteam command
-        default: op
     UHC.feature.toggle:
         description: Allows a player to globally change loaded features
         default: op
@@ -191,9 +108,6 @@ permissions:
         default: op
     UHC.freeze.antifreeze:
         description: Players with this permission are not affected by /freeze
-        default: op
-    UHC.scatter:
-        description: Allows a player to use the scatter command/s
         default: op
     UHC.playerListHealth:
         description: Player with this permission have health on their name in the player list
@@ -219,108 +133,12 @@ permissions:
     UHC.noEnderpearlDamage:
         description: player with this permission take no damage when teleporting using enderpearls
         default: true
-    UHC.deathLightning:
-        description: player with this permission will have fake lightning strike where they die
-        default: true
-    UHC.dropSkull:
-        description: player with this permission can have their head drop on death
-        default: true
-    UHC.headStake:
-        description: player's head will drop on a stake if possible
-        default: true
-    UHC.generateborder:
-        description: Allows a player to generate the borders
-        default: op
     UHC.tpall:
         description: Allows a player to tp all players to another player/location
-        default: op
-    UHC.AnonChat.chat:
-        description: Speak anon
-        default: true
-    UHC.AnonChat.seeName:
-        description: See the name of whoever is using anon chat
-        default: op
-    UHC.deathmessages.remove:
-        description: Removes the death message for this player
-        default: true
-    UHC.deathmessages.affixes:
-        description: Adds the death message prefix/suffix
-        default: true
-    UHC.teams.random:
-        description: Allows for creation of random teams
-        default: op
-    UHC.teams.clear:
-        description: Allows for the clearing of teams
-        default: op
-    UHC.teams.empty:
-        description: Allows for the emptying of teams
-        default: op
-    UHC.teams.list:
-        description: Allows for the viewing of teams
-        default: true
-    UHC.teams.create:
-        description: Allows a player to get a new random UHC team
-        default: op
-    UHC.teams.remove:
-        description: Allows a player to remove a team
-        default: op
-    UHC.teams.join:
-        description: Allows a player to join any team
-        default: true
-    UHC.teams.join.other:
-        description: Allows a player to force another to join a team
-        default: op
-    UHC.teams.leave:
-        description: Allows a player to leave their team
-        default: true
-    UHC.teams.teamup:
-        description: Allows the use of /teamup
-        default: op
-    UHC.teams.leave.other:
-        description: Allows a player to remove someone else from their team
-        default: op
-    UHC.teams.request.request:
-        description: Allows a player to make a team request
-        default: true
-    UHC.teams.request.reply:
-        description: Allows a player to receive/reply to requests
-        default: op
-    UHC.potions.disableSplash:
-        description: Stops a player from brewing splash potions
-        default: true
-    UHC.potions.disableImproved:
-        description: Stops a player brewing using glowstone
-        default: true
-    UHC.deathban.immune:
-        description: Immune to death bans
-        default: op
-    UHC.deathban.ban:
-        description: Allows use of the ban command
-        default: op
-    UHC.deathban.unban:
-        description: Allows use of the unban command
-        default: op
-    UHC.deathban.group.default:
-        description: Bans for the group default
-        default: true
-    UHC.timer:
-        description: Allows use of the timer command
-        default: op
-    UHC.tpall:
-        description: TP player to a player/location
         default: op
     UHC.nether.allow:
         description: Allows travel to the nether when feature is enabled
         default: op
     UHC.whitelistall:
         description: Allows use of the /whitelistall command
-        default: op
-    UHC.autorespawn:
-        description: Allows player to auto respawn on death
-        default: true
-    UHC.teams.pm:
-        description: Pm your team
-        default: true
-    UHC.goldenhead.command:
-        description: Allows use of the /headheal command
         default: op

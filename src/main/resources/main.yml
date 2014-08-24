@@ -1,114 +1,29 @@
-enabledFeatures:
-- "AnonChat"
-- "AutoRespawn"
-- "DeathBans"
-- "GhastDrops"
-- "DisableRegen"
-- "PlayerList"
-- "HardRecipes"
-- "Enderpearls"
-- "PlayerHeads"
-- "GoldenHeads"
-- "HardcoreHearts"
-- "PotionNerfs"
-- "WitchSpawns"
-- "PlayerFreeze"
-- "DisableUberApples"
-features:
-  AnonChat:
-    trigger: "P "
-  GhastDrops:
-    whitelist: false
-    worlds:
-    - world_names_to_drop_tears_in
-  PlayerFreeze:
-    period: 40
-    potion:
-      duration: 160
-      effects:
-      - BLINDNESS:1
-      - DAMAGE_RESISTANCE:5
-      - SLOW_DIGGING:5
-  PlayerList:
-    colours: true
-    delay: 10
-    belowName: true
-    scaling: 5
-    roundHealth: false
-    belowNameUnit: "&4&h"
-    displayNames: true
-  PlayerHeads:
-    pvponly: false
-    nonteamonly: true
-    percentChance: 100
-    onStake: true
-  DeathMessages:
-    message: "&c%message% at %coords%"
-    remove: false
-  DeathDrops:
-    items:
-      template1:
-        type: GOLD_INGOT
-        amount: 1-3
-        chance: 0
-      template2:
-        type: LEAVES
-        data: 3
-        amount: 1-64
-        chance: 0
-      template3:
-        type: OBSIDIAN
-        amount: 20-30
-        chance: 0
-  GoldenHeads:
-    amountTotal: 6
-  PotionNerfs:
-    disableSplash: true
-    disableGlowstone: true
-  PortalRanges:
-    to_nether:
-      allowed: true
-      creation_radius: 50
-      search_radius: 50
-    from_nether:
-      allowed: true
-      creation_radius: 50
-      search_radius: 50
-  DeathBans:
-    delay: 10
-    classes:
-      just_server_ban:
-        actions:
-        - "serverban"
-        serverban_duration: "2h"
-        serverban_message: "You are under a death ban, you will be unbanned in %timeleft%"
-      bungee_kick_and_server_ban:
-        actions:
-        - "bungeekick"
-        - "serverban"
-        serverban_duration: "1h"
-        serverban_message: "You are under a death ban, you will be unbanned in %timeleft%"
-        bungeekick_server: "lobby"
-      kick_to_a_world:
-        actions:
-        - "worldkick"
-        worldkick_world: "world"
-      kick_from_the_server:
-        actions:
-        - "serverkick"
-        serverkick_message: "You were kicked for dying!"
-scatter:
-  maxtries: 250
-  delay: 60
-  allowedBlocks:
-  - "STONE"
-  - "GRASS"
-  - "DIRT"
-  - "SAND"
-  - "GRAVEL"
-  - "SNOW"
-  - "SNOW_BLOCK"
-  - "ICE"
-border:
-  id: BEDROCK
-  meta: 0
+GhastDrops:
+  whitelist: false
+  worlds:
+  - world_names_to_drop_tears_in
+PlayerFreeze:
+  period: 40
+  potion:
+    duration: 160
+    effects:
+    - BLINDNESS:1
+    - DAMAGE_RESISTANCE:5
+    - SLOW_DIGGING:5
+PlayerList:
+  colours: true
+  delay: 10
+  belowName: true
+  scaling: 5
+  roundHealth: false
+  belowNameUnit: "&4&h"
+  displayNames: true
+PortalRanges:
+  to_nether:
+    allowed: true
+    creation_radius: 50
+    search_radius: 50
+  from_nether:
+    allowed: true
+    creation_radius: 50
+    search_radius: 50

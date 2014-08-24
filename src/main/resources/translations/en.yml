@@ -1,39 +1,9 @@
-border:
-  invalid:
-    world: "&4Invalid world supplied. (%world%)"
-    radius: "&4Invalid radius supplied. (%radius%)"
-    block_id: "&4Invalid block ID"
-    block_id_not_block: "&4Must use a valid block"
-    meta_id: "&4Invalid metadata ID supplied. (%meta%)"
-    border_id: "&4Invalid border ID supplied. (%borderID%)"
-    coordinates: "&4Invalid coordinates given. (%coords%)"
-  max_blocks: "&4Error, hit the max amount of blocks to change."
-  created: "&6Border created!"
-  non_player_world: "&4You need to specify a world when not running the command as a player"
-  undone: "&6Undone successfully!"
-  no_undo: "&4Nothing left to undo!"
-  no_borders: "&4No border types loaded"
-  border_types: "&6Loaded border types (%count%)"
-  type_format: "&6%featureID% - %desc%"
 ci:
   cleared: "&6Inventory cleared!"
   immune: "&4Player %name% is immune to inventory clears"
   tell: "&7Your inventory was cleared by %name%"
   not_found: "&4Players not found to clear: %list%"
   announce_all: "&6All player inventories cleared by %name%"
-deathbans:
-  not_loaded: "&4The deathbans feature isn't loaded!"
-  removed: "&6Removed %amount% bans for player %name%"
-  banned: "&6Banned player %name% for %time%"
-  ban_message: "You are under a death ban, you will be unbanned in %timeleft%"
-  uuid_error: "&4Error getting the UUID for the player from the Mojang servers"
-timer:
-  feature_not_found: "&4Timer feature not found!"
-  cancelled: "&6Timer cancelled"
-  invalid_time: "&4Invalid time supplied, time is number of seconds"
-  running: "&6Timer started"
-  already_running: "&4Timer already running!"
-  not_enabled: "&4The timer feature is not enabled."
 features:
   loaded:
     header: "&6Currently loaded features (%amount%):"
@@ -70,38 +40,6 @@ freeze:
   player_unfroze: "&6Player unfrozen"
   unfroze_all: "&6All players unfrozen"
   not_enabled: "&4Freeze feature is not enabled!"
-teams:
-  already_exists: "&4Team %name% already exists!"
-  created: "&6Created the team %display% (%name%)"
-  not_exist: "&4That team doesn't exist"
-  joined_notification: "&6You joined the team %display% (%name%)"
-  disbanded: "&4Your team was disbanded"
-  removed: "&6Team removed!"
-  pm_message: "&a[PM - %sender%]&f %message%"
-  not_in_team: "&4You are not in a team!"
-  player_not_in_team: "&4Player %name% is not on a team!"
-  cleared: "&6All teams cleared"
-  invalid_player: "&4Player UUID not found"
-  emptied: "&6All teams emptied"
-  no_teams: "&4There are no defined teams!"
-  invalid_world: "&4Invalid world supplied"
-  invalid_number_teams: "&4Invalid amount of teams to create"
-  too_many_teams: "&4Teams to create is greater than the number of people without a team!"
-  greater_zero: "&4Teams to create can not be zero or less!"
-  created_teams: "&6Made %amount% random teams"
-  player_not_found: "&4Could not find details for the player %name%"
-  all_in_team: "&6All players are in teams"
-  request:
-    denied: "&6Reqest denied"
-    requester_denied: "&4Your team request was denied"
-    requester_accepted: "&6Your team request was accepted"
-    announce: "&6Player %name% has requested a team with the following: %names%"
-    submitted: "&6Request submitted"
-    not_found: "&4Cannot find a request from that player"
-    open:
-      title: "&6Open requests"
-      request: "&7%name% to team with %names%"
-      none: "&4No open requests"
 teleport:
   non_player_world: "&4You need to specify a world when not running the command as a player"
   invalid:
@@ -109,12 +47,6 @@ teleport:
     coords: "&4Invalid coordinate syntax, try x,y,z[,worldname]"
     player: "&4Player %name% not found!"
   all_teleported: "&6All players teleported"
-anon_chat:
-  no_perms: "&4You don't have the permissions to use annonymous chat"
 whitelist:
   added: "&6All online players added to the whitelist"
   cleared: "&6Whitelist cleared"
-headheal:
-  not_int: "&4Must provide an integer for the amount to heal"
-  feature_not_found: "&4Golden head feature not found!"
-  updated: "&6Amount healed now updated"
