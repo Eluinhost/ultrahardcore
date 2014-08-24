@@ -21,11 +21,8 @@
 
 package com.publicuhc.ultrahardcore.pluginfeatures.uberapples;
 
-import com.publicuhc.pluginframework.configuration.Configurator;
-import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -34,52 +31,33 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.permissions.Permissible;
-import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
 
 
 /**
- * RecipeHandler
- * Handles the alternative recipies for the regen items
+ * UberApples
  *
- * @author ghowden
+ * Enabled: Disables uber apple crafting
+ * Disabled: Nothing
  */
 @Singleton
 public class UberApples extends UHCFeature {
 
-    public static final String RECIPE_BASE = BASE_PERMISSION + "recipies.";
-    public static final String ALLOW_NOTCH_APPLE = RECIPE_BASE + "allowNotchApple";
+    public static final String ALLOW_NOTCH_APPLE = "UHC.recipies.allowNotchApple";
 
-    /**
-     * Disables uber apples, normal when disabled
-     * @param plugin the plugin
-     * @param configManager the config manager
-     * @param translate the translator
-     */
-    @Inject
-    private UberApples(Plugin plugin, Configurator configManager, Translate translate) {
-        super(plugin, configManager, translate);
-    }
-
-    /**
-     * Whenever an item is about to pop up on the crafting table
-     * @param e the prepareitemcraftevent
-     */
     @EventHandler
     public void onPrepareCraftItemEvent(PrepareItemCraftEvent e) {
         //if we are enabled
-        if (isEnabled()) {
-            //check if no permission to create
-            if(!isRecipeAllowedForPermissible(e.getView().getPlayer(),e.getRecipe())){
-                //set to air if not allowed
-                e.getInventory().setResult(new ItemStack(Material.AIR));
-            }
+        if (isEnabled() && !isRecipeAllowedForPermissible(e.getView().getPlayer(),e.getRecipe())){
+            //set to air if not allowed
+            e.getInventory().setResult(new ItemStack(Material.AIR));
         }
     }
 
     /**
      * Is the recipe allowed?
+     *
      * @param permissible Permissible the permissible to check against
      * @param recipe the recipe to check
      * @return boolean true if allowed, false if not
@@ -91,6 +69,7 @@ public class UberApples extends UHCFeature {
 
     /**
      * Check if the recipe has the given material in it
+     *
      * @param r the recipe to check
      * @param mat the material to look for
      * @return true if found, false if not
