@@ -1,3 +1,13 @@
+enabledFeatures:
+- "GhastDrops"
+- "DisableRegen"
+- "PlayerList"
+- "HardRecipes"
+- "Enderpearls"
+- "HardcoreHearts"
+- "WitchSpawns"
+- "PlayerFreeze"
+- "DisableUberApples"
 GhastDrops:
   whitelist: false
   worlds:
