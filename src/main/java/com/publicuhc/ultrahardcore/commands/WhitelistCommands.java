@@ -21,12 +21,11 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.routing.CommandMethod;
 import com.publicuhc.pluginframework.routing.CommandRequest;
 import com.publicuhc.pluginframework.routing.OptionsMethod;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -34,17 +33,13 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class WhitelistCommands extends SimpleCommand {
+public class WhitelistCommands extends Command {
 
     public static final String WHITELIST_ALL_PERMISSION = "UHC.whitelistall";
 
-    /**
-     * @param configManager the config manager
-     * @param translate     the translator
-     */
     @Inject
-    protected WhitelistCommands(Configurator configManager, Translate translate) {
-        super(configManager, translate);
+    protected WhitelistCommands(Translate translate) {
+        super(translate);
     }
 
     @CommandMethod(command = "whitelistall", permission = WHITELIST_ALL_PERMISSION)
