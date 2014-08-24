@@ -30,8 +30,9 @@ import java.util.List;
 public interface FeatureManager {
 
     /**
-     * Add a feature to the manager
-     * counts as enabled if the feature name is in the config list
+     * Add a feature to the manager.
+     * Features are enabled/disabled by default based on the enabled features in the config file.
+     * Feature names must contain no whitespace.
      *
      * @param feature Feature the feature to be added
      * @throws com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException when feature with the same ID already exists
@@ -43,7 +44,7 @@ public interface FeatureManager {
      * Check if a feature is enabled by it's ID
      *
      * @param featureID String the ID to check for
-     * @return boolean true if enabled, false otherwise
+     * @return true if enabled, false otherwise
      * @throws com.publicuhc.ultrahardcore.features.exceptions.FeatureIDNotFoundException when feature not found
      */
     boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException;
@@ -52,21 +53,17 @@ public interface FeatureManager {
      * Get the Feature based on it's ID
      *
      * @param featureID String the ID to check for
-     * @return Feature the returned feature, or null if not found
+     * @return the returned feature, or null if not found
      */
     Feature getFeatureByID(String featureID);
 
     /**
-     * Returns an unmodifiable list of all of the uhcFeatures loaded
-     *
-     * @return List
+     * @return an unmodifiable list of all of the loaded features
      */
     List<Feature> getFeatures();
 
     /**
-     * Get a list of all the used feature names
-     *
-     * @return List String
+     * @return List of all the currently registered feature names
      */
     List<String> getFeatureNames();
 }
