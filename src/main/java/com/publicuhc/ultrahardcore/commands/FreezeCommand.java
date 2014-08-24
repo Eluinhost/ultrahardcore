@@ -21,225 +21,110 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
-import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
-import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.routing.CommandMethod;
+import com.publicuhc.pluginframework.routing.CommandRequest;
+import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.features.Feature;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.pluginfeatures.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
 
-public class FreezeCommand extends SimpleCommand {
+import java.util.List;
+
+public class FreezeCommand extends Command {
 
     public static final String FREEZE_PERMISSION = "UHC.freeze.command";
     public static final String ANTIFREEZE_PERMISSION = "UHC.freeze.antifreeze";
 
-    private final FeatureManager m_features;
+    private final FeatureManager featureManager;
 
     /**
      * The freeze command
      *
      * @param features      the feature manager
-     * @param configManager the config manager
      * @param translate     the translator
      */
     @Inject
-    private FreezeCommand(FeatureManager features, Configurator configManager, Translate translate) {
-        super(configManager, translate);
-        m_features = features;
+    private FreezeCommand(FeatureManager features, Translate translate) {
+        super(translate);
+        featureManager = features;
     }
 
-    /**
-     * Ran on /freeze
-     *
-     * @param request the request params
-     */
-    @CommandMethod
+    @CommandMethod(command = "freeze", permission = FREEZE_PERMISSION, options = true)
     public void freezeCommand(CommandRequest request) {
-        Feature feature = m_features.getFeatureByID("PlayerFreeze");
+        OptionSet set = request.getOptions();
+
+        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureManager.getFeatureByID("PlayerFreeze");
         if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
+            request.sendMessage(translate("freeze.not_loaded", request.getSender()));
             return;
         }
         if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
+            request.sendMessage(translate("freeze.not_enabled", request.getSender()));
             return;
         }
-        Player player = request.getPlayer(0);
-        if (player == null) {
-            request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getFirstArg()));
+
+        if(set.has("a")) {
+            feature.freezeAll();
+            request.sendMessage(translate("freeze.froze_all", request.getSender()));
             return;
         }
-        if (player.hasPermission(ANTIFREEZE_PERMISSION)) {
-            request.sendMessage(translate("freeze.immune", request.getLocale()));
-            return;
+
+        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
+
+        for(Player player : players) {
+            if (player.hasPermission(ANTIFREEZE_PERMISSION)) {
+                request.sendMessage(translate("freeze.immune", request.getSender()));
+                return;
+            }
+            feature.addPlayer(player);
         }
-        ((PlayerFreezeFeature) feature).addPlayer(player);
-        request.sendMessage(translate("freeze.player_froze", request.getLocale()));
+        request.sendMessage(translate("freeze.player_froze", request.getSender()));
     }
 
-    @RouteInfo
-    public void freezeCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FREEZE_PERMISSION)
-                .restrictArgumentCount(1, 1)
-                .restrictCommand("freeze")
-                .maxMatches(1);
+    @OptionsMethod
+    public void freezeCommand(OptionParser parser)
+    {
+        parser.accepts("a", "Freeze all online players and any new connections");
+        parser.nonOptions().withValuesConvertedBy(new OnlinePlayerValueConverter(true));
     }
 
-    /**
-     * Ran on /freeze *
-     *
-     * @param request the request params
-     */
-    @CommandMethod
-    public void freezeAllCommand(CommandRequest request) {
-        Feature feature = m_features.getFeatureByID("PlayerFreeze");
-        if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
-            return;
-        }
-        if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
-            return;
-        }
-        ((PlayerFreezeFeature) feature).freezeAll();
-        request.sendMessage(translate("freeze.froze_all", request.getLocale()));
-    }
-
-    @RouteInfo
-    public void freezeAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FREEZE_PERMISSION)
-                .restrictStartsWith("*")
-                .restrictCommand("freeze");
-    }
-
-    /**
-     * Ran on /unfreeze
-     *
-     * @param request the request params
-     */
-    @CommandMethod
+    @CommandMethod(command = "unfreeze", permission = FREEZE_PERMISSION, options = true)
     public void unfreezeCommand(CommandRequest request) {
-        Feature feature = m_features.getFeatureByID("PlayerFreeze");
+        OptionSet set = request.getOptions();
+
+        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureManager.getFeatureByID("PlayerFreeze");
         if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
+            request.sendMessage(translate("freeze.not_loaded", request.getSender()));
             return;
         }
         if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
+            request.sendMessage(translate("freeze.not_enabled", request.getSender()));
             return;
         }
-        Player p = request.getPlayer(0);
-        if (null == p) {
-            request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getFirstArg()));
+
+        if(set.has("a")) {
+            feature.unfreezeAll();
+            request.sendMessage(translate("freeze.unfroze_all", request.getSender()));
             return;
         }
-        ((PlayerFreezeFeature) feature).removePlayer(p);
-        request.sendMessage(translate("freeze.player_unfroze", request.getLocale()));
+
+        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
+
+        for(Player player : players) {
+            feature.removePlayer(player);
+        }
+        request.sendMessage(translate("freeze.player_unfroze", request.getSender()));
     }
 
-    @RouteInfo
-    public void unfreezeCommandDetails(RouteBuilder builder) {
-        builder.maxMatches(1)
-                .restrictPermission(FREEZE_PERMISSION)
-                .restrictArgumentCount(1, 1)
-                .restrictCommand("unfreeze");
-    }
-
-    /**
-     * Ran on /unfreeze *
-     *
-     * @param request the request params
-     */
-    @CommandMethod
-    public void unfreezeAllCommand(CommandRequest request) {
-        Feature feature = m_features.getFeatureByID("PlayerFreeze");
-        if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
-            return;
-        }
-        if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
-            return;
-        }
-        ((PlayerFreezeFeature) feature).unfreezeAll();
-        request.sendMessage(translate("freeze.unfroze_all", request.getLocale()));
-    }
-
-    @RouteInfo
-    public void unfreezeAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FREEZE_PERMISSION)
-                .restrictStartsWith("*")
-                .restrictCommand("unfreeze");
-    }
-
-    @CommandMethod
-    public void toggleFreezeCommand(CommandRequest request) {
-        Feature feature = m_features.getFeatureByID("PlayerFreeze");
-        if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
-            return;
-        }
-        if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
-            return;
-        }
-        PlayerFreezeFeature freezeFeature = (PlayerFreezeFeature) feature;
-        Player player = request.getPlayer(1);
-
-        if (null == player) {
-            request.sendMessage(translate("freeze.invalid_player", request.getLocale(), "name", request.getArg(1)));
-            return;
-        }
-
-        if (freezeFeature.isPlayerFrozen(player)) {
-            freezeFeature.addPlayer(player);
-            request.sendMessage(translate("freeze.player_froze", request.getLocale()));
-        } else {
-            freezeFeature.removePlayer(player);
-            request.sendMessage(translate("freeze.player_unfroze", request.getLocale()));
-        }
-    }
-
-    @RouteInfo
-    public void toggleFreezeCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FREEZE_PERMISSION)
-                .restrictArgumentCount(2, 2)
-                .restrictStartsWith("toggle")
-                .restrictCommand("freeze")
-                .maxMatches(2);
-    }
-
-    @CommandMethod
-    public void toggleFreezeAllCommand(CommandRequest request) {
-        Feature feature = m_features.getFeatureByID("PlayerFreeze");
-        if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getLocale()));
-            return;
-        }
-        if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getLocale()));
-            return;
-        }
-        PlayerFreezeFeature freezeFeature = (PlayerFreezeFeature) feature;
-
-        if (freezeFeature.isGlobalMode()) {
-            freezeFeature.unfreezeAll();
-            request.sendMessage(translate("freeze.unfroze_all", request.getLocale()));
-        } else {
-            freezeFeature.freezeAll();
-            request.sendMessage(translate("freeze.froze_all", request.getLocale()));
-        }
-    }
-
-    @RouteInfo
-    public void toggleFreezeAllCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(FREEZE_PERMISSION)
-                .restrictStartsWith("toggle *")
-                .restrictCommand("freeze");
+    @OptionsMethod
+    public void unfreezeCommand(OptionParser parser)
+    {
+        parser.accepts("a", "Unfreeze all players");
+        parser.nonOptions().withValuesConvertedBy(new OnlinePlayerValueConverter(true));
     }
 }
