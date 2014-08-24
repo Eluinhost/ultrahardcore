@@ -45,7 +45,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
 
     //When the plugin gets started
     @Override
-    public void onFrameworkEnable() {
+    protected void onFrameworkEnable() {
 
         //enable metrics
         Metrics metrics = getMetrics();
@@ -75,7 +75,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     }
 
     @Override
-    public List<AbstractModule> initialModules() {
+    protected List<AbstractModule> initialModules() {
         List<AbstractModule> customModules = new ArrayList<AbstractModule>();
         customModules.add(new UHCModule());
         return customModules;
