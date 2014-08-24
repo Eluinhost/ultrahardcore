@@ -27,14 +27,9 @@ import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.shaded.metrics.Metrics;
 import com.publicuhc.ultrahardcore.features.FeatureManager;
 import com.publicuhc.ultrahardcore.features.IFeature;
-import com.publicuhc.ultrahardcore.pluginfeatures.deathbans.DeathBan;
-import com.publicuhc.ultrahardcore.scatter.ScatterManager;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * UltraHardcore
@@ -46,38 +41,15 @@ import java.util.logging.Level;
 @Singleton
 public class UltraHardcore extends FrameworkJavaPlugin {
 
-    private DefaultClasses m_defaults;
-
-    private ScatterManager m_scatterManager;
     private FeatureManager m_featureManager;
 
     //When the plugin gets started
     @Override
     public void onFrameworkEnable() {
-        //register deathbans for serilization
-        ConfigurationSerialization.registerClass(DeathBan.class);
-        //register the bungeecord plugin channel
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
-        m_defaults.loadDefaultFeatures();
-        m_defaults.loadDefaultScatterTypes();
-        m_defaults.loadDefaultCommands();
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
-            m_defaults.loadWorldEditThings();
-        } else {
-            getLogger().log(Level.WARNING, "WorldEdit not found, skipping related features/commands");
-        }
-        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-            m_defaults.loadProtocolLibThings();
-        } else {
-            getLogger().log(Level.WARNING, "ProtocolLib not found, skipping related features/commands");
-        }
-        getLogger().log(Level.INFO, "All default classes loaded");
-
+        //enable metrics
         Metrics metrics = getMetrics();
-
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
-
         for(final IFeature feature : m_featureManager.getFeatures()){
             graph.addPlotter(new Metrics.Plotter(feature.getFeatureID()) {
                 @Override
@@ -86,19 +58,8 @@ public class UltraHardcore extends FrameworkJavaPlugin {
                 }
             });
         }
-
         metrics.addGraph(graph);
-
         metrics.start();
-    }
-
-    @Inject
-    private void setScatterManager(ScatterManager scatterManager) {
-        m_scatterManager = scatterManager;
-    }
-
-    public ScatterManager getScatterManager() {
-        return m_scatterManager;
     }
 
     @Inject
@@ -106,17 +67,11 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         m_featureManager = featureManager;
     }
 
+    /**
+     * @return the feature manager for handling features
+     */
     public FeatureManager getFeatureManager() {
         return m_featureManager;
-    }
-
-    /**
-     * Load all the defaults for the entire plugin
-     * @param defaultClasses init class
-     */
-    @Inject
-    public void loadDefaultClasses(DefaultClasses defaultClasses) {
-        m_defaults = defaultClasses;
     }
 
     @Override
