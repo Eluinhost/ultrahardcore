@@ -21,11 +21,8 @@
 
 package com.publicuhc.ultrahardcore.pluginfeatures.recipes;
 
-import com.publicuhc.pluginframework.configuration.Configurator;
-import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -35,37 +32,25 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.permissions.Permissible;
-import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 
 /**
- * RecipeHandler
- * Handles the alternative recipies for the regen items
+ * RecipeFeature
  *
- * @author ghowden
+ * Enabled: Changes the crafting recipes of glistering melons and golden carrots
+ * Disabled: Nothing
  */
 @Singleton
 public class RecipeFeature extends UHCFeature {
 
-    public static final String RECIPE_BASE = BASE_PERMISSION + "recipies.";
+    public static final String RECIPE_BASE = "UHC.recipies.";
     public static final String ALLOW_NEW_GMELON = RECIPE_BASE + "allowNewGMelon";
     public static final String DISALLOW_OLD_GMELON = RECIPE_BASE + "disableGMelon";
     public static final String ALLOW_NEW_GCARROT = RECIPE_BASE + "allowNewGCarrot";
     public static final String DISALLOW_OLD_GCARROT = RECIPE_BASE + "disableGCarrot";
-
-    /**
-     * Harder recipes when enabled, normal when disabled
-     * @param plugin the plugin
-     * @param configManager the config manager
-     * @param translate the translator
-     */
-    @Inject
-    private RecipeFeature(Plugin plugin, Configurator configManager, Translate translate) {
-        super(plugin, configManager, translate);
-    }
 
     /**
      * Whenever an item is about to pop up on the crafting table
