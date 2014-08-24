@@ -21,15 +21,13 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.commands.annotation.CommandMethod;
-import com.publicuhc.pluginframework.commands.annotation.RouteInfo;
-import com.publicuhc.pluginframework.commands.requests.CommandRequest;
-import com.publicuhc.pluginframework.commands.requests.SenderType;
-import com.publicuhc.pluginframework.commands.routes.RouteBuilder;
-import com.publicuhc.pluginframework.configuration.Configurator;
+import com.publicuhc.pluginframework.routing.CommandMethod;
+import com.publicuhc.pluginframework.routing.CommandRequest;
+import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
 import com.publicuhc.pluginframework.translate.Translate;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -37,114 +35,51 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
+import java.util.List;
 
-public class ClearInventoryCommand extends SimpleCommand {
+public class ClearInventoryCommand extends Command {
 
     public static final String CLEAR_SELF_PERMISSION = "UHC.ci.self";
     public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";
     public static final String CLEAR_IMMUNE_PERMISSION = "UHC.ci.immune";
 
-    /**
-     * @param configManager the config manager
-     * @param translate the translator
-     */
     @Inject
-    private ClearInventoryCommand(Configurator configManager, Translate translate) {
-        super(configManager, translate);
+    private ClearInventoryCommand(Translate translate) {
+        super(translate);
     }
 
     /**
      * Ran on /ciself
      * @param request request params
      */
-    @CommandMethod
-    public void clearInventorySelf(CommandRequest request){
+    @CommandMethod(command = "ciself", permission = CLEAR_SELF_PERMISSION)
+    public void clearInventorySelf(CommandRequest request)
+    {
         clearInventory((HumanEntity) request.getSender());
-        request.sendMessage(translate("ci.cleared", request.getLocale()));
+        request.sendMessage(translate("ci.cleared", request.getSender()));
     }
 
-    /**
-     * Run on /ciself
-     *
-     * @param builder the builder
-     */
-    @RouteInfo
-    public void clearInventorySelfDetails(RouteBuilder builder) {
-        builder.restrictPermission(CLEAR_SELF_PERMISSION)
-                .restrictSenderType(SenderType.PLAYER)
-                .restrictCommand("ciself");
-    }
+    @CommandMethod(command = "ci", permission = CLEAR_OTHER_PERMISSION)
+    public void clearInventoryCommand(CommandRequest request)
+    {
+        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
 
-    /**
-     * Ran on /ci {name}*
-     * @param request request params
-     */
-    @CommandMethod
-    public void clearInventoryCommand(CommandRequest request){
-        int amount = request.getArgs().size();
-        AbstractList<String> namesNotFound = new ArrayList<String>();
-        for (int i = 0; i < amount; i++) {
-            Player p = request.getPlayer(i);
-            if (p == null) {
-                namesNotFound.add(request.getArg(i));
-                continue;
-            }
+        for(Player p : players) {
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                request.sendMessage(translate("ci.immune", request.getLocale(), "name", p.getName()));
+                request.sendMessage(translate("ci.immune", request.getSender(), "name", p.getName()));
             } else {
                 clearInventory(p);
-                p.sendMessage(translate("ci.tell", request.getLocale(), "name", request.getSender().getName()));
+                p.sendMessage(translate("ci.tell", request.getSender(), "name", request.getSender().getName()));
             }
         }
-        request.sendMessage(translate("ci.cleared", request.getLocale()));
-        if (!namesNotFound.isEmpty()) {
-            StringBuilder message = new StringBuilder();
-            for (String s : namesNotFound) {
-                message.append(' ').append(s);
-            }
-            request.sendMessage(translate("ci.not_found", request.getLocale(), "list", message.toString()));
-        }
+        request.sendMessage(translate("ci.cleared", request.getSender()));
     }
 
-    /**
-     * Run on /ci .* except /ci *
-     * @param builder the builder
-     */
-    @RouteInfo
-    public void clearInventoryCommandDetails(RouteBuilder builder) {
-        builder.restrictPermission(CLEAR_OTHER_PERMISSION)
-                .restrictArgumentCount(1, -1)
-                .restrictCommand("ci")
-                .maxMatches(1);
+    @OptionsMethod
+    public void clearInventoryCommand(OptionParser parser)
+    {
+        parser.nonOptions().withValuesConvertedBy(new OnlinePlayerValueConverter(true));
     }
-
-    /**
-     * Ran on /ci *
-     * @param request request params
-     */
-    @CommandMethod
-    public void clearInventoryAll(CommandRequest request){
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                clearInventory(p);
-            }
-        }
-        Bukkit.broadcastMessage(translate("ci.announce_all", request.getLocale(), "name", request.getSender().getName()));
-    }
-
-    /**
-     * Run on /ci *
-     * @param builder the builder
-     */
-    @RouteInfo
-    public void clearInventoryAllDetails(RouteBuilder builder) {
-        builder.restrictPermission(CLEAR_OTHER_PERMISSION)
-                .restrictStartsWith("*")
-                .restrictCommand("ci");
-    }
-
 
     /**
      * Clears the player's inventory, armour slots, item on cursor and crafting slots
