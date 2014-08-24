@@ -29,12 +29,14 @@ public interface Feature extends Listener {
 
     /**
     * Attempt to enable the feature
+     *
     * @return bool true if the feature was enabled, false if already enabled or event cancelled
     */
     boolean enableFeature();
 
     /**
      * Attempt to disable the feature
+     *
      * @return bool true if the feature was disabled, false if already disabled or event cancelled
      */
     boolean disableFeature();
@@ -46,18 +48,21 @@ public interface Feature extends Listener {
 
     /**
      * Is the feature enabled?
+     *
      * @return boolean
      */
     boolean isEnabled();
 
     /**
      * Get the description of the feature
+     *
      * @return String
      */
     String getDescription();
 
     /**
-     * @return a list detailing the components of this feature that are enabled/disabled. null if no config
+     * @return a list detailing the components of this feature that are enabled/disabled.
+     * Return null/empty for no components
      */
     List<String> getStatus();
 }

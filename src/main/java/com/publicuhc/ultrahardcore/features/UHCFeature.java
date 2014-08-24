@@ -39,39 +39,51 @@ public abstract class UHCFeature implements Feature {
 
     @Override
     public final boolean enableFeature(){
-        if(isEnabled()){
+        //if we're already enabled don't do anything
+        if (isEnabled())
             return false;
-        }
+
+        //trigger an enable event
         FeatureEvent event = new FeatureEnableEvent(this);
         Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()){
-            m_enabled = true;
-            enableCallback();
-        }
+
+        //if the event was cancelled don't do anything
+        if(event.isCancelled())
+            return false;
+
+        //enable the feature
+        m_enabled = true;
+        enableCallback();
         return true;
     }
 
     @Override
     public final boolean disableFeature(){
-        if(!isEnabled()){
+        //if we're already disabled don't do anything
+        if (!isEnabled())
             return false;
-        }
+
+        //trigger a disable event
         FeatureDisableEvent event = new FeatureDisableEvent(this);
         Bukkit.getPluginManager().callEvent(event);
-        if(!event.isCancelled()){
-            m_enabled = false;
-            disableCallback();
-        }
+
+        //if the event was cancelled don't do anything
+        if(event.isCancelled())
+            return false;
+
+        //disable the feature
+        m_enabled = false;
+        disableCallback();
         return true;
     }
 
     /**
-     * Called when the feature is being enabled
+     * Called when the feature is being enabled. Override to provide on enable actions.
      */
     protected void enableCallback(){}
 
     /**
-     * Called when the feature is being disabled
+     * Called when the feature is being disabled. Override to provide on disable actions.
      */
     protected void disableCallback(){}
 
@@ -82,33 +94,35 @@ public abstract class UHCFeature implements Feature {
 
     /**
      * Are the features the same feature? Returns true if they have the same ID
+     *
      * @param obj Object
-     * @return boolean
+     * @return boolean true if features are equal
      */
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Feature && ((Feature) obj).getFeatureID().equals(getFeatureID());
     }
 
-    /**
-     * Return the hashcode of this feature
-     * @return int
-     */
     @Override
     public int hashCode(){
         return new HashCodeBuilder(17, 31).append(getFeatureID()).toHashCode();
     }
 
+    /**
+     * @return list of messages to show for this features status when requested
+     */
     @Override
     public List<String> getStatus() {
         return null;
     }
 
     /**
+     * Utility method to convert true to green ON and false to red OFF
+     *
      * @param onOff the boolean
      * @return green 'ON' if true, red 'OFF' if false
      */
-    protected String convertBooleanToOnOff(boolean onOff) {
+    protected static String convertBooleanToOnOff(boolean onOff) {
         return onOff ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF";
     }
 }
