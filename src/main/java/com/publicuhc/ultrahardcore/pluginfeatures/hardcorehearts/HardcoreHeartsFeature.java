@@ -28,13 +28,19 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.events.PacketListener;
-import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.pluginfeatures.UHCFeature;
+import com.publicuhc.ultrahardcore.features.UHCFeature;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * HardcoreHeartsFeature
+ *
+ * Enabled: Shows hardcore hearts on login to the server
+ * Disabled: Nothing
+ *
+ * Requires ProtocolLib
+ */
 @Singleton
 public class HardcoreHeartsFeature extends UHCFeature {
 
@@ -43,13 +49,11 @@ public class HardcoreHeartsFeature extends UHCFeature {
 
     /**
      * Shows hardcore hearts in non hardcore worlds when enabled, requires protcollib
+     *
      * @param plugin the plugin
-     * @param configManager the config manager
-     * @param translate the translator
      */
     @Inject
-    private HardcoreHeartsFeature(Plugin plugin, Configurator configManager, Translate translate) {
-        super(plugin, configManager, translate);
+    private HardcoreHeartsFeature(Plugin plugin) {
         m_listner = new HardcoreHeartsListener(plugin);
     }
 
