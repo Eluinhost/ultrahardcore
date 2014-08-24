@@ -24,13 +24,9 @@ package com.publicuhc.ultrahardcore.features;
 import com.publicuhc.ultrahardcore.features.events.FeatureDisableEvent;
 import com.publicuhc.ultrahardcore.features.events.FeatureEnableEvent;
 import com.publicuhc.ultrahardcore.features.events.FeatureEvent;
-import com.publicuhc.pluginframework.configuration.Configurator;
-import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.translate.Translate;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
@@ -40,10 +36,6 @@ public abstract class Feature implements IFeature {
      * Is the feautre enabeld right now?
      */
     private boolean m_enabled;
-
-    private final Configurator m_configManager;
-    private final Plugin m_plugin;
-    private final Translate m_translate;
 
     @Override
     public final boolean enableFeature(){
@@ -89,19 +81,6 @@ public abstract class Feature implements IFeature {
     }
 
     /**
-     * Construct a new feature
-     * @param plugin the plugin
-     * @param configManager the config manager to use
-     * @param translate the translator
-     */
-    @Inject
-    protected Feature(Plugin plugin, Configurator configManager, Translate translate) {
-        m_configManager = configManager;
-        m_plugin = plugin;
-        m_translate = translate;
-    }
-
-    /**
      * Are the features the same feature? Returns true if they have the same ID
      * @param obj Object
      * @return boolean
@@ -112,33 +91,12 @@ public abstract class Feature implements IFeature {
     }
 
     /**
-     * @return the config manager for the feature
-     */
-    protected Configurator getConfigManager(){
-        return m_configManager;
-    }
-
-    /**
-     * @return the plugin for the feature
-     */
-    protected Plugin getPlugin(){
-        return m_plugin;
-    }
-
-    /**
      * Return the hashcode of this feature
      * @return int
      */
     @Override
     public int hashCode(){
         return new HashCodeBuilder(17, 31).append(getFeatureID()).toHashCode();
-    }
-
-    /**
-     * @return the translator
-     */
-    protected Translate getTranslate() {
-        return m_translate;
     }
 
     @Override
