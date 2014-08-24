@@ -143,7 +143,7 @@ public class PlayerListFeature extends UHCFeature {
      * Update all the players supplied
      * @param onlinePlayers list of online players
      */
-    public void updatePlayers(Collection<? extends Player> onlinePlayers) {
+    public void updatePlayers(Player[] onlinePlayers) {
         for (Player player : onlinePlayers) {
             //get the existing health
             Double health = HANDLED_PLAYERS.get(player);

@@ -70,12 +70,6 @@ public class FreezeRunnable extends BukkitRunnable implements Listener {
         }
     }
 
-    public void addPlayers(Collection<? extends Player> players) {
-        for(Player p : players) {
-            addPlayer(p);
-        }
-    }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveEvent(PlayerMoveEvent pme) {
         //check if we're running
