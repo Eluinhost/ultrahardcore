@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  * Feature Manager Class
  */
 @Singleton
-public class RealFeatureManager implements FeatureManager {
+public class DefaultFeatureManager implements FeatureManager {
 
     private final Configurator m_configManager;
     private final Plugin m_plugin;
@@ -53,7 +53,7 @@ public class RealFeatureManager implements FeatureManager {
      * @param plugin the plugin
      */
     @Inject
-    public RealFeatureManager(Configurator configManager, Plugin plugin){
+    public DefaultFeatureManager(Configurator configManager, Plugin plugin){
         m_configManager = configManager;
         m_plugin = plugin;
     }
