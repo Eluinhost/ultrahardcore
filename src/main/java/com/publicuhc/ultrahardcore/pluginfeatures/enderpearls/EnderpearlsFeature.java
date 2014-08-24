@@ -31,20 +31,22 @@ import org.bukkit.permissions.Permissible;
 
 /**
  * EnderpearlsFeature
- * Handles the damage taken from throwing enderpearls
  *
- * @author ghowden
+ * Enabled: Removes damage from enderpearls
+ * Disabled: Nothing
+ *
+ * Permissions: UHC.enderpearls.damage - takes damage from enderpearls when enabled
  */
 @Singleton
 public class EnderpearlsFeature extends UHCFeature {
 
-    public static final String NO_ENDERPEARL_DAMAGE = "UHC.noEnderpearlDamage";
+    public static final String ENDERPEARL_DAMAGE = "UHC.enderpearls.damage";
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent ede) {
         if (isEnabled()) {
             if (ede.getDamager().getType() == EntityType.ENDER_PEARL) {
-                if (((Permissible) ede.getEntity()).hasPermission(NO_ENDERPEARL_DAMAGE)) {
+                if (!((Permissible) ede.getEntity()).hasPermission(ENDERPEARL_DAMAGE)) {
                     ede.setCancelled(true);
                 }
             }

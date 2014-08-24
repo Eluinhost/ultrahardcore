@@ -130,9 +130,9 @@ permissions:
     UHC.disableRegen:
         description: player with this permission will have regen disabled at full hunger
         default: true
-    UHC.noEnderpearlDamage:
-        description: player with this permission take no damage when teleporting using enderpearls
-        default: true
+    UHC.enderpearls.damage:
+        description: Players with this permission take damage when teleporting using enderpearls with the feature enabled
+        default: false
     UHC.tpall:
         description: Allows a player to tp all players to another player/location
         default: op
