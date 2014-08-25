@@ -28,7 +28,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
-abstract class TranslatingCommand implements Command {
+class TranslatingCommand implements Command {
 
     protected final Translate translate;
 
