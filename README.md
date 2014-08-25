@@ -14,8 +14,6 @@ The plugin adds many toggleable/configurable features to make your UHC game/serv
 
 [Homepage](http://dev.bukkit.org/bukkit-plugins/ultrahardcore/)
 
-[Documentation](http://wiki.publicuhc.com/display/UHC/UltraHardcore)
-
 [Bug Tracker](https://github.com/Eluinhost/ultrahardcore/issues)
 
 [Source Code](https://github.com/Eluinhost/ultrahardcore)
