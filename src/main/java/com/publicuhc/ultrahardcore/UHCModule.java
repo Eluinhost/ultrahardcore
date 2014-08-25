@@ -24,7 +24,7 @@ import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.ultrahardcore.api.DefaultFeatureManager;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
 
-public class UHCModule extends AbstractModule {
+class UHCModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(FeatureManager.class).to(DefaultFeatureManager.class);
