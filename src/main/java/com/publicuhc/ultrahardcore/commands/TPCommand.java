@@ -33,7 +33,9 @@ import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class TPCommand extends TranslatingCommand {
 
@@ -53,9 +55,12 @@ public class TPCommand extends TranslatingCommand {
         OptionSet set = request.getOptions();
 
         Location teleportLoc = set.has("p") ? ((Player) set.valueOf("p")).getLocation() : (Location) set.valueOf("l");
-        List<Player> toTeleport = (List<Player>) set.nonOptionArguments();
-
-        for (Player p : toTeleport) {
+        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
+        Collection<Player> players = new HashSet<Player>();
+        for(Player[] comboPlayers : playersList) {
+            Collections.addAll(players, comboPlayers);
+        }
+        for (Player p : players) {
             p.teleport(teleportLoc);
         }
 

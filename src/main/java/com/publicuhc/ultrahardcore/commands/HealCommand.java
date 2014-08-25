@@ -31,9 +31,7 @@ import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HealCommand extends TranslatingCommand {
 
@@ -61,7 +59,11 @@ public class HealCommand extends TranslatingCommand {
     @CommandMethod(command = "heal", permission = HEAL_OTHER_PERMISSION, options = true)
     public void healCommand(CommandRequest request)
     {
-        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
+        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
+        Collection<Player> players = new HashSet<Player>();
+        for(Player[] comboPlayers : playersList) {
+            Collections.addAll(players, comboPlayers);
+        }
 
         for(Player p : players) {
             p.setHealth(p.getMaxHealth());

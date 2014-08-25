@@ -33,7 +33,9 @@ import com.publicuhc.ultrahardcore.api.FeatureManager;
 import com.publicuhc.ultrahardcore.features.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class FreezeCommand extends TranslatingCommand {
 
@@ -74,7 +76,11 @@ public class FreezeCommand extends TranslatingCommand {
             return;
         }
 
-        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
+        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
+        Collection<Player> players = new HashSet<Player>();
+        for(Player[] comboPlayers : playersList) {
+            Collections.addAll(players, comboPlayers);
+        }
 
         for(Player player : players) {
             if (player.hasPermission(ANTIFREEZE_PERMISSION)) {
@@ -113,7 +119,11 @@ public class FreezeCommand extends TranslatingCommand {
             return;
         }
 
-        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
+        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
+        Collection<Player> players = new HashSet<Player>();
+        for(Player[] comboPlayers : playersList) {
+            Collections.addAll(players, comboPlayers);
+        }
 
         for(Player player : players) {
             feature.removePlayer(player);
