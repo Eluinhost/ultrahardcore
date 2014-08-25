@@ -22,15 +22,18 @@ package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.pluginframework.FrameworkJavaPlugin;
 import com.publicuhc.pluginframework.routing.Router;
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.pluginframework.routing.exception.CommandParseException;
+import com.publicuhc.pluginframework.shaded.inject.*;
 import com.publicuhc.pluginframework.shaded.metrics.Metrics;
+import com.publicuhc.ultrahardcore.api.Command;
 import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
+import com.publicuhc.ultrahardcore.api.UHCFeature;
+import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * UltraHardcore
@@ -43,6 +46,7 @@ import java.util.List;
 public class UltraHardcore extends FrameworkJavaPlugin {
 
     private FeatureManager featureManager;
+    private Injector mainInjector;
 
     //When the plugin gets started
     @Override
@@ -61,6 +65,12 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         }
         metrics.addGraph(graph);
         metrics.start();
+    }
+
+    @Inject
+    private void setMainInjector(Injector injector)
+    {
+        this.mainInjector = injector;
     }
 
     @Inject
@@ -91,5 +101,29 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         List<AbstractModule> customModules = new ArrayList<AbstractModule>();
         customModules.add(new UHCModule());
         return customModules;
+    }
+
+    /**
+     * Register an addon module for features/commands
+     *
+     * @param module the module with the bindings within it
+     *
+     * @throws FeatureIDConflictException
+     * @throws CommandParseException
+     */
+    @SuppressWarnings({"AnonymousInnerClass", "EmptyClass"})
+    public void registerAddon(AbstractModule module) throws FeatureIDConflictException, CommandParseException {
+        //fetch the list of UHCFeatures from the module and add them to the manager
+        Injector injector = mainInjector.createChildInjector(module);
+
+        Set<UHCFeature> features = injector.getInstance(Key.get(new TypeLiteral<Set<UHCFeature>>(){}));
+        for(UHCFeature feature : features) {
+            featureManager.addFeature(feature);
+        }
+
+        Set<Command> commands = injector.getInstance(Key.get(new TypeLiteral<Set<Command>>(){}));
+        for(Command command : commands) {
+            getRouter().registerCommands(command, false);
+        }
     }
 }
