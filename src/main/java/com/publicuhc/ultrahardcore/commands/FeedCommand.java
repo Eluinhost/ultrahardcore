@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FeedCommand extends Command {
+public class FeedCommand extends TranslatingCommand {
 
     public static final float MAX_SATURATION = 5.0F;
     public static final int MAX_FOOD_LEVEL = 20;

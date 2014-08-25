@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FeatureCommand extends Command {
+public class FeatureCommand extends TranslatingCommand {
 
     public static final String FEATURE_LIST_PERMISSION = "UHC.feature.list";
     public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";

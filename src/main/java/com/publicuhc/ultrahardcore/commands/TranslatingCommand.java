@@ -27,12 +27,12 @@ import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
-public abstract class Command {
+public abstract class TranslatingCommand {
 
     protected final Translate translate;
 
     @Inject
-    protected Command(Translate translate){
+    protected TranslatingCommand(Translate translate){
         this.translate = translate;
     }
 

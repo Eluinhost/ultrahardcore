@@ -37,7 +37,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class ClearInventoryCommand extends Command {
+public class ClearInventoryCommand extends TranslatingCommand {
 
     public static final String CLEAR_SELF_PERMISSION = "UHC.ci.self";
     public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";

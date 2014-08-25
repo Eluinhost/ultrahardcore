@@ -35,7 +35,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class TPCommand extends Command {
+public class TPCommand extends TranslatingCommand {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 

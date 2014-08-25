@@ -35,7 +35,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class FreezeCommand extends Command {
+public class FreezeCommand extends TranslatingCommand {
 
     public static final String FREEZE_PERMISSION = "UHC.freeze.command";
     public static final String ANTIFREEZE_PERMISSION = "UHC.freeze.antifreeze";

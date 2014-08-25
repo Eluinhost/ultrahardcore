@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class WhitelistCommands extends Command {
+public class WhitelistCommands extends TranslatingCommand {
 
     public static final String WHITELIST_ALL_PERMISSION = "UHC.whitelistall";
 

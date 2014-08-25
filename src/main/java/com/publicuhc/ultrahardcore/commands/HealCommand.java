@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HealCommand extends Command {
+public class HealCommand extends TranslatingCommand {
 
     public static final String HEAL_SELF_PERMISSION = "UHC.heal.self";
     public static final String HEAL_OTHER_PERMISSION = "UHC.heal.other";
