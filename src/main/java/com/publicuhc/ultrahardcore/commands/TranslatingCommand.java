@@ -23,11 +23,12 @@ package com.publicuhc.ultrahardcore.commands;
 
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.api.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
 
-public abstract class TranslatingCommand {
+abstract class TranslatingCommand implements Command {
 
     protected final Translate translate;
 
