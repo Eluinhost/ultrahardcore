@@ -68,7 +68,7 @@ public class TPCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void teleportCommandDetails(OptionParser parser) {
+    public void teleportCommand(OptionParser parser) {
         parser.accepts("p", "Player to teleport to")
                 .requiredUnless("l")
                 .withRequiredArg()
