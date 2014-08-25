@@ -17,3 +17,8 @@ The plugin adds many toggleable/configurable features to make your UHC game/serv
 [Bug Tracker](https://github.com/Eluinhost/ultrahardcore/issues)
 
 [Source Code](https://github.com/Eluinhost/ultrahardcore)
+
+##Addons
+
+Features that used to be part of the plugin can now be found in separate plugins as part of the repo
+**[UHC-Addons](https://github.com/Eluinhost/UHC-Addons)**
