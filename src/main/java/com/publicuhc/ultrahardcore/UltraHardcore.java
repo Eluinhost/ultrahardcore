@@ -50,13 +50,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     protected void onFrameworkEnable()
     {
         //load the core addon
-        try {
-            registerAddon(new UHCCoreAddonModule());
-        } catch (FeatureIDConflictException e) {
-            e.printStackTrace();
-        } catch (CommandParseException e) {
-            e.printStackTrace();
-        }
+        registerAddon(new UHCCoreAddonModule());
 
         //enable metrics
         Metrics metrics = getMetrics();
@@ -113,23 +107,28 @@ public class UltraHardcore extends FrameworkJavaPlugin {
      * Register an addon module for features/commands
      *
      * @param module the module with the bindings within it
-     *
-     * @throws FeatureIDConflictException
-     * @throws CommandParseException
      */
     @SuppressWarnings({"AnonymousInnerClass", "EmptyClass"})
-    public void registerAddon(UHCAddonModule module) throws FeatureIDConflictException, CommandParseException {
+    public void registerAddon(UHCAddonModule module) {
         //fetch the list of UHCFeatures from the module and add them to the manager
         Injector injector = mainInjector.createChildInjector(module);
 
         Set<UHCFeature> features = injector.getInstance(Key.get(new TypeLiteral<Set<UHCFeature>>(){}));
         for(UHCFeature feature : features) {
-            featureManager.addFeature(feature);
+            try {
+                featureManager.addFeature(feature);
+            } catch (FeatureIDConflictException e) {
+                e.printStackTrace();
+            }
         }
 
         Set<Command> commands = injector.getInstance(Key.get(new TypeLiteral<Set<Command>>(){}));
         for(Command command : commands) {
-            getRouter().registerCommands(command, false);
+            try {
+                getRouter().registerCommands(command, false);
+            } catch (CommandParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
