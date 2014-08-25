@@ -29,7 +29,6 @@ import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConvert
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionSpecBuilder;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -55,7 +54,7 @@ public class TPCommand extends TranslatingCommand {
     public void teleportCommand(CommandRequest request){
         OptionSet set = request.getOptions();
 
-        Location teleportLoc = set.has("p") ? ((Player) set.valueOf("p")).getLocation() : (Location) set.valueOf("l");
+        Location teleportLoc = set.has("p") ? ((Player[]) set.valueOf("p"))[0].getLocation() : (Location) set.valueOf("l");
         Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
         Collection<Player> players = new HashSet<Player>();
         for(Player[] comboPlayers : playersList) {
@@ -70,18 +69,15 @@ public class TPCommand extends TranslatingCommand {
 
     @OptionsMethod
     public void teleportCommand(OptionParser parser) {
-        //register l so p doesn't fail on the unless
-        OptionSpecBuilder lOption = parser.accepts("l", "Location to teleport to");
-
         parser.accepts("p", "Player to teleport to")
-                .requiredUnless("l")
                 .withRequiredArg()
                 .withValuesConvertedBy(new OnlinePlayerValueConverter(false));
 
         //finish setting up l
-        lOption.requiredUnless("p")
+        parser.accepts("l", "Location to teleport to")
                 .withRequiredArg()
                 .withValuesConvertedBy(new LocationValueConverter());
+
         parser.nonOptions("Player to teleport to, * for all players")
                 .withValuesConvertedBy(new OnlinePlayerValueConverter(true));
     }
