@@ -42,7 +42,7 @@ public class WhitelistCommands extends TranslatingCommand {
         super(translate);
     }
 
-    @CommandMethod(command = "whitelistall", permission = WHITELIST_ALL_PERMISSION)
+    @CommandMethod(command = "whitelistall", permission = WHITELIST_ALL_PERMISSION, options = true)
     public void whitelistAllCommand(CommandRequest request)
     {
         if(request.getOptions().has("c")) {
