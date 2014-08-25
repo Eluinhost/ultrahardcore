@@ -67,7 +67,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     @Inject
     private void setMainInjector(Injector injector)
     {
-        this.mainInjector = injector;
+        mainInjector = injector;
     }
 
     @Inject

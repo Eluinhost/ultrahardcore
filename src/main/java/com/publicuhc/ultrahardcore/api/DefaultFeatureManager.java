@@ -30,6 +30,7 @@ import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +46,7 @@ public class DefaultFeatureManager implements FeatureManager {
 
     private final Configurator configManager;
     private final Plugin plugin;
+    private final PluginLogger logger;
 
     /**
      * Create a new feature manager
@@ -52,9 +54,10 @@ public class DefaultFeatureManager implements FeatureManager {
      * @param plugin the plugin
      */
     @Inject
-    public DefaultFeatureManager(Configurator configManager, Plugin plugin){
+    public DefaultFeatureManager(Configurator configManager, Plugin plugin, PluginLogger logger){
         this.configManager = configManager;
         this.plugin = plugin;
+        this.logger = logger;
     }
 
     /**
@@ -70,6 +73,7 @@ public class DefaultFeatureManager implements FeatureManager {
     @Override
     public void addFeature(Feature feature) throws FeatureIDConflictException {
         String featureID = feature.getFeatureID();
+        logger.log(Level.INFO, "Loading feature: " + featureID);
         Preconditions.checkArgument(NAME_PATTERN.matcher(featureID).matches(), "Invalid feature ID: %s, cannot contain whitespace", featureID);
 
         //check for existing feature of the same name
@@ -87,13 +91,13 @@ public class DefaultFeatureManager implements FeatureManager {
 
         //if it was cancelled return
         if (initEvent.isCancelled()) {
-            Bukkit.getLogger().log(Level.SEVERE,"Init event cancelled for feature "+featureID);
+            logger.log(Level.SEVERE,"Init event cancelled for feature: "+featureID);
             return;
         }
 
         //add the feature
         featureList.add(feature);
-        Bukkit.getLogger().log(Level.INFO,"Loaded feature module "+featureID);
+        logger.log(Level.INFO,"Loaded feature: "+featureID);
 
         List<String> config = configManager.getConfig("main").getStringList("enabledFeatures");
         if(config.contains(featureID)){
