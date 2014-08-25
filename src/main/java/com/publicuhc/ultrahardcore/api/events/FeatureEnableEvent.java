@@ -1,5 +1,5 @@
 /*
- * FeatureDisableEvent.java
+ * FeatureEnableEvent.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,16 +19,16 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features.events;
+package com.publicuhc.ultrahardcore.api.events;
 
-import com.publicuhc.ultrahardcore.features.Feature;
+import com.publicuhc.ultrahardcore.api.Feature;
 
-public class FeatureDisableEvent extends FeatureEvent {
+public class FeatureEnableEvent extends FeatureEvent {
     /**
-     * Called when a feature is disabled, cancelling stops the feature disabling
-     * @param feature the feature involved
+     * Called when a feature is enabled, cancelling stops the feautre enabling
+     * @param feature the feautre involved
      */
-    public FeatureDisableEvent(Feature feature) {
+    public FeatureEnableEvent(Feature feature) {
         super(feature);
     }
 }

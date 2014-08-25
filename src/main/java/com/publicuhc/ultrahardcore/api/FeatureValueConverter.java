@@ -1,4 +1,4 @@
-package com.publicuhc.ultrahardcore.features;
+package com.publicuhc.ultrahardcore.api;
 
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConversionException;
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConverter;

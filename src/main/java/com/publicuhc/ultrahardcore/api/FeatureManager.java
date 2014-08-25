@@ -19,10 +19,10 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features;
+package com.publicuhc.ultrahardcore.api;
 
-import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
-import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDNotFoundException;
+import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
+import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public interface FeatureManager {
      * Feature names must contain no whitespace.
      *
      * @param feature Feature the feature to be added
-     * @throws com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException when feature with the same ID already exists
+     * @throws com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException when feature with the same ID already exists
      * @throws java.lang.IllegalArgumentException when the feature has an invalid ID name
      */
     void addFeature(Feature feature) throws FeatureIDConflictException;
@@ -44,7 +44,7 @@ public interface FeatureManager {
      *
      * @param featureID String the ID to check for
      * @return true if enabled, false otherwise
-     * @throws com.publicuhc.ultrahardcore.features.exceptions.FeatureIDNotFoundException when feature not found
+     * @throws com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException when feature not found
      */
     boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException;
 

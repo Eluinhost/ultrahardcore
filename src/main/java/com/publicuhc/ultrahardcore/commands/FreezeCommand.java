@@ -29,8 +29,8 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.features.FeatureManager;
-import com.publicuhc.ultrahardcore.pluginfeatures.PlayerFreezeFeature;
+import com.publicuhc.ultrahardcore.api.FeatureManager;
+import com.publicuhc.ultrahardcore.features.PlayerFreezeFeature;
 import org.bukkit.entity.Player;
 
 import java.util.List;

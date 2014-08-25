@@ -19,10 +19,10 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.pluginfeatures;
+package com.publicuhc.ultrahardcore.features;
 
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.ultrahardcore.features.UHCFeature;
+import com.publicuhc.ultrahardcore.api.UHCFeature;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

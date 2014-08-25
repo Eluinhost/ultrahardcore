@@ -19,11 +19,11 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features;
+package com.publicuhc.ultrahardcore.api;
 
-import com.publicuhc.ultrahardcore.features.events.FeatureDisableEvent;
-import com.publicuhc.ultrahardcore.features.events.FeatureEnableEvent;
-import com.publicuhc.ultrahardcore.features.events.FeatureEvent;
+import com.publicuhc.ultrahardcore.api.events.FeatureDisableEvent;
+import com.publicuhc.ultrahardcore.api.events.FeatureEnableEvent;
+import com.publicuhc.ultrahardcore.api.events.FeatureEvent;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

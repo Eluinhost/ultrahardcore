@@ -1,5 +1,5 @@
 /*
- * FeatureEnableEvent.java
+ * FeatureIDNotFoundException.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,16 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features.events;
+package com.publicuhc.ultrahardcore.api.exceptions;
 
-import com.publicuhc.ultrahardcore.features.Feature;
-
-public class FeatureEnableEvent extends FeatureEvent {
-    /**
-     * Called when a feature is enabled, cancelling stops the feautre enabling
-     * @param feature the feautre involved
-     */
-    public FeatureEnableEvent(Feature feature) {
-        super(feature);
-    }
-}
+@SuppressWarnings("serial")
+public class FeatureIDNotFoundException extends FeatureException{}

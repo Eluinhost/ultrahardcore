@@ -19,15 +19,15 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features;
+package com.publicuhc.ultrahardcore.api;
 
 import com.google.common.base.Preconditions;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
-import com.publicuhc.ultrahardcore.features.events.FeatureInitEvent;
-import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDConflictException;
-import com.publicuhc.ultrahardcore.features.exceptions.FeatureIDNotFoundException;
+import com.publicuhc.ultrahardcore.api.events.FeatureInitEvent;
+import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
+import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 

@@ -19,9 +19,9 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features.events;
+package com.publicuhc.ultrahardcore.api.events;
 
-import com.publicuhc.ultrahardcore.features.Feature;
+import com.publicuhc.ultrahardcore.api.Feature;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

@@ -1,4 +1,4 @@
-package com.publicuhc.ultrahardcore.pluginfeatures;
+package com.publicuhc.ultrahardcore.features;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

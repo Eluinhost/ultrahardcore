@@ -1,5 +1,5 @@
 /*
- * FeatureIDConflictException.java
+ * FeatureDisableEvent.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,7 +19,16 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features.exceptions;
+package com.publicuhc.ultrahardcore.api.events;
 
-@SuppressWarnings("serial")
-public class FeatureIDConflictException extends FeatureException{}
+import com.publicuhc.ultrahardcore.api.Feature;
+
+public class FeatureDisableEvent extends FeatureEvent {
+    /**
+     * Called when a feature is disabled, cancelling stops the feature disabling
+     * @param feature the feature involved
+     */
+    public FeatureDisableEvent(Feature feature) {
+        super(feature);
+    }
+}

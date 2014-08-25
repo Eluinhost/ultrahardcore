@@ -1,5 +1,5 @@
 /*
- * FeatureException.java
+ * FeatureInitEvent.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,7 +19,16 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features.exceptions;
+package com.publicuhc.ultrahardcore.api.events;
 
-@SuppressWarnings("serial")
-public class FeatureException extends Exception{}
+import com.publicuhc.ultrahardcore.api.Feature;
+
+public class FeatureInitEvent extends FeatureEvent {
+    /**
+     * Called when a feature is first initialized, cancelling stops the feature from getting events and being added to the list
+     * @param feature the feature involved
+     */
+    public FeatureInitEvent(Feature feature) {
+        super(feature);
+    }
+}

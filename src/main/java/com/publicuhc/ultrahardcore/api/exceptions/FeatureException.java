@@ -1,5 +1,5 @@
 /*
- * FeatureIDNotFoundException.java
+ * FeatureException.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features.exceptions;
+package com.publicuhc.ultrahardcore.api.exceptions;
 
 @SuppressWarnings("serial")
-public class FeatureIDNotFoundException extends FeatureException{}
+public class FeatureException extends Exception{}
