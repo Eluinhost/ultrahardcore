@@ -25,10 +25,7 @@ import com.publicuhc.pluginframework.routing.Router;
 import com.publicuhc.pluginframework.routing.exception.CommandParseException;
 import com.publicuhc.pluginframework.shaded.inject.*;
 import com.publicuhc.pluginframework.shaded.metrics.Metrics;
-import com.publicuhc.ultrahardcore.api.Command;
-import com.publicuhc.ultrahardcore.api.Feature;
-import com.publicuhc.ultrahardcore.api.FeatureManager;
-import com.publicuhc.ultrahardcore.api.UHCFeature;
+import com.publicuhc.ultrahardcore.api.*;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 
 import java.util.ArrayList;
@@ -90,7 +87,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     /**
      * @return the plugin router, used for registering commands e.t.c.
      */
-    public Router getCommandRouter()
+    protected Router getCommandRouter()
     {
         return getRouter();
     }
@@ -112,7 +109,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
      * @throws CommandParseException
      */
     @SuppressWarnings({"AnonymousInnerClass", "EmptyClass"})
-    public void registerAddon(AbstractModule module) throws FeatureIDConflictException, CommandParseException {
+    public void registerAddon(UHCAddonModule module) throws FeatureIDConflictException, CommandParseException {
         //fetch the list of UHCFeatures from the module and add them to the manager
         Injector injector = mainInjector.createChildInjector(module);
 
