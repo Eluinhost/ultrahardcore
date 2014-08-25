@@ -31,9 +31,7 @@ import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FeedCommand extends TranslatingCommand {
 
@@ -76,7 +74,11 @@ public class FeedCommand extends TranslatingCommand {
 
     @CommandMethod(command = "feed", permission = FEED_OTHER_PERMISSION, options = true)
     public void feedOtherCommand(CommandRequest request){
-        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
+        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
+        Collection<Player> players = new HashSet<Player>();
+        for(Player[] comboPlayers : playersList) {
+            Collections.addAll(players, comboPlayers);
+        }
 
         for(Player player : players) {
             feedPlayer(player);
