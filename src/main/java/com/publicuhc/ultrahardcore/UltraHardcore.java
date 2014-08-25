@@ -49,6 +49,15 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     @Override
     protected void onFrameworkEnable()
     {
+        //load the core addon
+        try {
+            registerAddon(new UHCCoreAddonModule());
+        } catch (FeatureIDConflictException e) {
+            e.printStackTrace();
+        } catch (CommandParseException e) {
+            e.printStackTrace();
+        }
+
         //enable metrics
         Metrics metrics = getMetrics();
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
