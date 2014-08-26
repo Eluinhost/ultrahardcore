@@ -26,11 +26,14 @@ import com.publicuhc.pluginframework.routing.exception.CommandParseException;
 import com.publicuhc.pluginframework.shaded.inject.*;
 import com.publicuhc.pluginframework.shaded.metrics.Metrics;
 import com.publicuhc.ultrahardcore.api.*;
+import com.publicuhc.ultrahardcore.api.events.AddonInitializeEvent;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * UltraHardcore
@@ -110,6 +113,13 @@ public class UltraHardcore extends FrameworkJavaPlugin {
      */
     @SuppressWarnings({"AnonymousInnerClass", "EmptyClass"})
     public void registerAddon(UHCAddonModule module) {
+        AddonInitializeEvent event = new AddonInitializeEvent(module);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) {
+            getLogger().log(Level.INFO, "Initializing addon from module class " + module.getClass().getName() + " was cancelled");
+            return;
+        }
+
         //fetch the list of UHCFeatures from the module and add them to the manager
         Injector injector = mainInjector.createChildInjector(module);
 
