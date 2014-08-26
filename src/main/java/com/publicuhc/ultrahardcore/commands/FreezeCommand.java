@@ -26,7 +26,7 @@ import com.publicuhc.pluginframework.routing.CommandRequest;
 import com.publicuhc.pluginframework.routing.OptionsMethod;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
@@ -93,7 +93,7 @@ public class FreezeCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void freezeCommand(OptionParser parser)
+    public void freezeCommand(OptionDeclarer parser)
     {
         parser.accepts("a", "Freeze all online players and any new connections");
         parser.nonOptions().withValuesConvertedBy(new OnlinePlayerValueConverter(true));
@@ -132,7 +132,7 @@ public class FreezeCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void unfreezeCommand(OptionParser parser)
+    public void unfreezeCommand(OptionDeclarer parser)
     {
         parser.accepts("a", "Unfreeze all players");
         parser.nonOptions().withValuesConvertedBy(new OnlinePlayerValueConverter(true));

@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.routing.CommandMethod;
 import com.publicuhc.pluginframework.routing.CommandRequest;
 import com.publicuhc.pluginframework.routing.OptionsMethod;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
@@ -114,7 +114,7 @@ public class FeatureCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void featureToggleCommand(OptionParser parser)
+    public void featureToggleCommand(OptionDeclarer parser)
     {
         parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
     }
@@ -130,7 +130,7 @@ public class FeatureCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void featureOnCommand(OptionParser parser)
+    public void featureOnCommand(OptionDeclarer parser)
     {
         parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
     }
@@ -146,7 +146,7 @@ public class FeatureCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void featureOffCommand(OptionParser parser)
+    public void featureOffCommand(OptionDeclarer parser)
     {
         parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
     }

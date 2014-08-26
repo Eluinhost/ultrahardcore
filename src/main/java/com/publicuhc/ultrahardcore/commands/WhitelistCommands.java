@@ -25,7 +25,7 @@ import com.publicuhc.pluginframework.routing.CommandMethod;
 import com.publicuhc.pluginframework.routing.CommandRequest;
 import com.publicuhc.pluginframework.routing.OptionsMethod;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -55,7 +55,7 @@ public class WhitelistCommands extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void whitelistAllCommand(OptionParser parser)
+    public void whitelistAllCommand(OptionDeclarer parser)
     {
         parser.accepts("c", "Clears the whitelist instead");
     }

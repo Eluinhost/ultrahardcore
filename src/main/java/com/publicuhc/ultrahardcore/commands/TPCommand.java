@@ -27,7 +27,7 @@ import com.publicuhc.pluginframework.routing.OptionsMethod;
 import com.publicuhc.pluginframework.routing.converters.LocationValueConverter;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Location;
@@ -68,7 +68,7 @@ public class TPCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void teleportCommand(OptionParser parser) {
+    public void teleportCommand(OptionDeclarer parser) {
         parser.accepts("p", "Player to teleport to")
                 .withRequiredArg()
                 .withValuesConvertedBy(new OnlinePlayerValueConverter(false));

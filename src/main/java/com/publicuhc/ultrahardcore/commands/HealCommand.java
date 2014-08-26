@@ -26,7 +26,7 @@ import com.publicuhc.pluginframework.routing.CommandRequest;
 import com.publicuhc.pluginframework.routing.OptionsMethod;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionParser;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.entity.Player;
@@ -77,7 +77,7 @@ public class HealCommand extends TranslatingCommand {
     }
 
     @OptionsMethod
-    public void healCommand(OptionParser parser)
+    public void healCommand(OptionDeclarer parser)
     {
         parser.nonOptions("Players to heal").withValuesConvertedBy(new OnlinePlayerValueConverter(true));
     }
