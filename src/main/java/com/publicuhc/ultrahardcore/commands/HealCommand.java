@@ -59,11 +59,7 @@ public class HealCommand extends TranslatingCommand {
     @CommandMethod(command = "heal", permission = HEAL_OTHER_PERMISSION, options = true)
     public void healCommand(CommandRequest request)
     {
-        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
-        Collection<Player> players = new HashSet<Player>();
-        for(Player[] comboPlayers : playersList) {
-            Collections.addAll(players, comboPlayers);
-        }
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists((List<Player[]>) request.getOptions().nonOptionArguments());
 
         for(Player p : players) {
             p.setHealth(p.getMaxHealth());

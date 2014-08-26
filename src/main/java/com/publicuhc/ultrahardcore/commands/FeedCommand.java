@@ -70,11 +70,7 @@ public class FeedCommand extends TranslatingCommand {
 
     @CommandMethod(command = "feed", permission = FEED_OTHER_PERMISSION, options = true)
     public void feedOtherCommand(CommandRequest request){
-        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
-        Collection<Player> players = new HashSet<Player>();
-        for(Player[] comboPlayers : playersList) {
-            Collections.addAll(players, comboPlayers);
-        }
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists((List<Player[]>) request.getOptions().nonOptionArguments());
 
         for(Player player : players) {
             feedPlayer(player);

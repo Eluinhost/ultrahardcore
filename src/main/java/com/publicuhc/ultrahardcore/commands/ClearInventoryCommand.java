@@ -36,6 +36,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Set;
 
 public class ClearInventoryCommand extends TranslatingCommand {
 
@@ -58,7 +59,7 @@ public class ClearInventoryCommand extends TranslatingCommand {
     @CommandMethod(command = "ci", permission = CLEAR_OTHER_PERMISSION)
     public void clearInventoryCommand(CommandRequest request)
     {
-        List<Player> players = (List<Player>) request.getOptions().nonOptionArguments();
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists((List<Player[]>) request.getOptions().nonOptionArguments());
 
         for(Player p : players) {
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
