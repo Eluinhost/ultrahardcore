@@ -22,13 +22,27 @@
 package com.publicuhc.ultrahardcore.api.events;
 
 import com.publicuhc.ultrahardcore.api.Feature;
+import org.bukkit.event.HandlerList;
 
 public class FeatureDisableEvent extends FeatureEvent {
+
     /**
      * Called when a feature is disabled, cancelling stops the feature disabling
+     *
      * @param feature the feature involved
      */
     public FeatureDisableEvent(Feature feature) {
         super(feature);
+    }
+
+    private static final HandlerList HANDLER_LIST = new HandlerList();
+
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLER_LIST;
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
     }
 }

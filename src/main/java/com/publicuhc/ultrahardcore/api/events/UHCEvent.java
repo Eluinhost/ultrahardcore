@@ -1,5 +1,5 @@
 /*
- * FeatureEvent.java
+ * UHCEvent.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -21,36 +21,7 @@
 
 package com.publicuhc.ultrahardcore.api.events;
 
-import com.publicuhc.ultrahardcore.api.Feature;
-import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 
-public abstract class FeatureEvent extends UHCEvent implements Cancellable {
-
-    private final Feature feature;
-    private boolean cancelled;
-
-    /**
-     * Generic feature event
-     * @param feature feature event is running for
-     */
-    protected FeatureEvent(Feature feature){
-        this.feature = feature;
-    }
-
-    /**
-     * @return the feature involved in this event
-     */
-    public Feature getFeature(){
-        return feature;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
-    }
-}
+public abstract class UHCEvent extends Event
+{}

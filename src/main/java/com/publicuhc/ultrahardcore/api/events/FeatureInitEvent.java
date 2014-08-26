@@ -22,6 +22,7 @@
 package com.publicuhc.ultrahardcore.api.events;
 
 import com.publicuhc.ultrahardcore.api.Feature;
+import org.bukkit.event.HandlerList;
 
 public class FeatureInitEvent extends FeatureEvent {
     /**
@@ -30,5 +31,16 @@ public class FeatureInitEvent extends FeatureEvent {
      */
     public FeatureInitEvent(Feature feature) {
         super(feature);
+    }
+
+    private static final HandlerList HANDLER_LIST = new HandlerList();
+
+    @Override
+    public HandlerList getHandlers() {
+        return HANDLER_LIST;
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLER_LIST;
     }
 }
