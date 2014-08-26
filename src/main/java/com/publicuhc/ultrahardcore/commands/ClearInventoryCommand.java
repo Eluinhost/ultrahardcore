@@ -52,7 +52,7 @@ public class ClearInventoryCommand extends TranslatingCommand {
      * Ran on /ciself
      * @param request request params
      */
-    @CommandMethod(command = "ciself", permission = CLEAR_SELF_PERMISSION)
+    @CommandMethod(command = "ciself", permission = CLEAR_SELF_PERMISSION, allowedSenders = Player.class)
     public void clearInventorySelf(CommandRequest request)
     {
         clearInventory((HumanEntity) request.getSender());

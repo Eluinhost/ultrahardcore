@@ -61,7 +61,7 @@ public class FeedCommand extends TranslatingCommand {
      * Feed themselves
      * @param request the request params
      */
-    @CommandMethod(command = "feedself", permission = FEED_SELF_PERMISSION)
+    @CommandMethod(command = "feedself", permission = FEED_SELF_PERMISSION, allowedSenders = Player.class)
     public void feedCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         feedPlayer(player);

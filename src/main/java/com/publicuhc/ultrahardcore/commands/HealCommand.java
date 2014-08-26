@@ -45,7 +45,7 @@ public class HealCommand extends TranslatingCommand {
         super(translate);
     }
 
-    @CommandMethod(command = "healself", permission = HEAL_SELF_PERMISSION)
+    @CommandMethod(command = "healself", permission = HEAL_SELF_PERMISSION, allowedSenders = Player.class)
     public void healSelfCommand(CommandRequest request){
         Player player = (Player) request.getSender();
         player.setHealth(player.getMaxHealth());
