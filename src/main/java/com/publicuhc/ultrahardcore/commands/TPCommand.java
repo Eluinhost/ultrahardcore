@@ -46,10 +46,6 @@ public class TPCommand extends TranslatingCommand {
         super(translate);
     }
 
-    /**
-     * Ran on /tpp {list of players} {player/location}
-     * @param request request params
-     */
     @CommandMethod(command = "tpp", options = true, permission = TP_ALL_PERMISSION)
     public void teleportCommand(CommandRequest request){
         OptionSet set = request.getOptions();

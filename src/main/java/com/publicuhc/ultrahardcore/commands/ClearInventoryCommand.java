@@ -48,10 +48,6 @@ public class ClearInventoryCommand extends TranslatingCommand {
         super(translate);
     }
 
-    /**
-     * Ran on /ciself
-     * @param request request params
-     */
     @CommandMethod(command = "ciself", permission = CLEAR_SELF_PERMISSION, allowedSenders = Player.class)
     public void clearInventorySelf(CommandRequest request)
     {

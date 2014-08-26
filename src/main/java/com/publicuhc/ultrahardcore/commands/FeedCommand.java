@@ -57,10 +57,6 @@ public class FeedCommand extends TranslatingCommand {
         player.setSaturation(MAX_SATURATION);
     }
 
-    /**
-     * Feed themselves
-     * @param request the request params
-     */
     @CommandMethod(command = "feedself", permission = FEED_SELF_PERMISSION, allowedSenders = Player.class)
     public void feedCommand(CommandRequest request){
         Player player = (Player) request.getSender();
