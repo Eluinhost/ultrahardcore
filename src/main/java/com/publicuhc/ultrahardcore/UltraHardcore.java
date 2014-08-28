@@ -30,7 +30,6 @@ import com.publicuhc.ultrahardcore.api.events.AddonInitializeEvent;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -47,6 +46,8 @@ public class UltraHardcore extends FrameworkJavaPlugin {
 
     private FeatureManager featureManager;
     private Injector mainInjector;
+    private Router router;
+    private Metrics metrics;
 
     //When the plugin gets started
     @Override
@@ -56,7 +57,6 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         registerAddon(new UHCCoreAddonModule());
 
         //enable metrics
-        Metrics metrics = getMetrics();
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
         for(final Feature feature : featureManager.getFeatures()){
             graph.addPlotter(new Metrics.Plotter(feature.getFeatureID()) {
@@ -82,6 +82,18 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         this.featureManager = featureManager;
     }
 
+    @Inject
+    private void setRouter(Router router)
+    {
+        this.router = router;
+    }
+
+    @Inject
+    private void setMetrics(Metrics metrics)
+    {
+        this.metrics = metrics;
+    }
+
     /**
      * @return the feature manager for handling features
      */
@@ -93,17 +105,16 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     /**
      * @return the plugin router, used for registering commands e.t.c.
      */
-    protected Router getCommandRouter()
+    public Router getRouter()
     {
-        return getRouter();
+        return router;
     }
 
     @Override
-    protected List<AbstractModule> initialModules()
+    protected void initialModules(List<Module> modules)
     {
-        List<AbstractModule> customModules = new ArrayList<AbstractModule>();
-        customModules.add(new UHCModule());
-        return customModules;
+        modules.addAll(getDefaultModules());
+        modules.add(new UHCModule());
     }
 
     /**
