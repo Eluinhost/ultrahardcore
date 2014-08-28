@@ -21,17 +21,20 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.routing.CommandMethod;
-import com.publicuhc.pluginframework.routing.CommandRequest;
-import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.*;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.util.ServerUtil;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class FeedCommand extends TranslatingCommand {
 
@@ -57,20 +60,23 @@ public class FeedCommand extends TranslatingCommand {
         player.setSaturation(MAX_SATURATION);
     }
 
-    @CommandMethod(command = "feedself", permission = FEED_SELF_PERMISSION, allowedSenders = Player.class)
-    public void feedCommand(CommandRequest request){
-        Player player = (Player) request.getSender();
-        feedPlayer(player);
-        player.sendMessage(translate("feed.tell", request.getSender()));
+    @CommandMethod("feedself")
+    @PermissionRestriction(FEED_SELF_PERMISSION)
+    @SenderRestriction(Player.class)
+    public void feedCommand(OptionSet set, Player sender){
+        feedPlayer(sender);
+        sender.sendMessage(translate("feed.tell", sender));
         Map<String, String> vars = new HashMap<String, String>();
-        vars.put("fed", player.getName());
-        vars.put("name", player.getName());
-        ServerUtil.broadcastForPermission(translate("feed.announce", request.getSender(), vars), FEED_ANNOUNCE_PERMISSION);
+        vars.put("fed", sender.getName());
+        vars.put("name", sender.getName());
+        ServerUtil.broadcastForPermission(translate("feed.announce", sender, vars), FEED_ANNOUNCE_PERMISSION);
     }
 
-    @CommandMethod(command = "feed", permission = FEED_OTHER_PERMISSION, options = true)
-    public void feedOtherCommand(CommandRequest request){
-        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists((List<Player[]>) request.getOptions().nonOptionArguments());
+    @CommandMethod("feed")
+    @PermissionRestriction(FEED_OTHER_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void feedOtherCommand(OptionSet set, CommandSender sender, List<Player[]> args) {
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
         for(Player player : players) {
             feedPlayer(player);
@@ -79,8 +85,8 @@ public class FeedCommand extends TranslatingCommand {
 
         Map<String, String> vars = new HashMap<String, String>();
         vars.put("fed", players.toString());
-        vars.put("name", request.getSender().getName());
-        ServerUtil.broadcastForPermission(translate("feed.announce", request.getSender(), vars), FEED_ANNOUNCE_PERMISSION);
+        vars.put("name", sender.getName());
+        ServerUtil.broadcastForPermission(translate("feed.announce", sender, vars), FEED_ANNOUNCE_PERMISSION);
     }
 
     @OptionsMethod

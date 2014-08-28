@@ -21,9 +21,10 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.routing.CommandMethod;
-import com.publicuhc.pluginframework.routing.CommandRequest;
-import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandOptions;
+import com.publicuhc.pluginframework.routing.annotation.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.PermissionRestriction;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
@@ -31,11 +32,10 @@ import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
 import com.publicuhc.ultrahardcore.features.PlayerFreezeFeature;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 public class FreezeCommand extends TranslatingCommand {
 
@@ -56,40 +56,35 @@ public class FreezeCommand extends TranslatingCommand {
         featureManager = features;
     }
 
-    @CommandMethod(command = "freeze", permission = FREEZE_PERMISSION, options = true)
-    public void freezeCommand(CommandRequest request) {
-        OptionSet set = request.getOptions();
-
+    @CommandMethod("freeze")
+    @PermissionRestriction(FREEZE_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void freezeCommand(OptionSet set, CommandSender sender, List<Player[]> args) {
         PlayerFreezeFeature feature = (PlayerFreezeFeature) featureManager.getFeatureByID("PlayerFreeze");
         if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getSender()));
+            sender.sendMessage(translate("freeze.not_loaded", sender));
             return;
         }
         if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getSender()));
+            sender.sendMessage(translate("freeze.not_enabled", sender));
             return;
         }
 
         if(set.has("a")) {
             feature.freezeAll();
-            request.sendMessage(translate("freeze.froze_all", request.getSender()));
+            sender.sendMessage(translate("freeze.froze_all", sender));
             return;
         }
 
-        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
-        Collection<Player> players = new HashSet<Player>();
-        for(Player[] comboPlayers : playersList) {
-            Collections.addAll(players, comboPlayers);
-        }
-
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
         for(Player player : players) {
             if (player.hasPermission(ANTIFREEZE_PERMISSION)) {
-                request.sendMessage(translate("freeze.immune", request.getSender()));
+                sender.sendMessage(translate("freeze.immune", sender));
                 return;
             }
             feature.addPlayer(player);
         }
-        request.sendMessage(translate("freeze.player_froze", request.getSender()));
+        sender.sendMessage(translate("freeze.player_froze", sender));
     }
 
     @OptionsMethod
@@ -99,36 +94,31 @@ public class FreezeCommand extends TranslatingCommand {
         parser.nonOptions().withValuesConvertedBy(new OnlinePlayerValueConverter(true));
     }
 
-    @CommandMethod(command = "unfreeze", permission = FREEZE_PERMISSION, options = true)
-    public void unfreezeCommand(CommandRequest request) {
-        OptionSet set = request.getOptions();
-
+    @CommandMethod("unfreeze")
+    @PermissionRestriction(FREEZE_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void unfreezeCommand(OptionSet set, CommandSender sender, List<Player[]> args) {
         PlayerFreezeFeature feature = (PlayerFreezeFeature) featureManager.getFeatureByID("PlayerFreeze");
         if (feature == null) {
-            request.sendMessage(translate("freeze.not_loaded", request.getSender()));
+            sender.sendMessage(translate("freeze.not_loaded", sender));
             return;
         }
         if (!feature.isEnabled()) {
-            request.sendMessage(translate("freeze.not_enabled", request.getSender()));
+            sender.sendMessage(translate("freeze.not_enabled", sender));
             return;
         }
 
         if(set.has("a")) {
             feature.unfreezeAll();
-            request.sendMessage(translate("freeze.unfroze_all", request.getSender()));
+            sender.sendMessage(translate("freeze.unfroze_all", sender));
             return;
         }
 
-        Iterable<Player[]> playersList = (Iterable<Player[]>) request.getOptions().nonOptionArguments();
-        Collection<Player> players = new HashSet<Player>();
-        for(Player[] comboPlayers : playersList) {
-            Collections.addAll(players, comboPlayers);
-        }
-
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
         for(Player player : players) {
             feature.removePlayer(player);
         }
-        request.sendMessage(translate("freeze.player_unfroze", request.getSender()));
+        sender.sendMessage(translate("freeze.player_unfroze", sender));
     }
 
     @OptionsMethod

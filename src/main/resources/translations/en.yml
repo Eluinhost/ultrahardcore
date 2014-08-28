@@ -47,6 +47,7 @@ teleport:
     coords: "&4Invalid coordinate syntax, try x,y,z[,worldname]"
     player: "&4Player %name% not found!"
   all_teleported: "&6All players teleported"
+  provide_location: "&4Must provide either a location (-l) or a player (-p) to teleport to"
 whitelist:
   added: "&6All online players added to the whitelist"
   cleared: "&6Whitelist cleared"

@@ -21,9 +21,10 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.routing.CommandMethod;
-import com.publicuhc.pluginframework.routing.CommandRequest;
-import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandOptions;
+import com.publicuhc.pluginframework.routing.annotation.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.PermissionRestriction;
 import com.publicuhc.pluginframework.routing.converters.LocationValueConverter;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
@@ -31,9 +32,11 @@ import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 public class TPCommand extends TranslatingCommand {
 
@@ -44,17 +47,24 @@ public class TPCommand extends TranslatingCommand {
         super(translate);
     }
 
-    @CommandMethod(command = "tpp", options = true, permission = TP_ALL_PERMISSION)
-    public void teleportCommand(CommandRequest request){
-        OptionSet set = request.getOptions();
+    @CommandMethod("tpp")
+    @CommandOptions({"p", "l", "[arguments]"})
+    @PermissionRestriction(TP_ALL_PERMISSION)
+    public void teleportCommand(OptionSet set, CommandSender sender, Player[] player, Location location, List<Player[]> args) {
+        Location teleportLoc = location == null ? player[0].getLocation() : location;
 
-        Location teleportLoc = set.has("p") ? ((Player[]) set.valueOf("p"))[0].getLocation() : (Location) set.valueOf("l");
-        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists((List<Player[]>) request.getOptions().nonOptionArguments());
+        if(teleportLoc == null) {
+            sender.sendMessage(translate("teleport.provide_location", sender));
+            return;
+        }
+
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
+
         for (Player p : players) {
             p.teleport(teleportLoc);
         }
 
-        request.sendMessage(translate("teleport.all_teleported", request.getSender()));
+        sender.sendMessage(translate("teleport.all_teleported", sender));
     }
 
     @OptionsMethod
@@ -63,7 +73,6 @@ public class TPCommand extends TranslatingCommand {
                 .withRequiredArg()
                 .withValuesConvertedBy(new OnlinePlayerValueConverter(false));
 
-        //finish setting up l
         parser.accepts("l", "Location to teleport to")
                 .withRequiredArg()
                 .withValuesConvertedBy(new LocationValueConverter());

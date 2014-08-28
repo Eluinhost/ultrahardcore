@@ -21,17 +21,20 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.routing.CommandMethod;
-import com.publicuhc.pluginframework.routing.CommandRequest;
-import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.*;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.util.ServerUtil;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class HealCommand extends TranslatingCommand {
 
@@ -45,9 +48,10 @@ public class HealCommand extends TranslatingCommand {
         super(translate);
     }
 
-    @CommandMethod(command = "healself", permission = HEAL_SELF_PERMISSION, allowedSenders = Player.class)
-    public void healSelfCommand(CommandRequest request){
-        Player player = (Player) request.getSender();
+    @CommandMethod("healself")
+    @PermissionRestriction(HEAL_SELF_PERMISSION)
+    @SenderRestriction(Player.class)
+    public void healSelfCommand(OptionSet set, Player player){
         player.setHealth(player.getMaxHealth());
         player.sendMessage(translate("heal.tell", player));
         Map<String, String> vars = new HashMap<String, String>();
@@ -56,20 +60,23 @@ public class HealCommand extends TranslatingCommand {
         ServerUtil.broadcastForPermission(translate("heal.announce", player, vars),HEAL_ANNOUNCE_PERMISSION);
     }
 
-    @CommandMethod(command = "heal", permission = HEAL_OTHER_PERMISSION, options = true)
-    public void healCommand(CommandRequest request)
+    @CommandMethod("heal")
+    @PermissionRestriction(HEAL_OTHER_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void healCommand(OptionSet set, CommandSender sender, List<Player[]> args)
     {
-        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists((List<Player[]>) request.getOptions().nonOptionArguments());
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
         for(Player p : players) {
             p.setHealth(p.getMaxHealth());
             p.sendMessage(translate("heal.tell", p));
-            request.sendMessage(translate("heal.healed", p));
+            sender.sendMessage(translate("heal.healed", p));
         }
+
         Map<String, String> vars = new HashMap<String, String>();
-        vars.put("healer", request.getSender().getName());
+        vars.put("healer", sender.getName());
         vars.put("name", players.toString());
-        ServerUtil.broadcastForPermission(translate("heal.announce", request.getSender(), vars), HEAL_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("heal.announce", sender, vars), HEAL_ANNOUNCE_PERMISSION);
     }
 
     @OptionsMethod

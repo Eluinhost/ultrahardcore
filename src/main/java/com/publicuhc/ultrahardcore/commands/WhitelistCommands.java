@@ -21,14 +21,17 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.routing.CommandMethod;
-import com.publicuhc.pluginframework.routing.CommandRequest;
-import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandOptions;
+import com.publicuhc.pluginframework.routing.annotation.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.PermissionRestriction;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Set;
@@ -42,15 +45,17 @@ public class WhitelistCommands extends TranslatingCommand {
         super(translate);
     }
 
-    @CommandMethod(command = "whitelistall", permission = WHITELIST_ALL_PERMISSION, options = true)
-    public void whitelistAllCommand(CommandRequest request)
+    @CommandMethod("whitelistall")
+    @PermissionRestriction(WHITELIST_ALL_PERMISSION)
+    @CommandOptions
+    public void whitelistAllCommand(OptionSet set, CommandSender sender)
     {
-        if(request.getOptions().has("c")) {
+        if(set.has("c")) {
             clearWhitelist();
-            request.sendMessage(translate("whitelist.cleared", request.getSender()));
+            sender.sendMessage(translate("whitelist.cleared", sender));
         } else {
             addAllToWhitelist();
-            request.sendMessage(translate("whitelist.added", request.getSender()));
+            sender.sendMessage(translate("whitelist.added", sender));
         }
     }
 

@@ -21,14 +21,14 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.routing.CommandMethod;
-import com.publicuhc.pluginframework.routing.CommandRequest;
-import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.*;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -49,27 +49,32 @@ public class ClearInventoryCommand extends TranslatingCommand {
         super(translate);
     }
 
-    @CommandMethod(command = "ciself", permission = CLEAR_SELF_PERMISSION, allowedSenders = Player.class)
-    public void clearInventorySelf(CommandRequest request)
+    @CommandMethod("ciself")
+    @PermissionRestriction(CLEAR_SELF_PERMISSION)
+    @SenderRestriction(Player.class)
+    public void clearInventorySelf(OptionSet set, Player sender)
     {
-        clearInventory((HumanEntity) request.getSender());
-        request.sendMessage(translate("ci.cleared", request.getSender()));
+        clearInventory(sender);
+        sender.sendMessage(translate("ci.cleared", sender));
     }
 
-    @CommandMethod(command = "ci", permission = CLEAR_OTHER_PERMISSION)
-    public void clearInventoryCommand(CommandRequest request)
+    @CommandMethod("ci")
+    @PermissionRestriction(CLEAR_OTHER_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void clearInventoryCommand(OptionSet set, CommandSender sender, List<Player[]> args)
     {
-        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists((List<Player[]>) request.getOptions().nonOptionArguments());
+        Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
         for(Player p : players) {
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                request.sendMessage(translate("ci.immune", request.getSender(), "name", p.getName()));
+                sender.sendMessage(translate("ci.immune", sender, "name", p.getName()));
             } else {
                 clearInventory(p);
-                p.sendMessage(translate("ci.tell", request.getSender(), "name", request.getSender().getName()));
+                p.sendMessage(translate("ci.tell", sender, "name", sender.getName()));
             }
         }
-        request.sendMessage(translate("ci.cleared", request.getSender()));
+
+        sender.sendMessage(translate("ci.cleared", sender));
     }
 
     @OptionsMethod

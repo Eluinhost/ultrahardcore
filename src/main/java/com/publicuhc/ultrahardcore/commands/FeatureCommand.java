@@ -21,11 +21,13 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
-import com.publicuhc.pluginframework.routing.CommandMethod;
-import com.publicuhc.pluginframework.routing.CommandRequest;
-import com.publicuhc.pluginframework.routing.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
+import com.publicuhc.pluginframework.routing.annotation.CommandOptions;
+import com.publicuhc.pluginframework.routing.annotation.OptionsMethod;
+import com.publicuhc.pluginframework.routing.annotation.PermissionRestriction;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
@@ -42,6 +44,7 @@ public class FeatureCommand extends TranslatingCommand {
     public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";
 
     private final FeatureManager featureManager;
+    private final FeatureValueConverter featureValueConverter;
 
     /**
      * @param translate the translator
@@ -51,6 +54,7 @@ public class FeatureCommand extends TranslatingCommand {
     private FeatureCommand(Translate translate, FeatureManager featureManager){
         super(translate);
         this.featureManager = featureManager;
+        featureValueConverter = new FeatureValueConverter(featureManager);
     }
 
     private void turnFeatureOn(Feature feature, CommandSender sender)
@@ -80,74 +84,75 @@ public class FeatureCommand extends TranslatingCommand {
         }
     }
 
-    @CommandMethod(command = "feature list", permission = FEATURE_LIST_PERMISSION)
-    public void featureListCommand(CommandRequest request)
+    @CommandMethod("feature list")
+    @PermissionRestriction(FEATURE_LIST_PERMISSION)
+    public void featureListCommand(OptionSet set, CommandSender sender)
     {
         List<Feature> features = featureManager.getFeatures();
-        request.sendMessage(translate("features.loaded.header", request.getSender(), "amount", String.valueOf(features.size())));
+        sender.sendMessage(translate("features.loaded.header", sender, "amount", String.valueOf(features.size())));
         if (features.isEmpty()) {
-            request.sendMessage(translate("features.loaded.none", request.getSender()));
+            sender.sendMessage(translate("features.loaded.none", sender));
         }
         for (Feature feature : features) {
             Map<String, String> vars = new HashMap<String, String>();
             vars.put("id", feature.getFeatureID());
             vars.put("desc", feature.getDescription());
-            request.sendMessage(translate(feature.isEnabled()?"features.loaded.on":"features.loaded.off", request.getSender(), vars));
+            sender.sendMessage(translate(feature.isEnabled() ? "features.loaded.on" : "features.loaded.off", sender, vars));
 
             List<String> status = feature.getStatus();
 
             if (status != null) {
                 for(String message : status) {
-                    request.sendMessage(message);
+                    sender.sendMessage(message);
                 }
             }
         }
     }
 
-    @CommandMethod(command = "feature toggle", permission = FEATURE_TOGGLE_PERMISSION)
-    public void featureToggleCommand(CommandRequest request){
-        List<Feature> features = (List<Feature>) request.getOptions().nonOptionArguments();
-
+    @CommandMethod("feature toggle")
+    @PermissionRestriction(FEATURE_TOGGLE_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void featureToggleCommand(OptionSet set, CommandSender sender, List<Feature> features){
         for(Feature feature : features) {
-            toggleFeature(feature, request.getSender());
+            toggleFeature(feature, sender);
         }
     }
 
     @OptionsMethod
     public void featureToggleCommand(OptionDeclarer parser)
     {
-        parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
+        parser.nonOptions().withValuesConvertedBy(featureValueConverter);
     }
 
-    @CommandMethod(command = "feature on", permission = FEATURE_TOGGLE_PERMISSION)
-    public void featureOnCommand(CommandRequest request)
+    @CommandMethod("feature on")
+    @PermissionRestriction(FEATURE_TOGGLE_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void featureOnCommand(OptionSet set, CommandSender sender, List<Feature> features)
     {
-        List<Feature> features = (List<Feature>) request.getOptions().nonOptionArguments();
-
         for(Feature feature : features) {
-            turnFeatureOn(feature, request.getSender());
+            turnFeatureOn(feature, sender);
         }
     }
 
     @OptionsMethod
     public void featureOnCommand(OptionDeclarer parser)
     {
-        parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
+        parser.nonOptions().withValuesConvertedBy(featureValueConverter);
     }
 
-    @CommandMethod(command = "feature off", permission = FEATURE_TOGGLE_PERMISSION)
-    public void featureOffCommand(CommandRequest request)
+    @CommandMethod("feature off")
+    @PermissionRestriction(FEATURE_TOGGLE_PERMISSION)
+    @CommandOptions("[arguments]")
+    public void featureOffCommand(OptionSet set, CommandSender sender, List<Feature> features)
     {
-        List<Feature> features = (List<Feature>) request.getOptions().nonOptionArguments();
-
         for(Feature feature : features) {
-            turnFeatureOff(feature, request.getSender());
+            turnFeatureOff(feature, sender);
         }
     }
 
     @OptionsMethod
     public void featureOffCommand(OptionDeclarer parser)
     {
-        parser.nonOptions().withValuesConvertedBy(new FeatureValueConverter(featureManager));
+        parser.nonOptions().withValuesConvertedBy(featureValueConverter);
     }
 }
