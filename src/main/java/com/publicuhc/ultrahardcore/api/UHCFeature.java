@@ -28,6 +28,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class UHCFeature implements Feature {
@@ -113,7 +114,7 @@ public abstract class UHCFeature implements Feature {
      */
     @Override
     public List<String> getStatus() {
-        return null;
+        return new ArrayList<String>();
     }
 
     /**

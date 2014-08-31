@@ -21,6 +21,7 @@
 
 package com.publicuhc.ultrahardcore.api;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
@@ -121,13 +122,13 @@ public class DefaultFeatureManager implements FeatureManager {
     }
 
     @Override
-    public Feature getFeatureByID(String featureID) {
+    public Optional<Feature> getFeatureByID(String featureID) {
         for (Feature feature : featureList) {
             if (feature.getFeatureID().equals(featureID)) {
-                return feature;
+                return Optional.of(feature);
             }
         }
-        return null;
+        return Optional.absent();
     }
 
     @Override

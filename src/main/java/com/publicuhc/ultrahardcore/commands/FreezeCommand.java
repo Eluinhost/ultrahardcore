@@ -21,6 +21,7 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
+import com.google.common.base.Optional;
 import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
 import com.publicuhc.pluginframework.routing.annotation.CommandOptions;
 import com.publicuhc.pluginframework.routing.annotation.OptionsMethod;
@@ -30,12 +31,14 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
 import com.publicuhc.ultrahardcore.features.PlayerFreezeFeature;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 public class FreezeCommand extends TranslatingCommand {
 
@@ -60,11 +63,12 @@ public class FreezeCommand extends TranslatingCommand {
     @PermissionRestriction(FREEZE_PERMISSION)
     @CommandOptions("[arguments]")
     public void freezeCommand(OptionSet set, CommandSender sender, List<Player[]> args) {
-        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureManager.getFeatureByID("PlayerFreeze");
-        if (feature == null) {
+        Optional<Feature> featureOptional = featureManager.getFeatureByID("PlayerFreeze");
+        if (!featureOptional.isPresent()) {
             sender.sendMessage(translate("freeze.not_loaded", sender));
             return;
         }
+        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureOptional.get();
         if (!feature.isEnabled()) {
             sender.sendMessage(translate("freeze.not_enabled", sender));
             return;
@@ -98,11 +102,12 @@ public class FreezeCommand extends TranslatingCommand {
     @PermissionRestriction(FREEZE_PERMISSION)
     @CommandOptions("[arguments]")
     public void unfreezeCommand(OptionSet set, CommandSender sender, List<Player[]> args) {
-        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureManager.getFeatureByID("PlayerFreeze");
-        if (feature == null) {
+        Optional<Feature> featureOptional = featureManager.getFeatureByID("PlayerFreeze");
+        if (!featureOptional.isPresent()) {
             sender.sendMessage(translate("freeze.not_loaded", sender));
             return;
         }
+        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureOptional.get();
         if (!feature.isEnabled()) {
             sender.sendMessage(translate("freeze.not_enabled", sender));
             return;

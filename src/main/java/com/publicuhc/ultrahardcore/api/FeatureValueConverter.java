@@ -1,5 +1,6 @@
 package com.publicuhc.ultrahardcore.api;
 
+import com.google.common.base.Optional;
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConversionException;
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConverter;
 
@@ -14,11 +15,11 @@ public class FeatureValueConverter implements ValueConverter<Feature> {
 
     @Override
     public Feature convert(String value) {
-        Feature feature = manager.getFeatureByID(value);
-        if(null == feature) {
+        Optional<Feature> feature = manager.getFeatureByID(value);
+        if(feature.isPresent()) {
             throw new ValueConversionException("Invalid feature ID: " + value);
         }
-        return null;
+        return feature.get();
     }
 
     @Override
@@ -28,6 +29,6 @@ public class FeatureValueConverter implements ValueConverter<Feature> {
 
     @Override
     public String valuePattern() {
-        return null;
+        return "FeatureID";
     }
 }

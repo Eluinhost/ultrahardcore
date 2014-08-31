@@ -62,7 +62,7 @@ public interface Feature extends Listener {
 
     /**
      * @return a list detailing the components of this feature that are enabled/disabled.
-     * Return null/empty for no components
+     * Return empty for no components
      */
     List<String> getStatus();
 }

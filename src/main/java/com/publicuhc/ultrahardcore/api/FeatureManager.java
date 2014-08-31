@@ -21,6 +21,7 @@
 
 package com.publicuhc.ultrahardcore.api;
 
+import com.google.common.base.Optional;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 
@@ -52,9 +53,9 @@ public interface FeatureManager {
      * Get the Feature based on it's ID
      *
      * @param featureID String the ID to check for
-     * @return the returned feature, or null if not found
+     * @return the returned feature
      */
-    Feature getFeatureByID(String featureID);
+    Optional<Feature> getFeatureByID(String featureID);
 
     /**
      * @return an unmodifiable list of all of the loaded features

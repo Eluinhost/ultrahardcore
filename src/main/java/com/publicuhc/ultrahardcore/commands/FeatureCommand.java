@@ -101,10 +101,8 @@ public class FeatureCommand extends TranslatingCommand {
 
             List<String> status = feature.getStatus();
 
-            if (status != null) {
-                for(String message : status) {
-                    sender.sendMessage(message);
-                }
+            for(String message : status) {
+                sender.sendMessage(message);
             }
         }
     }
