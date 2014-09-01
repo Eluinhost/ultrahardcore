@@ -34,9 +34,7 @@ import com.publicuhc.ultrahardcore.api.FeatureManager;
 import com.publicuhc.ultrahardcore.api.FeatureValueConverter;
 import org.bukkit.command.CommandSender;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FeatureCommand extends TranslatingCommand {
 
@@ -89,15 +87,12 @@ public class FeatureCommand extends TranslatingCommand {
     public void featureListCommand(OptionSet set, CommandSender sender)
     {
         List<Feature> features = featureManager.getFeatures();
-        sender.sendMessage(translate("features.loaded.header", sender, "amount", String.valueOf(features.size())));
+        sender.sendMessage(translate("features.loaded.header", sender, String.valueOf(features.size())));
         if (features.isEmpty()) {
             sender.sendMessage(translate("features.loaded.none", sender));
         }
         for (Feature feature : features) {
-            Map<String, String> vars = new HashMap<String, String>();
-            vars.put("id", feature.getFeatureID());
-            vars.put("desc", feature.getDescription());
-            sender.sendMessage(translate(feature.isEnabled() ? "features.loaded.on" : "features.loaded.off", sender, vars));
+            sender.sendMessage(translate(feature.isEnabled() ? "features.loaded.on" : "features.loaded.off", sender, feature.getFeatureID(), feature.getDescription()));
 
             List<String> status = feature.getStatus();
 

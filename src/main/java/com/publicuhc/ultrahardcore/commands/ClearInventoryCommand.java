@@ -67,10 +67,10 @@ public class ClearInventoryCommand extends TranslatingCommand {
 
         for(Player p : players) {
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                sender.sendMessage(translate("ci.immune", sender, "name", p.getName()));
+                sender.sendMessage(translate("ci.immune", sender, p.getName()));
             } else {
                 clearInventory(p);
-                p.sendMessage(translate("ci.tell", sender, "name", sender.getName()));
+                p.sendMessage(translate("ci.tell", sender, sender.getName()));
             }
         }
 

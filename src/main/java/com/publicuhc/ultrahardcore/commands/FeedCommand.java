@@ -31,9 +31,7 @@ import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class FeedCommand extends TranslatingCommand {
@@ -66,10 +64,7 @@ public class FeedCommand extends TranslatingCommand {
     public void feedCommand(OptionSet set, Player sender){
         feedPlayer(sender);
         sender.sendMessage(translate("feed.tell", sender));
-        Map<String, String> vars = new HashMap<String, String>();
-        vars.put("fed", sender.getName());
-        vars.put("name", sender.getName());
-        ServerUtil.broadcastForPermission(translate("feed.announce", sender, vars), FEED_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("feed.announce", sender, sender.getName(), sender.getName()), FEED_ANNOUNCE_PERMISSION);
     }
 
     @CommandMethod("feed")
@@ -83,10 +78,7 @@ public class FeedCommand extends TranslatingCommand {
             player.sendMessage(translate("feed.tell", player));
         }
 
-        Map<String, String> vars = new HashMap<String, String>();
-        vars.put("fed", players.toString());
-        vars.put("name", sender.getName());
-        ServerUtil.broadcastForPermission(translate("feed.announce", sender, vars), FEED_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("feed.announce", sender, players.toString(), sender.getName()), FEED_ANNOUNCE_PERMISSION);
     }
 
     @OptionsMethod

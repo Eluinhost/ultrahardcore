@@ -31,9 +31,7 @@ import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class HealCommand extends TranslatingCommand {
@@ -54,10 +52,7 @@ public class HealCommand extends TranslatingCommand {
     public void healSelfCommand(OptionSet set, Player player){
         player.setHealth(player.getMaxHealth());
         player.sendMessage(translate("heal.tell", player));
-        Map<String, String> vars = new HashMap<String, String>();
-        vars.put("healer", player.getName());
-        vars.put("name", player.getName());
-        ServerUtil.broadcastForPermission(translate("heal.announce", player, vars),HEAL_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("heal.announce", player, player.getName(), player.getName()),HEAL_ANNOUNCE_PERMISSION);
     }
 
     @CommandMethod("heal")
@@ -73,10 +68,7 @@ public class HealCommand extends TranslatingCommand {
             sender.sendMessage(translate("heal.healed", p));
         }
 
-        Map<String, String> vars = new HashMap<String, String>();
-        vars.put("healer", sender.getName());
-        vars.put("name", players.toString());
-        ServerUtil.broadcastForPermission(translate("heal.announce", sender, vars), HEAL_ANNOUNCE_PERMISSION);
+        ServerUtil.broadcastForPermission(translate("heal.announce", sender, sender.getName(), players.toString()), HEAL_ANNOUNCE_PERMISSION);
     }
 
     @OptionsMethod
