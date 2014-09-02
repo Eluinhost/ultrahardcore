@@ -49,6 +49,10 @@ commands:
       description: Whitelist all online players
       usage: /<command>
       aliases: [uhcwhitelistall]
+    locale:
+      description: Checks locales
+      usage: /<command>
+      aliases: [uhclocale]
 permissions:
     UHC.heal.*:
         description: Gives all heal permissions

@@ -42,5 +42,6 @@ public class UHCCoreAddonModule extends UHCAddonModule {
         binder.addBinding().to(HealCommand.class);
         binder.addBinding().to(TPCommand.class);
         binder.addBinding().to(WhitelistCommands.class);
+        binder.addBinding().to(DebugCommands.class);
     }
 }
