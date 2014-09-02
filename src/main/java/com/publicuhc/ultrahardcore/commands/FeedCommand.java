@@ -27,14 +27,13 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Set;
 
-public class FeedCommand extends TranslatingCommand {
+public class FeedCommand {
 
     public static final float MAX_SATURATION = 5.0F;
     public static final int MAX_FOOD_LEVEL = 20;
@@ -43,19 +42,22 @@ public class FeedCommand extends TranslatingCommand {
     public static final String FEED_ANNOUNCE_PERMISSION = "UHC.feed.announce";
     public static final String FEED_OTHER_PERMISSION = "UHC.feed.other";
 
+    private final Translate translate;
+
     @Inject
     private FeedCommand(Translate translate) {
-        super(translate);
+        this.translate = translate;
     }
 
     /**
      * Feeds a player to full hunger and saturation and resets exhaustion
      * @param player player to feed
      */
-    public static void feedPlayer(Player player){
+    public void feedPlayer(Player player){
         player.setFoodLevel(MAX_FOOD_LEVEL);
         player.setExhaustion(0.0F);
         player.setSaturation(MAX_SATURATION);
+        translate.sendMessage("feed.tell", player);
     }
 
     @CommandMethod("feedself")
@@ -63,8 +65,7 @@ public class FeedCommand extends TranslatingCommand {
     @SenderRestriction(Player.class)
     public void feedCommand(OptionSet set, Player sender){
         feedPlayer(sender);
-        sender.sendMessage(translate("feed.tell", sender));
-        ServerUtil.broadcastForPermission(translate("feed.announce", sender, sender.getName(), sender.getName()), FEED_ANNOUNCE_PERMISSION);
+        translate.broadcastMessageForPermission(FEED_ANNOUNCE_PERMISSION, "feed.announce", sender.getName(), 1);
     }
 
     @CommandMethod("feed")
@@ -75,10 +76,10 @@ public class FeedCommand extends TranslatingCommand {
 
         for(Player player : players) {
             feedPlayer(player);
-            player.sendMessage(translate("feed.tell", player));
         }
 
-        ServerUtil.broadcastForPermission(translate("feed.announce", sender, players.toString(), sender.getName()), FEED_ANNOUNCE_PERMISSION);
+        translate.sendMessage("feed.fed", sender, players.size());
+        translate.broadcastMessageForPermission(FEED_ANNOUNCE_PERMISSION, "feed.announce", sender.getName(), players.size());
     }
 
     @OptionsMethod

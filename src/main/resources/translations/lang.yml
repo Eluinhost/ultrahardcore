@@ -18,12 +18,9 @@ features:
   enabled: "&6Feature enabled"
   disabled: "&6Feature disabled"
 feed:
-  announce: "&7&o[UHC] %1$s used a feed command to feed %2$s"
-  invalid_player: "&4Invalid player name %1$s"
+  announce: "&7&o[UHC] %1$s used a feed command to feed %2$d players"
   tell: "&6You were fed to full hunger"
-  fed: "&6Player fed"
-  fed_all: "&6Fed all players"
-  fed_all_announce: "&7&o[UHC] %1$s fed all players"
+  fed: "&6Fed %1$d players"
 heal:
   announce: "&7&o[UHC] %1$s used a heal command to heal %2$s"
   invalid_player: "&4Invalid player name %1$s"
