@@ -21,6 +21,7 @@
 package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.pluginframework.FrameworkJavaPlugin;
+import com.publicuhc.pluginframework.locale.LocaleProvider;
 import com.publicuhc.pluginframework.routing.Router;
 import com.publicuhc.pluginframework.routing.exception.CommandParseException;
 import com.publicuhc.pluginframework.shaded.inject.*;
@@ -47,6 +48,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     private FeatureManager featureManager;
     private Router router;
     private Metrics metrics;
+    private LocaleProvider locales;
 
     //When the plugin gets started
     @Override
@@ -85,6 +87,12 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     private void setMetrics(Metrics metrics)
     {
         this.metrics = metrics;
+    }
+
+    @Inject
+    private void setLocales(LocaleProvider provider)
+    {
+        this.locales = provider;
     }
 
     /**
@@ -130,6 +138,12 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         Injector injector = Guice.createInjector(module, new AbstractModule() {
             @Override
             protected void configure() {}
+
+            @Provides
+            public LocaleProvider getLocales()
+            {
+                return locales;
+            }
 
             @Provides
             public Router getRouter()
