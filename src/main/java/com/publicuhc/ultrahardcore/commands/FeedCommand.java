@@ -27,13 +27,15 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.api.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Set;
 
-public class FeedCommand {
+public class FeedCommand implements Command
+{
 
     public static final float MAX_SATURATION = 5.0F;
     public static final int MAX_FOOD_LEVEL = 20;

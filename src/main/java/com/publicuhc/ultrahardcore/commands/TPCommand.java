@@ -31,6 +31,7 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.api.Command;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,7 +39,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Set;
 
-public class TPCommand {
+public class TPCommand implements Command
+{
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 

@@ -29,6 +29,7 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.api.Command;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -36,7 +37,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class WhitelistCommands {
+public class WhitelistCommands implements Command
+{
 
     public static final String WHITELIST_ALL_PERMISSION = "UHC.whitelistall";
 

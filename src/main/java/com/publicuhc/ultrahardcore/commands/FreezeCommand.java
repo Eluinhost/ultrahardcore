@@ -32,6 +32,7 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.api.Command;
 import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.FeatureManager;
 import com.publicuhc.ultrahardcore.features.PlayerFreezeFeature;
@@ -43,7 +44,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class FreezeCommand {
+public class FreezeCommand implements Command
+{
 
     public static final String FREEZE_PERMISSION = "UHC.freeze.command";
     public static final String ANTIFREEZE_PERMISSION = "UHC.freeze.antifreeze";
