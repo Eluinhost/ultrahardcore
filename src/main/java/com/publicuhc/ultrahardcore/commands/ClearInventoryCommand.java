@@ -21,6 +21,7 @@
 
 package com.publicuhc.ultrahardcore.commands;
 
+import com.google.common.base.Joiner;
 import com.publicuhc.pluginframework.routing.annotation.*;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
@@ -29,24 +30,28 @@ import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class ClearInventoryCommand extends TranslatingCommand {
+public class ClearInventoryCommand {
 
     public static final String CLEAR_SELF_PERMISSION = "UHC.ci.self";
     public static final String CLEAR_OTHER_PERMISSION = "UHC.ci.other";
     public static final String CLEAR_IMMUNE_PERMISSION = "UHC.ci.immune";
+    public static final String CLEAR_ANNOUNCE_PERMISSION = "UHC.ci.announce";
+
+    private final Translate translate;
 
     @Inject
     private ClearInventoryCommand(Translate translate) {
-        super(translate);
+        this.translate = translate;
     }
 
     @CommandMethod("ciself")
@@ -55,7 +60,7 @@ public class ClearInventoryCommand extends TranslatingCommand {
     public void clearInventorySelf(OptionSet set, Player sender)
     {
         clearInventory(sender);
-        sender.sendMessage(translate("ci.cleared", sender));
+        translate.broadcastMessageForPermission(CLEAR_ANNOUNCE_PERMISSION, "ci.announce_self", sender.getName());
     }
 
     @CommandMethod("ci")
@@ -65,16 +70,24 @@ public class ClearInventoryCommand extends TranslatingCommand {
     {
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
+        Collection<String> immune = new ArrayList<String>();
+
         for(Player p : players) {
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
-                sender.sendMessage(translate("ci.immune", sender, p.getName()));
+                immune.add(p.getName());
             } else {
                 clearInventory(p);
-                p.sendMessage(translate("ci.tell", sender, sender.getName()));
             }
         }
 
-        sender.sendMessage(translate("ci.cleared", sender));
+        if(!immune.isEmpty()) {
+            String playerList = Joiner.on(", ").join(immune);
+            translate.sendMessage("ci.immune", sender, playerList);
+        }
+
+        int cleared = players.size() - immune.size();
+
+        translate.sendMessage("ci.cleared", sender, cleared);
     }
 
     @OptionsMethod
@@ -87,7 +100,7 @@ public class ClearInventoryCommand extends TranslatingCommand {
      * Clears the player's inventory, armour slots, item on cursor and crafting slots
      * @param p player
      */
-    private static void clearInventory(HumanEntity p) {
+    private void clearInventory(Player p) {
         p.getInventory().clear();
         p.getInventory().setHelmet(null);
         p.getInventory().setChestplate(null);
@@ -98,5 +111,7 @@ public class ClearInventoryCommand extends TranslatingCommand {
         if (openInventory.getType() == InventoryType.CRAFTING) {
             openInventory.getTopInventory().clear();
         }
+
+        translate.sendMessage("ci.tell", p);
     }
 }

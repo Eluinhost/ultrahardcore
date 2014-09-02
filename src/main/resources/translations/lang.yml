@@ -1,9 +1,3 @@
-ci:
-  cleared: "&6Inventory cleared!"
-  immune: "&4Player %1$s is immune to inventory clears"
-  tell: "&7Your inventory was cleared by %1$s"
-  not_found: "&4Players not found to clear: %1$s"
-  announce_all: "&6All player inventories cleared by %1$s"
 features:
   loaded:
     header: "&6Currently loaded features (%1$s):"
@@ -21,6 +15,12 @@ feed:
   announce: "&7&o[UHC] %1$s used a feed command to feed %2$d players"
   tell: "&6You were fed to full hunger"
   fed: "&6Fed %1$d players"
+ci:
+  announce: "&7&o[UHC] %1$s used a ci command to clear %2$d player inventories"
+  announce_self: "&7&o[UHC] %1$s used a ci command to clear their inventory"
+  tell: "&6Your inventory was cleared"
+  cleared: "&6Cleared %1$d inventories"
+  immune: "&4Player/s immune to inventory clears: %1$s"
 heal:
   announce: "&7&o[UHC] %1$s used a heal command to heal %2$s"
   invalid_player: "&4Invalid player name %1$s"

@@ -79,6 +79,9 @@ permissions:
     UHC.ci.immune:
         description: Immune to inventory clears
         default: false
+    UHC.clear.announce:
+        description: All ci commands will be announced to this player
+        default: false
     UHC.heal.self:
         description: Fully heal yourself
         default: false
