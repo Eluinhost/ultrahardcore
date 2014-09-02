@@ -36,13 +36,15 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class WhitelistCommands extends TranslatingCommand {
+public class WhitelistCommands {
 
     public static final String WHITELIST_ALL_PERMISSION = "UHC.whitelistall";
 
+    private final Translate translate;
+
     @Inject
     protected WhitelistCommands(Translate translate) {
-        super(translate);
+        this.translate = translate;
     }
 
     @CommandMethod("whitelistall")
@@ -52,10 +54,10 @@ public class WhitelistCommands extends TranslatingCommand {
     {
         if(set.has("c")) {
             clearWhitelist();
-            sender.sendMessage(translate("whitelist.cleared", sender));
+            translate.sendMessage("whitelist.cleared", sender);
         } else {
             addAllToWhitelist();
-            sender.sendMessage(translate("whitelist.added", sender));
+            translate.sendMessage("whitelist.added", sender);
         }
     }
 
