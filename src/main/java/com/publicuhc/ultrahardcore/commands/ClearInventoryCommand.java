@@ -88,6 +88,7 @@ public class ClearInventoryCommand {
         int cleared = players.size() - immune.size();
 
         translate.sendMessage("ci.cleared", sender, cleared);
+        translate.broadcastMessageForPermission(CLEAR_ANNOUNCE_PERMISSION, "ci.announce", sender.getName(), cleared);
     }
 
     @OptionsMethod
