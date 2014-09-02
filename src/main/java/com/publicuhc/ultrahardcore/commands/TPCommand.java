@@ -38,13 +38,15 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Set;
 
-public class TPCommand extends TranslatingCommand {
+public class TPCommand {
 
     public static final String TP_ALL_PERMISSION = "UHC.tpall";
 
+    private final Translate translate;
+
     @Inject
     private TPCommand(Translate translate) {
-        super(translate);
+        this.translate = translate;
     }
 
     @CommandMethod("tpp")
@@ -54,7 +56,7 @@ public class TPCommand extends TranslatingCommand {
         Location teleportLoc = location == null ? player[0].getLocation() : location;
 
         if(teleportLoc == null) {
-            sender.sendMessage(translate("teleport.provide_location", sender));
+            translate.sendMessage("teleport.provide_location", sender);
             return;
         }
 
@@ -64,7 +66,7 @@ public class TPCommand extends TranslatingCommand {
             p.teleport(teleportLoc);
         }
 
-        sender.sendMessage(translate("teleport.all_teleported", sender));
+        translate.sendMessage("teleport.all_teleported", sender, players.size());
     }
 
     @OptionsMethod

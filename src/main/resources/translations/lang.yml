@@ -37,12 +37,7 @@ freeze:
   unfroze_all: "&6All players unfrozen"
   not_enabled: "&4Freeze feature is not enabled!"
 teleport:
-  non_player_world: "&4You need to specify a world when not running the command as a player"
-  invalid:
-    world: "&4Invalid world supplied"
-    coords: "&4Invalid coordinate syntax, try x,y,z[,worldname]"
-    player: "&4Player %1$s not found!"
-  all_teleported: "&6All players teleported"
+  all_teleported: "&6%1$d players teleported"
   provide_location: "&4Must provide either a location (-l) or a player (-p) to teleport to"
 whitelist:
   added: "&6All online players added to the whitelist"
