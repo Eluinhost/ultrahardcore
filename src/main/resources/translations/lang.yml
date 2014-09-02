@@ -13,6 +13,7 @@ features:
   disabled: "&6Feature disabled"
 feed:
   announce: "&7&o[UHC] %1$s used a feed command to feed %2$d players"
+  announce_self: "&7&o[UHC] %1$s used a feed command to feed themselves"
   tell: "&6You were fed to full hunger"
   fed: "&6Fed %1$d players"
 ci:

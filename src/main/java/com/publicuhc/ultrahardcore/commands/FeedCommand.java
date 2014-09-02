@@ -65,7 +65,7 @@ public class FeedCommand {
     @SenderRestriction(Player.class)
     public void feedCommand(OptionSet set, Player sender){
         feedPlayer(sender);
-        translate.broadcastMessageForPermission(FEED_ANNOUNCE_PERMISSION, "feed.announce", sender.getName(), 1);
+        translate.broadcastMessageForPermission(FEED_ANNOUNCE_PERMISSION, "feed.announce_self", sender.getName(), 1);
     }
 
     @CommandMethod("feed")
