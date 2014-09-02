@@ -45,7 +45,6 @@ import java.util.logging.Level;
 public class UltraHardcore extends FrameworkJavaPlugin {
 
     private FeatureManager featureManager;
-    private Injector mainInjector;
     private Router router;
     private Metrics metrics;
 
@@ -54,7 +53,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     protected void onFrameworkEnable()
     {
         //load the core addon
-        registerAddon(new UHCCoreAddonModule());
+        registerAddon(new UHCCoreAddonModule(this));
 
         //enable metrics
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
@@ -68,12 +67,6 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         }
         metrics.addGraph(graph);
         metrics.start();
-    }
-
-    @Inject
-    private void setMainInjector(Injector injector)
-    {
-        mainInjector = injector;
     }
 
     @Inject
@@ -97,6 +90,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     /**
      * @return the feature manager for handling features
      */
+    @Inject
     public FeatureManager getFeatureManager()
     {
         return featureManager;
@@ -105,6 +99,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     /**
      * @return the plugin router, used for registering commands e.t.c.
      */
+    @Inject
     public Router getRouter()
     {
         return router;
@@ -132,7 +127,22 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         }
 
         //fetch the list of UHCFeatures from the module and add them to the manager
-        Injector injector = mainInjector.createChildInjector(module);
+        Injector injector = Guice.createInjector(module, new AbstractModule() {
+            @Override
+            protected void configure() {}
+
+            @Provides
+            public Router getRouter()
+            {
+                return router;
+            }
+
+            @Provides
+            public FeatureManager getFeatureManager()
+            {
+                return featureManager;
+            }
+        });
 
         Set<UHCFeature> features = injector.getInstance(Key.get(new TypeLiteral<Set<UHCFeature>>(){}));
         for(UHCFeature feature : features) {

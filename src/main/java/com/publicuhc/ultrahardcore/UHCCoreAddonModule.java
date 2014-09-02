@@ -7,8 +7,15 @@ import com.publicuhc.ultrahardcore.api.UHCFeature;
 import com.publicuhc.ultrahardcore.commands.*;
 import com.publicuhc.ultrahardcore.features.*;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 public class UHCCoreAddonModule extends UHCAddonModule {
+
+    protected UHCCoreAddonModule(Plugin instance)
+    {
+        super(instance);
+    }
+
     @Override
     protected void registerFeatures(Multibinder<UHCFeature> binder) {
         binder.addBinding().to(EnderpearlsFeature.class);
