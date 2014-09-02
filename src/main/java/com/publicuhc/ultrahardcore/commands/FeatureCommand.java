@@ -36,21 +36,19 @@ import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class FeatureCommand extends TranslatingCommand {
+public class FeatureCommand {
 
     public static final String FEATURE_LIST_PERMISSION = "UHC.feature.list";
     public static final String FEATURE_TOGGLE_PERMISSION = "UHC.feature.toggle";
 
     private final FeatureManager featureManager;
     private final FeatureValueConverter featureValueConverter;
+    private final Translate translate;
 
-    /**
-     * @param translate the translator
-     * @param featureManager the feature manager
-     */
     @Inject
-    private FeatureCommand(Translate translate, FeatureManager featureManager){
-        super(translate);
+    private FeatureCommand(Translate translate, FeatureManager featureManager)
+    {
+        this.translate = translate;
         this.featureManager = featureManager;
         featureValueConverter = new FeatureValueConverter(featureManager);
     }
@@ -58,18 +56,18 @@ public class FeatureCommand extends TranslatingCommand {
     private void turnFeatureOn(Feature feature, CommandSender sender)
     {
         if(feature.disableFeature()) {
-            sender.sendMessage(translate("features.disabled", sender));
+            translate.sendMessage("features.disabled", sender);
         } else {
-            sender.sendMessage(translate("features.disabled_cancelled", sender));
+            translate.sendMessage("features.disabled_cancelled", sender);
         }
     }
 
     private void turnFeatureOff(Feature feature, CommandSender sender)
     {
         if(feature.enableFeature()) {
-            sender.sendMessage(translate("features.enabled", sender));
+            translate.sendMessage("features.enabled", sender);
         } else {
-            sender.sendMessage(translate("features.enabled_cancelled", sender));
+            translate.sendMessage("features.enabled_cancelled", sender);
         }
     }
 
@@ -87,12 +85,12 @@ public class FeatureCommand extends TranslatingCommand {
     public void featureListCommand(OptionSet set, CommandSender sender)
     {
         List<Feature> features = featureManager.getFeatures();
-        sender.sendMessage(translate("features.loaded.header", sender, String.valueOf(features.size())));
+        translate.sendMessage("features.loaded.header", sender, features.size());
         if (features.isEmpty()) {
-            sender.sendMessage(translate("features.loaded.none", sender));
+            translate.sendMessage("features.loaded.none", sender);
         }
         for (Feature feature : features) {
-            sender.sendMessage(translate(feature.isEnabled() ? "features.loaded.on" : "features.loaded.off", sender, feature.getFeatureID(), feature.getDescription()));
+            translate.sendMessage(feature.isEnabled() ? "features.loaded.on" : "features.loaded.off", sender, feature.getFeatureID(), feature.getDescription());
 
             List<String> status = feature.getStatus();
 

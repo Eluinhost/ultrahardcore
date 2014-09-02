@@ -1,16 +1,13 @@
 features:
+  disabled: "&6Feature disabled"
+  enabled: "&6Feature enabled"
+  disabled_cancelled: "&4Failed to disable feature, plugin cancelled event"
+  enabled_cancelled: "&4Failed to enable feature, plugin cancelled event"
   loaded:
-    header: "&6Currently loaded features (%1$s):"
+    header: "&6Loaded features (%1$d):"
     none: "&7No features loaded!"
     "on": "&a%1$s - &7%2$s"
     "off": "&4%1$s - &7%2$s"
-  not_found: "&4The feature %1$s was not found, use /feature list to see a list of available features"
-  already_enabled: "&4Feature already enabled!"
-  already_disabled: "&4Feature already disabled!"
-  enabled_cancelled: "&4Failed to enable feature, plugin cancelled event"
-  disabled_cancelled: "&4Failed to disable feature, plugin cancelled event"
-  enabled: "&6Feature enabled"
-  disabled: "&6Feature disabled"
 feed:
   announce: "&7&o[UHC] %1$s used a feed command to feed %2$d players"
   announce_self: "&7&o[UHC] %1$s used a feed command to feed themselves"
