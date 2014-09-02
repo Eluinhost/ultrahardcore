@@ -70,6 +70,7 @@ permissions:
         children:
           UHC.ci.self: true
           UHC.ci.other: true
+          UHC.ci.announce: true
     UHC.ci.self:
         description: Clear your own inventory
         default: op
