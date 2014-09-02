@@ -1,6 +1,7 @@
 package com.publicuhc.ultrahardcore.api;
 
 import com.google.common.base.Optional;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConversionException;
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConverter;
 
@@ -8,6 +9,7 @@ public class FeatureValueConverter implements ValueConverter<Feature> {
 
     private final FeatureManager manager;
 
+    @Inject
     public FeatureValueConverter(FeatureManager manager)
     {
         this.manager = manager;

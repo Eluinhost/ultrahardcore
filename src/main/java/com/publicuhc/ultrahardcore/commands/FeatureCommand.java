@@ -48,11 +48,11 @@ public class FeatureCommand implements Command
     private final Translate translate;
 
     @Inject
-    private FeatureCommand(Translate translate, FeatureManager featureManager)
+    private FeatureCommand(Translate translate, FeatureManager featureManager, FeatureValueConverter featureValueConverter)
     {
         this.translate = translate;
         this.featureManager = featureManager;
-        featureValueConverter = new FeatureValueConverter(featureManager);
+        this.featureValueConverter = featureValueConverter;
     }
 
     private void turnFeatureOn(Feature feature, CommandSender sender)
