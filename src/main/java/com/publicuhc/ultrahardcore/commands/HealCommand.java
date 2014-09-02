@@ -27,32 +27,39 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.util.ServerUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Set;
 
-public class HealCommand extends TranslatingCommand {
+public class HealCommand {
 
     public static final String HEAL_SELF_PERMISSION = "UHC.heal.self";
     public static final String HEAL_OTHER_PERMISSION = "UHC.heal.other";
     public static final String HEAL_ANNOUNCE_PERMISSION = "UHC.heal.announce";
 
+    private final Translate translate;
+
     @Inject
     private HealCommand(Translate translate)
     {
-        super(translate);
+        this.translate = translate;
+    }
+
+    private void healPlayer(Player player)
+    {
+        player.setHealth(player.getMaxHealth());
+        translate.sendMessage("heal.tell", player);
     }
 
     @CommandMethod("healself")
     @PermissionRestriction(HEAL_SELF_PERMISSION)
     @SenderRestriction(Player.class)
-    public void healSelfCommand(OptionSet set, Player player){
-        player.setHealth(player.getMaxHealth());
-        player.sendMessage(translate("heal.tell", player));
-        ServerUtil.broadcastForPermission(translate("heal.announce", player, player.getName(), player.getName()),HEAL_ANNOUNCE_PERMISSION);
+    public void healSelfCommand(OptionSet set, Player player)
+    {
+        healPlayer(player);
+        translate.broadcastMessageForPermission(HEAL_ANNOUNCE_PERMISSION, "heal.announce_self", player.getName());
     }
 
     @CommandMethod("heal")
@@ -63,12 +70,11 @@ public class HealCommand extends TranslatingCommand {
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
         for(Player p : players) {
-            p.setHealth(p.getMaxHealth());
-            p.sendMessage(translate("heal.tell", p));
-            sender.sendMessage(translate("heal.healed", p));
+            healPlayer(p);
         }
 
-        ServerUtil.broadcastForPermission(translate("heal.announce", sender, sender.getName(), players.toString()), HEAL_ANNOUNCE_PERMISSION);
+        translate.sendMessage("heal.healed", sender, players.size());
+        translate.broadcastMessageForPermission(HEAL_ANNOUNCE_PERMISSION, "heal.announce", sender.getName(), players.size());
     }
 
     @OptionsMethod

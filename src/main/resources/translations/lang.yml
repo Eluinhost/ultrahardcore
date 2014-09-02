@@ -24,11 +24,9 @@ ci:
   immune: "&4Player/s immune to inventory clears: %1$s"
 heal:
   announce: "&7&o[UHC] %1$s used a heal command to heal %2$s"
-  invalid_player: "&4Invalid player name %1$s"
+  announce_self: "&7&o[UHC] %1$s used a heal command to heal themselves"
   tell: "&6You were healed to full health"
-  healed: "&6Player healed"
-  heal_all: "&6Healed all players"
-  heal_all_announce: "&7&o[UHC] %1$s healed all players"
+  healed: "&6Healed %1$d players"
 freeze:
   not_loaded: "&4The freeze feature is not loaded!"
   invalid_player: "&4Invalid player name %1$s"
