@@ -21,6 +21,7 @@
 
 package com.publicuhc.ultrahardcore.features;
 
+import com.google.common.base.Optional;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
@@ -56,7 +57,11 @@ public class PortalsFeature extends UHCFeature {
      */
     @Inject
     private PortalsFeature(Plugin plugin, Configurator configManager, Translate translate) {
-        config = configManager.getConfig("main");
+        Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
+        if(!mainConfig.isPresent()) {
+            throw new IllegalStateException("Config file 'main' was not found, cannot find configuration values");
+        }
+        config = mainConfig.get();
     }
 
     /**

@@ -21,6 +21,7 @@
 
 package com.publicuhc.ultrahardcore.features;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Range;
 import com.google.common.collect.Ranges;
 import com.publicuhc.pluginframework.configuration.Configurator;
@@ -88,8 +89,11 @@ public class PlayerListFeature extends UHCFeature {
      */
     @Inject
     private PlayerListFeature(Plugin plugin, Configurator configManager) {
-        config = configManager.getConfig("main");
-        this.plugin = plugin;
+        Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
+        if(!mainConfig.isPresent()) {
+            throw new IllegalStateException("Config file 'main' was not found, cannot find configuration values");
+        }
+        config = mainConfig.get();this.plugin = plugin;
     }
 
     /**

@@ -21,12 +21,13 @@
 
 package com.publicuhc.ultrahardcore.features;
 
+import com.google.common.base.Optional;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.pluginframework.translate.Translate;
-import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import com.publicuhc.ultrahardcore.api.UHCFeature;
+import com.publicuhc.ultrahardcore.commands.FreezeCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -68,7 +69,11 @@ public class PlayerFreezeFeature extends UHCFeature {
     @Inject
     private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate, PluginLogger logger) {
         this.plugin = plugin;
-        config = configManager.getConfig("main");
+        Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
+        if(!mainConfig.isPresent()) {
+            throw new IllegalStateException("Config file 'main' was not found, cannot find configuration values");
+        }
+        config = mainConfig.get();
 
         List<String> potionEffectsList = config.getStringList("PlayerFreeze.potion.effects");
 

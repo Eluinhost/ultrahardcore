@@ -30,6 +30,7 @@ import com.publicuhc.ultrahardcore.api.events.FeatureInitEvent;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 
@@ -45,7 +46,7 @@ import java.util.regex.Pattern;
 @Singleton
 public class DefaultFeatureManager implements FeatureManager {
 
-    private final Configurator configManager;
+    private final FileConfiguration config;
     private final Plugin plugin;
     private final PluginLogger logger;
 
@@ -56,9 +57,13 @@ public class DefaultFeatureManager implements FeatureManager {
      */
     @Inject
     public DefaultFeatureManager(Configurator configManager, Plugin plugin, PluginLogger logger){
-        this.configManager = configManager;
         this.plugin = plugin;
         this.logger = logger;
+        Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
+        if(!mainConfig.isPresent()) {
+            throw new IllegalStateException("Config file 'main' was not found, cannot find configuration values");
+        }
+        config = mainConfig.get();
     }
 
     /**
@@ -100,8 +105,8 @@ public class DefaultFeatureManager implements FeatureManager {
         featureList.add(feature);
         logger.log(Level.INFO,"Loaded feature: "+featureID);
 
-        List<String> config = configManager.getConfig("main").getStringList("enabledFeatures");
-        if(config.contains(featureID)){
+        List<String> configs = config.getStringList("enabledFeatures");
+        if(configs.contains(featureID)){
             feature.enableFeature();
         }else{
             feature.disableFeature();
