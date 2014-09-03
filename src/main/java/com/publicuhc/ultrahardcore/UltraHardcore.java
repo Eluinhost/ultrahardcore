@@ -26,13 +26,13 @@ import com.publicuhc.pluginframework.routing.exception.CommandParseException;
 import com.publicuhc.pluginframework.shaded.inject.*;
 import com.publicuhc.pluginframework.shaded.metrics.Metrics;
 import com.publicuhc.ultrahardcore.api.*;
-import com.publicuhc.ultrahardcore.api.events.AddonInitializeEvent;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
-import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 /**
  * UltraHardcore
@@ -47,14 +47,14 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     private FeatureManager featureManager;
     private Router router;
     private Metrics metrics;
-    private BaseAddonModule baseAddonModule;
+    private SharedServicesModule sharedServicesModule;
 
     //When the plugin gets started
     @Override
     protected void onFrameworkEnable()
     {
         //load the core addon
-        registerAddon(new UHCCoreAddonModule(this));
+        registerAddon(this, new UHCCoreAddonConfiguration());
 
         //enable metrics
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
@@ -71,9 +71,9 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     }
 
     @Inject
-    private void setBaseAddonModule(BaseAddonModule module)
+    private void setSharedServicesModule(SharedServicesModule module)
     {
-        baseAddonModule = module;
+        sharedServicesModule = module;
     }
 
     @Inject
@@ -94,6 +94,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         this.metrics = metrics;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public FeatureManager getFeatureManager()
     {
         return featureManager;
@@ -112,23 +113,32 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     }
 
     /**
+     * Register an addon module for features/commands without any extra modules
+     *
+     * @param plugin the plugin to register the addon for
+     * @param configuration the configuration which tells us the commands/features
+     */
+    public void registerAddon(Plugin plugin, UHCAddonConfiguration configuration)
+    {
+        registerAddon(plugin, configuration, new ArrayList<Module>());
+    }
+
+    /**
      * Register an addon module for features/commands
      *
-     * @param module the module with the bindings within it
+     * @param plugin the plugin to register the addon for
+     * @param configuration the configuration which tells us the commands/features
+     * @param modules list of extra modules to add to the injector
      */
     @SuppressWarnings({"AnonymousInnerClass", "EmptyClass"})
-    public void registerAddon(UHCAddonModule module) {
-        AddonInitializeEvent event = new AddonInitializeEvent(module);
-        Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) {
-            getLogger().log(Level.INFO, "Initializing addon from module class " + module.getClass().getName() + " was cancelled");
-            return;
-        }
+    public void registerAddon(Plugin plugin, UHCAddonConfiguration configuration, Collection<Module> modules) {
+        modules.add(sharedServicesModule);
+        modules.add(new ServicesModule(plugin, configuration));
 
-        //fetch the list of UHCFeatures from the module and add them to the manager
-        Injector injector = Guice.createInjector(module, baseAddonModule);
+        Injector injector = Guice.createInjector(modules);
 
-        Set<UHCFeature> features = injector.getInstance(Key.get(new TypeLiteral<Set<UHCFeature>>(){}));
+        //fetch all of the features from the addon and add it to the feature manager
+        Set<UHCFeature> features = injector.getInstance(Key.get(new TypeLiteral<Set<UHCFeature>>() {}));
         for(UHCFeature feature : features) {
             try {
                 featureManager.addFeature(feature);
@@ -137,6 +147,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
             }
         }
 
+        //fetch all of the commands from the addon and add it to the router
         Set<Command> commands = injector.getInstance(Key.get(new TypeLiteral<Set<Command>>(){}));
         for(Command command : commands) {
             try {

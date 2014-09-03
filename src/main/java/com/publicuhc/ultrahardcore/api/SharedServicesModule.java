@@ -27,14 +27,18 @@ import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Provides;
 
-public class BaseAddonModule extends AbstractModule
+/**
+ * All the services shared between all of the addons, generally all created by the UHC injector for use in the addon
+ * injectors
+ */
+public class SharedServicesModule extends AbstractModule
 {
     private final LocaleProvider provider;
     private final Router router;
     private final FeatureManager manager;
 
     @Inject
-    public BaseAddonModule(LocaleProvider provider, Router router, FeatureManager manager)
+    public SharedServicesModule(LocaleProvider provider, Router router, FeatureManager manager)
     {
         this.provider = provider;
         this.router = router;
