@@ -21,7 +21,6 @@
 package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.pluginframework.FrameworkJavaPlugin;
-import com.publicuhc.pluginframework.locale.LocaleProvider;
 import com.publicuhc.pluginframework.routing.Router;
 import com.publicuhc.pluginframework.routing.exception.CommandParseException;
 import com.publicuhc.pluginframework.shaded.inject.*;
@@ -48,7 +47,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     private FeatureManager featureManager;
     private Router router;
     private Metrics metrics;
-    private LocaleProvider locales;
+    private BaseAddonModule baseAddonModule;
 
     //When the plugin gets started
     @Override
@@ -72,6 +71,12 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     }
 
     @Inject
+    private void setBaseAddonModule(BaseAddonModule module)
+    {
+        baseAddonModule = module;
+    }
+
+    @Inject
     private void setFeatureManager(FeatureManager featureManager)
     {
         this.featureManager = featureManager;
@@ -89,25 +94,11 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         this.metrics = metrics;
     }
 
-    @Inject
-    private void setLocales(LocaleProvider provider)
-    {
-        this.locales = provider;
-    }
-
-    /**
-     * @return the feature manager for handling features
-     */
-    @Inject
     public FeatureManager getFeatureManager()
     {
         return featureManager;
     }
 
-    /**
-     * @return the plugin router, used for registering commands e.t.c.
-     */
-    @Inject
     public Router getRouter()
     {
         return router;
@@ -135,28 +126,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         }
 
         //fetch the list of UHCFeatures from the module and add them to the manager
-        Injector injector = Guice.createInjector(module, new AbstractModule() {
-            @Override
-            protected void configure() {}
-
-            @Provides
-            public LocaleProvider getLocales()
-            {
-                return locales;
-            }
-
-            @Provides
-            public Router getRouter()
-            {
-                return router;
-            }
-
-            @Provides
-            public FeatureManager getFeatureManager()
-            {
-                return featureManager;
-            }
-        });
+        Injector injector = Guice.createInjector(module, baseAddonModule);
 
         Set<UHCFeature> features = injector.getInstance(Key.get(new TypeLiteral<Set<UHCFeature>>(){}));
         for(UHCFeature feature : features) {
