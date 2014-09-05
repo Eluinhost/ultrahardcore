@@ -16,11 +16,13 @@ commands:
       usage: /<command>
       aliases: [uhchealself]
     feed:
-      description: Feed yourself
+      description: Feed a player/yourself
       usage: /<command> [player/*]
       aliases: [uhcfeed]
     feedself:
       description: Feed yourself
+      usage: /<command>
+      aliases: [uhcfeedself]
     feature:
       description: Allows turning on/off of features and seeing the feature list
       usage: /<command> toggle featureID OR /<command> list
@@ -45,6 +47,14 @@ commands:
       description: Clears your inventory
       usage: /ciself
       aliases: [uhcciself]
+    cxp:
+      description: Clears a player/s XP
+      usage: /<command> [list of space separated names/*]
+      aliases: [uhccxp]
+    cxpself:
+      description: Clears your XP
+      usage: /cxpself
+      aliases: [uhccxpself]
     whitelistall:
       description: Whitelist all online players
       usage: /<command>

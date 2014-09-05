@@ -19,6 +19,12 @@ ci:
   tell: "&6Your inventory was cleared"
   cleared: "&6Cleared %1$d inventories"
   immune: "&4Player/s immune to inventory clears: %1$s"
+cxp:
+  announce: "&7&o[UHC] %1$s used a cxp command to clear %2$d players XP"
+  announce_self: "&7&o[UHC] %1$s used a cxp command to clear their XP"
+  tell: "&6Your XP was cleared"
+  cleared: "&6Cleared %1$d players XP"
+  immune: "&4Player/s immune to XP clears: %1$s"
 heal:
   announce: "&7&o[UHC] %1$s used a heal command to heal %2$s"
   announce_self: "&7&o[UHC] %1$s used a heal command to heal themselves"

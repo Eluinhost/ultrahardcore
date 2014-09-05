@@ -41,5 +41,6 @@ public class UHCCoreAddonConfiguration implements UHCAddonConfiguration
         commands.addBinding().to(TPCommand.class);
         commands.addBinding().to(WhitelistCommands.class);
         commands.addBinding().to(DebugCommands.class);
+        commands.addBinding().to(ClearXPCommand.class);
     }
 }
