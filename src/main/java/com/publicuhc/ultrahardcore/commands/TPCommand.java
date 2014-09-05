@@ -55,7 +55,15 @@ public class TPCommand implements Command
     @CommandOptions({"p", "l", "[arguments]"})
     @PermissionRestriction(TP_ALL_PERMISSION)
     public void teleportCommand(OptionSet set, CommandSender sender, Player[] player, Location location, List<Player[]> args) {
-        Location teleportLoc = location == null ? player[0].getLocation() : location;
+        Location teleportLoc = null;
+
+        if(location != null) {
+            teleportLoc = location;
+        }
+
+        if(player != null && player.length == 1) {
+            teleportLoc = player[0].getLocation();
+        }
 
         if(teleportLoc == null) {
             translate.sendMessage("teleport.provide_location", sender);
@@ -63,6 +71,10 @@ public class TPCommand implements Command
         }
 
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
+
+        if(players.isEmpty()) {
+            translate.sendMessage("teleport.provide_players", sender);
+        }
 
         for (Player p : players) {
             p.teleport(teleportLoc);
