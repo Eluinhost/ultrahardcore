@@ -1,6 +1,6 @@
 name: UltraHardcore
-main: com.publicuhc.ultrahardcore.UltraHardcore
-version: ${git.commit.id.describe}
+main: ${project.groupId}.${project.artifactId}.UltraHardcore
+version: ${project.version}-${git.commit.id}-${git.branch}
 description: Make minecraft harder, no health regen and extras!
 author: ghowden/Eluinhost
 website: wiki.publicuhc.com
