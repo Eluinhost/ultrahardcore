@@ -55,7 +55,7 @@ public class FeatureCommand implements Command
         this.featureValueConverter = featureValueConverter;
     }
 
-    private void turnFeatureOn(Feature feature, CommandSender sender)
+    private void turnFeatureOff(Feature feature, CommandSender sender)
     {
         if(feature.disableFeature()) {
             translate.sendMessage("features.disabled", sender);
@@ -64,7 +64,7 @@ public class FeatureCommand implements Command
         }
     }
 
-    private void turnFeatureOff(Feature feature, CommandSender sender)
+    private void turnFeatureOn(Feature feature, CommandSender sender)
     {
         if(feature.enableFeature()) {
             translate.sendMessage("features.enabled", sender);
@@ -105,7 +105,8 @@ public class FeatureCommand implements Command
     @CommandMethod("feature toggle")
     @PermissionRestriction(FEATURE_TOGGLE_PERMISSION)
     @CommandOptions("[arguments]")
-    public void featureToggleCommand(OptionSet set, CommandSender sender, List<Feature> features) {
+    public void featureToggleCommand(OptionSet set, CommandSender sender, List<Feature> features)
+    {
         if(features.isEmpty()) {
             translate.sendMessage("supply one feature name", sender);
             return;
