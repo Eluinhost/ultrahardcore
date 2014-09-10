@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * FeatureEvent.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,44 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.api.events;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import com.publicuhc.ultrahardcore.api.Feature;
+import org.bukkit.event.Cancellable;
 
-class UHCModule extends AbstractModule
+public abstract class FeatureEvent extends UHCEvent implements Cancellable
 {
-    @Override
-    protected void configure()
+
+    private final Feature feature;
+    private boolean cancelled;
+
+    /**
+     * Generic feature event
+     *
+     * @param feature feature event is running for
+     */
+    protected FeatureEvent(Feature feature)
     {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
+        this.feature = feature;
+    }
+
+    /**
+     * @return the feature involved in this event
+     */
+    public Feature getFeature()
+    {
+        return feature;
+    }
+
+    @Override
+    public boolean isCancelled()
+    {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled)
+    {
+        this.cancelled = cancelled;
     }
 }

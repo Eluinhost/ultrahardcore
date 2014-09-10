@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * FeatureInitEvent.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,33 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.api.events;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import com.publicuhc.ultrahardcore.api.Feature;
+import org.bukkit.event.HandlerList;
 
-class UHCModule extends AbstractModule
+public class FeatureInitEvent extends FeatureEvent
 {
-    @Override
-    protected void configure()
+    private static final HandlerList HANDLER_LIST = new HandlerList();
+
+    /**
+     * Called when a feature is first initialized, cancelling stops the feature from getting events and being added to the list
+     *
+     * @param feature the feature involved
+     */
+    public FeatureInitEvent(Feature feature)
     {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
+        super(feature);
+    }
+
+    public static HandlerList getHandlerList()
+    {
+        return HANDLER_LIST;
+    }
+
+    @Override
+    public HandlerList getHandlers()
+    {
+        return HANDLER_LIST;
     }
 }

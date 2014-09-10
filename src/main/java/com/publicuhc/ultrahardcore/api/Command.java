@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * Command.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,10 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.api;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
-
-class UHCModule extends AbstractModule
-{
-    @Override
-    protected void configure()
-    {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
-    }
-}
+/**
+ * Implement this class and bind inside the module to auto-register a class for commands
+ */
+public interface Command
+{}

@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * UHCAddonConfiguration.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,13 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.api;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import com.publicuhc.pluginframework.shaded.inject.multibindings.Multibinder;
 
-class UHCModule extends AbstractModule
+public interface UHCAddonConfiguration
 {
-    @Override
-    protected void configure()
-    {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
-    }
+    void configureCommands(Multibinder<Command> commands);
+
+    void configureFeatures(Multibinder<UHCFeature> features);
 }

@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * UHCEvent.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,9 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.api.events;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import org.bukkit.event.Event;
 
-class UHCModule extends AbstractModule
-{
-    @Override
-    protected void configure()
-    {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
-    }
-}
+public abstract class UHCEvent extends Event
+{}

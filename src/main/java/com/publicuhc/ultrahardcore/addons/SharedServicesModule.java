@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * SharedServicesModule.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,51 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.addons;
 
+import com.publicuhc.pluginframework.locale.LocaleProvider;
+import com.publicuhc.pluginframework.routing.Router;
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.inject.Provides;
 
-class UHCModule extends AbstractModule
+/**
+ * All the services shared between all of the addons, generally all created by the UHC injector for use in the addon
+ * injectors
+ */
+public class SharedServicesModule extends AbstractModule
 {
+    private final LocaleProvider provider;
+    private final Router router;
+    private final FeatureManager manager;
+
+    @Inject
+    public SharedServicesModule(LocaleProvider provider, Router router, FeatureManager manager)
+    {
+        this.provider = provider;
+        this.router = router;
+        this.manager = manager;
+    }
+
+    @Provides
+    public LocaleProvider getLocales()
+    {
+        return provider;
+    }
+
+    @Provides
+    public Router getRouter()
+    {
+        return router;
+    }
+
+    @Provides
+    public FeatureManager getFeatureManager()
+    {
+        return manager;
+    }
+
     @Override
     protected void configure()
-    {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
-    }
+    {}
 }

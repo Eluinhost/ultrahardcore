@@ -1,0 +1,50 @@
+features:
+  disabled: "&6Feature disabled"
+  enabled: "&6Feature enabled"
+  disabled_cancelled: "&4Failed to disable feature, plugin cancelled event"
+  enabled_cancelled: "&4Failed to enable feature, plugin cancelled event"
+  loaded:
+    header: "&6Loaded features (%1$d):"
+    none: "&7No features loaded!"
+    "on": "&a%1$s - &7%2$s"
+    "off": "&4%1$s - &7%2$s"
+feed:
+  announce: "&7&o[UHC] %1$s used a feed command to feed %2$d players"
+  announce_self: "&7&o[UHC] %1$s used a feed command to feed themselves"
+  tell: "&6You were fed to full hunger"
+  fed: "&6Fed %1$d players"
+ci:
+  announce: "&7&o[UHC] %1$s used a ci command to clear %2$d player inventories"
+  announce_self: "&7&o[UHC] %1$s used a ci command to clear their inventory"
+  tell: "&6Your inventory was cleared"
+  cleared: "&6Cleared %1$d inventories"
+  immune: "&4Player/s immune to inventory clears: %1$s"
+cxp:
+  announce: "&7&o[UHC] %1$s used a cxp command to clear %2$d players XP"
+  announce_self: "&7&o[UHC] %1$s used a cxp command to clear their XP"
+  tell: "&6Your XP was cleared"
+  cleared: "&6Cleared %1$d players XP"
+  immune: "&4Player/s immune to XP clears: %1$s"
+heal:
+  announce: "&7&o[UHC] %1$s used a heal command to heal %2$s"
+  announce_self: "&7&o[UHC] %1$s used a heal command to heal themselves"
+  tell: "&6You were healed to full health"
+  healed: "&6Healed %1$d players"
+freeze:
+  not_loaded: "&4The freeze feature is not loaded!"
+  not_enabled: "&4Freeze feature is not enabled!"
+  all_frozen: "&6All players are now frozen!"
+  all_unfrozen: "&6All players are now unfrozen!"
+  immune: "&4Players immune to freezing: %1$s"
+  frozen: "&6Froze %1$d players"
+  unfrozen: "&6Unfroze %1$d players"
+  freeze_tell: "&6You were frozen in place"
+  unfreeze_tell: "&6You are now unfrozen"
+teleport:
+  all_teleported: "&6%1$d players teleported"
+  provide_location: "&4Must provide either a location (-l) or a player (-p) to teleport to"
+whitelist:
+  added: "&6All online players added to the whitelist"
+  cleared: "&6Whitelist cleared"
+supply one player name: "&4You must supply at least one player name (or * for all online players)"
+supply one feature name: "&4You must supply at least one feature name"

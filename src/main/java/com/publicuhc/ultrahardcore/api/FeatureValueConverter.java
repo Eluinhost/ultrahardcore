@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * FeatureValueConverter.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,44 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.api;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
+import com.google.common.base.Optional;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.joptsimple.ValueConversionException;
+import com.publicuhc.pluginframework.shaded.joptsimple.ValueConverter;
 import com.publicuhc.ultrahardcore.addons.FeatureManager;
 
-class UHCModule extends AbstractModule
+public class FeatureValueConverter implements ValueConverter<Feature>
 {
-    @Override
-    protected void configure()
+
+    private final FeatureManager manager;
+
+    @Inject
+    public FeatureValueConverter(FeatureManager manager)
     {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
+        this.manager = manager;
+    }
+
+    @Override
+    public Feature convert(String value)
+    {
+        Optional<Feature> feature = manager.getFeatureByID(value);
+        if(feature.isPresent()) {
+            throw new ValueConversionException("Invalid feature ID: " + value);
+        }
+        return feature.get();
+    }
+
+    @Override
+    public Class<Feature> valueType()
+    {
+        return Feature.class;
+    }
+
+    @Override
+    public String valuePattern()
+    {
+        return "FeatureID";
     }
 }

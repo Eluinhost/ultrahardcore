@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * DebugCommands.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,29 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.core.commands;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import com.publicuhc.pluginframework.locale.LocaleProvider;
+import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
+import com.publicuhc.pluginframework.shaded.inject.Inject;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
+import com.publicuhc.ultrahardcore.api.Command;
+import org.bukkit.command.CommandSender;
 
-class UHCModule extends AbstractModule
+public class DebugCommands implements Command
 {
-    @Override
-    protected void configure()
+
+    private final LocaleProvider provider;
+
+    @Inject
+    public DebugCommands(LocaleProvider provider)
     {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
+        this.provider = provider;
+    }
+
+    @CommandMethod("locale")
+    public void checkLocale(OptionSet set, CommandSender sender)
+    {
+        sender.sendMessage(provider.localeForCommandSender(sender).getDisplayName());
     }
 }

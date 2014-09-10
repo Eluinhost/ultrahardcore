@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * Feature.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,51 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.api;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import org.bukkit.event.Listener;
 
-class UHCModule extends AbstractModule
+import java.util.List;
+
+public interface Feature extends Listener
 {
-    @Override
-    protected void configure()
-    {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
-    }
+
+    /**
+     * Attempt to enable the feature
+     *
+     * @return bool true if the feature was enabled, false if already enabled or event cancelled
+     */
+    boolean enableFeature();
+
+    /**
+     * Attempt to disable the feature
+     *
+     * @return bool true if the feature was disabled, false if already disabled or event cancelled
+     */
+    boolean disableFeature();
+
+    /**
+     * @return name of the feature
+     */
+    String getFeatureID();
+
+    /**
+     * Is the feature enabled?
+     *
+     * @return boolean
+     */
+    boolean isEnabled();
+
+    /**
+     * Get the description of the feature
+     *
+     * @return String
+     */
+    String getDescription();
+
+    /**
+     * @return a list detailing the components of this feature that are enabled/disabled.
+     * Return empty for no components
+     */
+    List<String> getStatus();
 }

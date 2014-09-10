@@ -1,5 +1,5 @@
 /*
- * UHCModule.java
+ * WitchSpawnsFeature.java
  *
  * The MIT License (MIT)
  *
@@ -24,17 +24,47 @@
  * THE SOFTWARE.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.core.features;
 
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import com.publicuhc.pluginframework.shaded.inject.Singleton;
+import com.publicuhc.ultrahardcore.api.UHCFeature;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 
-class UHCModule extends AbstractModule
+
+/**
+ * WitchSpawns
+ * <p/>
+ * Enabled: Disables witch spawning
+ * Disabled: Nothing
+ */
+@Singleton
+public class WitchSpawnsFeature extends UHCFeature
 {
-    @Override
-    protected void configure()
+
+    /**
+     * Whenever a creature spawns
+     *
+     * @param ese the creaturespawnevent
+     */
+    @EventHandler
+    public void onCreatureSpawnEvent(CreatureSpawnEvent ese)
     {
-        bind(FeatureManager.class).to(DefaultFeatureManager.class);
+        if(isEnabled() && ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
+            ese.setCancelled(true);
+        }
+    }
+
+    @Override
+    public String getFeatureID()
+    {
+        return "WitchSpawns";
+    }
+
+    @Override
+    public String getDescription()
+    {
+        return "Disables natural witch spawns";
     }
 }
