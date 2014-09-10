@@ -76,6 +76,11 @@ public class FeedCommand implements Command
     public void feedOtherCommand(OptionSet set, CommandSender sender, List<Player[]> args) {
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
+        if(players.isEmpty()) {
+            translate.sendMessage("supply one player name", sender);
+            return;
+        }
+
         for(Player player : players) {
             feedPlayer(player);
         }

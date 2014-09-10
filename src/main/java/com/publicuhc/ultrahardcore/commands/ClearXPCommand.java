@@ -68,8 +68,13 @@ public class ClearXPCommand implements Command
     {
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
-        Collection<String> immune = new ArrayList<String>();
 
+        if(players.isEmpty()) {
+            translate.sendMessage("supply one player name", sender);
+            return;
+        }
+
+        Collection<String> immune = new ArrayList<String>();
         for(Player p : players) {
             if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
                 immune.add(p.getName());

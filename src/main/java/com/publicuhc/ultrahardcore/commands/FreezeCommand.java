@@ -94,8 +94,13 @@ public class FreezeCommand implements Command
         }
 
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
-        Collection<String> immune = new ArrayList<String>();
 
+        if(players.isEmpty()) {
+            translate.sendMessage("supply one player name", sender);
+            return;
+        }
+
+        Collection<String> immune = new ArrayList<String>();
         for(Player player : players) {
             if (player.hasPermission(ANTIFREEZE_PERMISSION)) {
                 immune.add(player.getName());
@@ -139,6 +144,11 @@ public class FreezeCommand implements Command
         }
 
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
+
+        if(players.isEmpty()) {
+            translate.sendMessage("supply one player name", sender);
+            return;
+        }
 
         for(Player player : players) {
             feature.removePlayer(player);

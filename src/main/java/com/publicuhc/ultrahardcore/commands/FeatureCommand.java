@@ -105,7 +105,11 @@ public class FeatureCommand implements Command
     @CommandMethod("feature toggle")
     @PermissionRestriction(FEATURE_TOGGLE_PERMISSION)
     @CommandOptions("[arguments]")
-    public void featureToggleCommand(OptionSet set, CommandSender sender, List<Feature> features){
+    public void featureToggleCommand(OptionSet set, CommandSender sender, List<Feature> features) {
+        if(features.isEmpty()) {
+            translate.sendMessage("supply one feature name", sender);
+            return;
+        }
         for(Feature feature : features) {
             toggleFeature(feature, sender);
         }
@@ -122,6 +126,10 @@ public class FeatureCommand implements Command
     @CommandOptions("[arguments]")
     public void featureOnCommand(OptionSet set, CommandSender sender, List<Feature> features)
     {
+        if(features.isEmpty()) {
+            translate.sendMessage("supply one feature name", sender);
+            return;
+        }
         for(Feature feature : features) {
             turnFeatureOn(feature, sender);
         }
@@ -138,6 +146,10 @@ public class FeatureCommand implements Command
     @CommandOptions("[arguments]")
     public void featureOffCommand(OptionSet set, CommandSender sender, List<Feature> features)
     {
+        if(features.isEmpty()) {
+            translate.sendMessage("supply one feature name", sender);
+            return;
+        }
         for(Feature feature : features) {
             turnFeatureOff(feature, sender);
         }

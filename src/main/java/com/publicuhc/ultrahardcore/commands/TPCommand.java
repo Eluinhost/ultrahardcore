@@ -73,7 +73,8 @@ public class TPCommand implements Command
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
         if(players.isEmpty()) {
-            translate.sendMessage("teleport.provide_players", sender);
+            translate.sendMessage("supply one player name", sender);
+            return;
         }
 
         for (Player p : players) {

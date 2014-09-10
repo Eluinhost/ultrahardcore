@@ -71,6 +71,11 @@ public class HealCommand implements Command
     {
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
+        if(players.isEmpty()) {
+            translate.sendMessage("supply one player name", sender);
+            return;
+        }
+
         for(Player p : players) {
             healPlayer(p);
         }
