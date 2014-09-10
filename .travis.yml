@@ -1,14 +1,4 @@
 language: java
-deploy:
-  provider: releases
-  all_branches: true
-  skip_cleanup: true
-  api_key:
-    secure: DFEtkHCYt2aM4fG/ZDhV74+VAT9Xfgs4QJCfNRzqZ4jy6vYK42Fxz0kvTSKWbAtZs603fag9rfFMVTufqB+6/Z4WphQkNufrutV1qOXf/cSEs1AyRSadb3QeRPrygxOgUdytVUk+R8poFnbMV8UyPZu3+45M13Ib4KglpEfxGKA=
-  file: target/*.jar
-  on:
-    tags: true
-    repo: Eluinhost/ultrahardcore
 branches:
   only:
     - master
