@@ -46,5 +46,5 @@ teleport:
 whitelist:
   added: "&6All online players added to the whitelist"
   cleared: "&6Whitelist cleared"
-supply one player name: "&4You must supply at least one player name (or * for all online players)
-supply one feature name: "&4You must supply at least one feature name
+supply one player name: "&4You must supply at least one player name (or * for all online players)"
+supply one feature name: "&4You must supply at least one feature name"
