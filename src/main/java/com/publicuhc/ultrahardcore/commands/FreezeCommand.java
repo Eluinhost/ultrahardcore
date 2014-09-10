@@ -54,19 +54,20 @@ public class FreezeCommand implements Command
     private final Translate translate;
 
     @Inject
-    private FreezeCommand(FeatureManager features, Translate translate) {
+    private FreezeCommand(FeatureManager features, Translate translate)
+    {
         this.translate = translate;
         featureManager = features;
     }
 
     private boolean isValid(Optional<Feature> featureOptional, CommandSender sender)
     {
-        if (!featureOptional.isPresent()) {
+        if(!featureOptional.isPresent()) {
             translate.sendMessage("freeze.not_loaded", sender);
             return false;
         }
 
-        if (!featureOptional.get().isEnabled()) {
+        if(!featureOptional.get().isEnabled()) {
             translate.sendMessage("freeze.not_enabled", sender);
             return false;
         }
@@ -102,7 +103,7 @@ public class FreezeCommand implements Command
 
         Collection<String> immune = new ArrayList<String>();
         for(Player player : players) {
-            if (player.hasPermission(ANTIFREEZE_PERMISSION)) {
+            if(player.hasPermission(ANTIFREEZE_PERMISSION)) {
                 immune.add(player.getName());
                 continue;
             }

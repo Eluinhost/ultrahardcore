@@ -1,5 +1,5 @@
 /*
- * RecipeFeature.java
+ * UberApplesFeature.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -37,32 +37,25 @@ import java.util.Collection;
 
 /**
  * UberApples
- *
+ * <p/>
  * Enabled: Disables uber apple crafting
  * Disabled: Nothing
  */
 @Singleton
-public class UberApplesFeature extends UHCFeature {
+public class UberApplesFeature extends UHCFeature
+{
 
     public static final String ALLOW_NOTCH_APPLE = "UHC.recipies.allowNotchApple";
-
-    @EventHandler
-    public void onPrepareCraftItemEvent(PrepareItemCraftEvent e) {
-        //if we are enabled
-        if (isEnabled() && !isRecipeAllowedForPermissible(e.getView().getPlayer(),e.getRecipe())){
-            //set to air if not allowed
-            e.getInventory().setResult(new ItemStack(Material.AIR));
-        }
-    }
 
     /**
      * Is the recipe allowed?
      *
      * @param permissible Permissible the permissible to check against
-     * @param recipe the recipe to check
+     * @param recipe      the recipe to check
      * @return boolean true if allowed, false if not
      */
-    private static boolean isRecipeAllowedForPermissible(Permissible permissible, Recipe recipe){
+    private static boolean isRecipeAllowedForPermissible(Permissible permissible, Recipe recipe)
+    {
         Material result = recipe.getResult().getType();
         return result != Material.GOLDEN_APPLE || !hasRecipeGotMaterial(recipe, Material.GOLD_BLOCK) || permissible.hasPermission(ALLOW_NOTCH_APPLE);
     }
@@ -70,16 +63,17 @@ public class UberApplesFeature extends UHCFeature {
     /**
      * Check if the recipe has the given material in it
      *
-     * @param r the recipe to check
+     * @param r   the recipe to check
      * @param mat the material to look for
      * @return true if found, false if not
      */
-    private static boolean hasRecipeGotMaterial(Recipe r, Material mat) {
+    private static boolean hasRecipeGotMaterial(Recipe r, Material mat)
+    {
         Collection<ItemStack> ingredients = null;
         //noinspection ChainOfInstanceofChecks
-        if (r instanceof ShapedRecipe) {
+        if(r instanceof ShapedRecipe) {
             ingredients = ((ShapedRecipe) r).getIngredientMap().values();
-        }else if (r instanceof ShapelessRecipe) {
+        } else if(r instanceof ShapelessRecipe) {
             ingredients = ((ShapelessRecipe) r).getIngredientList();
         }
         return null != ingredients && isMaterialInList(ingredients, mat);
@@ -87,26 +81,40 @@ public class UberApplesFeature extends UHCFeature {
 
     /**
      * Checks if the material is in the lsit
+     *
      * @param itemStackList the list to check
-     * @param mat the material to look for
+     * @param mat           the material to look for
      * @return true if found, false if not
      */
-    private static boolean isMaterialInList(Iterable<ItemStack> itemStackList, Material mat){
-        for (ItemStack itemStack : itemStackList) {
-            if (itemStack.getType() == mat) {
+    private static boolean isMaterialInList(Iterable<ItemStack> itemStackList, Material mat)
+    {
+        for(ItemStack itemStack : itemStackList) {
+            if(itemStack.getType() == mat) {
                 return true;
             }
         }
         return false;
     }
 
+    @EventHandler
+    public void onPrepareCraftItemEvent(PrepareItemCraftEvent e)
+    {
+        //if we are enabled
+        if(isEnabled() && !isRecipeAllowedForPermissible(e.getView().getPlayer(), e.getRecipe())) {
+            //set to air if not allowed
+            e.getInventory().setResult(new ItemStack(Material.AIR));
+        }
+    }
+
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "DisableUberApples";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Disables crafting uber apples when enabled";
     }
 }

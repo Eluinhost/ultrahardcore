@@ -47,15 +47,18 @@ public class FeedCommand implements Command
     private final Translate translate;
 
     @Inject
-    private FeedCommand(Translate translate) {
+    private FeedCommand(Translate translate)
+    {
         this.translate = translate;
     }
 
     /**
      * Feeds a player to full hunger and saturation and resets exhaustion
+     *
      * @param player player to feed
      */
-    public void feedPlayer(Player player){
+    public void feedPlayer(Player player)
+    {
         player.setFoodLevel(MAX_FOOD_LEVEL);
         player.setExhaustion(0.0F);
         player.setSaturation(MAX_SATURATION);
@@ -65,7 +68,8 @@ public class FeedCommand implements Command
     @CommandMethod("feedself")
     @PermissionRestriction(FEED_SELF_PERMISSION)
     @SenderRestriction(Player.class)
-    public void feedCommand(OptionSet set, Player sender){
+    public void feedCommand(OptionSet set, Player sender)
+    {
         feedPlayer(sender);
         translate.broadcastMessageForPermission(FEED_ANNOUNCE_PERMISSION, "feed.announce_self", sender.getName(), 1);
     }
@@ -73,7 +77,8 @@ public class FeedCommand implements Command
     @CommandMethod("feed")
     @PermissionRestriction(FEED_OTHER_PERMISSION)
     @CommandOptions("[arguments]")
-    public void feedOtherCommand(OptionSet set, CommandSender sender, List<Player[]> args) {
+    public void feedOtherCommand(OptionSet set, CommandSender sender, List<Player[]> args)
+    {
         Set<Player> players = OnlinePlayerValueConverter.recombinePlayerLists(args);
 
         if(players.isEmpty()) {

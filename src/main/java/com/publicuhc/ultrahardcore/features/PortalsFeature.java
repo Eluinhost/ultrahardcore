@@ -40,23 +40,26 @@ import java.util.List;
 
 /**
  * PortalsFeature
- *
+ * <p/>
  * Enabled: Changes the search/creation radius for portals
  * Disabled: Nothing
  */
 @Singleton
-public class PortalsFeature extends UHCFeature {
+public class PortalsFeature extends UHCFeature
+{
 
     private final FileConfiguration config;
-    
+
     /**
      * Changes the radius portals will connect, normal when disabled
-     * @param plugin the plugin
+     *
+     * @param plugin        the plugin
      * @param configManager the config manager
-     * @param translate the translator
+     * @param translate     the translator
      */
     @Inject
-    private PortalsFeature(Plugin plugin, Configurator configManager, Translate translate) {
+    private PortalsFeature(Plugin plugin, Configurator configManager, Translate translate)
+    {
         Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
         if(!mainConfig.isPresent()) {
             throw new IllegalStateException("Config file 'main' was not found, cannot find configuration values");
@@ -66,17 +69,19 @@ public class PortalsFeature extends UHCFeature {
 
     /**
      * When a portal event happends
+     *
      * @param entityPortalEvent the portal event
      */
     @EventHandler
-    public void onPortalEvent(PlayerPortalEvent entityPortalEvent) {
+    public void onPortalEvent(PlayerPortalEvent entityPortalEvent)
+    {
         //if we're enabled
-        if (isEnabled()) {
+        if(isEnabled()) {
 
             //create a travel agent for the portal
             TravelAgent ta = entityPortalEvent.getPortalTravelAgent();
             //if they're in the nether
-            if (entityPortalEvent.getPlayer().getWorld().getEnvironment() == World.Environment.NETHER) {
+            if(entityPortalEvent.getPlayer().getWorld().getEnvironment() == World.Environment.NETHER) {
                 //set data from the nether
                 ta.setCanCreatePortal(config.getBoolean("PortalRanges.from_nether.allowed"));
                 ta.setCreationRadius(config.getInt("PortalRanges.from_nether.creation_radius"));
@@ -91,24 +96,27 @@ public class PortalsFeature extends UHCFeature {
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "PortalRanges";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Change the radius portals can spawn in";
     }
 
     @Override
-    public List<String> getStatus() {
+    public List<String> getStatus()
+    {
         List<String> status = new ArrayList<String>();
-        status.add(ChatColor.GRAY + "--- Allow from nether: "+convertBooleanToOnOff(config.getBoolean("PortalRanges.from_nether.allowed")));
-        status.add(ChatColor.GRAY + "--- From nether creation radius: "+config.getInt("PortalRanges.from_nether.creation_radius"));
-        status.add(ChatColor.GRAY + "--- From nether search radius: "+config.getInt("PortalRanges.from_nether.search_radius"));
-        status.add(ChatColor.GRAY + "--- Allow to nether: "+convertBooleanToOnOff(config.getBoolean("PortalRanges.to_nether.allowed")));
-        status.add(ChatColor.GRAY + "--- To nether creation radius: "+config.getInt("PortalRanges.to_nether.creation_radius"));
-        status.add(ChatColor.GRAY + "--- To nether search radius: "+config.getInt("PortalRanges.to_nether.search_radius"));
+        status.add(ChatColor.GRAY + "--- Allow from nether: " + convertBooleanToOnOff(config.getBoolean("PortalRanges.from_nether.allowed")));
+        status.add(ChatColor.GRAY + "--- From nether creation radius: " + config.getInt("PortalRanges.from_nether.creation_radius"));
+        status.add(ChatColor.GRAY + "--- From nether search radius: " + config.getInt("PortalRanges.from_nether.search_radius"));
+        status.add(ChatColor.GRAY + "--- Allow to nether: " + convertBooleanToOnOff(config.getBoolean("PortalRanges.to_nether.allowed")));
+        status.add(ChatColor.GRAY + "--- To nether creation radius: " + config.getInt("PortalRanges.to_nether.creation_radius"));
+        status.add(ChatColor.GRAY + "--- To nether search radius: " + config.getInt("PortalRanges.to_nether.search_radius"));
         return status;
     }
 }

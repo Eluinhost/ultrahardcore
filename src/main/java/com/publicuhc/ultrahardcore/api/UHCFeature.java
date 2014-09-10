@@ -1,5 +1,5 @@
 /*
- * Feature.java
+ * UHCFeature.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -31,26 +31,41 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class UHCFeature implements Feature {
+public abstract class UHCFeature implements Feature
+{
 
     /**
      * Is the feautre enabeld right now?
      */
     private boolean enabled;
 
+    /**
+     * Utility method to convert true to green ON and false to red OFF
+     *
+     * @param onOff the boolean
+     * @return green 'ON' if true, red 'OFF' if false
+     */
+    protected static String convertBooleanToOnOff(boolean onOff)
+    {
+        return onOff ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF";
+    }
+
     @Override
-    public final boolean enableFeature(){
+    public final boolean enableFeature()
+    {
         //if we're already enabled don't do anything
-        if (isEnabled())
+        if(isEnabled()) {
             return false;
+        }
 
         //trigger an enable event
         FeatureEvent event = new FeatureEnableEvent(this);
         Bukkit.getPluginManager().callEvent(event);
 
         //if the event was cancelled don't do anything
-        if(event.isCancelled())
+        if(event.isCancelled()) {
             return false;
+        }
 
         //enable the feature
         enabled = true;
@@ -59,18 +74,21 @@ public abstract class UHCFeature implements Feature {
     }
 
     @Override
-    public final boolean disableFeature(){
+    public final boolean disableFeature()
+    {
         //if we're already disabled don't do anything
-        if (!isEnabled())
+        if(!isEnabled()) {
             return false;
+        }
 
         //trigger a disable event
         FeatureDisableEvent event = new FeatureDisableEvent(this);
         Bukkit.getPluginManager().callEvent(event);
 
         //if the event was cancelled don't do anything
-        if(event.isCancelled())
+        if(event.isCancelled()) {
             return false;
+        }
 
         //disable the feature
         enabled = false;
@@ -81,15 +99,18 @@ public abstract class UHCFeature implements Feature {
     /**
      * Called when the feature is being enabled. Override to provide on enable actions.
      */
-    protected void enableCallback(){}
+    protected void enableCallback()
+    {}
 
     /**
      * Called when the feature is being disabled. Override to provide on disable actions.
      */
-    protected void disableCallback(){}
+    protected void disableCallback()
+    {}
 
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled()
+    {
         return enabled;
     }
 
@@ -100,12 +121,14 @@ public abstract class UHCFeature implements Feature {
      * @return boolean true if features are equal
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj)
+    {
         return obj instanceof Feature && ((Feature) obj).getFeatureID().equals(getFeatureID());
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode()
+    {
         return new HashCodeBuilder(17, 31).append(getFeatureID()).toHashCode();
     }
 
@@ -113,17 +136,8 @@ public abstract class UHCFeature implements Feature {
      * @return list of messages to show for this features status when requested
      */
     @Override
-    public List<String> getStatus() {
+    public List<String> getStatus()
+    {
         return new ArrayList<String>();
-    }
-
-    /**
-     * Utility method to convert true to green ON and false to red OFF
-     *
-     * @param onOff the boolean
-     * @return green 'ON' if true, red 'OFF' if false
-     */
-    protected static String convertBooleanToOnOff(boolean onOff) {
-        return onOff ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF";
     }
 }

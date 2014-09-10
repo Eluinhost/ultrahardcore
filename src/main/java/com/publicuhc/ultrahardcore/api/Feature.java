@@ -1,5 +1,5 @@
 /*
- * IFeature.java
+ * Feature.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -25,13 +25,14 @@ import org.bukkit.event.Listener;
 
 import java.util.List;
 
-public interface Feature extends Listener {
+public interface Feature extends Listener
+{
 
     /**
-    * Attempt to enable the feature
+     * Attempt to enable the feature
      *
-    * @return bool true if the feature was enabled, false if already enabled or event cancelled
-    */
+     * @return bool true if the feature was enabled, false if already enabled or event cancelled
+     */
     boolean enableFeature();
 
     /**

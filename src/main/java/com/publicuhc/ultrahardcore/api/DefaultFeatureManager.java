@@ -1,5 +1,5 @@
 /*
- * RealFeatureManager.java
+ * DefaultFeatureManager.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -40,23 +40,30 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-/**
- * Feature Manager Class
- */
 @Singleton
-public class DefaultFeatureManager implements FeatureManager {
-
+public class DefaultFeatureManager implements FeatureManager
+{
+    /**
+     * Only allow features with this pattern as an ID (no whitespace)
+     */
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[\\S]++$");
     private final FileConfiguration config;
     private final Plugin plugin;
     private final PluginLogger logger;
+    /**
+     * Stores a list of all the features loaded on the server
+     */
+    private final List<Feature> featureList = new ArrayList<Feature>();
 
     /**
      * Create a new feature manager
+     *
      * @param configManager the config manager
-     * @param plugin the plugin
+     * @param plugin        the plugin
      */
     @Inject
-    public DefaultFeatureManager(Configurator configManager, Plugin plugin, PluginLogger logger){
+    public DefaultFeatureManager(Configurator configManager, Plugin plugin, PluginLogger logger)
+    {
         this.plugin = plugin;
         this.logger = logger;
         Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
@@ -66,25 +73,16 @@ public class DefaultFeatureManager implements FeatureManager {
         config = mainConfig.get();
     }
 
-    /**
-     * Stores a list of all the features loaded on the server
-     */
-    private final List<Feature> featureList = new ArrayList<Feature>();
-
-    /**
-     * Only allow features with this pattern as an ID (no whitespace)
-     */
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[\\S]++$");
-
     @Override
-    public void addFeature(Feature feature) throws FeatureIDConflictException {
+    public void addFeature(Feature feature) throws FeatureIDConflictException
+    {
         String featureID = feature.getFeatureID();
         logger.log(Level.INFO, "Loading feature: " + featureID);
         Preconditions.checkArgument(NAME_PATTERN.matcher(featureID).matches(), "Invalid feature ID: %s, cannot contain whitespace", featureID);
 
         //check for existing feature of the same name
-        for (Feature uhcFeature : featureList) {
-            if (uhcFeature.equals(feature)) {
+        for(Feature uhcFeature : featureList) {
+            if(uhcFeature.equals(feature)) {
                 throw new FeatureIDConflictException();
             }
         }
@@ -96,19 +94,19 @@ public class DefaultFeatureManager implements FeatureManager {
         Bukkit.getPluginManager().callEvent(initEvent);
 
         //if it was cancelled return
-        if (initEvent.isCancelled()) {
-            logger.log(Level.SEVERE,"Init event cancelled for feature: "+featureID);
+        if(initEvent.isCancelled()) {
+            logger.log(Level.SEVERE, "Init event cancelled for feature: " + featureID);
             return;
         }
 
         //add the feature
         featureList.add(feature);
-        logger.log(Level.INFO,"Loaded feature: "+featureID);
+        logger.log(Level.INFO, "Loaded feature: " + featureID);
 
         List<String> configs = config.getStringList("enabledFeatures");
-        if(configs.contains(featureID)){
+        if(configs.contains(featureID)) {
             feature.enableFeature();
-        }else{
+        } else {
             feature.disableFeature();
         }
 
@@ -117,9 +115,10 @@ public class DefaultFeatureManager implements FeatureManager {
     }
 
     @Override
-    public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException {
-        for (Feature feature : featureList) {
-            if (feature.getFeatureID().equals(featureID)) {
+    public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException
+    {
+        for(Feature feature : featureList) {
+            if(feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
         }
@@ -127,9 +126,10 @@ public class DefaultFeatureManager implements FeatureManager {
     }
 
     @Override
-    public Optional<Feature> getFeatureByID(String featureID) {
-        for (Feature feature : featureList) {
-            if (feature.getFeatureID().equals(featureID)) {
+    public Optional<Feature> getFeatureByID(String featureID)
+    {
+        for(Feature feature : featureList) {
+            if(feature.getFeatureID().equals(featureID)) {
                 return Optional.of(feature);
             }
         }
@@ -137,14 +137,16 @@ public class DefaultFeatureManager implements FeatureManager {
     }
 
     @Override
-    public List<Feature> getFeatures() {
+    public List<Feature> getFeatures()
+    {
         return Collections.unmodifiableList(featureList);
     }
 
     @Override
-    public List<String> getFeatureNames() {
+    public List<String> getFeatureNames()
+    {
         List<String> features = new ArrayList<String>();
-        for (Feature feature : featureList) {
+        for(Feature feature : featureList) {
             features.add(feature.getFeatureID());
         }
         return features;

@@ -31,22 +31,24 @@ import org.bukkit.permissions.Permissible;
 
 /**
  * EnderpearlsFeature
- *
+ * <p/>
  * Enabled: Removes damage from enderpearls
  * Disabled: Nothing
- *
+ * <p/>
  * Permissions: UHC.enderpearls.damage - takes damage from enderpearls when enabled
  */
 @Singleton
-public class EnderpearlsFeature extends UHCFeature {
+public class EnderpearlsFeature extends UHCFeature
+{
 
     public static final String ENDERPEARL_DAMAGE = "UHC.enderpearls.damage";
 
     @EventHandler
-    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent ede) {
-        if (isEnabled()) {
-            if (ede.getDamager().getType() == EntityType.ENDER_PEARL) {
-                if (!((Permissible) ede.getEntity()).hasPermission(ENDERPEARL_DAMAGE)) {
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent ede)
+    {
+        if(isEnabled()) {
+            if(ede.getDamager().getType() == EntityType.ENDER_PEARL) {
+                if(!((Permissible) ede.getEntity()).hasPermission(ENDERPEARL_DAMAGE)) {
                     ede.setCancelled(true);
                 }
             }
@@ -54,12 +56,14 @@ public class EnderpearlsFeature extends UHCFeature {
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "Enderpearls";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Enderpearls cause no teleport damage";
     }
 }

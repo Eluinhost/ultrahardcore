@@ -45,8 +45,24 @@ public class WhitelistCommands implements Command
     private final Translate translate;
 
     @Inject
-    protected WhitelistCommands(Translate translate) {
+    protected WhitelistCommands(Translate translate)
+    {
         this.translate = translate;
+    }
+
+    private static void clearWhitelist()
+    {
+        Set<OfflinePlayer> players = Bukkit.getWhitelistedPlayers();
+        for(OfflinePlayer p : players) {
+            p.setWhitelisted(false);
+        }
+    }
+
+    private static void addAllToWhitelist()
+    {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.setWhitelisted(true);
+        }
     }
 
     @CommandMethod("whitelistall")
@@ -67,20 +83,5 @@ public class WhitelistCommands implements Command
     public void whitelistAllCommand(OptionDeclarer parser)
     {
         parser.accepts("c", "Clears the whitelist instead");
-    }
-
-    private static void clearWhitelist()
-    {
-        Set<OfflinePlayer> players = Bukkit.getWhitelistedPlayers();
-        for(OfflinePlayer p : players) {
-            p.setWhitelisted(false);
-        }
-    }
-
-    private static void addAllToWhitelist()
-    {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.setWhitelisted(true);
-        }
     }
 }

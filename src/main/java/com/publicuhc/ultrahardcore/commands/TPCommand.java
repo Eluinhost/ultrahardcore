@@ -47,14 +47,16 @@ public class TPCommand implements Command
     private final Translate translate;
 
     @Inject
-    private TPCommand(Translate translate) {
+    private TPCommand(Translate translate)
+    {
         this.translate = translate;
     }
 
     @CommandMethod("tpp")
     @CommandOptions({"p", "l", "[arguments]"})
     @PermissionRestriction(TP_ALL_PERMISSION)
-    public void teleportCommand(OptionSet set, CommandSender sender, Player[] player, Location location, List<Player[]> args) {
+    public void teleportCommand(OptionSet set, CommandSender sender, Player[] player, Location location, List<Player[]> args)
+    {
         Location teleportLoc = null;
 
         if(location != null) {
@@ -77,7 +79,7 @@ public class TPCommand implements Command
             return;
         }
 
-        for (Player p : players) {
+        for(Player p : players) {
             p.teleport(teleportLoc);
         }
 
@@ -85,7 +87,8 @@ public class TPCommand implements Command
     }
 
     @OptionsMethod
-    public void teleportCommand(OptionDeclarer parser) {
+    public void teleportCommand(OptionDeclarer parser)
+    {
         parser.accepts("p", "Player to teleport to")
                 .withRequiredArg()
                 .withValuesConvertedBy(new OnlinePlayerValueConverter(false));

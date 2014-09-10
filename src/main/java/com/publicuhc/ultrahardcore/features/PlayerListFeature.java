@@ -44,64 +44,60 @@ import java.util.WeakHashMap;
 
 /**
  * PlayerListFeature
- *
+ * <p/>
  * Enabled: Handles showing health in the player list
  * Disabled: Nothing
  */
 @Singleton
-public class PlayerListFeature extends UHCFeature {
+public class PlayerListFeature extends UHCFeature
+{
 
     public static final String PLAYER_LIST_HEALTH = "UHC.playerListHealth";
-
-    //the internal bukkit id for the task
-    private int m_taskID = -1;
-
     //the list of players and their health that we are handling
     private static final Map<Player, Double> HANDLED_PLAYERS = new WeakHashMap<Player, Double>();
-
     private static final Scoreboard MAIN_SCOREBOARD = Bukkit.getScoreboardManager().getMainScoreboard();
-
     private static final int MAX_LENGTH_COLOURS = 14;
     private static final int MAX_LENGTH_NO_COLOURS = 16;
-
     private static final String OBJECTIVE_SCOREBOARD_NAME = "UHCHealth";
     private static final String OBJECTIVE_UNDER_NAME_NAME = "UHCHealthName";
     private static final String OBJECTIVE_TYPE = "dummy";
-
     private static final double LOW_HEALTH_BOUNDARY = 33;
-    private static final double MID_HEALTH_BOUNDARY = 66;
-
-    private static final Range<Double> DEAD_HEALTH_PERCENT = Ranges.closed(0.0D, 0.0D);
     private static final Range<Double> LOW_HEALTH_PERCENT = Ranges.openClosed(0.0D, LOW_HEALTH_BOUNDARY);
+    private static final double MID_HEALTH_BOUNDARY = 66;
     private static final Range<Double> MIDDLE_HEALTH_PERCENT = Ranges.openClosed(LOW_HEALTH_BOUNDARY, MID_HEALTH_BOUNDARY);
-
-    private Objective playerListObjective;
-    private Objective underNameObjective;
-
+    private static final Range<Double> DEAD_HEALTH_PERCENT = Ranges.closed(0.0D, 0.0D);
     private final FileConfiguration config;
     private final Plugin plugin;
+    //the internal bukkit id for the task
+    private int m_taskID = -1;
+    private Objective playerListObjective;
+    private Objective underNameObjective;
 
     /**
      * Handles the player list health better than base mc, normal behaviour when disabled
      *
-     * @param plugin the plugin
+     * @param plugin        the plugin
      * @param configManager the config manager
      */
     @Inject
-    private PlayerListFeature(Plugin plugin, Configurator configManager) {
+    private PlayerListFeature(Plugin plugin, Configurator configManager)
+    {
         Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
         if(!mainConfig.isPresent()) {
             throw new IllegalStateException("Config file 'main' was not found, cannot find configuration values");
         }
-        config = mainConfig.get();this.plugin = plugin;
+        config = mainConfig.get();
+        this.plugin = plugin;
     }
 
     /**
      * update the players name in the list with the following health number
+     *
      * @param player the player to update
      * @param health the health value to update to
      */
-    public void updatePlayerListHealth(Player player, double health) {
+    public void updatePlayerListHealth(Player player, double health)
+    {
         String playerName = config.getBoolean("PlayerList.displayNames") ? player.getDisplayName() : player.getName();
 
         //strip the colour codes from the player name
@@ -116,17 +112,17 @@ public class PlayerListFeature extends UHCFeature {
         //cut the name down to the right length
         cutName = cutName.substring(0, Math.min(cutName.length(), maxLength));
 
-        if (useColours) {
+        if(useColours) {
             ChatColor prefix = ChatColor.GREEN;
 
             double healthPercent = health / player.getMaxHealth() * 100;
 
-            if (player.hasPermission(PLAYER_LIST_HEALTH)) {
-                if (MIDDLE_HEALTH_PERCENT.contains(healthPercent)) {
+            if(player.hasPermission(PLAYER_LIST_HEALTH)) {
+                if(MIDDLE_HEALTH_PERCENT.contains(healthPercent)) {
                     prefix = ChatColor.YELLOW;
-                } else if (LOW_HEALTH_PERCENT.contains(healthPercent)) {
+                } else if(LOW_HEALTH_PERCENT.contains(healthPercent)) {
                     prefix = ChatColor.RED;
-                } else if (DEAD_HEALTH_PERCENT.contains(healthPercent)) {
+                } else if(DEAD_HEALTH_PERCENT.contains(healthPercent)) {
                     prefix = ChatColor.GRAY;
                 }
             } else {
@@ -140,7 +136,7 @@ public class PlayerListFeature extends UHCFeature {
         player.setPlayerListName(cutName);
 
         //if we're rounding health
-        if (config.getBoolean("PlayerList.roundHealth")) {
+        if(config.getBoolean("PlayerList.roundHealth")) {
             health = Math.ceil(health);
         }
 
@@ -154,20 +150,22 @@ public class PlayerListFeature extends UHCFeature {
 
     /**
      * Update all the players supplied
+     *
      * @param onlinePlayers list of online players
      */
-    public void updatePlayers(Player[] onlinePlayers) {
-        for (Player player : onlinePlayers) {
+    public void updatePlayers(Player[] onlinePlayers)
+    {
+        for(Player player : onlinePlayers) {
             //get the existing health
             Double health = HANDLED_PLAYERS.get(player);
             //if there isn't one
-            if (health == null) {
+            if(health == null) {
                 //set it to 0.0 and add the player
                 health = 0.0D;
                 HANDLED_PLAYERS.put(player, health);
             }
             //if the health has changed
-            if (!health.equals(player.getHealth())) {
+            if(!health.equals(player.getHealth())) {
                 //update with the new values
                 updatePlayerListHealth(player, player.getHealth());
             }
@@ -175,7 +173,8 @@ public class PlayerListFeature extends UHCFeature {
     }
 
     @Override
-    protected void enableCallback() {
+    protected void enableCallback()
+    {
         //set up the timer that runs
         m_taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(
                 plugin,
@@ -188,19 +187,20 @@ public class PlayerListFeature extends UHCFeature {
     }
 
     @Override
-    protected void disableCallback() {
+    protected void disableCallback()
+    {
         //disable the task if its running
-        if (m_taskID >= 0) {
+        if(m_taskID >= 0) {
             Bukkit.getScheduler().cancelTask(m_taskID);
             m_taskID = -1;
         }
         //if the scoreboard is there
-        if (MAIN_SCOREBOARD != null) {
+        if(MAIN_SCOREBOARD != null) {
             //clear the slots we use
             MAIN_SCOREBOARD.clearSlot(DisplaySlot.PLAYER_LIST);
             MAIN_SCOREBOARD.clearSlot(DisplaySlot.BELOW_NAME);
             //reset the player list name for all online players to their name
-            for (Player p : Bukkit.getOnlinePlayers()) {
+            for(Player p : Bukkit.getOnlinePlayers()) {
                 p.setPlayerListName(p.getName());
             }
         }
@@ -209,14 +209,17 @@ public class PlayerListFeature extends UHCFeature {
     /**
      * Initialize our scoreboard
      */
-    private void initializeScoreboard() {
+    private void initializeScoreboard()
+    {
         //try to make new objectives, throws exception when it already exists
         try {
             MAIN_SCOREBOARD.registerNewObjective(OBJECTIVE_SCOREBOARD_NAME, OBJECTIVE_TYPE);
-        } catch (IllegalArgumentException ignored) {}
+        } catch(IllegalArgumentException ignored) {
+        }
         try {
             MAIN_SCOREBOARD.registerNewObjective(OBJECTIVE_UNDER_NAME_NAME, OBJECTIVE_TYPE);
-        } catch (IllegalArgumentException ignored) {}
+        } catch(IllegalArgumentException ignored) {
+        }
 
         //set the objectives we created
         playerListObjective = MAIN_SCOREBOARD.getObjective(OBJECTIVE_SCOREBOARD_NAME);
@@ -229,31 +232,34 @@ public class PlayerListFeature extends UHCFeature {
         playerListObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 
         //if under name is enabled
-        if (config.getBoolean("PlayerList.belowName")) {
+        if(config.getBoolean("PlayerList.belowName")) {
             //set it's slot
             underNameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         } else {
             //get the objective that is below the name
             Objective o = MAIN_SCOREBOARD.getObjective(DisplaySlot.BELOW_NAME);
             //if its our objective clear the slot
-            if (o != null && o.getName().equals(OBJECTIVE_UNDER_NAME_NAME)) {
+            if(o != null && o.getName().equals(OBJECTIVE_UNDER_NAME_NAME)) {
                 MAIN_SCOREBOARD.clearSlot(DisplaySlot.BELOW_NAME);
             }
         }
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "PlayerList";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Player's health shown in player list and under their name";
     }
 
     @Override
-    public List<String> getStatus() {
+    public List<String> getStatus()
+    {
         List<String> status = new ArrayList<String>();
         status.add(ChatColor.GRAY + "--- Colours: " + convertBooleanToOnOff(config.getBoolean("PlayerList.colours")));
         status.add(ChatColor.GRAY + "--- Update delay: " + config.getInt("PlayerList.delay"));
@@ -266,9 +272,11 @@ public class PlayerListFeature extends UHCFeature {
         return status;
     }
 
-    private class PlayerListUpdater implements Runnable {
+    private class PlayerListUpdater implements Runnable
+    {
         @Override
-        public void run() {
+        public void run()
+        {
             updatePlayers(Bukkit.getOnlinePlayers());
         }
     }

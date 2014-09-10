@@ -24,33 +24,39 @@ package com.publicuhc.ultrahardcore.api.events;
 import com.publicuhc.ultrahardcore.api.Feature;
 import org.bukkit.event.Cancellable;
 
-public abstract class FeatureEvent extends UHCEvent implements Cancellable {
+public abstract class FeatureEvent extends UHCEvent implements Cancellable
+{
 
     private final Feature feature;
     private boolean cancelled;
 
     /**
      * Generic feature event
+     *
      * @param feature feature event is running for
      */
-    protected FeatureEvent(Feature feature){
+    protected FeatureEvent(Feature feature)
+    {
         this.feature = feature;
     }
 
     /**
      * @return the feature involved in this event
      */
-    public Feature getFeature(){
+    public Feature getFeature()
+    {
         return feature;
     }
 
     @Override
-    public boolean isCancelled() {
+    public boolean isCancelled()
+    {
         return cancelled;
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
+    public void setCancelled(boolean cancelled)
+    {
         this.cancelled = cancelled;
     }
 }

@@ -30,22 +30,24 @@ import org.bukkit.permissions.Permissible;
 
 /**
  * NetherFeature
- *
+ * <p/>
  * Enabled: Disables travelling into the nether
  * Disabled: Nothing
  */
 @Singleton
-public class NetherFeature extends UHCFeature {
+public class NetherFeature extends UHCFeature
+{
 
     public static final String ALLOW_NETHER = "UHC.nether.allow";
 
     @EventHandler
-    public void onPortalEvent(EntityPortalEvent epe) {
+    public void onPortalEvent(EntityPortalEvent epe)
+    {
         //if it's enabled
-        if (isEnabled() && epe.getEntity() instanceof Permissible) {
+        if(isEnabled() && epe.getEntity() instanceof Permissible) {
             //if they're going into the nether cancel it
             if(!((Permissible) epe.getEntity()).hasPermission(ALLOW_NETHER)) {
-                if (epe.getTo().getWorld().getEnvironment() == World.Environment.NETHER) {
+                if(epe.getTo().getWorld().getEnvironment() == World.Environment.NETHER) {
                     epe.setCancelled(true);
                 }
             }
@@ -53,12 +55,14 @@ public class NetherFeature extends UHCFeature {
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "NetherFeature";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Disables the use of nether portals";
     }
 }

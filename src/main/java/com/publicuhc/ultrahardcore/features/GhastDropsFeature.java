@@ -40,12 +40,13 @@ import java.util.List;
 
 /**
  * GhastDropsFeature
- *
+ * <p/>
  * Enabled: Replaces ghast tears with gold ingots on death of ghast
  * Disabled: Nothing
  */
 @Singleton
-public class GhastDropsFeature extends UHCFeature {
+public class GhastDropsFeature extends UHCFeature
+{
 
     private final FileConfiguration config;
 
@@ -55,7 +56,8 @@ public class GhastDropsFeature extends UHCFeature {
      * @param configManager the config manager
      */
     @Inject
-    private GhastDropsFeature(Configurator configManager) {
+    private GhastDropsFeature(Configurator configManager)
+    {
         Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
         if(!mainConfig.isPresent()) {
             throw new IllegalStateException("Config file 'main' was not found, cannot find configuration values");
@@ -64,11 +66,12 @@ public class GhastDropsFeature extends UHCFeature {
     }
 
     @EventHandler
-    public void onEntityDeathEvent(EntityDeathEvent ede) {
+    public void onEntityDeathEvent(EntityDeathEvent ede)
+    {
         //if we're enabled and a ghast died
-        if (isEnabled() && ede.getEntityType() == EntityType.GHAST) {
+        if(isEnabled() && ede.getEntityType() == EntityType.GHAST) {
             //if ghasts can't drop tears in this world
-            if (featureEnabledForWorld(ede.getEntity().getWorld().getName())) {
+            if(featureEnabledForWorld(ede.getEntity().getWorld().getName())) {
 
                 //get the list of drops
                 List<ItemStack> drops = ede.getDrops();
@@ -76,10 +79,10 @@ public class GhastDropsFeature extends UHCFeature {
                 //for all the items dropped
                 Iterator<ItemStack> iterator = drops.iterator();
                 Collection<ItemStack> toAdd = new ArrayList<ItemStack>();
-                while (iterator.hasNext()) {
+                while(iterator.hasNext()) {
                     ItemStack is = iterator.next();
                     //if it was a ghast tear drop the same amount of gold ingots
-                    if (is.getType() == Material.GHAST_TEAR) {
+                    if(is.getType() == Material.GHAST_TEAR) {
                         iterator.remove();
                         toAdd.add(new ItemStack(Material.GOLD_INGOT, is.getAmount()));
                     }
@@ -95,7 +98,8 @@ public class GhastDropsFeature extends UHCFeature {
      * @param worldName the world
      * @return true if allowed, false otherwise
      */
-    public boolean featureEnabledForWorld(String worldName) {
+    public boolean featureEnabledForWorld(String worldName)
+    {
         //w&&f = enabled
         //w&&!f = disabled
         //!w&&f = disabled
@@ -107,12 +111,14 @@ public class GhastDropsFeature extends UHCFeature {
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "GhastDrops";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Ghasts drop golden ingots instead of tears";
     }
 }

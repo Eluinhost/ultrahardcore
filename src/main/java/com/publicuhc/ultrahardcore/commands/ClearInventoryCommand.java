@@ -52,7 +52,8 @@ public class ClearInventoryCommand implements Command
     private final Translate translate;
 
     @Inject
-    private ClearInventoryCommand(Translate translate) {
+    private ClearInventoryCommand(Translate translate)
+    {
         this.translate = translate;
     }
 
@@ -80,7 +81,7 @@ public class ClearInventoryCommand implements Command
 
         Collection<String> immune = new ArrayList<String>();
         for(Player p : players) {
-            if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
+            if(p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
                 immune.add(p.getName());
             } else {
                 clearInventory(p);
@@ -106,9 +107,11 @@ public class ClearInventoryCommand implements Command
 
     /**
      * Clears the player's inventory, armour slots, item on cursor and crafting slots
+     *
      * @param p player
      */
-    private void clearInventory(Player p) {
+    private void clearInventory(Player p)
+    {
         p.getInventory().clear();
         p.getInventory().setHelmet(null);
         p.getInventory().setChestplate(null);
@@ -116,7 +119,7 @@ public class ClearInventoryCommand implements Command
         p.getInventory().setBoots(null);
         p.setItemOnCursor(new ItemStack(Material.AIR));
         InventoryView openInventory = p.getOpenInventory();
-        if (openInventory.getType() == InventoryType.CRAFTING) {
+        if(openInventory.getType() == InventoryType.CRAFTING) {
             openInventory.getTopInventory().clear();
         }
 

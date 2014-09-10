@@ -27,7 +27,8 @@ import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 
 import java.util.List;
 
-public interface FeatureManager {
+public interface FeatureManager
+{
 
     /**
      * Add a feature to the manager.
@@ -36,7 +37,7 @@ public interface FeatureManager {
      *
      * @param feature Feature the feature to be added
      * @throws com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException when feature with the same ID already exists
-     * @throws java.lang.IllegalArgumentException when the feature has an invalid ID name
+     * @throws java.lang.IllegalArgumentException                                    when the feature has an invalid ID name
      */
     void addFeature(Feature feature) throws FeatureIDConflictException;
 

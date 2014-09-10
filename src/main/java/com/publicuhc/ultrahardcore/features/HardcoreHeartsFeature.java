@@ -35,14 +35,15 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * HardcoreHeartsFeature
- *
+ * <p/>
  * Enabled: Shows hardcore hearts on login to the server
  * Disabled: Nothing
- *
+ * <p/>
  * Requires ProtocolLib
  */
 @Singleton
-public class HardcoreHeartsFeature extends UHCFeature {
+public class HardcoreHeartsFeature extends UHCFeature
+{
 
     private final ProtocolManager m_manager = ProtocolLibrary.getProtocolManager();
     private final PacketListener m_listner;
@@ -53,45 +54,54 @@ public class HardcoreHeartsFeature extends UHCFeature {
      * @param plugin the plugin
      */
     @Inject
-    private HardcoreHeartsFeature(Plugin plugin) {
+    private HardcoreHeartsFeature(Plugin plugin)
+    {
         m_listner = new HardcoreHeartsListener(plugin);
     }
 
     @Override
-    public void enableCallback(){
+    public void enableCallback()
+    {
         m_manager.addPacketListener(m_listner);
     }
 
     @Override
-    public void disableCallback(){
+    public void disableCallback()
+    {
         m_manager.removePacketListener(m_listner);
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "HardcoreHearts";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Shows the hardcore hearts instead";
     }
 
-    private static class HardcoreHeartsListener extends PacketAdapter {
+    private static class HardcoreHeartsListener extends PacketAdapter
+    {
 
         /**
          * listens for login packets to edit
+         *
          * @param bukkitPlugin the plugin
          */
-        HardcoreHeartsListener(Plugin bukkitPlugin){
+        HardcoreHeartsListener(Plugin bukkitPlugin)
+        {
             //listen for login packets on the normal priority
-            super(bukkitPlugin,ListenerPriority.NORMAL,PacketType.Play.Server.LOGIN);
+            super(bukkitPlugin, ListenerPriority.NORMAL, PacketType.Play.Server.LOGIN);
         }
 
         @Override
-        public void onPacketSending(PacketEvent event) {
+        public void onPacketSending(PacketEvent event)
+        {
             //if its a login packet write the first boolean to true (hardcore flag)
-            if (event.getPacketType().equals(PacketType.Play.Server.LOGIN)) {
+            if(event.getPacketType().equals(PacketType.Play.Server.LOGIN)) {
                 event.getPacket().getBooleans().write(0, true);
             }
         }

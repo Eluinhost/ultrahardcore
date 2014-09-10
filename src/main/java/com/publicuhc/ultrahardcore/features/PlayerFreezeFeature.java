@@ -46,18 +46,18 @@ import java.util.logging.Level;
 
 /**
  * PlayerFreezeFeature
- *
+ * <p/>
  * Enabled: Allows freezing of players with commands
  * Disabled: Nothing
  */
 @Singleton
-public class PlayerFreezeFeature extends UHCFeature {
-
-    private boolean globalMode = false;
+public class PlayerFreezeFeature extends UHCFeature
+{
 
     private final FreezeRunnable freezer;
     private final FileConfiguration config;
     private final Plugin plugin;
+    private boolean globalMode = false;
 
     /**
      * handles frozen players
@@ -67,7 +67,8 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param translate     the translator
      */
     @Inject
-    private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate, PluginLogger logger) {
+    private PlayerFreezeFeature(Plugin plugin, Configurator configManager, Translate translate, PluginLogger logger)
+    {
         this.plugin = plugin;
         Optional<FileConfiguration> mainConfig = configManager.getConfig("main");
         if(!mainConfig.isPresent()) {
@@ -79,9 +80,9 @@ public class PlayerFreezeFeature extends UHCFeature {
 
         int duration = config.getInt("PlayerFreezepotion.duration");
         List<PotionEffect> effects = new ArrayList<PotionEffect>();
-        for (String potionEffectString : potionEffectsList) {
+        for(String potionEffectString : potionEffectsList) {
             String[] parts = potionEffectString.split(":");
-            if (parts.length != 2) {
+            if(parts.length != 2) {
                 logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " does not contain a ':', skipping it.");
                 continue;
             }
@@ -89,16 +90,17 @@ public class PlayerFreezeFeature extends UHCFeature {
             int amplifier = -1;
             try {
                 amplifier = Integer.parseInt(parts[1]);
-            } catch (NumberFormatException ignored) {}
+            } catch(NumberFormatException ignored) {
+            }
 
-            if (amplifier < 0) {
+            if(amplifier < 0) {
                 logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " has an invalid potion effect level '" + parts[1] + "', skipping it");
                 continue;
             }
 
             PotionEffectType type = PotionEffectType.getByName(parts[0]);
 
-            if (null == type) {
+            if(null == type) {
                 logger.log(Level.SEVERE, "Potion effect " + potionEffectString + " has an invalid potion effect type '" + parts[0] + "', skipping it");
                 continue;
             }
@@ -114,36 +116,42 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param player the entity to freeze
      */
     @SuppressWarnings("TypeMayBeWeakened")
-    public void addPlayer(Player player) {
-        if (player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION) || freezer.isPlayerFrozen(player)) {
+    public void addPlayer(Player player)
+    {
+        if(player.hasPermission(FreezeCommand.ANTIFREEZE_PERMISSION) || freezer.isPlayerFrozen(player)) {
             return;
         }
         freezer.addPlayer(player);
     }
 
-    public void removePlayer(Player player) {
+    public void removePlayer(Player player)
+    {
         freezer.removePlayer(player);
     }
 
     /**
      * @param playerID the player id
      */
-    public void removePlayer(UUID playerID) {
+    public void removePlayer(UUID playerID)
+    {
         freezer.removePlayer(playerID);
     }
 
-    public boolean isPlayerFrozen(Player player) {
+    public boolean isPlayerFrozen(Player player)
+    {
         return freezer.isPlayerFrozen(player);
     }
 
-    public boolean isPlayerFrozen(UUID uuid) {
+    public boolean isPlayerFrozen(UUID uuid)
+    {
         return freezer.isPlayerFrozen(uuid);
     }
 
     /**
      * Remove all from the frozen list and sets global off
      */
-    public void unfreezeAll() {
+    public void unfreezeAll()
+    {
         globalMode = false;
         freezer.clear();
     }
@@ -151,12 +159,14 @@ public class PlayerFreezeFeature extends UHCFeature {
     /**
      * Adds all to the list and sets global on
      */
-    public void freezeAll() {
+    public void freezeAll()
+    {
         globalMode = true;
         freezer.addPlayers(Bukkit.getOnlinePlayers());
     }
 
-    public boolean isGlobalMode() {
+    public boolean isGlobalMode()
+    {
         return globalMode;
     }
 
@@ -166,8 +176,9 @@ public class PlayerFreezeFeature extends UHCFeature {
      * @param pje the player join event
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoinEvent(PlayerJoinEvent pje) {
-        if (globalMode || freezer.isPlayerFrozen(pje.getPlayer())) {
+    public void onPlayerJoinEvent(PlayerJoinEvent pje)
+    {
+        if(globalMode || freezer.isPlayerFrozen(pje.getPlayer())) {
             addPlayer(pje.getPlayer());
         } else {
             removePlayer(pje.getPlayer());
@@ -178,22 +189,26 @@ public class PlayerFreezeFeature extends UHCFeature {
      * Called when the feature is being disabled
      */
     @Override
-    protected void disableCallback() {
+    protected void disableCallback()
+    {
         freezer.cancel();
     }
 
     @Override
-    protected void enableCallback() {
+    protected void enableCallback()
+    {
         freezer.runTaskTimer(plugin, 0, config.getInt("PlayerFreeze.period"));
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "PlayerFreeze";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Allows for freezing players in place";
     }
 }

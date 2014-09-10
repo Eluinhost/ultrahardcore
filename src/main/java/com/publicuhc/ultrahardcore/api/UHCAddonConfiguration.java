@@ -26,5 +26,6 @@ import com.publicuhc.pluginframework.shaded.inject.multibindings.Multibinder;
 public interface UHCAddonConfiguration
 {
     void configureCommands(Multibinder<Command> commands);
+
     void configureFeatures(Multibinder<UHCFeature> features);
 }

@@ -30,31 +30,36 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 
 /**
  * WitchSpawns
- *
+ * <p/>
  * Enabled: Disables witch spawning
  * Disabled: Nothing
  */
 @Singleton
-public class WitchSpawnsFeature extends UHCFeature {
+public class WitchSpawnsFeature extends UHCFeature
+{
 
     /**
      * Whenever a creature spawns
+     *
      * @param ese the creaturespawnevent
      */
     @EventHandler
-    public void onCreatureSpawnEvent(CreatureSpawnEvent ese) {
-        if (isEnabled() && ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
+    public void onCreatureSpawnEvent(CreatureSpawnEvent ese)
+    {
+        if(isEnabled() && ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
             ese.setCancelled(true);
         }
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "WitchSpawns";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Disables natural witch spawns";
     }
 }

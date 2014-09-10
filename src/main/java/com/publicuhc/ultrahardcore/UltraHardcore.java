@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
+
 package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.pluginframework.FrameworkJavaPlugin;
@@ -42,7 +43,8 @@ import java.util.Set;
  * @author ghowden
  */
 @Singleton
-public class UltraHardcore extends FrameworkJavaPlugin {
+public class UltraHardcore extends FrameworkJavaPlugin
+{
 
     private FeatureManager featureManager;
     private Router router;
@@ -58,10 +60,12 @@ public class UltraHardcore extends FrameworkJavaPlugin {
 
         //enable metrics
         Metrics.Graph graph = metrics.createGraph("Features Loaded");
-        for(final Feature feature : featureManager.getFeatures()){
-            graph.addPlotter(new Metrics.Plotter(feature.getFeatureID()) {
+        for(final Feature feature : featureManager.getFeatures()) {
+            graph.addPlotter(new Metrics.Plotter(feature.getFeatureID())
+            {
                 @Override
-                public int getValue() {
+                public int getValue()
+                {
                     return feature.isEnabled() ? 1 : 0;
                 }
             });
@@ -77,18 +81,6 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     }
 
     @Inject
-    private void setFeatureManager(FeatureManager featureManager)
-    {
-        this.featureManager = featureManager;
-    }
-
-    @Inject
-    private void setRouter(Router router)
-    {
-        this.router = router;
-    }
-
-    @Inject
     private void setMetrics(Metrics metrics)
     {
         this.metrics = metrics;
@@ -100,9 +92,21 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         return featureManager;
     }
 
+    @Inject
+    private void setFeatureManager(FeatureManager featureManager)
+    {
+        this.featureManager = featureManager;
+    }
+
     public Router getRouter()
     {
         return router;
+    }
+
+    @Inject
+    private void setRouter(Router router)
+    {
+        this.router = router;
     }
 
     @Override
@@ -115,7 +119,7 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     /**
      * Register an addon module for features/commands without any extra modules
      *
-     * @param plugin the plugin to register the addon for
+     * @param plugin        the plugin to register the addon for
      * @param configuration the configuration which tells us the commands/features
      */
     public void registerAddon(Plugin plugin, UHCAddonConfiguration configuration)
@@ -126,12 +130,13 @@ public class UltraHardcore extends FrameworkJavaPlugin {
     /**
      * Register an addon module for features/commands
      *
-     * @param plugin the plugin to register the addon for
+     * @param plugin        the plugin to register the addon for
      * @param configuration the configuration which tells us the commands/features
-     * @param modules list of extra modules to add to the injector
+     * @param modules       list of extra modules to add to the injector
      */
     @SuppressWarnings({"AnonymousInnerClass", "EmptyClass"})
-    public void registerAddon(Plugin plugin, UHCAddonConfiguration configuration, Collection<Module> modules) {
+    public void registerAddon(Plugin plugin, UHCAddonConfiguration configuration, Collection<Module> modules)
+    {
         modules.add(sharedServicesModule);
         modules.add(new ServicesModule(plugin, configuration));
 
@@ -142,17 +147,17 @@ public class UltraHardcore extends FrameworkJavaPlugin {
         for(UHCFeature feature : features) {
             try {
                 featureManager.addFeature(feature);
-            } catch (FeatureIDConflictException e) {
+            } catch(FeatureIDConflictException e) {
                 e.printStackTrace();
             }
         }
 
         //fetch all of the commands from the addon and add it to the router
-        Set<Command> commands = injector.getInstance(Key.get(new TypeLiteral<Set<Command>>(){}));
+        Set<Command> commands = injector.getInstance(Key.get(new TypeLiteral<Set<Command>>() {}));
         for(Command command : commands) {
             try {
                 getRouter().registerCommands(command, false);
-            } catch (CommandParseException e) {
+            } catch(CommandParseException e) {
                 e.printStackTrace();
             }
         }

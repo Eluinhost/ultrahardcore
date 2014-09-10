@@ -31,7 +31,7 @@ import org.bukkit.command.CommandSender;
 public class DebugCommands implements Command
 {
 
-    private LocaleProvider provider;
+    private final LocaleProvider provider;
 
     @Inject
     public DebugCommands(LocaleProvider provider)

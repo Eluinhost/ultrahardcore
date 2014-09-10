@@ -88,10 +88,10 @@ public class FeatureCommand implements Command
     {
         List<Feature> features = featureManager.getFeatures();
         translate.sendMessage("features.loaded.header", sender, features.size());
-        if (features.isEmpty()) {
+        if(features.isEmpty()) {
             translate.sendMessage("features.loaded.none", sender);
         }
-        for (Feature feature : features) {
+        for(Feature feature : features) {
             translate.sendMessage(feature.isEnabled() ? "features.loaded.on" : "features.loaded.off", sender, feature.getFeatureID(), feature.getDescription());
 
             List<String> status = feature.getStatus();

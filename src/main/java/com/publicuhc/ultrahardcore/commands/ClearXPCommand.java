@@ -48,7 +48,8 @@ public class ClearXPCommand implements Command
     private final Translate translate;
 
     @Inject
-    private ClearXPCommand(Translate translate) {
+    private ClearXPCommand(Translate translate)
+    {
         this.translate = translate;
     }
 
@@ -76,7 +77,7 @@ public class ClearXPCommand implements Command
 
         Collection<String> immune = new ArrayList<String>();
         for(Player p : players) {
-            if (p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
+            if(p.hasPermission(CLEAR_IMMUNE_PERMISSION)) {
                 immune.add(p.getName());
             } else {
                 clearXP(p);
@@ -102,9 +103,11 @@ public class ClearXPCommand implements Command
 
     /**
      * Clears the player's xp
+     *
      * @param p player
      */
-    private void clearXP(Player p) {
+    private void clearXP(Player p)
+    {
         p.setTotalExperience(0);
         translate.sendMessage("cxp.tell", p);
     }

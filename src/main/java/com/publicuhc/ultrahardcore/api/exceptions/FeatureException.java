@@ -22,4 +22,5 @@
 package com.publicuhc.ultrahardcore.api.exceptions;
 
 @SuppressWarnings("serial")
-public class FeatureException extends Exception{}
+public class FeatureException extends Exception
+{}

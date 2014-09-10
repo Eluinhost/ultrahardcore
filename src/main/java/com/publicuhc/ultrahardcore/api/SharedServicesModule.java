@@ -1,5 +1,5 @@
 /*
- * BaseAddonModule.java
+ * SharedServicesModule.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *

@@ -31,39 +31,43 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 /**
  * RegenFeature
- *
+ * <p/>
  * Enabled: Disables health regen for players
  * Disabled: Nothing
  */
 @Singleton
-public class RegenFeature extends UHCFeature {
+public class RegenFeature extends UHCFeature
+{
 
+    public static final String NO_HEALTH_REGEN = "UHC.disableRegen";
     private static final int FOOD_LEVEL = 18;
     private static final double PLAYER_DEAD_HEALTH = 0.0;
     private static final float EXHAUSTION_OFFSET = 3.0F;
 
-    public static final String NO_HEALTH_REGEN = "UHC.disableRegen";
-
     @EventHandler
-    public void onHealthRegen(EntityRegainHealthEvent erhe) {
-        if (!isEnabled())
+    public void onHealthRegen(EntityRegainHealthEvent erhe)
+    {
+        if(!isEnabled()) {
             return;
+        }
 
         //If its a player regen
-        if (erhe.getEntityType() != EntityType.PLAYER)
+        if(erhe.getEntityType() != EntityType.PLAYER) {
             return;
+        }
 
 
         //If its just standard health regen
-        if (erhe.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED)
+        if(erhe.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED) {
             return;
+        }
 
         Player p = (Player) erhe.getEntity();
 
-        if (p.hasPermission(NO_HEALTH_REGEN)) {
+        if(p.hasPermission(NO_HEALTH_REGEN)) {
 
             //this is a special addition due to a bukkit bug where it adds exhuastion even if the healing is cancelled
-            if (p.getFoodLevel() >= FOOD_LEVEL && p.getHealth() > PLAYER_DEAD_HEALTH && p.getHealth() < p.getMaxHealth()) {
+            if(p.getFoodLevel() >= FOOD_LEVEL && p.getHealth() > PLAYER_DEAD_HEALTH && p.getHealth() < p.getMaxHealth()) {
                 p.setExhaustion(p.getExhaustion() - EXHAUSTION_OFFSET);
             }
 
@@ -73,12 +77,14 @@ public class RegenFeature extends UHCFeature {
     }
 
     @Override
-    public String getFeatureID() {
+    public String getFeatureID()
+    {
         return "DisableRegen";
     }
 
     @Override
-    public String getDescription() {
+    public String getDescription()
+    {
         return "Cancels a player's passive health regeneration";
     }
 }
