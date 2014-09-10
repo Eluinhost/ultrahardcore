@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.commands;
+package com.publicuhc.ultrahardcore.core.commands;
 
 import com.publicuhc.pluginframework.routing.annotation.*;
 import com.publicuhc.pluginframework.routing.converters.OnlinePlayerValueConverter;

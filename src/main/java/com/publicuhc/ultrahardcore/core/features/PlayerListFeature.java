@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features;
+package com.publicuhc.ultrahardcore.core.features;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Range;

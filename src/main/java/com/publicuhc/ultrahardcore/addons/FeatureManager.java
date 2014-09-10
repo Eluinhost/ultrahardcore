@@ -19,9 +19,10 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.api;
+package com.publicuhc.ultrahardcore.addons;
 
 import com.google.common.base.Optional;
+import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 

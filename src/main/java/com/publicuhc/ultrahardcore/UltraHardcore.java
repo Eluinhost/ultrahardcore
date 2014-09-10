@@ -26,8 +26,15 @@ import com.publicuhc.pluginframework.routing.Router;
 import com.publicuhc.pluginframework.routing.exception.CommandParseException;
 import com.publicuhc.pluginframework.shaded.inject.*;
 import com.publicuhc.pluginframework.shaded.metrics.Metrics;
-import com.publicuhc.ultrahardcore.api.*;
+import com.publicuhc.ultrahardcore.addons.FeatureManager;
+import com.publicuhc.ultrahardcore.addons.ServicesModule;
+import com.publicuhc.ultrahardcore.addons.SharedServicesModule;
+import com.publicuhc.ultrahardcore.api.Command;
+import com.publicuhc.ultrahardcore.api.Feature;
+import com.publicuhc.ultrahardcore.api.UHCAddonConfiguration;
+import com.publicuhc.ultrahardcore.api.UHCFeature;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
+import com.publicuhc.ultrahardcore.core.UHCCoreAddonConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;

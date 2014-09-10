@@ -1,5 +1,5 @@
 /*
- * SharedServicesModule.java
+ * DebugCommands.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,51 +19,29 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.api;
+package com.publicuhc.ultrahardcore.core.commands;
 
 import com.publicuhc.pluginframework.locale.LocaleProvider;
-import com.publicuhc.pluginframework.routing.Router;
-import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
+import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.inject.Provides;
+import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
+import com.publicuhc.ultrahardcore.api.Command;
+import org.bukkit.command.CommandSender;
 
-/**
- * All the services shared between all of the addons, generally all created by the UHC injector for use in the addon
- * injectors
- */
-public class SharedServicesModule extends AbstractModule
+public class DebugCommands implements Command
 {
+
     private final LocaleProvider provider;
-    private final Router router;
-    private final FeatureManager manager;
 
     @Inject
-    public SharedServicesModule(LocaleProvider provider, Router router, FeatureManager manager)
+    public DebugCommands(LocaleProvider provider)
     {
         this.provider = provider;
-        this.router = router;
-        this.manager = manager;
     }
 
-    @Provides
-    public LocaleProvider getLocales()
+    @CommandMethod("locale")
+    public void checkLocale(OptionSet set, CommandSender sender)
     {
-        return provider;
+        sender.sendMessage(provider.localeForCommandSender(sender).getDisplayName());
     }
-
-    @Provides
-    public Router getRouter()
-    {
-        return router;
-    }
-
-    @Provides
-    public FeatureManager getFeatureManager()
-    {
-        return manager;
-    }
-
-    @Override
-    protected void configure()
-    {}
 }

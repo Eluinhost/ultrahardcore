@@ -19,7 +19,7 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.commands;
+package com.publicuhc.ultrahardcore.core.commands;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
@@ -32,10 +32,10 @@ import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionDeclarer;
 import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
+import com.publicuhc.ultrahardcore.addons.FeatureManager;
 import com.publicuhc.ultrahardcore.api.Command;
 import com.publicuhc.ultrahardcore.api.Feature;
-import com.publicuhc.ultrahardcore.api.FeatureManager;
-import com.publicuhc.ultrahardcore.features.PlayerFreezeFeature;
+import com.publicuhc.ultrahardcore.core.features.PlayerFreezeFeature;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

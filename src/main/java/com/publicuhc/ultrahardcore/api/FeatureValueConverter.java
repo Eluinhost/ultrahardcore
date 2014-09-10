@@ -25,6 +25,7 @@ import com.google.common.base.Optional;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConversionException;
 import com.publicuhc.pluginframework.shaded.joptsimple.ValueConverter;
+import com.publicuhc.ultrahardcore.addons.FeatureManager;
 
 public class FeatureValueConverter implements ValueConverter<Feature>
 {

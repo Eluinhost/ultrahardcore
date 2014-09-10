@@ -1,5 +1,5 @@
 /*
- * DebugCommands.java
+ * SharedServicesModule.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,29 +19,51 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.commands;
+package com.publicuhc.ultrahardcore.addons;
 
 import com.publicuhc.pluginframework.locale.LocaleProvider;
-import com.publicuhc.pluginframework.routing.annotation.CommandMethod;
+import com.publicuhc.pluginframework.routing.Router;
+import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
-import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
-import com.publicuhc.ultrahardcore.api.Command;
-import org.bukkit.command.CommandSender;
+import com.publicuhc.pluginframework.shaded.inject.Provides;
 
-public class DebugCommands implements Command
+/**
+ * All the services shared between all of the addons, generally all created by the UHC injector for use in the addon
+ * injectors
+ */
+public class SharedServicesModule extends AbstractModule
 {
-
     private final LocaleProvider provider;
+    private final Router router;
+    private final FeatureManager manager;
 
     @Inject
-    public DebugCommands(LocaleProvider provider)
+    public SharedServicesModule(LocaleProvider provider, Router router, FeatureManager manager)
     {
         this.provider = provider;
+        this.router = router;
+        this.manager = manager;
     }
 
-    @CommandMethod("locale")
-    public void checkLocale(OptionSet set, CommandSender sender)
+    @Provides
+    public LocaleProvider getLocales()
     {
-        sender.sendMessage(provider.localeForCommandSender(sender).getDisplayName());
+        return provider;
     }
+
+    @Provides
+    public Router getRouter()
+    {
+        return router;
+    }
+
+    @Provides
+    public FeatureManager getFeatureManager()
+    {
+        return manager;
+    }
+
+    @Override
+    protected void configure()
+    {}
 }

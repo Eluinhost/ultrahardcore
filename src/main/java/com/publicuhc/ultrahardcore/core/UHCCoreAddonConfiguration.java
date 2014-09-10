@@ -19,14 +19,14 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore;
+package com.publicuhc.ultrahardcore.core;
 
 import com.publicuhc.pluginframework.shaded.inject.multibindings.Multibinder;
 import com.publicuhc.ultrahardcore.api.Command;
 import com.publicuhc.ultrahardcore.api.UHCAddonConfiguration;
 import com.publicuhc.ultrahardcore.api.UHCFeature;
-import com.publicuhc.ultrahardcore.commands.*;
-import com.publicuhc.ultrahardcore.features.*;
+import com.publicuhc.ultrahardcore.core.commands.*;
+import com.publicuhc.ultrahardcore.core.features.*;
 import org.bukkit.Bukkit;
 
 @SuppressWarnings({"OverlyCoupledMethod", "OverlyCoupledClass"})

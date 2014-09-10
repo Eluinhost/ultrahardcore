@@ -22,8 +22,8 @@
 package com.publicuhc.ultrahardcore;
 
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
-import com.publicuhc.ultrahardcore.api.DefaultFeatureManager;
-import com.publicuhc.ultrahardcore.api.FeatureManager;
+import com.publicuhc.ultrahardcore.addons.DefaultFeatureManager;
+import com.publicuhc.ultrahardcore.addons.FeatureManager;
 
 class UHCModule extends AbstractModule
 {

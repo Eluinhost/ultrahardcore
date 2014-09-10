@@ -19,13 +19,16 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.api;
+package com.publicuhc.ultrahardcore.addons;
 
 import com.publicuhc.pluginframework.PluginModule;
 import com.publicuhc.pluginframework.configuration.ConfigurationModule;
 import com.publicuhc.pluginframework.shaded.inject.AbstractModule;
 import com.publicuhc.pluginframework.shaded.inject.multibindings.Multibinder;
 import com.publicuhc.pluginframework.translate.TranslateModule;
+import com.publicuhc.ultrahardcore.api.Command;
+import com.publicuhc.ultrahardcore.api.UHCAddonConfiguration;
+import com.publicuhc.ultrahardcore.api.UHCFeature;
 import org.bukkit.plugin.Plugin;
 
 /**

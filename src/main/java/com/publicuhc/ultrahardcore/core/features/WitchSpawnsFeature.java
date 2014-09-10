@@ -1,5 +1,5 @@
 /*
- * NetherFeature.java
+ * WitchSpawnsFeature.java
  *
  * Copyright (c) 2014 Graham Howden <graham_howden1 at yahoo.co.uk>.
  *
@@ -19,50 +19,47 @@
  * along with UltraHardcore.  If not, see <http ://www.gnu.org/licenses/>.
  */
 
-package com.publicuhc.ultrahardcore.features;
+package com.publicuhc.ultrahardcore.core.features;
 
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
 import com.publicuhc.ultrahardcore.api.UHCFeature;
-import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.permissions.Permissible;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+
 
 /**
- * NetherFeature
+ * WitchSpawns
  * <p/>
- * Enabled: Disables travelling into the nether
+ * Enabled: Disables witch spawning
  * Disabled: Nothing
  */
 @Singleton
-public class NetherFeature extends UHCFeature
+public class WitchSpawnsFeature extends UHCFeature
 {
 
-    public static final String ALLOW_NETHER = "UHC.nether.allow";
-
+    /**
+     * Whenever a creature spawns
+     *
+     * @param ese the creaturespawnevent
+     */
     @EventHandler
-    public void onPortalEvent(EntityPortalEvent epe)
+    public void onCreatureSpawnEvent(CreatureSpawnEvent ese)
     {
-        //if it's enabled
-        if(isEnabled() && epe.getEntity() instanceof Permissible) {
-            //if they're going into the nether cancel it
-            if(!((Permissible) epe.getEntity()).hasPermission(ALLOW_NETHER)) {
-                if(epe.getTo().getWorld().getEnvironment() == World.Environment.NETHER) {
-                    epe.setCancelled(true);
-                }
-            }
+        if(isEnabled() && ese.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL && ese.getEntity().getType() == EntityType.WITCH) {
+            ese.setCancelled(true);
         }
     }
 
     @Override
     public String getFeatureID()
     {
-        return "NetherFeature";
+        return "WitchSpawns";
     }
 
     @Override
     public String getDescription()
     {
-        return "Disables the use of nether portals";
+        return "Disables natural witch spawns";
     }
 }
