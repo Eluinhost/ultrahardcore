@@ -39,7 +39,6 @@ import com.publicuhc.pluginframework.shaded.joptsimple.OptionSet;
 import com.publicuhc.pluginframework.translate.Translate;
 import com.publicuhc.ultrahardcore.addons.FeatureManager;
 import com.publicuhc.ultrahardcore.api.Command;
-import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.core.features.PlayerFreezeFeature;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,7 +64,7 @@ public class FreezeCommand implements Command
         featureManager = features;
     }
 
-    private boolean isValid(Optional<Feature> featureOptional, CommandSender sender)
+    private boolean isValid(Optional<PlayerFreezeFeature> featureOptional, CommandSender sender)
     {
         if(!featureOptional.isPresent()) {
             translate.sendMessage("freeze.not_loaded", sender);
@@ -85,13 +84,13 @@ public class FreezeCommand implements Command
     @CommandOptions("[arguments]")
     public void freezeCommand(OptionSet set, CommandSender sender, List<Player[]> args)
     {
-        Optional<Feature> featureOptional = featureManager.getFeatureByID("PlayerFreeze");
+        Optional<PlayerFreezeFeature> featureOptional = featureManager.getFeature(PlayerFreezeFeature.class);
 
         if(!isValid(featureOptional, sender)) {
             return;
         }
 
-        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureOptional.get();
+        PlayerFreezeFeature feature = featureOptional.get();
 
         if(set.has("a")) {
             feature.freezeAll();
@@ -136,12 +135,13 @@ public class FreezeCommand implements Command
     @CommandOptions("[arguments]")
     public void unfreezeCommand(OptionSet set, CommandSender sender, List<Player[]> args)
     {
-        Optional<Feature> featureOptional = featureManager.getFeatureByID("PlayerFreeze");
+        Optional<PlayerFreezeFeature> featureOptional = featureManager.getFeature(PlayerFreezeFeature.class);
+
         if(!isValid(featureOptional, sender)) {
             return;
         }
 
-        PlayerFreezeFeature feature = (PlayerFreezeFeature) featureOptional.get();
+        PlayerFreezeFeature feature = featureOptional.get();
 
         if(set.has("a")) {
             feature.unfreezeAll();
