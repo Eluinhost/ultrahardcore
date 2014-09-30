@@ -28,6 +28,8 @@ package com.publicuhc.ultrahardcore.addons;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
 import com.publicuhc.pluginframework.configuration.Configurator;
 import com.publicuhc.pluginframework.shaded.inject.Inject;
 import com.publicuhc.pluginframework.shaded.inject.Singleton;
@@ -41,6 +43,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginLogger;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -56,10 +59,11 @@ public class DefaultFeatureManager implements FeatureManager
     private final FileConfiguration config;
     private final Plugin plugin;
     private final PluginLogger logger;
+
     /**
      * Stores a list of all the features loaded on the server
      */
-    private final List<Feature> featureList = new ArrayList<Feature>();
+    private final ClassToInstanceMap<Feature> featureList = MutableClassToInstanceMap.create();
 
     /**
      * Create a new feature manager
@@ -87,7 +91,7 @@ public class DefaultFeatureManager implements FeatureManager
         Preconditions.checkArgument(NAME_PATTERN.matcher(featureID).matches(), "Invalid feature ID: %s, cannot contain whitespace", featureID);
 
         //check for existing feature of the same name
-        for(Feature uhcFeature : featureList) {
+        for(Feature uhcFeature : featureList.values()) {
             if(uhcFeature.equals(feature)) {
                 throw new FeatureIDConflictException();
             }
@@ -106,7 +110,7 @@ public class DefaultFeatureManager implements FeatureManager
         }
 
         //add the feature
-        featureList.add(feature);
+        featureList.put(feature.getClass(), feature);
         logger.log(Level.INFO, "Loaded feature: " + featureID);
 
         List<String> configs = config.getStringList("enabledFeatures");
@@ -123,7 +127,7 @@ public class DefaultFeatureManager implements FeatureManager
     @Override
     public boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException
     {
-        for(Feature feature : featureList) {
+        for(Feature feature : featureList.values()) {
             if(feature.getFeatureID().equals(featureID)) {
                 return feature.isEnabled();
             }
@@ -132,9 +136,21 @@ public class DefaultFeatureManager implements FeatureManager
     }
 
     @Override
+    public boolean isFeatureEnabled(Class<? extends Feature> type) throws FeatureIDNotFoundException
+    {
+        Feature feature = featureList.get(type);
+
+        if(null == feature) {
+            throw new FeatureIDNotFoundException();
+        }
+
+        return feature.isEnabled();
+    }
+
+    @Override
     public Optional<Feature> getFeatureByID(String featureID)
     {
-        for(Feature feature : featureList) {
+        for(Feature feature : featureList.values()) {
             if(feature.getFeatureID().equals(featureID)) {
                 return Optional.of(feature);
             }
@@ -143,16 +159,22 @@ public class DefaultFeatureManager implements FeatureManager
     }
 
     @Override
-    public List<Feature> getFeatures()
+    public <T extends Feature> Optional<T> getFeature(Class<T> type)
     {
-        return Collections.unmodifiableList(featureList);
+        return Optional.fromNullable(featureList.getInstance(type));
+    }
+
+    @Override
+    public Collection<Feature> getFeatures()
+    {
+        return Collections.unmodifiableCollection(featureList.values());
     }
 
     @Override
     public List<String> getFeatureNames()
     {
         List<String> features = new ArrayList<String>();
-        for(Feature feature : featureList) {
+        for(Feature feature : featureList.values()) {
             features.add(feature.getFeatureID());
         }
         return features;

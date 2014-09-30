@@ -31,6 +31,7 @@ import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDConflictException;
 import com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface FeatureManager
@@ -57,6 +58,15 @@ public interface FeatureManager
     boolean isFeatureEnabled(String featureID) throws FeatureIDNotFoundException;
 
     /**
+     * Check if a feature is enabled by it's class
+     *
+     * @param type the class to check for
+     * @return true if enabled, false otherwise
+     * @throws com.publicuhc.ultrahardcore.api.exceptions.FeatureIDNotFoundException when feature not found
+     */
+    boolean isFeatureEnabled(Class<? extends Feature> type) throws FeatureIDNotFoundException;
+
+    /**
      * Get the Feature based on it's ID
      *
      * @param featureID String the ID to check for
@@ -65,9 +75,17 @@ public interface FeatureManager
     Optional<Feature> getFeatureByID(String featureID);
 
     /**
-     * @return an unmodifiable list of all of the loaded features
+     * Get the Feature based on the class
+     *
+     * @param type
+     * @return the feature if it exists
      */
-    List<Feature> getFeatures();
+    <T extends Feature> Optional<T> getFeature(Class<T> type);
+
+    /**
+     * @return an unmodifiable collection of all of the loaded features
+     */
+    Collection<Feature> getFeatures();
 
     /**
      * @return List of all the currently registered feature names
