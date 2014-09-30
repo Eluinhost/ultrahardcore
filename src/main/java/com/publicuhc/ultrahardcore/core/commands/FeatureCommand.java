@@ -40,6 +40,7 @@ import com.publicuhc.ultrahardcore.api.Feature;
 import com.publicuhc.ultrahardcore.api.FeatureValueConverter;
 import org.bukkit.command.CommandSender;
 
+import java.util.Collection;
 import java.util.List;
 
 public class FeatureCommand implements Command
@@ -91,7 +92,7 @@ public class FeatureCommand implements Command
     @PermissionRestriction(FEATURE_LIST_PERMISSION)
     public void featureListCommand(OptionSet set, CommandSender sender)
     {
-        List<Feature> features = featureManager.getFeatures();
+        Collection<Feature> features = featureManager.getFeatures();
         translate.sendMessage("features.loaded.header", sender, features.size());
         if(features.isEmpty()) {
             translate.sendMessage("features.loaded.none", sender);
