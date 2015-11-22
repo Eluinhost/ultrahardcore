@@ -1,6 +1,8 @@
 UltraHardcore
 =============
 
+**NOTICE** This repository is deprecated in favour of https://github.com/Eluinhost/UHC
+
 **BRANCH DETAILS**
 
 This branch is removing all the non-core features and enabling a manager type system for plugins to hook into.
